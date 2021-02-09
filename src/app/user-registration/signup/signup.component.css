@@ -8,10 +8,11 @@
   line-height: 30px;
   padding: 7px 28px;
 }
-.bg-1F304B.mat-flat-button {background-color: #1f304b;}
-.radioBox .bg-1F304B.mat-flat-button { font-family: objektiv-mk3, sans-serif;
+.bg-1F304B.mat-flat-button {
+  background-color: #1f304b; padding-bottom: 10px; padding-top: 10px;font-family: objektiv-mk3, sans-serif;
   font-size: 16px;
-  font-weight: 700;}
+  font-weight: 700; line-height: 23px;}
+
 .bgWhite a.color-253238:hover{color: #C41E41;}
 .bg-F4F4F4 {background-color: #f4f4f4;}
 .bgWhite {background-color: #fff;}
