@@ -1,0 +1,30 @@
+image: node:10
+
+pipelines:
+  branches:
+    feature/phase1ui:
+      - step:
+          name: Installation
+          caches:
+            - node
+          script:
+            - npm install
+          artifacts:
+            - node_modules/** # Save modules for next steps
+      - step:
+          name: Lint
+          script:
+            - npm run lint
+      - step:
+          name: Build
+          script:
+            - npm run build:production
+          artifacts:
+            - dist/** # Save build for next steps
+      - step:
+          name: Deploy
+          script:
+            - echo "$(ls -la)"
+            - echo "$(ls -la dist)"
+            - ssh pixiroous@server rm -rf /public_html/mikontact
+            - scp -r dist/Mikontact pixiroous@server:/public_html/mikontact
