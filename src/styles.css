@@ -3,6 +3,8 @@ body.fontObjektivMk {font-family: objektiv-mk3, sans-serif; }
 div a:hover{text-decoration: none;}
 .f-12-700 {font-size: 12px; font-weight: 700;line-height: 17px;}
 .f-12-400 {font-size: 12px; font-weight: 400;line-height: 17px;}
+.f-13-500 {font-size: 13px; font-weight: 500;line-height: 19px;}
+.f-14-500 {font-size: 14px; font-weight: 500;line-height: 20px;}
 .f-18-500 {font-size: 18px; font-weight: 500;line-height: 26px;}
 .f-22-700 {font-size: 22px; font-weight: 700;line-height: 32px;}
 .f-22-500 {font-size: 22px; font-weight: 500;line-height: 32px;}
