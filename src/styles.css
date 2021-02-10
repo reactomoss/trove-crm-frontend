@@ -5,6 +5,7 @@ div a:hover{text-decoration: none;}
 .f-12-400 {font-size: 12px; font-weight: 400;line-height: 17px;}
 .f-13-500 {font-size: 13px; font-weight: 500;line-height: 19px;}
 .f-14-500 {font-size: 14px; font-weight: 500;line-height: 20px;}
+.f-14-700 {font-size: 14px; font-weight: 700;line-height: 20px;}
 .f-18-500 {font-size: 18px; font-weight: 500;line-height: 26px;}
 .f-22-700 {font-size: 22px; font-weight: 700;line-height: 32px;}
 .f-22-500 {font-size: 22px; font-weight: 500;line-height: 32px;}
@@ -13,6 +14,7 @@ div a:hover{text-decoration: none;}
 .color-253238 {color: #253238;}
 .color-1F304B {color: #1F304B;}
 .color-242E4C {color: #242E4C;}
+.color-455B66 {color: #455B66;}
 .color-lite-O {
   color: rgba(31, 48, 75, 0.7);
 }
