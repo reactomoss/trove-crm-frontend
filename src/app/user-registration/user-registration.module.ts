@@ -1,18 +1,29 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {RouterModule , Routes} from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   { path: '', redirectTo: 'signup', pathMatch: 'full' },
-{path:'signup', loadChildren: () => import('./signup/signup.module').then(m => m.SignupModule)},
-{path:'login', loadChildren: () => import('./login/login.module').then(m => m.LoginModule)},
-{path:'forgot-password', loadChildren: () => import('./forgot-password/forgot-password.module').then(m => m.ForgotPasswordModule)}
-  ];
+  {
+    path: 'signup',
+    loadChildren: () =>
+      import('./signup/signup.module').then((m) => m.SignupModule),
+  },
+  {
+    path: 'login',
+    loadChildren: () =>
+      import('./login/login.module').then((m) => m.LoginModule),
+  },
+  {
+    path: 'forgot-password',
+    loadChildren: () =>
+      import('./forgot-password/forgot-password.module').then(
+        (m) => m.ForgotPasswordModule
+      ),
+  },
+];
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes)
-  ],
-  exports:[RouterModule],
+  imports: [CommonModule, RouterModule.forChild(routes)],
+  exports: [RouterModule],
 })
-export class UserRegistrationModule { }
+export class UserRegistrationModule {}
