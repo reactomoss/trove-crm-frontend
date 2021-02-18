@@ -1,1 +1,46 @@
-/* You can add global styles to this file, and also import other style files */
+body { margin: 0;}
+body.fontObjektivMk {font-family: objektiv-mk3, sans-serif; }
+div a:hover{text-decoration: none;}
+.f-12-700 {font-size: 12px; font-weight: 700;line-height: 17px;}
+.f-12-400 {font-size: 12px; font-weight: 400;line-height: 17px;}
+.f-13-500 {font-size: 13px; font-weight: 500;line-height: 19px;}
+.f-14-500 {font-size: 14px; font-weight: 500;line-height: 20px;}
+.f-14-700 {font-size: 14px; font-weight: 700;line-height: 20px;}
+.f-18-500 {font-size: 18px; font-weight: 500;line-height: 26px;}
+.f-22-700 {font-size: 22px; font-weight: 700;line-height: 32px;}
+.f-22-500 {font-size: 22px; font-weight: 500;line-height: 32px;}
+.f-60-700 {font-size: 60px; font-weight: 700; line-height: 75px;}
+.f-16-400 {font-size: 16px; font-weight: 400;line-height: 23px;}
+.color-253238 {color: #253238;}
+.color-1F304B {color: #1F304B;}
+.color-242E4C {color: #242E4C;}
+.color-455B66 {color: #455B66;}
+.color-lite-O {
+  color: rgba(31, 48, 75, 0.7);
+}
+
+@media(max-width: 991px){
+  .f-60-700 {font-size: 30px; line-height: 40px;}
+}
+
+.userForm .mat-form-field.mat-focused .mat-form-field-label , .userForm .mat-form-field-appearance-outline .mat-form-field-outline-thick ,
+.userForm .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick
+ {color: #C41E41;}
+
+ @media(min-width:768px){
+  div.userForm  [ng-reflect-ng-switch="error"] {
+    width: auto;
+    top: 0;
+    left: -200px;
+    background: #C41E41;
+  opacity: 0.95;
+  border-radius: 6px;
+  color: #fff;
+  padding: 10px;
+  }
+
+  .userForm .mat-error {color: #fff;}
+ }
+
+
+
