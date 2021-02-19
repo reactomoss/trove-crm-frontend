@@ -1,15 +1,14 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, DoCheck } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AccountApiService } from '../../services/account-api.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-
   apiResponse: any;
   clicked = false;
   hide = true;
@@ -17,10 +16,18 @@ export class LoginComponent implements OnInit {
   constructor(
     public formBuilder: FormBuilder,
     private account: AccountApiService,
-    private router: Router) { }
-
-  ngOnInit(): void {
+    private router: Router
+  ) {
+    if (account.isLoggedIn()) {
+      router.navigate(['pages/dashboard']);
+    }
+    this.loginForm.valueChanges.subscribe((data) => {
+      console.log("value change");
+      this.apiResponse = false;
+    });
   }
+
+  ngOnInit(): void {}
 
   loginForm = this.formBuilder.group({
     email: [
@@ -41,17 +48,19 @@ export class LoginComponent implements OnInit {
       ],
     ],
   });
+
   // Submit Registration Form
   onSubmit() {
     if (!this.loginForm.valid) {
       return false;
-    } else{
+    } else {
       this.clicked = true;
       this.account.login(this.loginForm.value).subscribe(
         (response) => {
           this.clicked = false;
           this.apiResponse = response;
           localStorage.setItem('token', response.data.token);
+          this.router.navigate(['pages/dashboard']);
         },
         (err) => {
           this.clicked = false;
@@ -65,7 +74,7 @@ export class LoginComponent implements OnInit {
             }
           }*/
         }
-      )
+      );
     }
   }
 

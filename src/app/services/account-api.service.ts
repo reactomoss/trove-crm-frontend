@@ -34,6 +34,13 @@ export class AccountApiService {
     return this.httpClient.post(API_URL, data, this.httpOptions);
   }
 
+  isLoggedIn(){
+    if (localStorage.getItem("token") === null) {
+      return false;
+    }
+    return true;
+  }
+
   // Handle Errors
   handleError(error: HttpErrorResponse) {
     let errorMessage = 'Unknown error!';

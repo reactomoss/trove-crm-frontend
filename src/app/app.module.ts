@@ -8,6 +8,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { SharedModule } from './shared/shared.module';
 
 import { HttpClientModule } from '@angular/common/http';
 import { AccountApiService } from './services/account-api.service';
@@ -22,6 +24,16 @@ const routes: Routes = [
         (m) => m.UserRegistrationModule
       ),
   },
+  {
+    path: 'pages',
+    loadChildren: () =>
+      import('./pages/pages.module').then((m) => m.PagesModule),
+  },
+  {
+    path: '',
+    loadChildren: () =>
+      import('./shared/shared.module').then((m) => m.SharedModule),
+  },
 ];
 @NgModule({
   declarations: [AppComponent],
@@ -35,8 +47,10 @@ const routes: Routes = [
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
+    SharedModule,
+    MatMenuModule,
     HttpClientModule,
-    UserRegistrationModule
+    UserRegistrationModule,
   ],
   providers: [AccountApiService],
   exports: [RouterModule],
