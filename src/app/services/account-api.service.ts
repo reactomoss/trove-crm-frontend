@@ -28,6 +28,19 @@ export class AccountApiService {
       )*/
   }
 
+  //login
+  login(data): Observable<any> {
+    let API_URL = `${this.baseURL + environment.login}`;
+    return this.httpClient.post(API_URL, data, this.httpOptions);
+  }
+
+  isLoggedIn(){
+    if (localStorage.getItem("token") === null) {
+      return false;
+    }
+    return true;
+  }
+
   // Handle Errors
   handleError(error: HttpErrorResponse) {
     let errorMessage = 'Unknown error!';

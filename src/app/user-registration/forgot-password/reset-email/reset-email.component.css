@@ -6,14 +6,7 @@
 .bgWhite {background-color: #fff;}
 .userForm .mat-form-field{display: block;font-family: objektiv-mk3, sans-serif;}
 .gifImage img {width: 200px;}
-.alertBox {
-  background: #E1FAEA;
-border: 1px solid #B2E4C4;
-box-sizing: border-box;
-border-radius: 3px;
-padding: 15px;
-margin-bottom: 30px;
-}
+
 
 
 

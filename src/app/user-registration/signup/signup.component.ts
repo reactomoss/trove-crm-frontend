@@ -69,7 +69,7 @@ export class SignupComponent implements OnInit {
           this.clicked = false;
           this.apiResponse = response;
           localStorage.setItem('token', response.data.token);
-          this.router.navigate(['/login']);
+          this.router.navigate(['pages/dashboard']);
         },
         (err) => {
           //alert("error");
