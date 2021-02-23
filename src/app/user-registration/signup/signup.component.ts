@@ -18,7 +18,12 @@ export class SignupComponent implements OnInit {
     public fb: FormBuilder,
     private account: AccountApiService,
     private router: Router
-  ) {}
+  ) {
+    this.registrationForm.valueChanges.subscribe((data) => {
+      console.log("value change");
+      this.apiResponse = false;
+    });
+  }
 
   ngOnInit(): void {}
 

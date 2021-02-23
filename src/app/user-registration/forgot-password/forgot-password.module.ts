@@ -13,7 +13,8 @@ import { NewPasswordComponent } from './new-password/new-password.component';
 const routes: Routes = [
   {path:'', component:ForgotPasswordComponent},
   {path:'reset-email', component:ResetEmailComponent},
-  {path:'new-password', component:NewPasswordComponent}
+  //{path:'new-password', component:NewPasswordComponent},
+  { path: 'new-password', component: NewPasswordComponent }
 ]
 
 
