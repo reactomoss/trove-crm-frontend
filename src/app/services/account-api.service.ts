@@ -34,6 +34,11 @@ export class AccountApiService {
     return this.httpClient.post(API_URL, data, this.httpOptions);
   }
 
+  sendPasswordResetLink(email): Observable<any> {
+    let API_URL = `${this.baseURL + environment.sendPasswordResetLink}`;
+    return this.httpClient.post(API_URL, {"email" : email}, this.httpOptions);
+  }
+
   isLoggedIn(){
     if (localStorage.getItem("token") === null) {
       return false;
