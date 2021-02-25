@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 export const environment = {
   production: false,
-  envName: 'Development',
+  envName: 'local',
   baseUrl: 'http://127.0.0.1:8000/api/',
 
   /** API Methods */
@@ -12,7 +12,6 @@ export const environment = {
   me: 'account/me',
   sendPasswordResetLink: 'account/sendPasswordResetLink',
   resetPassword: 'account/resetPassword',
-  validateResetPasswordToken: 'account/validateResetPasswordToken',
 
   logout: 'account/logout',
 };

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http';
 
 
 
@@ -31,12 +31,37 @@ export class AccountApiService {
   //login
   login(data): Observable<any> {
     let API_URL = `${this.baseURL + environment.login}`;
-    return this.httpClient.post(API_URL, data, this.httpOptions);
+    return this.httpClient.post(API_URL, data);
   }
 
+  //sendPasswordResetLink
   sendPasswordResetLink(email): Observable<any> {
     let API_URL = `${this.baseURL + environment.sendPasswordResetLink}`;
-    return this.httpClient.post(API_URL, {"email" : email}, this.httpOptions);
+    return this.httpClient.post(API_URL, {"email" : email});
+  }
+
+  resetPassword(data): Observable<any> {
+    let API_URL = `${this.baseURL + environment.resetPassword}`;
+    return this.httpClient.post(API_URL, data);
+  }
+
+  validateResetPasswordToken(token): Observable<any> {
+    let API_URL = `${this.baseURL + environment.validateResetPasswordToken}`;
+    let params = new HttpParams()
+                .set('reset_token', token);
+    return this.httpClient.get(API_URL, {params});
+  }
+
+  //me
+  me(): Observable<any> {
+    let API_URL = `${this.baseURL + environment.me}`;
+    return this.httpClient.get(API_URL);
+  }
+
+  //logout
+  logout(): Observable<any> {
+    let API_URL = `${this.baseURL + environment.logout}`;
+    return this.httpClient.get(API_URL);
   }
 
   isLoggedIn(){
@@ -45,6 +70,8 @@ export class AccountApiService {
     }
     return true;
   }
+
+
 
   // Handle Errors
   handleError(error: HttpErrorResponse) {

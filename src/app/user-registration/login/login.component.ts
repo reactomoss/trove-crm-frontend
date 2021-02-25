@@ -1,7 +1,8 @@
+import { TokenService } from './../../services/token.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit, DoCheck } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AccountApiService } from '../../services/account-api.service';
 @Component({
   selector: 'app-login',
@@ -12,19 +13,34 @@ export class LoginComponent implements OnInit {
   apiResponse: any;
   clicked = false;
   hide = true;
+  infoMessage = '';
+  infoStatus = 'alertBox';
 
   constructor(
     public formBuilder: FormBuilder,
+    private router: Router,
+    private route: ActivatedRoute,
     private account: AccountApiService,
-    private router: Router
+    private token: TokenService
   ) {
     if (account.isLoggedIn()) {
       router.navigate(['pages/dashboard']);
     }
     this.loginForm.valueChanges.subscribe((data) => {
-      console.log("value change");
+      //console.log("value change");
       this.apiResponse = false;
     });
+    this.route.queryParams
+      .subscribe(params => {
+        if(params.logout !== undefined && params.logout === 'true') {
+            this.infoMessage = 'Logged out successfully.';
+        } else if(params.reset !== undefined && params.reset === 'true'){
+          this.infoMessage = 'Password changed successfully.';
+        } else if(params.resettoken !== undefined && params.resettoken === 'false'){
+          this.infoMessage = 'Password reset token is invalid/expired.';
+          this.infoStatus = 'alertBoxError';
+        }
+      });
   }
 
   ngOnInit(): void {}
@@ -59,32 +75,14 @@ export class LoginComponent implements OnInit {
         (response) => {
           this.clicked = false;
           this.apiResponse = response;
-          localStorage.setItem('token', response.data.token);
+          this.token.handle(response.data.token);
           this.router.navigate(['pages/dashboard']);
         },
         (err) => {
           this.clicked = false;
           this.apiResponse = err.error;
-          /*if (err.error.code === 251) {
-            const formControl = this.loginForm.get('email');
-            if (formControl) {
-              formControl.setErrors({
-                serverError: err.error.message,
-              });
-            }
-          }*/
         }
       );
     }
   }
-
-  /*email = new FormControl('', [Validators.required, Validators.email]);
-
-  getErrorMessage() {
-    if (this.email.hasError('required')) {
-      return 'You must enter the email address';
-    }
-
-    return this.email.hasError('email') ? 'Please enter a valid email address' : '';
-  }*/
 }

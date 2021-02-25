@@ -1,3 +1,4 @@
+import { HttpInterceptorService } from './services/http-interceptor.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
@@ -11,8 +12,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { SharedModule } from './shared/shared.module';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AccountApiService } from './services/account-api.service';
+import { TokenService } from './services/token.service';
 import { UserRegistrationModule } from './user-registration/user-registration.module';
 
 const routes: Routes = [
@@ -52,7 +54,11 @@ const routes: Routes = [
     HttpClientModule,
     UserRegistrationModule,
   ],
-  providers: [AccountApiService],
+  providers: [AccountApiService, TokenService, {
+    provide: HTTP_INTERCEPTORS,
+    useClass: HttpInterceptorService,
+    multi: true
+  }],
   exports: [RouterModule],
   bootstrap: [AppComponent],
 })

@@ -1,4 +1,15 @@
 export const environment = {
   production: true,
-  baseUrl: 'https://jsonplaceholder.typicode.com'
+  envName: 'prod',
+  baseUrl: 'http://apimikontact.cullsy.com/',
+
+  /** API Methods */
+  register: 'account/register',
+  login: 'account/login',
+  me: 'account/me',
+  sendPasswordResetLink: 'account/sendPasswordResetLink',
+  resetPassword: 'account/resetPassword',
+  validateResetPasswordToken: 'account/validateResetPasswordToken',
+
+  logout: 'account/logout',
 };
