@@ -64,7 +64,8 @@ export class SignupComponent implements OnInit {
   // Submit Registration Form
   onSubmit() {
     if (!this.registrationForm.valid) {
-      console.log(this.registrationForm.controls.first_name.errors);
+      console.log(this.registrationForm);
+      //console.log(this.registrationForm.controls.first_name.errors);
       return false;
     } else {
       this.clicked = true;

@@ -12,12 +12,18 @@ export class ForgotPasswordComponent implements OnInit {
 
   clicked = false;
   hide = true;
+  apiResponse: any;
 
   constructor(
     public formBuilder: FormBuilder,
     private account: AccountApiService,
     private router: Router
-  ) { }
+  ) {
+    this.forgotPasswordForm.valueChanges.subscribe((data) => {
+      console.log("value change");
+      this.apiResponse = false;
+    });
+  }
 
   ngOnInit(): void {
   }
@@ -53,6 +59,8 @@ export class ForgotPasswordComponent implements OnInit {
                 serverError: err.error.message,
               });
             }
+          } else {
+            this.apiResponse = err.error;
           }
         }
       );

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {FormBuilder, FormControl, Validators} from '@angular/forms';
+import { Router } from '@angular/router';
+import { AccountApiService } from 'src/app/services/account-api.service';
 @Component({
   selector: 'app-reset-email',
   templateUrl: './reset-email.component.html',
@@ -7,9 +10,71 @@ import { Component, OnInit } from '@angular/core';
 
 export class ResetEmailComponent implements OnInit {
 
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor(
+    public formBuilder: FormBuilder,
+    private account: AccountApiService,
+    private router: Router
+  ) {
+    this.resetPasswordForm.valueChanges.subscribe((data) => {
+      console.log("value change");
+      this.apiResponse = false;
+    });
   }
 
+  formDisplay = 'formHide';
+  timerFinished = false;
+  clicked = false;
+  apiResponse: any;
+
+  resetPasswordForm = this.formBuilder.group({
+    email: [
+      '',
+      [
+        Validators.required,
+        Validators.maxLength(255),
+        Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+      ],
+    ],
+  });
+
+  ngOnInit(): void {
+    this.apiResponse = {"success": true};
+  }
+  onTimerFinished(e:Event){
+    if (e["action"] == "done"){
+       //your code here
+       this.formDisplay = 'formShow';
+       this.timerFinished = true;
+     }
+   }
+   // Submit Registration Form
+  onSubmit() {
+    if (!this.resetPasswordForm.valid) {
+      return false;
+    } else {
+      this.clicked = true;
+      this.account.sendPasswordResetLink(this.resetPasswordForm.controls['email'].value).subscribe(
+        (response) => {
+          this.clicked = false;
+          this.apiResponse = response;
+          //this.router.navigate(['/user/forgot-password/reset-email']);
+          this.formDisplay = 'formHide';
+          this.timerFinished = false;
+        },
+        (err) => {
+          this.clicked = false;
+          if (err.error.code === 254) {
+            const formControl = this.resetPasswordForm.get('email');
+            if (formControl) {
+              formControl.setErrors({
+                serverError: err.error.message,
+              });
+            }
+          } else {
+            this.apiResponse = err.error;
+          }
+        }
+      );
+    }
+  }
 }
