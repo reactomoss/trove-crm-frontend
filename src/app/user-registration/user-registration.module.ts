@@ -20,6 +20,11 @@ const routes: Routes = [
         (m) => m.ForgotPasswordModule
       ),
   },
+  {
+    path: 'verify-email',
+    loadChildren: () =>
+      import('./verify-email/verify-email.module').then((m) => m.VerifyEmailModule),
+  },
 ];
 @NgModule({
   declarations: [],

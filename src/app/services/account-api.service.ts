@@ -51,6 +51,12 @@ export class AccountApiService {
                 .set('reset_token', token);
     return this.httpClient.get(API_URL, {params});
   }
+  verifyEmail(token): Observable<any> {
+    let API_URL = `${this.baseURL + environment.verifyEmail}`;
+    let params = new HttpParams()
+                .set('verify_token', token);
+    return this.httpClient.get(API_URL, {params});
+  }
 
   //me
   me(): Observable<any> {

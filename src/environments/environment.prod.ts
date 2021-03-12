@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
   envName: 'prod',
-  baseUrl: 'http://apimikontact.cullsy.com/',
+  baseUrl: 'http://apimikontact.cullsy.com/api/',
 
   /** API Methods */
   register: 'account/register',

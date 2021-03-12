@@ -17,6 +17,13 @@ import { AccountApiService } from './services/account-api.service';
 import { TokenService } from './services/token.service';
 import { UserRegistrationModule } from './user-registration/user-registration.module';
 
+import {
+  SocialLoginModule,
+  SocialAuthServiceConfig,
+} from 'angularx-social-login';
+import { GoogleLoginProvider, FacebookLoginProvider } from 'angularx-social-login';
+import { environment } from 'src/environments/environment';
+
 const routes: Routes = [
   { path: '', redirectTo: 'user', pathMatch: 'full' },
   {
@@ -53,12 +60,35 @@ const routes: Routes = [
     MatMenuModule,
     HttpClientModule,
     UserRegistrationModule,
+    SocialLoginModule,
   ],
-  providers: [AccountApiService, TokenService, {
-    provide: HTTP_INTERCEPTORS,
-    useClass: HttpInterceptorService,
-    multi: true
-  }],
+  providers: [
+    AccountApiService,
+    TokenService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpInterceptorService,
+      multi: true,
+    },
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              '830281107448-r8aj5hj1nvqrvom4eq9lp21hgtr9apbs.apps.googleusercontent.com'
+            )
+          },
+          {
+            id: FacebookLoginProvider.PROVIDER_ID,
+            provider: new FacebookLoginProvider("447613193049348")
+          }
+        ]
+      } as SocialAuthServiceConfig,
+    }
+  ],
   exports: [RouterModule],
   bootstrap: [AppComponent],
 })

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AccountApiService } from 'src/app/services/account-api.service';
 @Component({
   selector: 'app-reset-email',
@@ -10,21 +11,23 @@ import { AccountApiService } from 'src/app/services/account-api.service';
 
 export class ResetEmailComponent implements OnInit {
 
+  formDisplay = 'formHide';
+  timerFinished = false;
+  clicked = false;
+  apiResponse: any;
+  private subscriptions: Subscription[] = [];
+
   constructor(
     public formBuilder: FormBuilder,
     private account: AccountApiService,
     private router: Router
   ) {
-    this.resetPasswordForm.valueChanges.subscribe((data) => {
-      console.log("value change");
+    const subs_value_change = this.resetPasswordForm.valueChanges.subscribe((data) => {
+      //console.log("value change");
       this.apiResponse = false;
     });
+    this.subscriptions.push(subs_value_change);
   }
-
-  formDisplay = 'formHide';
-  timerFinished = false;
-  clicked = false;
-  apiResponse: any;
 
   resetPasswordForm = this.formBuilder.group({
     email: [
@@ -53,7 +56,7 @@ export class ResetEmailComponent implements OnInit {
       return false;
     } else {
       this.clicked = true;
-      this.account.sendPasswordResetLink(this.resetPasswordForm.controls['email'].value).subscribe(
+      const subs_send_password_link = this.account.sendPasswordResetLink(this.resetPasswordForm.controls['email'].value).subscribe(
         (response) => {
           this.clicked = false;
           this.apiResponse = response;
@@ -75,6 +78,13 @@ export class ResetEmailComponent implements OnInit {
           }
         }
       );
+      this.subscriptions.push(subs_send_password_link);
     }
+  }
+  ngOnDestroy() {
+    //console.log("ngOnDestroy")
+    this.subscriptions.forEach((sub) => {
+      sub.unsubscribe();
+    });
   }
 }

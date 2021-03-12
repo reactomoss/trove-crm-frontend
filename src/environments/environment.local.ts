@@ -12,6 +12,7 @@ export const environment = {
   me: 'account/me',
   sendPasswordResetLink: 'account/sendPasswordResetLink',
   resetPassword: 'account/resetPassword',
+  validateResetPasswordToken: 'account/validateResetPasswordToken',
 
   logout: 'account/logout',
 };

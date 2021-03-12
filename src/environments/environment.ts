@@ -4,7 +4,7 @@
 export const environment = {
   production: false,
   envName: 'Development',
-  baseUrl: 'http://127.0.0.1:8000/api/',
+  baseUrl: 'http://127.0.0.1:8000/api/v1/',
 
   /** API Methods */
   register: 'account/register',
@@ -13,6 +13,7 @@ export const environment = {
   sendPasswordResetLink: 'account/sendPasswordResetLink',
   resetPassword: 'account/resetPassword',
   validateResetPasswordToken: 'account/validateResetPasswordToken',
+  verifyEmail: 'account/verifyEmail',
 
   logout: 'account/logout',
 };

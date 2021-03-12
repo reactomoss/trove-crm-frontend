@@ -41,7 +41,7 @@
                                 </mat-form-field>
                             </div>
                             <div class="mb-4">
-                                <a *ngIf="!timerFinished" routerLink='javascript:void(0)' href="javascript:void(0);" class="w-100 bg-1F304B" mat-flat-button color="warn">Resend in <countdown [config]="{ leftTime: 5, format: 's' }" (event)="onTimerFinished($event)"></countdown> sec </a>
+                                <a *ngIf="!timerFinished" routerLink='javascript:void(0)' href="javascript:void(0);" class="w-100 bg-1F304B" mat-flat-button color="warn">Resend in <countdown [config]="{ leftTime: 60, format: 's' }" (event)="onTimerFinished($event)"></countdown> sec </a>
                                 <button *ngIf="timerFinished" type="submit" class="w-100 bg-1F304B" mat-flat-button color="warn" [disabled]="clicked">Resend</button>
                             </div>
                         </form>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AccountApiService } from 'src/app/services/account-api.service';
 
 @Component({
@@ -14,15 +15,18 @@ export class ForgotPasswordComponent implements OnInit {
   hide = true;
   apiResponse: any;
 
+  private subscriptions: Subscription[] = [];
+
   constructor(
     public formBuilder: FormBuilder,
     private account: AccountApiService,
     private router: Router
   ) {
-    this.forgotPasswordForm.valueChanges.subscribe((data) => {
-      console.log("value change");
+    const subs_value_change = this.forgotPasswordForm.valueChanges.subscribe((data) => {
+      //console.log("value change");
       this.apiResponse = false;
     });
+    this.subscriptions.push(subs_value_change);
   }
 
   ngOnInit(): void {
@@ -45,7 +49,7 @@ export class ForgotPasswordComponent implements OnInit {
       return false;
     } else {
       this.clicked = true;
-      this.account.sendPasswordResetLink(this.forgotPasswordForm.controls['email'].value).subscribe(
+      const subs_send_password_link = this.account.sendPasswordResetLink(this.forgotPasswordForm.controls['email'].value).subscribe(
         (response) => {
           this.clicked = false;
           this.router.navigate(['/user/forgot-password/reset-email']);
@@ -64,9 +68,15 @@ export class ForgotPasswordComponent implements OnInit {
           }
         }
       );
+      this.subscriptions.push(subs_send_password_link);
     }
   }
-
+  ngOnDestroy() {
+    //console.log("ngOnDestroy")
+    this.subscriptions.forEach((sub) => {
+      sub.unsubscribe();
+    });
+  }
   /*email = new FormControl('', [Validators.required, Validators.email]);
 
   getErrorMessage() {

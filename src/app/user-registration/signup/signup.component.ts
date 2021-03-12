@@ -1,31 +1,141 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AccountApiService } from '../../services/account-api.service';
+import { extractErrorMessagesFromErrorResponse } from './../../services/extract-error-messages-from-error-response';
+import { FormStatus } from './../../services/form-status';
+import {
+  SocialAuthService,
+  GoogleLoginProvider,
+  FacebookLoginProvider,
+  SocialUser,
+} from 'angularx-social-login';
+import { Subscription } from 'rxjs';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css'],
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent implements OnInit, OnDestroy {
+  fbLoginOptions = {
+    scope: 'email',
+    return_scopes: true,
+    enable_profile_selector: true,
+  }; // https://developers.facebook.com/docs/reference/jaPvascript/FB.login/v2.11
+
+  googleLoginOptions = {
+    scope: 'profile email https://www.googleapis.com/auth/contacts.readonly',
+  }; // https://developers.google.com/api-client-library/javascript/reference/referencedocs#gapiauth2clientconfig
+
   apiResponse: any;
   clicked = false;
   hide = true;
+  socialUser: SocialUser;
+  isLoggedin: boolean;
+  sub_social_auth;
+
+  private subscriptions: Subscription[] = [];
+
+  // 1 - Initialize a form status object for the component
+  formStatus = new FormStatus();
 
   constructor(
     public fb: FormBuilder,
     private account: AccountApiService,
-    private router: Router
+    private router: Router,
+    private token: TokenService,
+    private socialAuthService: SocialAuthService
   ) {
-    this.registrationForm.valueChanges.subscribe((data) => {
-      console.log("value change");
-      this.apiResponse = false;
-    });
+    const subs_valuechange = this.registrationForm.valueChanges.subscribe(
+      (data) => {
+        //console.log('value change');
+        this.apiResponse = false;
+        //console.log(this.registrationForm?.valid);
+        //console.log(this.formStatus.submitted);
+      }
+    );
+    this.subscriptions.push(subs_valuechange);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.isLoggedin) {
+      this.logOut();
+    }
+
+    this.sub_social_auth = this.socialAuthService.authState.subscribe(
+      (user) => {
+        this.socialUser = user;
+        this.isLoggedin = user != null;
+        this.formStatus.onFormSubmitting();
+        if (this.socialUser && typeof this.socialUser.email !== 'undefined') {
+          let postData = {
+            first_name: this.socialUser.firstName,
+            last_name: this.socialUser.lastName,
+            email: this.socialUser.email,
+            platform: 'web',
+            type: this.socialUser.provider,
+            social_user_id: this.socialUser.id,
+            auth_token: this.socialUser.authToken,
+            profile_pic: this.socialUser.photoUrl,
+          };
+          const sub_social = this.account.createAccount(postData).subscribe(
+            (response) => {
+              this.apiResponse = response;
+              this.token.handle(response.data.token);
+              this.formStatus.onFormSubmitResponse({
+                success: true,
+                messages: [],
+              });
+              this.logOut();
+              this.router.navigate(['pages/dashboard']);
+            },
+            (errorResponse: HttpErrorResponse) => {
+              //console.log(errorResponse);
+              const messages = extractErrorMessagesFromErrorResponse(
+                errorResponse
+              );
+              this.formStatus.onFormSubmitResponse({
+                success: false,
+                messages: messages,
+              });
+              this.logOut();
+              //console.log('Messages', messages);
+            }
+          );
+          this.subscriptions.push(sub_social);
+        } else {
+          this.formStatus.onFormSubmitResponse({
+            success: false,
+            messages: [
+              "Your social media doesn't have email, so kindly signup with email.",
+            ],
+          });
+          this.logOut();
+        }
+      }
+    );
+    this.subscriptions.push(this.sub_social_auth);
+  }
+  /*##################### Google Auth #####################*/
+  async loginWithGoogle(): Promise<void> {
+    await this.socialAuthService.signIn(
+      GoogleLoginProvider.PROVIDER_ID,
+      this.googleLoginOptions
+    );
+  }
+  async loginWithFacebook(): Promise<void> {
+    await this.socialAuthService.signIn(
+      FacebookLoginProvider.PROVIDER_ID,
+      this.fbLoginOptions
+    );
+  }
+
+  logOut(): void {
+    this.socialAuthService.signOut();
+  }
 
   /*##################### Registration Form #####################*/
 
@@ -59,30 +169,38 @@ export class SignupComponent implements OnInit {
     ],
     company_name: ['', [Validators.maxLength(255)]],
     no_of_employees: '',
+    platform: '',
+    type: '',
   });
 
   // Submit Registration Form
-  onSubmit() {
+  async onSubmit() {
     if (!this.registrationForm.valid) {
-      console.log(this.registrationForm);
       //console.log(this.registrationForm.controls.first_name.errors);
       return false;
     } else {
-      this.clicked = true;
-      //console.log(this.registrationForm.value);
-      this.account.createAccount(this.registrationForm.value).subscribe(
-        (response) => {
-          this.clicked = false;
-          this.apiResponse = response;
-          localStorage.setItem('token', response.data.token);
-          this.router.navigate(['pages/dashboard']);
-        },
-        (err) => {
-          //alert("error");
-          this.clicked = false;
-          if (err.error.code === 253) {
-            const validationErrors = { email: err.error.message };
-
+      // 2 - Call onFormSubmitting to handle setting the form as submitted and
+      //     clearing the error and success messages array
+      this.formStatus.onFormSubmitting();
+      this.registrationForm.patchValue({ platform: 'web', type: 'form' });
+      const subs_form = await this.account
+        .createAccount(this.registrationForm.value)
+        .subscribe(
+          (response) => {
+            this.apiResponse = response;
+            this.token.handle(response.data.token);
+            this.router.navigate(['pages/dashboard']);
+          },
+          (errorResponse: HttpErrorResponse) => {
+            const messages = extractErrorMessagesFromErrorResponse(
+              errorResponse
+            );
+            this.formStatus.onFormSubmitResponse({
+              success: false,
+              messages: messages,
+            });
+            /*if (errorResponse.error.code === 253) {
+            const validationErrors = { email: errorResponse.error.message };
             Object.keys(validationErrors).forEach((prop) => {
               const formControl = this.registrationForm.get(prop);
               if (formControl) {
@@ -90,19 +208,29 @@ export class SignupComponent implements OnInit {
                   serverError: validationErrors[prop],
                 });
               }
-
-              // TODO: consider adding the error to some data structure
-              // and visualize it as an alert/notification to the user
-              // in addition to activating the errors on the form.
-
-              // errorMessages.push({
-              //   propName: prop,
-              //   errors: validationErrors[prop]
-              // });
             });
+          } else {
+            const messages = extractErrorMessagesFromErrorResponse(
+              errorResponse
+            );
+            // call onFormSubmitResponse with the submission success status (false) and the array of messages
+            this.formStatus.onFormSubmitResponse({
+              success: false,
+              messages: messages,
+            });
+          }*/
           }
-        }
-      );
+        );
+      this.subscriptions.push(subs_form);
+    }
+  }
+  ngOnDestroy() {
+    this.subscriptions.forEach((sub) => {
+      sub.unsubscribe();
+    });
+    //this.sub_social_auth.unsubscribe();
+    if (this.isLoggedin) {
+      this.logOut();
     }
   }
 }

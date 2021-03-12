@@ -1,6 +1,6 @@
 import { TokenService } from './../../services/token.service';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import { AccountApiService } from '../../services/account-api.service';
 
 @Component({
@@ -27,17 +27,34 @@ export class HeaderComponent implements OnInit {
    logout(){
     this.account.logout().subscribe(
       (response) => {
-        //console.log(response);
+        console.log(response);
         this.token.remove();
         //this.router.navigate(['login']);
-        this.router.navigate(['login'], {queryParams: { logout: 'true' } });
+        let objToSend: NavigationExtras = {
+          queryParams: {
+            success: response.success,
+            message: response.message
+          }
+        };
+        this.router.navigate(['login'], {
+          state: objToSend
+        });
+        //this.router.navigate(['login'], {queryParams: { logout: 'true' } });
       },
       (err) => {
         console.log(err);
         if(err.error.code == 113){
           this.token.remove();
-          //this.router.navigate(['login']);
-          this.router.navigate(['login'], {queryParams: { logout: 'true' } });
+          let objToSend: NavigationExtras = {
+            queryParams: {
+              success: true,
+              message: "Logged out successfully!"
+            }
+          };
+          this.router.navigate(['login'], {
+            state: objToSend
+          });
+          //this.router.navigate(['login'], {queryParams: { logout: 'true' } });
         }
       }
     );
