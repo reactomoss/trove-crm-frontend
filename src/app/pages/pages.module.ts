@@ -3,17 +3,16 @@ import { CommonModule } from '@angular/common';
 import { PagesComponent } from './pages.component';
 import { RouterModule ,  Routes } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
-import { SettingsComponent } from './settings/settings.component';
-import { MatTabsModule } from "@angular/material/tabs";
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 const routes : Routes = [
   {path:'' , redirectTo: 'dashboard' , pathMatch:'full'},
 {path: 'dashboard' , component:PagesComponent},
-{path:'settings' , component:SettingsComponent}
+{path:'settings' , loadChildren: () => import('./settings/settings.module') .then(m=>m.SettingsModule)}
 ]
 @NgModule({
-  declarations: [PagesComponent , SettingsComponent],
+  declarations: [PagesComponent],
   imports: [
-    CommonModule, RouterModule.forChild(routes), SharedModule, MatTabsModule
+    CommonModule, RouterModule.forChild(routes), SharedModule, NgbModule
   ],
   exports:[RouterModule],
 })

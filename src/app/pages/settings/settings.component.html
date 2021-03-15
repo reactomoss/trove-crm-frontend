@@ -8,29 +8,1173 @@
     </div>
   </div>
 </section>
-<section>
-  <div class="container-fluid px-5">
+<section class="sectionOne">
+  <div class="container-fluid pr-5 pl-0">
     <div class="row">
       <div class="col-12">
-        <div class="py-2 customTabOne">
-          <div class="f-14-500 color-253238 mb-2">Manage</div>
+        <div class="customTabOne py-3">
+          <div class="f-14-500 color-253238 mb-2 pl-5">Manage</div>
           <mat-tab-group [@.disabled]="true">
             <mat-tab label="Profile">
-              <div class="">
-                <div class="row">
-                  <div class="col-4">
-                    display soon..
+                <div class="row mb-2">
+                  <div class="col-12">
+                    <div class="f-20-400 color-253238">Manage Profile</div>
+                    <div class="f-12-400 color-253238 mt-3">Profile Picture</div>
                   </div>
+                </div>
+                <div class="row align-items-center">
+                  <div class="col-auto">
+                    <div class="profilePicture">
+                      <img (click)="trigger.click()" [src]="imageUrl">
+                    </div>
+                    <input #trigger class="d-none" type="file" name=""
+                    (change)="onChangeProfile($event.target.files[0])">
+                  </div>
+                  <div class="col-auto">
+                    <button (click)="removeProfilePicture()" class="btnColor2-B f-12-400" mat-flat-button color="primary">Remove</button>
+                  </div>
+                </div>
+                <hr class="border-E4E9EF">
+                <div class="row">
+                  <div class="col-12">
+                    <ul class="listStyleNone detailsMP">
+                      <li class="f-12-400 color-253238">
+                       <div class="">First Name</div>
+                       <div class="f-14-400">James Anderson</div>
+                      </li>
+                      <li class="f-12-400 color-253238">
+                        <div class="">Last Name</div>
+                        <div class="f-14-400">Jonathan</div>
+                       </li>
+                       <li class="f-12-400 color-253238">
+                        <div class="">Email</div>
+                        <div class="f-14-400">jamesanderson@globecorporation.com</div>
+                       </li>
+                    </ul>
+                    <div class="mt-3">
+                      <button (click)="open(modalEditProfile)" class="btnColor4 f-12-500" mat-flat-button>Edit</button>
+                    </div>
+                  </div>
+                </div>
+                 <hr class="border-E4E9EF mt-4 mb-4">
+                 <div class="row">
+                   <div class="col-12">
+                     <div class="f-12-400 color-253238">
+                       User Name
+                     </div>
+                   </div>
+                   <div class="col-sm-8 col-md-6 col-xl-4">
+                    <div class="userInput">
+                      <input class="form-control" type="text" value="james" disabled>
+                    </div>
+                    <div class="f-12-400 underlineText">
+                      <span (click)="open(modalChangePwd)" class="color-002868 cursor-pointer">Change password</span>
+                    </div>
+                   </div>
+                 </div>
+            </mat-tab>
+            <mat-tab label="Role">
+              <div class="row mb-1">
+                <div class="col-auto">
+                  <div class="f-20-400 color-253238">Manage Role</div>
+                </div>
+                <div class="col text-right">
+                  <button (click)="open(modalNewRole)" class="btnColor1 f-16-500" mat-flat-button>New Role<span class="material-icons fs-16 ml-1">
+                    add
+                    </span></button>
+                </div>
+              </div>
+                <div class="table001 tablePagination">
+                  <div class="row justify-content-start">
+                    <div class="col-sm-6 col-md-6 col-lg-5 col-xl-3">
+                      <div class="input-group mb-3 inputSearch001">
+                        <input class="form-control" matInput  (keyup)="rolesFilter($event)" placeholder="Search..." #filterRoles>
+                        <div class="input-group-append">
+                          <span class="material-icons input-group-text">search</span>
+                        </div>
+                      </div>
 
+                    </div>
+                  </div>
+                  <div class="color-253238 table-responsive table001">
+                      <table class="w-100" mat-table [dataSource]="dataSourceRole" matSort #ROLESSORT="matSort">
+                        <!-- Role Column -->
+                        <ng-container matColumnDef="role">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
+                          <td mat-cell *matCellDef="let row"> {{row.role}} </td>
+                        </ng-container>
+
+                        <!-- AccessLevel Column -->
+                        <ng-container matColumnDef="accessLevel">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header> Access Level </th>
+                          <td mat-cell *matCellDef="let row"> {{row.accessLevel}} </td>
+                        </ng-container>
+                        <!-- Status Column -->
+                        <ng-container matColumnDef="status">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+                          <td mat-cell *matCellDef="let row"> {{row.status}} </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedRoleColumns;"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedRoleColumns;"></tr>
+                        <!-- Row shown when there is no matching data. -->
+                        <tr class="mat-row" *matNoDataRow>
+                          <td class="mat-cell" colspan="4">No data matching the filter "{{filterRoles.value}}"</td>
+                        </tr>
+                      </table>
+                  </div>
+                  <mat-paginator #ROLESPAGINATOR="matPaginator" [pageSizeOptions]="[7, 15, 100]"></mat-paginator>
+                </div>
+            </mat-tab>
+            <mat-tab label="User">
+              <div class="row mb-1">
+                <div class="col-auto">
+                  <div class="f-20-400 color-253238">Manage User</div>
+                </div>
+                <div class="col text-right">
+                  <button (click)="open(modalNewUser)" class="btnColor1 f-16-500" mat-flat-button>New user<span class="material-icons fs-16 ml-1">
+                    add
+                    </span></button>
+                </div>
+              </div>
+              <div class="table001 tablePagination">
+                <div class="row justify-content-start">
+                  <div class="col-sm-6 col-md-6 col-lg-5 col-xl-3">
+                    <div class="input-group mb-3 inputSearch001">
+                      <input class="form-control" matInput (keyup)="usersFilter($event)" placeholder="Search..." #filterUsers>
+                      <div class="input-group-append">
+                        <span class="material-icons input-group-text">search</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="color-253238 table-responsive table001">
+                    <table class="w-100" mat-table [dataSource]="dataSourceUser" matSort #USERSSORT="matSort">
+                      <!-- Role Column -->
+
+                      <ng-container matColumnDef="user">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> User </th>
+                        <td mat-cell *matCellDef="let row">
+                          <img class="userTableImg" [src]="row.profile" />{{row.user}} </td>
+                      </ng-container>
+                      <ng-container matColumnDef="role">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
+                        <td mat-cell *matCellDef="let row"> {{row.role}} </td>
+                      </ng-container> <ng-container matColumnDef="accessLevel">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Access Level </th>
+                        <td mat-cell *matCellDef="let row"> {{row.accessLevel}} </td>
+                      </ng-container> <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+                        <td mat-cell *matCellDef="let row"> {{row.status}} </td>
+                      </ng-container>
+
+                      <tr mat-header-row *matHeaderRowDef="displayedUserColumns;"></tr>
+                      <tr mat-row *matRowDef="let row; columns: displayedUserColumns;"></tr>
+                      <!-- Row shown when there is no matching data. -->
+                      <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" colspan="4">No data matching the filter "{{filterUsers.value}}"</td>
+                      </tr>
+                    </table>
+                </div>
+                <mat-paginator #USERSPAGINATOR="matPaginator" [pageSizeOptions]="[7, 15, 100]"></mat-paginator>
+              </div>
+            </mat-tab>
+            <mat-tab label="Account">
+              <div class="row mb-3">
+                <div class="col-12">
+                  <div class="f-20-400 color-253238">Account Preference</div>
+                </div>
+              </div>
+              <form action="">
+                <div class="row input001 color-253238 v-Bottom">
+                  <div class="col-sm-12 col-md-8 col-lg-6 col-xl-5">
+                    <div>
+                      <label class="f-12-400">Time Zone</label>
+                    </div>
+                    <div>
+                      <div class="row no-gutters">
+                        <div class="col-7">
+                          <mat-form-field appearance="fill" class="bg-F7F8FA">
+                            <mat-select>
+                              <mat-option  *ngFor="let timeZone of timeZone" [value]="timeZone">{{timeZone}}</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                        <div class="col-5">
+                          <mat-form-field appearance="fill" class="placeInput color-253238-disabled">
+                            <input matInput type="text" value="10:35 pm" disabled>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="col-sm-12 col-md-8 col-lg-3 col-xl-3">
+                      <label class="f-12-400">Time Format</label>
+                      <mat-form-field appearance="fill" class="bg-F7F8FA">
+                        <mat-select>
+                          <mat-option  *ngFor="let timeFormat of timeFormat" [value]="timeFormat">{{timeFormat}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                  </div>
+                  <div class="col-sm-12 col-md-8 col-lg-3 col-xl-3">
+                    <label class="f-12-400">Date Format</label>
+                    <mat-form-field appearance="fill" class="bg-F7F8FA">
+                      <mat-select>
+                        <mat-option  *ngFor="let dateFormat of dateFormat" [value]="dateFormat">{{dateFormat}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                </div>
+                  <div class="w-100"></div>
+                  <div class="col-sm-12 col-md-8 col-lg-7 col-xl-5">
+                    <label class="f-12-400">Currency Format</label>
+                    <mat-form-field appearance="fill" class="bg-F7F8FA">
+                      <mat-select>
+                        <mat-option  *ngFor="let currencyFormat of currencyFormat" [value]="currencyFormat">{{currencyFormat}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="w-100"></div>
+                <div class="col-sm-12 col-md-8 col-lg-7 col-xl-5">
+                  <label class="f-12-400">Your account id</label>
+                  <mat-form-field appearance="fill" class="bg-F7F8FA color-253238-disabled">
+                    <input matInput type="text" value="9390ABCDEF" disabled>
+                  </mat-form-field>
+              </div>
+               </div>
+               <div class="mt-2">
+                <button mat-flat-button class="btnColor4 f-14-700" type="button">Save Changes</button>
+              </div>
+              </form>
+
+            </mat-tab>
+            <mat-tab label="Notification">
+              <div class="row">
+                <div class="col-12">
+                  <div class="f-20-400 color-253238">Manage notification settings</div>
+                </div>
+              </div>
+              <div class="table-responsive mt-3">
+                <table class="table table-borderless checkbox001 customTB001 mb-0">
+                  <thead class="color-253238 v-top">
+                    <tr>
+                      <th>
+                        <div class="custom-control custom-checkbox pos-t-0">
+                          <input (change)="selectAllNotiUser()" type="checkbox" class="custom-control-input" id="customCheck0014" [(ngModel)] = "isNotiUserAll">
+                          <label class="custom-control-label f-12-500 color-253238" for="customCheck0014">User</label>
+                        </div>
+                      </th>
+                      <th class="f-10-400 w-80px">Email</th>
+                      <th class="f-10-400 w-80px">Push</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let user of notificationUser; let i=index" >
+                      <td>
+                        <div class="custom-control custom-checkbox pos-t-0">
+                          <input (change)="unSelectNotiUser(user.isSelected)" type="checkbox" class="custom-control-input" id="customCheck00{{i}}{{i}}"
+                           [(ngModel)] = "user.isSelected">
+                          <label class="custom-control-label f-12-500 color-253238" for="customCheck00{{i}}{{i}}">{{user.name}}</label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="custom-control custom-checkbox pos-t-0">
+                          <input type="checkbox" class="custom-control-input" id="customCheck00{{i}}{{i+1}}">
+                          <label class="custom-control-label f-12-500 color-253238" for="customCheck00{{i}}{{i+1}}"></label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="custom-control custom-checkbox pos-t-0">
+                          <input type="checkbox" class="custom-control-input" id="customCheck00{{i}}{{i+2}}">
+                          <label class="custom-control-label f-12-500 color-253238" for="customCheck00{{i}}{{i+2}}"></label>
+                        </div>
+                      </td>
+                    </tr>
+
+                  </tbody>
+                </table>
+               </div>
+               <div class="table-responsive">
+                <table class="table table-borderless checkbox001 customTB001">
+                  <thead class="color-253238 v-top">
+                    <tr>
+                      <th>
+                        <div class="custom-control custom-checkbox pos-t-0">
+                          <input (change)="selectAllNotiSystem()" [(ngModel)]="isNotiSystemAll" type="checkbox" class="custom-control-input" id="customCheck024">
+                          <label class="custom-control-label f-12-500 color-253238" for="customCheck024">System</label>
+                        </div>
+                      </th>
+                      <th class="f-10-400 visible-sm w-80px">Email</th>
+                      <th class="f-10-400 visible-sm w-80px">Push</th>
+                    </tr>
+                  </thead>
+                  <tbody class="">
+                    <tr *ngFor="let system of notificationSystem; let i=index">
+                      <td>
+                        <div class="custom-control custom-checkbox pos-t-0">
+                          <input (change)="unSelectNotiSystem(system.isSelected)" [(ngModel)]="system.isSelected" type="checkbox" class="custom-control-input" id="customCheck0{{i}}{{i}}">
+                          <label class="custom-control-label f-12-500 color-253238" for="customCheck0{{i}}{{i}}">{{system.name}}</label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="custom-control custom-checkbox pos-t-0">
+                          <input type="checkbox" class="custom-control-input" id="customCheck0{{i}}{{i+1}}">
+                          <label class="custom-control-label f-12-500 color-253238" for="customCheck0{{i}}{{i+1}}"></label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="custom-control custom-checkbox pos-t-0">
+                          <input type="checkbox" class="custom-control-input" id="customCheck0{{i}}{{i+2}}">
+                          <label class="custom-control-label f-12-500 color-253238" for="customCheck0{{i}}{{i+2}}"></label>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+               </div>
+            </mat-tab>
+            <mat-tab label="Data">
+            <div class="row">
+              <div class="col-12 color-253238 mb-4">
+                <div class="f-20-400 mb-2">Import your data </div>
+                <div class="f-14-400">From here, you can import contacts into contacts using a CSV.
+                  Take a look at this <a class="color-253238 underlineText">article</a> <br>
+                   before you prepare the CSV file for importing.</div>
+              </div>
+              <div class="col-sm-12 col-md-12 col-lg-6">
+                <div class="graybox2">
+                  <div class="dragDropBox text-center" appDragdrop (fileDropped)="onFileDropped($event)">
+                    <input type="file" #fileDropRef id="fileDropRef"  accept=".csv" (change)="fileBrowseHandler($event.target.files)" />
+                    <div class="mb-3">
+                      <img src="../../../assets/images/dragUploadIcon.png">
+                    </div>
+                   <div>
+                    <label for="fileDropRef" class="uploadLabel">Upload a file</label>
+                   </div>
+
+                    <div class="color-455B66 f-12-400">or drag and drop your CSV file here</div>
+                  </div>
+                  <div class="files-list mt-2">
+                    <div class="file-list" *ngFor="let file of files; let i = index">
+                        <span class="">
+                          {{ file?.name }}
+                        </span>
+                        <span class="">
+                          {{ formatBytes(file?.size) }}
+                        </span>
+                      <span class="delete" (click)="deleteFile(i)">
+                        <span class="material-icons fs-16">delete</span>
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
+              <div class="col-sm-12 col-md-12 col-lg-6">
+                <div class="graybox2">
+                  <div class="f-14-400 color-253238">
+                    Import from
+                  </div>
+                  <div class="mt-3">
+                    <button mat-flat-button class="mr-2 py-1 mb-1">
+                      <img src="../../../assets/images/gmail.png">
+                    </button>
+                    <button mat-flat-button class="mr-2 py-1 mb-1">
+                      <img src="../../../assets/images/facebook.png">
+                    </button>
+                    <button mat-flat-button class="mr-2 py-1 mb-1">
+                      <img src="../../../assets/images/twitter.png">
+                    </button>
+                    <button mat-flat-button class="py-1 mb-1">
+                      <img src="../../../assets/images/outlook.png">
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+              <div class="row">
+                  <div class="col-12 color-253238">
+                    <span class="f-20-400">Import History</span>
+                  </div>
+                  <div class="col-12 mt-3">
+                    <div class="table001">
+                      <div class="color-253238 table-responsive table001">
+                        <table mat-table [dataSource]="dataSourceImport" class="w-100">
+                          <!-- Position Column -->
+                          <ng-container matColumnDef="importName">
+                            <th mat-header-cell *matHeaderCellDef> Name </th>
+                            <td mat-cell *matCellDef="let element"> {{element.importName}} </td>
+                          </ng-container>
+
+                          <!-- Name Column -->
+                          <ng-container matColumnDef="importType">
+                            <th mat-header-cell *matHeaderCellDef> Type </th>
+                            <td mat-cell *matCellDef="let element"> {{element.importType}} </td>
+                          </ng-container>
+                          <!-- Weight Column -->
+                          <ng-container matColumnDef="importDate">
+                            <th class="w-220px" mat-header-cell *matHeaderCellDef> Date </th>
+                            <td mat-cell *matCellDef="let element"> {{element.importDate}} </td>
+                          </ng-container>
+
+                          <tr mat-header-row *matHeaderRowDef="displayedImportColumns"></tr>
+                          <tr mat-row *matRowDef="let row; columns: displayedImportColumns;"></tr>
+                        </table>
+
+
+                      </div>
+                    </div>
+
+
+                  </div>
+              </div>
+
             </mat-tab>
-            <mat-tab label="Users"> Content 2 </mat-tab>
-            <mat-tab label="Account"> Content 3 </mat-tab>
+            <!-- <mat-tab label="Plans & Pricing">
+              <div class="row">
+                <div class="col-12 color-253238 mb-4">
+                  <div class="f-20-400 mb-2">Plans and pricing</div>
+                  <div class="f-14-400">From here, you can import contacts into contacts using a CSV.
+                    Take a look at this <a class="color-253238 underlineText">article</a> <br>
+                     before you prepare the CSV file for importing.</div>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-6">
+                    <div class="graybox xs-md-TextLeft">
+                      <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-12 col-xl-6 color-253238">
+                          <span class="f-30-500 mr-4 align-middle">Lite</span>
+                          <span class="f-14-400 align-middle">Current plan</span>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-12 col-xl-6  color-253238 text-right">
+                          <div class="f-20-400">Free</div>
+                          <div class="f-14-400">With restriction plan</div>
+                        </div>
+                        <div class="col-12 color-253238 mt-3">
+                          <div class="f-14-500 mb-3">
+                            Plan includes
+                          </div>
+                          <div class="mb-4">
+                            <ul class="f-14-400 p-0">
+                              <li class="row mb-3">
+                                 <div class="col-auto pr-0">
+                                 <img src="../../../assets/images/checkbox-bg.png">
+                                 </div>
+                                 <div class="col">
+                                  <span>Manage contacts upto 100</span>
+                                 </div>
+                              </li>
+                              <li class="row mb-3">
+                                <div class="col-auto pr-0">
+                                <img src="../../../assets/images/checkbox-bg.png">
+                                </div>
+                                <div class="col">
+                                 <span>Unlimited Email for 30 days</span>
+                                </div>
+                             </li>
+                             <li class="row mb-3">
+                              <div class="col-auto pr-0">
+                              <img src="../../../assets/images/checkbox-bg.png">
+                              </div>
+                              <div class="col">
+                               <span>Free for always </span>
+                              </div>
+                           </li>
+                           <li class="row mb-3">
+                            <div class="col-auto pr-0">
+                            <img src="../../../assets/images/checkbox-bg.png">
+                            </div>
+                            <div class="col">
+                             <span>Unlimited log history </span>
+                            </div>
+                         </li>
+                            </ul>
+                          </div>
+
+                          <div class="mt-30 mb-3">
+                            <button mat-flat-button class="btnColor4 f-14-700 btnRadiusTheme">Upgrade to pro</button>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-6">
+                  <div class="graybox xs-md-TextLeft">
+                    <div class="row">
+                      <div class="col-sm-12 col-md-6 col-lg-12 col-xl-6 color-253238">
+                        <span class="f-30-500 mr-4 align-middle">Pro</span>
+                      </div>
+                      <div class="col-sm-12 col-md-6 col-lg-12 col-xl-6  color-253238 text-right">
+                        <div class="f-30-400">$20</div>
+                        <div class="f-14-400">Monthly</div>
+                      </div>
+                      <div class="col-12 color-253238 mt-1">
+                        <div class="f-14-500 mb-3">
+                          Plan includes
+                        </div>
+                        <div class="mb-4">
+                          <ul class="f-14-400 p-0">
+                            <li class="row mb-3">
+                               <div class="col-auto pr-0">
+                               <img src="../../../assets/images/checkbox-bg.png">
+                               </div>
+                               <div class="col">
+                                <span>Manage contacts upto 100</span>
+                               </div>
+                            </li>
+                            <li class="row mb-3">
+                              <div class="col-auto pr-0">
+                              <img src="../../../assets/images/checkbox-bg.png">
+                              </div>
+                              <div class="col">
+                               <span>Unlimited Email for 30 days</span>
+                              </div>
+                           </li>
+                           <li class="row mb-3">
+                            <div class="col-auto pr-0">
+                            <img src="../../../assets/images/checkbox-bg.png">
+                            </div>
+                            <div class="col">
+                             <span>Free for always </span>
+                            </div>
+                         </li>
+                         <li class="row mb-3">
+                          <div class="col-auto pr-0">
+                          <img src="../../../assets/images/checkbox-bg.png">
+                          </div>
+                          <div class="col">
+                           <span>Unlimited log history </span>
+                          </div>
+                       </li>
+                          </ul>
+                        </div>
+
+                        <div class="mt-30 mb-3">
+                          <button mat-flat-button class="btnColor1 f-14-700 btnRadiusTheme">Start 14 days of free pro plan</button>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+            </mat-tab> -->
+            <mat-tab label="Pipeline and Stages">
+              <div class="row mb-3">
+                <div class="col-auto">
+                  <div class="f-20-400 color-253238">Pipeline and Stages</div>
+                </div>
+                <div class="col text-right">
+                  <button (click)="open(modalNewPipeline)" class="btnColor1 f-16-500" mat-flat-button>New Pipeline<span class="material-icons fs-16 ml-1">
+                    add
+                    </span></button>
+                </div>
+              </div>
+                <div class="color-253238 table-responsive table001">
+                  <table mat-table [dataSource]="dataSourcePipeline" class="w-100">
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="pipelineStages">
+                      <th mat-header-cell *matHeaderCellDef> Pipeline and Stages </th>
+                      <td mat-cell *matCellDef="let element"> {{element.pipelineStages}} </td>
+                    </ng-container>
+
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="dealStages">
+                      <th mat-header-cell *matHeaderCellDef> Deal stages </th>
+                      <td mat-cell *matCellDef="let element"> {{element.dealStages}} </td>
+                    </ng-container>
+                    <!-- Weight Column -->
+                    <ng-container matColumnDef="action">
+                      <th class="w-220px" mat-header-cell *matHeaderCellDef> Action </th>
+                      <td mat-cell *matCellDef="let element">
+                      <a (click)="open(modalNewPipeline)" mat-flat-button class="btnEdit1 f-14-400">
+                        <span class="material-icons mr-1 fs-14">create</span>
+                        Edit
+                      </a>
+                      <a (click)="open(modalDeletePipeline)" mat-flat-button class="btnDelete1 f-14-400 ml-2">Delete</a>
+                      </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedPipelineColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedPipelineColumns;"></tr>
+                  </table>
+
+
+                </div>
+            </mat-tab>
+            <mat-tab label="Terms and Services">
+              <div class="row">
+                <div class="col-12 color-253238 mb-4">
+                  <div class="f-20-400 mb-2">Terms and Services</div>
+                  <div class="mb-2"><img class="img-fluid" src="../../../assets/images/terms-img.png" /></div>
+                  <div class="mb-3">
+                    <span class="color-253238 f-14-400">Last updated: January. 1 2021</span>
+                  </div>
+                  <div class="mb-5">
+                  <div class="mb-3">
+                    <span class="f-23-500 color-253238">Contact manager User Terms of Service</span>
+                  </div>
+                  <div>
+                    <p>
+                      We use your Personal Information only for providing and improving the Site. By using the Site, you agree to the
+                      collection and use of information in accordance with this policy.
+                    </p>
+                    <p>
+                      This Privacy Policy is meant to help you understand what information we collect,
+                       why we collect it, and how you can update, manage, export, and delete your information.
+                    </p>
+                  </div>
+                  </div>
+                  <div class="mb-5">
+                    <div class="mb-3">
+                      <span class="f-23-500 color-253238">Information collection and use</span>
+                    </div>
+                    <div>
+                      <p>
+                        We use your Personal Information only for providing and improving the Site. By using the Site, you agree to the
+                        collection and use of information in accordance with this policy.
+                      </p>
+                      <p>
+                        This Privacy Policy is meant to help you understand what information we collect,
+                         why we collect it, and how you can update, manage, export, and delete your information.
+                      </p>
+                    </div>
+                    </div>
+                </div>
+              </div>
+            </mat-tab>
+            <mat-tab label="Privacy Policy">
+              <div class="row">
+                <div class="col-12">
+                  <div class="mb-5">
+                    <div class="mb-3">
+                      <span class="f-23-500 color-253238">Information collection and use</span>
+                    </div>
+                    <div class="f-16-300-29">
+                      <p>
+                        <strong class="f-16-500">1.1 Account Registration and Confidentiality.</strong> While using our Site, we may ask you to provide us with certain personally identifiable information that can be used to contact or identify you. Personally identifiable
+                        information may include, but is not limited to your name ("Personal Information").
+                      </p>
+                      <p>
+                        <strong class="f-16-500">1.2 Unauthorized Account Use.</strong> While using our Site, we may ask you to provide us with certain
+                        personally identifiable information that can be used to contact or identify you. Personally identifiable information may include, but is not limited to your name ("Personal Information").
+                      </p>
+                    </div>
+                    </div>
+                    <div class="mb-5">
+                      <div class="mb-3">
+                        <span class="f-23-500 color-253238">Log Data</span>
+                      </div>
+                      <div class="f-16-300-29">
+                        <p>
+                          <strong class="f-16-500">1.1 Account Registration and Confidentiality.</strong> While using our Site, we may ask you to provide us with certain personally identifiable information that can be used to contact or identify you. Personally identifiable
+                          information may include, but is not limited to your name ("Personal Information").
+                        </p>
+                        <p>
+                          <strong class="f-16-500">1.2 Unauthorized Account Use.</strong> While using our Site, we may ask you to provide us with certain
+                          personally identifiable information that can be used to contact or identify you. Personally identifiable information may include, but is not limited to your name ("Personal Information").
+                        </p>
+                      </div>
+                      </div>
+                </div>
+              </div>
+            </mat-tab>
           </mat-tab-group>
+
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<ng-template #modalChangePwd let-modal>
+  <div class="modal-header">
+    <div class="px-2">
+      <span class="color-253238 f-20-500">Change Password</span>
+    </div>
+
+  </div>
+
+  <div class="modal-body">
+    <div class="px-2 input001">
+     <form [formGroup]="changePasswordForm" novalidate>
+       <div class="color-253238">
+         <label  class="f-12-500">Old password</label>
+         <span *ngIf="changePasswordForm.controls['oldpassword'].invalid && (changePasswordForm.controls['oldpassword'].dirty || changePasswordForm.controls['oldpassword'].touched)" class="color-ff0000 f-12-500 float-right">
+          <span *ngIf="changePasswordForm.controls['oldpassword'].errors.required">
+          Please enter your old password.
+          </span>
+      </span>
+         <mat-form-field appearance="fill">
+          <input formControlName="oldpassword" matInput [type]="oldPwd ? 'password' : 'text'">
+          <button mat-icon-button matSuffix (click)="oldPwd = !oldPwd" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="oldPwd">
+          <mat-icon>{{oldPwd ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+
+       </div>
+       <div class="color-253238">
+       <label class="f-12-500">New password</label>
+       <span class="color-ff0000 f-12-500 float-right" *ngIf="changePasswordForm.controls['newpassword'].invalid && (changePasswordForm.controls['newpassword'].dirty || changePasswordForm.controls['newpassword'].touched)">
+         <span *ngIf="changePasswordForm.controls['newpassword'].errors.required">
+           Please enter new password
+         </span>
+       </span>
+        <mat-form-field appearance="fill">
+          <input formControlName="newpassword" matInput [type]="newPwd ? 'password' : 'text'">
+          <button mat-icon-button matSuffix (click)="newPwd = !newPwd" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="newPwd">
+          <mat-icon>{{newPwd ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+        </div>
+        <div class="color-253238">
+        <label class="f-12-500">Confirm password</label>
+        <span class="color-ff0000 f-12-500 float-right" *ngIf="changePasswordForm.controls['confirmpassword'].invalid && (changePasswordForm.controls['confirmpassword'].dirty || changePasswordForm.controls['confirmpassword'].touched)">
+          <span *ngIf="changePasswordForm.controls['confirmpassword'].errors.required">
+            Please enter new password
+          </span>
+        </span>
+        <mat-form-field appearance="fill">
+          <input formControlName="confirmpassword" matInput [type]="confirmPwd ? 'password' : 'text'">
+          <button mat-icon-button matSuffix (click)="confirmPwd = !confirmPwd" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="confirmPwd">
+          <mat-icon>{{confirmPwd ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+        </form>
+
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <div class="px-2">
+    <button class="btnColor3-B px-4 f-16-700" mat-flat-button color="primary" (click)="modal.close()">Cancel</button>
+    <button class="btnColor2 ml-2 px-4 f-16-700" mat-flat-button color="primary" [disabled]="changePasswordForm.pristine || changePasswordForm.invalid">Create</button>
+    </div>
+  </div>
+
+</ng-template>
+
+<ng-template #modalEditProfile let-modal>
+  <div class="modal-header">
+    <div class="px-2">
+      <span class="color-253238 f-20-500">Edit Profile</span>
+    </div>
+
+  </div>
+
+  <div class="modal-body">
+    <div class="px-2 input001">
+     <form>
+       <div class="color-253238">
+         <label  class="f-12-500">First name</label>
+         <mat-form-field appearance="fill">
+          <input matInput type="text" value="James Anderson">
+        </mat-form-field>
+       </div>
+       <div class="color-253238">
+        <label  class="f-12-500">Last name</label>
+        <mat-form-field appearance="fill">
+         <input matInput type="text" value="Jonathan">
+       </mat-form-field>
+      </div>
+      <div class="color-253238">
+        <label  class="f-12-500">Email</label>
+        <mat-form-field appearance="fill">
+         <input matInput type="email" value="jamesanderson@globecorporation.com">
+       </mat-form-field>
+      </div>
+        </form>
+
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="px-2">
+    <button class="btnColor3-B px-4 f-16-700" mat-flat-button color="primary" (click)="modal.close()">Cancel</button>
+    <button class="btnColor2 ml-2 px-4 f-16-700" mat-flat-button color="primary">Update</button>
+    </div>
+  </div>
+
+</ng-template>
+
+<ng-template #modalNewRole let-modal>
+  <div class="modal-header">
+    <div class="px-2">
+      <span class="color-253238 f-20-500">Create new role</span>
+    </div>
+
+  </div>
+
+  <div class="modal-body">
+    <div class="px-2 input001">
+       <div class="row">
+         <div class="col-12">
+          <form [formGroup]="newRoleForm" novalidate>
+          <div class="color-253238">
+            <label  class="f-12-500">Role*</label>
+            <span *ngIf="newRoleForm.controls['role'].invalid && (newRoleForm.controls['role'].dirty || newRoleForm.controls['role'].touched)" class="color-ff0000 f-12-500 float-right">
+              <span *ngIf="newRoleForm.controls['role'].errors.required">
+              Please enter the role name.
+              </span>
+          </span>
+            <mat-form-field appearance="fill">
+             <input formControlName="role" matInput type="text" value="">
+           </mat-form-field>
+          </div>
+          </form>
+         </div>
+         <div class="col-12">
+           <hr class="border-E4E9EF mt-1">
+           <div class="color-253238 f-16-500">
+             <span>Configure permissions</span>
+           </div>
+           <div class="table-responsive mt-3">
+            <table class="table table-borderless checkbox001 customTB001">
+              <thead class="color-253238 v-top">
+                <tr>
+                  <th>
+                    <div class="custom-control custom-checkbox pos-t-0">
+                      <input (change)="selectAllPermisssion()" type="checkbox" class="custom-control-input" id="customCheck1" [(ngModel)] = "isSelectAll">
+                      <label class="custom-control-label f-12-500 color-253238" for="customCheck1">All Modules</label>
+                    </div>
+                  </th>
+                  <th class="f-10-400">View</th>
+                  <th class="f-10-400">Create</th>
+                  <th class="f-10-400">Edit</th>
+                </tr>
+              </thead>
+              <tbody class="">
+                <tr *ngFor="let role of rolePermission ; let i=index">
+                  <td>
+                    <div class="custom-control custom-checkbox pos-t-0">
+                      <input (change)="unSelectAllPermisssion(role.isSelected)" [(ngModel)] = "role.isSelected" type="checkbox" class="custom-control-input" id="customCheck{{i}}{{i}}">
+                      <label class="custom-control-label f-12-500 color-253238" for="customCheck{{i}}{{i}}">{{role.name}}</label>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="custom-control custom-checkbox pos-t-0">
+                      <input type="checkbox" class="custom-control-input" id="customCheck{{i}}{{i+1}}">
+                      <label class="custom-control-label f-12-500 color-253238" for="customCheck{{i}}{{i+1}}"></label>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="custom-control custom-checkbox pos-t-0">
+                      <input type="checkbox" class="custom-control-input" id="customCheck{{i}}{{i+2}}">
+                      <label class="custom-control-label f-12-500 color-253238" for="customCheck{{i}}{{i+2}}"></label>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="custom-control custom-checkbox pos-t-0">
+                      <input type="checkbox" class="custom-control-input" id="customCheck{{i}}{{i+3}}">
+                      <label class="custom-control-label f-12-500 color-253238" for="customCheck{{i}}{{i+3}}"></label>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+           </div>
+
+         </div>
+       </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="px-2">
+    <button class="btnColor3-B px-4 f-16-700" mat-flat-button color="primary" (click)="modal.close()">Cancel</button>
+    <button class="btnColor2 ml-2 px-4 f-16-700" mat-flat-button color="primary" [disabled]="newRoleForm.pristine || newRoleForm.invalid">Create</button>
+    </div>
+  </div>
+</ng-template>
+<ng-template #modalNewUser let-modal>
+  <div class="modal-header">
+    <div class="px-2">
+      <span class="color-253238 f-20-500">Add person</span>
+    </div>
+  </div>
+<div class="bg-EFF2F7 px-4 py-3">
+  <div class="row align-items-center">
+    <div class="col-sm-5 checkbox002 mb-10-xs">
+      <div class="input-group inputSearch001">
+        <input type="text" matInput class="form-control" placeholder="Search field">
+        <div class="input-group-append">
+          <span class="input-group-text material-icons">search</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-7 checkbox002 text-right">
+      <div class="custom-control custom-checkbox pos-t-0">
+        <input  type="checkbox" class="custom-control-input" id="chkAddPerson" [(ngModel)]="isAddPersonMand">
+        <label class="custom-control-label" for="chkAddPerson">Only show mandatory fields</label>
+      </div>
+    </div>
+  </div>
+
+</div>
+  <div class="modal-body">
+    <div [ngClass]="{'className': addClass450}">
+    <form [formGroup]="addPersonForm" novalidate>
+    <div class="px-2 input001 color-253238 pb-0">
+       <div class="row">
+        <div class="col-sm-2 mb-3">
+           <div class="addPersonImg position-relative">
+            <img (click)="triggerAddPerson.click()" [src]="addPersonImageUrl">
+            <input #triggerAddPerson class="d-none" type="file" name=""
+            (change)="onChangeAddPerson($event.target.files[0])">
+            <span class="material-icons delAddPerImg" (click)="removeAddPersonImage()">delete</span>
+          </div>
+        </div>
+         <div class="col-sm-5 mb-3">
+          <div class="">
+            <label  class="f-12-500">First Name</label>
+            <mat-form-field appearance="fill">
+             <input formControlName="firstName" matInput type="text" value="">
+           </mat-form-field>
+           <span *ngIf="addPersonForm.controls['firstName'].invalid && (addPersonForm.controls['firstName'].dirty || addPersonForm.controls['firstName'].touched)" class="color-ff0000 f-12-500">
+            <span *ngIf="addPersonForm.controls['firstName'].errors.required">
+           First name is mandatory.
+            </span>
+           </span>
+          </div>
+         </div>
+         <div class="col-sm-5 mb-3">
+          <div class="">
+            <label  class="f-12-500">Last Name</label>
+            <mat-form-field appearance="fill">
+             <input formControlName="lastName" matInput type="text" value="">
+           </mat-form-field>
+           <span *ngIf="addPersonForm.controls['lastName'].invalid && (addPersonForm.controls['lastName'].dirty || addPersonForm.controls['lastName'].touched)" class="color-ff0000 f-12-500">
+            <span *ngIf="addPersonForm.controls['lastName'].errors.required">
+           Last name is mandatory.
+            </span>
+           </span>
+          </div>
+         </div>
+       </div>
+       <div class="row">
+        <div class="col-sm-2 mb-3">
+           <div class="addPerIconWrap">
+            <span class="material-icons fs-20 color-455B66">
+              call
+            </span>
+          </div>
+        </div>
+         <div class="col-sm-5 mb-3">
+          <div class="">
+            <label  class="f-12-500">Mobile Number</label>
+            <mat-form-field appearance="fill">
+             <input formControlName="mobileNumber" matInput type="text" value="">
+           </mat-form-field>
+           <span *ngIf="addPersonForm.controls['mobileNumber'].invalid && (addPersonForm.controls['mobileNumber'].dirty || addPersonForm.controls['mobileNumber'].touched)" class="color-ff0000 f-12-500">
+            <span *ngIf="addPersonForm.controls['mobileNumber'].errors.required">
+           Mobile number is mandatory.
+            </span>
+           </span>
+          </div>
+         </div>
+         <div class="col-sm-5 mb-3">
+          <div class="">
+            <label  class="f-12-500">Work Number</label>
+            <mat-form-field appearance="fill">
+             <input formControlName="workNumber" matInput type="text" value="">
+           </mat-form-field>
+           <span *ngIf="addPersonForm.controls['workNumber'].invalid && (addPersonForm.controls['workNumber'].dirty || addPersonForm.controls['workNumber'].touched)" class="color-ff0000 f-12-500">
+            <span *ngIf="addPersonForm.controls['workNumber'].errors.required">
+           First name is mandatory.
+            </span>
+           </span>
+          </div>
+         </div>
+       </div>
+       <div class="row">
+        <div class="col-sm-2 mb-3">
+           <div class="addPerIconWrap">
+            <span class="material-icons fs-20 color-455B66">
+              email
+            </span>
+          </div>
+        </div>
+         <div class="col-sm-10 mb-3">
+          <div class="">
+            <label  class="f-12-500">Email Address</label>
+            <mat-form-field appearance="fill">
+             <input formControlName="emailAddress" matInput type="text" value="">
+           </mat-form-field>
+           <span *ngIf="addPersonForm.controls['emailAddress'].invalid && (addPersonForm.controls['emailAddress'].dirty || addPersonForm.controls['emailAddress'].touched)" class="color-ff0000 f-12-500">
+            <span *ngIf="addPersonForm.controls['emailAddress'].errors.required">
+           Email is mandatory.
+            </span>
+           </span>
+          </div>
+         </div>
+       </div>
+      <div *ngIf ="!isAddPersonMand">
+       <div class="row">
+        <div class="col-sm-2">
+        </div>
+         <div class="col-sm-10 mb-3">
+          <div class="">
+            <label  class="f-12-500">Role</label>
+            <mat-form-field appearance="fill">
+              <mat-select>
+                <mat-option  *ngFor="let addUserRole of addUserRole" [value]="addUserRole">{{addUserRole}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+          </div>
+         </div>
+       </div>
+       <div class="row">
+        <div class="col-sm-2">
+        </div>
+         <div class="col-sm-10 mb-3">
+          <div class="">
+            <label  class="f-12-500">Address</label>
+            <mat-form-field appearance="fill">
+              <input matInput type="text" value="">
+            </mat-form-field>
+          </div>
+         </div>
+       </div>
+       <div class="row">
+        <div class="col-sm-2">
+        </div>
+         <div class="col-sm-10">
+          <hr class="border-E4E9EF mt-1">
+         </div>
+       </div>
+       <div class="row">
+        <div class="col-sm-2">
+        </div>
+         <div class="col-sm-10 mb-3">
+          <div class="">
+            <label  class="f-12-500">Skype ID</label>
+            <mat-form-field appearance="fill">
+              <input matInput type="text" value="">
+            </mat-form-field>
+          </div>
+         </div>
+       </div>
+       <div class="row">
+        <div class="col-sm-2">
+        </div>
+         <div class="col-sm-10 mb-3">
+          <div class="">
+            <label  class="f-12-500">Description</label>
+            <mat-form-field appearance="fill">
+              <textarea matInput name="" id="" cols="30" rows="2"></textarea>
+            </mat-form-field>
+          </div>
+         </div>
+       </div>
+       </div>
+    </div>
+  </form>
+  </div>
+  </div>
+  <div class="modal-footer">
+    <div class="px-2">
+    <button class="btnColor3-B px-4 f-16-700" mat-flat-button color="primary" (click)="modal.close()">Cancel</button>
+    <button class="btnColor2 ml-2 px-4 f-16-700" mat-flat-button color="primary" [disabled]="addPersonForm.pristine || addPersonForm.invalid">Save</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #modalNewPipeline let-modal>
+  <div class="modal-header">
+    <div class="px-2">
+      <span class="color-253238 f-20-500">Add new pipeline</span>
+    </div>
+  </div>
+  <div class="modal-body">
+    <div class="px-2 input001">
+       <div class="row">
+         <div class="col-12">
+          <form [formGroup]="addPipelineForm" novalidate>
+          <div class="color-253238">
+            <label  class="f-12-500">Pipeline name*</label>
+            <span *ngIf="addPipelineForm.controls['pipeline'].invalid && (addPipelineForm.controls['pipeline'].dirty || addPipelineForm.controls['pipeline'].touched)" class="color-ff0000 f-12-500 float-right">
+              <span *ngIf="addPipelineForm.controls['pipeline'].errors.required">
+               Please enter the pipeline name.
+              </span>
+          </span>
+            <mat-form-field appearance="fill">
+             <input formControlName="pipeline" matInput type="text" value="">
+           </mat-form-field>
+          </div>
+          </form>
+         </div>
+         <div class="col-12">
+            <div class="bg-F6F8FA py-3 px-4">
+              <div class="f-12-500 color-253238 mb-2">
+                <span>Stages</span>
+              </div>
+              <div class="drag001">
+                <div cdkDropList class="dragdrop-list" (cdkDropListDropped)="drop($event)">
+                  <div class="dragdrop-box actionDrag" *ngFor="let dragElement of dragElements ; let i = index" cdkDrag>
+                    <div class="dragdrop-placeholder" *cdkDragPlaceholder></div>
+                    <div class="row">
+                      <div class="col-9 pr-0">
+                        <div class="dragInput">
+                          <!-- {{dragElement.name}} -->
+                          <input matInput type="text" [(ngModel)]="dragElement.name">
+                          <span (click)="removePipelineStage(i)" class="dragDelete"><span class="forDesk">Delete</span><i class="material-icons forMobile">delete</i></span>
+                        </div>
+
+                      </div>
+
+                      <div class="col-3">
+                        <div class="dragInput">
+                          <input matInput type="text" [(ngModel)]="dragElement.value">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <button (click)="addPipelineStage()" mat-flat-button class="btnColor3-B px-2 mw-auto">
+                    <span class="material-icons">add</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+         </div>
+       </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="px-2">
+    <button class="btnColor3-B px-4 f-16-700" mat-flat-button color="primary" (click)="modal.close()">Cancel</button>
+    <button class="btnColor2 ml-2 px-4 f-16-700" mat-flat-button color="primary" [disabled]="addPipelineForm.pristine || addPipelineForm.invalid">Save</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #modalDeletePipeline let-modal>
+  <div class="modal-header border-bottom-0">
+    <div class="px-2">
+      <span class="color-253238 f-20-500">Delete pipeline</span>
+    </div>
+  </div>
+  <div class="modal-body pt-1">
+    <div class="px-2">
+      <div class="color-ff0000 f-13-400">
+        Are you sure you want to permanently delete this one?
+      </div>
+      <div class="mt-3 checkbox001">
+        <div class="custom-control custom-checkbox pos-t-0">
+          <input  type="checkbox" class="custom-control-input" id="deletechk">
+          <label class="custom-control-label f-13-500 color-253238" for="deletechk">
+            Delete this contact and related activities like tasks and calls?
+            This action cannot be undone.
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="px-2">
+    <button class="btnColor3-B px-4 f-16-700" mat-flat-button color="primary" (click)="modal.close()">Cancel</button>
+    <button  class="btnColor2 ml-2 px-4 f-16-700" mat-flat-button color="primary">Confirm</button>
+    </div>
+  </div>
+</ng-template>
