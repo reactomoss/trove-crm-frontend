@@ -14,19 +14,26 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSelectModule} from '@angular/material/select';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatCardModule } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion';
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,FormsModule,ReactiveFormsModule,MatButtonModule,
     MatFormFieldModule,MatInputModule,MatIconModule,MatMenuModule,
     MatTabsModule,MatTableModule,MatPaginatorModule,MatSortModule,
-    MatCheckboxModule,MatSelectModule,DragDropModule,MatSnackBarModule
+    MatCheckboxModule,MatSelectModule,DragDropModule,MatSnackBarModule,
+    MatSidenavModule,MatGridListModule,MatCardModule,MatExpansionModule
   ],
   exports: [
     CommonModule,FormsModule,ReactiveFormsModule,MatButtonModule,
     MatFormFieldModule,MatInputModule,MatIconModule,MatMenuModule,
     MatTabsModule,MatTableModule,MatPaginatorModule,MatSortModule,
-    MatCheckboxModule,MatSelectModule,DragDropModule,MatSnackBarModule
+    MatCheckboxModule,MatSelectModule,DragDropModule,MatSnackBarModule,
+    MatSidenavModule,MatGridListModule,MatCardModule,MatExpansionModule
   ]
 })
 export class MaterialModule { }

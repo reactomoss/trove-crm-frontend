@@ -39,13 +39,7 @@ export class HeaderComponent implements OnInit {
       }
     ]
   }
-
-
    showNotification(){
      this.isNotification = !this.isNotification
    }
-
-
-
-
 }

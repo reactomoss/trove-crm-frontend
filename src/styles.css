@@ -175,7 +175,13 @@ padding: 8px 10px;
     padding-left: 15px !important; padding-right: 15px !important;
   }
 }
+.flatIconTextButton .mat-icon{
+  margin-top: 5px;
+}
 
+.mat-expansion-panel .mat-expansion-panel-content {
+  background-color: rgba(239, 242, 247, 0.75);
+}
 /*Dialog CSS*/
 [aria-labelledby="dialog001"] .modal-content {
   border-radius: 6px;

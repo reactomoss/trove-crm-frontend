@@ -1,0 +1,445 @@
+<app-header></app-header>
+<div *ngIf="!listShow">
+    <mat-drawer-container hasBackdrop="true">
+        <mat-drawer #drawer mode="Over" position="end">
+            <div class="drawerContainer">
+                <div class="drawerContainerTop">
+                    <button mat-button class="closeButton mr-4" (click)="drawer.toggle()">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                    <mat-icon>filter_alt</mat-icon>
+                    <span class="mr-5">Filters</span>
+                    <button mat-button class="clearAllButton ml-5">
+                        Clear all
+                    </button>
+                </div>
+                <mat-accordion>
+                    <mat-expansion-panel class="mat-elevation-z0 mat-panel2">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Value
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="panel-content">
+                            *
+                        </div>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel class="mat-elevation-z0 mat-panel3 contactPanel">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Contact
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="panel-content">
+                            <div>
+                                <button mat-button class="userButton">
+                                    User
+                                </button>
+                                <button mat-button class="companyButton">
+                                    Company
+                                </button>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Search by contact name">
+                            <mat-checkbox color="primary">Emerson Dokidis</mat-checkbox>
+                            <mat-checkbox color="primary">Charlie Aminoff</mat-checkbox>
+                            <mat-checkbox color="primary">Alena Carder</mat-checkbox>
+                            <div class="text-right">
+                                <button mat-button class="clearButton ml-5">
+                                    Clear
+                                </button>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                                        
+                    <mat-expansion-panel class="mat-elevation-z0 mat-panel4">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Source
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="panel-content">
+                            *
+                        </div>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel class="mat-elevation-z0 mat-panel1">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Pipeline / Stages
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="panel-content">
+                            <div class="trapezoid1">
+                                <div class="text">
+                                    Sales Pipleline
+                                    <mat-icon>arrow_drop_down</mat-icon>
+                                </div>
+                            </div>
+                            <div class="trapezoid2">
+                                <div class="text">Discovery</div>
+                            </div>
+                            <div class="trapezoid3">
+                                <div class="text">content</div>
+                            </div>
+                            <div class="trapezoid4">
+                                <div class="text">Qualified</div>
+                            </div>
+                            <div class="trapezoid5">
+                                <div class="text">Evolution</div>
+                            </div>
+                            <div class="trapezoid6">
+                                <div class="text">Closed Won</div>
+                            </div>
+                            <div class="trapezoid7">
+                                <div class="text">
+                                    Closed Lost<mat-icon>arrow_drop_down</mat-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+        </mat-drawer>
+
+        <div class="topBar">
+            <div fxLayout="row" fxLayoutAlign="space-between" fxLayout.xs="column" fxLayout.sm="column"> 
+                <div class="topBarDiv">
+                    <span class="title mr-3 fontObjektivMk mt-1">All Leads</span>
+                    <div class="input-group topSearch">
+                        <input type="text" class="form-control" placeholder="Search by contact name">
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="basic-addon1">
+                                <mat-icon aria-hidden="false">search</mat-icon>
+                            </span>
+                        </div>
+                    </div>
+                    <button mat-button class="ml-3 flatIconTextButton">
+                        <mat-icon class="iconInButton">arrow_drop_down</mat-icon>
+                        Sales Pipeline 20...
+                    </button>
+                </div>
+                <div class="topBarDiv">
+                    <button mat-button class="flatIconTextButton mr-3">
+                        <mat-icon class="iconInButton">arrow_drop_down</mat-icon>
+                        Option
+                    </button>
+                    <button mat-button class="flatIconLightButton" (click)="showList()">
+                        <mat-icon>list</mat-icon>
+                    </button>
+                    <button mat-button class="flatIconDarkButton" (click)="showCards()">
+                        <mat-icon>view_module</mat-icon>
+                    </button>
+                    <button mat-button class="flatIconTextButton ml-3" (click)="drawer.toggle()">
+                        <mat-icon class="iconInButton">filter_alt</mat-icon>
+                        Filter(1)
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="main-content">
+            <div fxLayout="row" fxLayoutAlign="space-between stretch" fxLayout.xs="column" fxLayout.sm="column">
+                <div class="card-container">
+                    <p class="list-title fontObjektivMk">Discovery 5</p>
+                    <div class="scrollContainer">
+                        <mat-card class="mat-elevation-z0 p-2">
+                            <mat-card-header>
+                                <div mat-card-avatar class="example-header-image">
+                                    <img alt="Image" src="../../../assets/images/user-sample.png" class="avatar">
+                                </div>
+                                <mat-card-title>
+                                    <p class="card-title fontObjektivMk">Packet Monster Sales Opportunity</p>
+                                    <p class="card-sub-title1 fontObjektivMk">Packet Monster, Inc.</p>
+                                    <p class="card-sub-title2 fontObjektivMk">$0.00</p>
+                                    <p class="card-sub-title3 fontObjektivMk">Tammy Gillis, <span class="card-sub-title4">14/12/2020</span></p>
+                                </mat-card-title>
+                            </mat-card-header>
+                        </mat-card>
+                        <mat-card class="mat-elevation-z0 p-2">
+                            <mat-card-header>
+                                <div mat-card-avatar class="example-header-image">
+                                    <img alt="Image" src="../../../assets/images/user-sample.png" class="avatar">
+                                </div>
+                                <mat-card-title>
+                                    <p class="card-title fontObjektivMk">Packet Monster Sales Opportunity</p>
+                                    <p class="card-sub-title1 fontObjektivMk">Packet Monster, Inc.</p>
+                                    <p class="card-sub-title2 fontObjektivMk">$0.00</p>
+                                    <p class="card-sub-title3 fontObjektivMk">Tammy Gillis, <span class="card-sub-title4">14/12/2020</span></p>
+                                </mat-card-title>
+                            </mat-card-header>
+                        </mat-card>
+                        <mat-card class="mat-elevation-z0 p-2">
+                            <mat-card-header>
+                                <div mat-card-avatar class="example-header-image">
+                                    <img alt="Image" src="../../../assets/images/user-sample.png" class="avatar">
+                                </div>
+                                <mat-card-title>
+                                    <p class="card-title fontObjektivMk">Packet Monster Sales Opportunity</p>
+                                    <p class="card-sub-title1 fontObjektivMk">Packet Monster, Inc.</p>
+                                    <p class="card-sub-title2 fontObjektivMk">$0.00</p>
+                                    <p class="card-sub-title3 fontObjektivMk">Tammy Gillis, <span class="card-sub-title4">14/12/2020</span></p>
+                                </mat-card-title>
+                            </mat-card-header>
+                        </mat-card>
+                        <mat-card class="mat-elevation-z0 p-2">
+                            <mat-card-header>
+                                <div mat-card-avatar class="example-header-image">
+                                    <img alt="Image" src="../../../assets/images/user-sample.png" class="avatar">
+                                </div>
+                                <mat-card-title>
+                                    <p class="card-title fontObjektivMk">Packet Monster Sales Opportunity</p>
+                                    <p class="card-sub-title1 fontObjektivMk">Packet Monster, Inc.</p>
+                                    <p class="card-sub-title2 fontObjektivMk">$0.00</p>
+                                    <p class="card-sub-title3 fontObjektivMk">Tammy Gillis, <span class="card-sub-title4">14/12/2020</span></p>
+                                </mat-card-title>
+                            </mat-card-header>
+                        </mat-card>
+                        <mat-card class="mat-elevation-z0 p-2">
+                            <mat-card-header>
+                                <div mat-card-avatar class="example-header-image">
+                                    <img alt="Image" src="../../../assets/images/user-sample.png" class="avatar">
+                                </div>
+                                <mat-card-title>
+                                    <p class="card-title fontObjektivMk">Packet Monster Sales Opportunity</p>
+                                    <p class="card-sub-title1 fontObjektivMk">Packet Monster, Inc.</p>
+                                    <p class="card-sub-title2 fontObjektivMk">$0.00</p>
+                                    <p class="card-sub-title3 fontObjektivMk">Tammy Gillis, <span class="card-sub-title4">14/12/2020</span></p>
+                                </mat-card-title>
+                            </mat-card-header>
+                        </mat-card>
+                    </div>
+                </div>
+                <div class="card-container">
+                    <p class="list-title fontObjektivMk">Qualified 2</p>
+                    <div class="scrollContainer">
+                        <mat-card class="mat-elevation-z0 p-2">
+                            <mat-card-header>
+                                <div mat-card-avatar class="example-header-image">
+                                    <img alt="Image" src="../../../assets/images/user-sample.png" class="avatar">
+                                </div>
+                                <mat-card-title>
+                                    <p class="card-title fontObjektivMk">Packet Monster Sales Opportunity</p>
+                                    <p class="card-sub-title1 fontObjektivMk">Packet Monster, Inc.</p>
+                                    <p class="card-sub-title2 fontObjektivMk">$0.00</p>
+                                    <p class="card-sub-title3 fontObjektivMk">Tammy Gillis, <span class="card-sub-title4">14/12/2020</span></p>
+                                </mat-card-title>
+                            </mat-card-header>
+                        </mat-card>
+                        <mat-card class="mat-elevation-z0 p-2">
+                            <mat-card-header>
+                                <div mat-card-avatar class="example-header-image">
+                                    <img alt="Image" src="../../../assets/images/user-sample.png" class="avatar">
+                                </div>
+                                <mat-card-title>
+                                    <p class="card-title fontObjektivMk">Packet Monster Sales Opportunity</p>
+                                    <p class="card-sub-title1 fontObjektivMk">Packet Monster, Inc.</p>
+                                    <p class="card-sub-title2 fontObjektivMk">$0.00</p>
+                                    <p class="card-sub-title3 fontObjektivMk">Tammy Gillis, <span class="card-sub-title4">14/12/2020</span></p>
+                                </mat-card-title>
+                            </mat-card-header>
+                        </mat-card>
+                    </div>
+                </div>
+                <div class="card-container">
+                    <p class="list-title fontObjektivMk">Evolution 1</p>
+                    <div class="scrollContainer">
+                        <mat-card class="mat-elevation-z0 p-2">
+                            <mat-card-header>
+                                <div mat-card-avatar class="example-header-image">
+                                    <img alt="Image" src="../../../assets/images/user-sample.png" class="avatar">
+                                </div>
+                                <mat-card-title>
+                                    <p class="card-title fontObjektivMk">Packet Monster Sales Opportunity</p>
+                                    <p class="card-sub-title1 fontObjektivMk">Packet Monster, Inc.</p>
+                                    <p class="card-sub-title2 fontObjektivMk">$0.00</p>
+                                    <p class="card-sub-title3 fontObjektivMk">Tammy Gillis, <span class="card-sub-title4">14/12/2020</span></p>
+                                </mat-card-title>
+                            </mat-card-header>
+                        </mat-card>
+                    </div>
+                </div>
+                <div class="card-container">
+                    <p class="list-title fontObjektivMk">Negotiation 1</p>
+                    <div class="scrollContainer">
+                        <mat-card class="mat-elevation-z0 p-2">
+                            <mat-card-header>
+                                <div mat-card-avatar class="example-header-image">
+                                    <img alt="Image" src="../../../assets/images/user-sample.png" class="avatar">
+                                </div>
+                                <mat-card-title>
+                                    <p class="card-title fontObjektivMk">Packet Monster Sales Opportunity</p>
+                                    <p class="card-sub-title1 fontObjektivMk">Packet Monster, Inc.</p>
+                                    <p class="card-sub-title2 fontObjektivMk">$0.00</p>
+                                    <p class="card-sub-title3 fontObjektivMk">Tammy Gillis, <span class="card-sub-title4">14/12/2020</span></p>
+                                </mat-card-title>
+                            </mat-card-header>
+                        </mat-card>
+                    </div>
+                </div>
+                <div class="card-container">
+                    <p class="list-title fontObjektivMk">Closed 3</p>
+                    <div class="scrollContainer">
+                        <mat-card class="mat-elevation-z0 p-2">
+                            <mat-card-header>
+                                <div mat-card-avatar class="example-header-image">
+                                    <img alt="Image" src="../../../assets/images/user-sample.png" class="avatar">
+                                </div>
+                                <mat-card-title>
+                                    <p class="card-title fontObjektivMk">Packet Monster Sales Opportunity</p>
+                                    <p class="card-sub-title1 fontObjektivMk">Packet Monster, Inc.</p>
+                                    <p class="card-sub-title2 fontObjektivMk">$0.00</p>
+                                    <p class="card-sub-title3 fontObjektivMk">Tammy Gillis, <span class="card-sub-title4">14/12/2020</span></p>
+                                </mat-card-title>
+                            </mat-card-header>
+                        </mat-card>
+                        <mat-card class="mat-elevation-z0 p-2">
+                            <mat-card-header>
+                                <div mat-card-avatar class="example-header-image">
+                                    <img alt="Image" src="../../../assets/images/user-sample.png" class="avatar">
+                                </div>
+                                <mat-card-title>
+                                    <p class="card-title fontObjektivMk">Packet Monster Sales Opportunity</p>
+                                    <p class="card-sub-title1 fontObjektivMk">Packet Monster, Inc.</p>
+                                    <p class="card-sub-title2 fontObjektivMk">$0.00</p>
+                                    <p class="card-sub-title3 fontObjektivMk">Tammy Gillis, <span class="card-sub-title4">14/12/2020</span></p>
+                                </mat-card-title>
+                            </mat-card-header>
+                        </mat-card>
+                        <mat-card class="mat-elevation-z0 p-2">
+                            <mat-card-header>
+                                <div mat-card-avatar class="example-header-image">
+                                    <img alt="Image" src="../../../assets/images/user-sample.png" class="avatar">
+                                </div>
+                                <mat-card-title>
+                                    <p class="card-title fontObjektivMk">Packet Monster Sales Opportunity</p>
+                                    <p class="card-sub-title1 fontObjektivMk">Packet Monster, Inc.</p>
+                                    <p class="card-sub-title2 fontObjektivMk">$0.00</p>
+                                    <p class="card-sub-title3 fontObjektivMk">Tammy Gillis, <span class="card-sub-title4">14/12/2020</span></p>
+                                </mat-card-title>
+                            </mat-card-header>
+                        </mat-card>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <span class="footText1 mr-5">Summary</span>
+            <span class="footText2 mr-2">Total Deals</span> <span class="footText1 mr-5">2</span>
+            <span class="footText2 mr-2">Total Value</span> <span class="footText1 mr-5">$25030</span>
+            <span class="footText2 mr-2">Average Value</span> <span class="footText1">$9809</span>
+        </div>
+    </mat-drawer-container>
+</div>
+
+<div *ngIf="listShow">
+    <div fxLayout="row" fxLayout.xs="column">
+        <div class="leftPart" fxFlex="80">
+            <div class="topBar">
+                <div fxLayout="row" fxLayoutAlign="space-between" fxLayout.xs="column" fxLayout.sm="column">
+                    <div class="topBarDiv">
+                        <span class="title mr-3 fontObjektivMk mt-1">Leads</span>
+                        <div class="input-group topSearch">
+                            <input type="text" class="form-control" placeholder="Search by contact name">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon1">
+                                    <mat-icon aria-hidden="false">search</mat-icon>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="topBarDiv">
+                        <button mat-button class="flatIconTextButton mr-3">
+                            <mat-icon class="iconInButton">arrow_drop_down</mat-icon>
+                            Option
+                        </button>
+                        <button mat-button class="flatIconDarkButton1" (click)="showList()">
+                            <mat-icon>list</mat-icon>
+                        </button>
+                        <button mat-button class="flatIconLightButton1" (click)="showCards()">
+                            <mat-icon>view_module</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="tableContainer">
+                <app-lead-table></app-lead-table>
+            </div>
+        </div>
+        <div class="rightPart" fxFlex fxFill>
+            <div class="topInRightPart">
+                <mat-icon>filter_alt</mat-icon>
+                <span>Filters</span>
+            </div>
+            <div>
+                <mat-accordion>
+                    <mat-expansion-panel class="mat-elevation-z0 mat-panel1">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Pipeline / Stages
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="panel-content">
+                            <div class="trapezoid1">
+                                <div class="text">
+                                    Sales Pipleline
+                                    <mat-icon>arrow_drop_down</mat-icon>
+                                </div>
+                            </div>
+                            <div class="trapezoid2">
+                                <div class="text">Discovery</div>
+                            </div>
+                            <div class="trapezoid3">
+                                <div class="text">content</div>
+                            </div>
+                            <div class="trapezoid4">
+                                <div class="text">Qualified</div>
+                            </div>
+                            <div class="trapezoid5">
+                                <div class="text">Evolution</div>
+                            </div>
+                            <div class="trapezoid6">
+                                <div class="text">Closed Won</div>
+                            </div>
+                            <div class="trapezoid7">
+                                <div class="text">
+                                    Closed Lost
+                                    <mat-icon>arrow_drop_down</mat-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel class="mat-elevation-z0 mat-panel2">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Value
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="panel-content">
+                            *
+                        </div>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel class="mat-elevation-z0 mat-panel3">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Contact
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="panel-content">
+                            *
+                        </div>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel class="mat-elevation-z0 mat-panel4">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Source
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="panel-content">
+                            *
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+        </div>
+    </div>
+</div>
