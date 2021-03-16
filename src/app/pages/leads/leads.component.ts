@@ -24,4 +24,5 @@ export class LeadsComponent implements OnInit {
   showCards() {
     this.listShow = false
   }
+
 }

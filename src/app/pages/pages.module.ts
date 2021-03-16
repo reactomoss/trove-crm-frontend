@@ -21,12 +21,15 @@ import { LeadTableComponent } from './leads/lead-table/lead-table.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { DetailComponent } from './detail/detail.component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: PagesComponent },
   { path: 'settings', component: SettingsComponent },
   { path: 'leads', component: LeadsComponent },
+  { path: 'detail', component: DetailComponent }
 ]
 
 @NgModule({
@@ -34,7 +37,8 @@ const routes: Routes = [
     PagesComponent,
     SettingsComponent,
     LeadsComponent,
-    LeadTableComponent
+    LeadTableComponent,
+    DetailComponent
   ],
   imports: [
     CommonModule,
@@ -56,7 +60,8 @@ const routes: Routes = [
     MatTableModule,
     MatSidenavModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatTabsModule
   ],
   exports:[RouterModule],
 })

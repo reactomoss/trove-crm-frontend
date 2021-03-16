@@ -1,6 +1,7 @@
 import { Component, AfterViewInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 export interface PeriodicElement {
   avatar: string;
@@ -27,12 +28,17 @@ export class LeadTableComponent implements AfterViewInit  {
   displayedColumns: string[] = ['avatar', 'name', 'stage', 'value', 'day', 'owner'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   @ViewChild(MatSort, {static: false}) sort: MatSort;
 
   ngAfterViewInit (): void {
     this.dataSource.sort = this.sort;
+  }
+
+  clickRow(row) {
+    console.log('row', row)
+    this.router.navigate(['/pages/detail']);
   }
 
 }

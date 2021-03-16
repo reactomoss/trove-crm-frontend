@@ -112,3 +112,7 @@ padding: 8px 10px;
 .mat-expansion-panel .mat-expansion-panel-content {
   background-color: rgba(239, 242, 247, 0.75);
 }
+
+.mat-form-field .mat-form-field-underline {
+  height: 0 !important;
+}
