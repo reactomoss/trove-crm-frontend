@@ -1,6 +1,6 @@
 import { TokenService } from './../../services/token.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AfterViewInit, Component, OnInit, DoCheck, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, OnInit, DoCheck, OnDestroy, NgZone } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AccountApiService } from '../../services/account-api.service';
@@ -13,6 +13,14 @@ import {
   SocialUser,
 } from 'angularx-social-login';
 import { Subscription } from 'rxjs';
+import { auth } from 'firebase/app';
+import { AngularFireAuth } from '@angular/fire/auth';
+import {
+  AngularFirestore,
+  AngularFirestoreDocument,
+} from '@angular/fire/firestore';
+import * as firebase from 'firebase/app';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -39,7 +47,10 @@ export class LoginComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private account: AccountApiService,
     private token: TokenService,
-    private socialAuthService: SocialAuthService
+    private socialAuthService: SocialAuthService,
+    public afs: AngularFirestore,
+    public afAuth: AngularFireAuth,
+    public ngZone: NgZone,
   ) {
     this.NavigationExtrasResponse = this.router.getCurrentNavigation().extras.state;
     //console.log(this.NavigationExtrasResponse);
@@ -75,7 +86,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const sub_social_auth = this.socialAuthService.authState.subscribe((user) => {
+    /*const sub_social_auth = this.socialAuthService.authState.subscribe((user) => {
       this.socialUser = user;
       this.isLoggedin = user != null;
       //console.log(this.isLoggedin);
@@ -119,23 +130,188 @@ export class LoginComponent implements OnInit, OnDestroy {
         });
       }
     });
-    this.subscriptions.push(sub_social_auth);
+    this.subscriptions.push(sub_social_auth);*/
   }
 
   /*##################### Google Auth #####################*/
   loginWithGoogle(): void {
-    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
+    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID).then((user) => {
+      this.socialUser = user;
+      this.isLoggedin = user != null;
+      //console.log(this.isLoggedin);
+      this.formStatus.onFormSubmitting();
+      if ( this.socialUser && typeof this.socialUser.email !== 'undefined') {
+        let postData = {
+          email: this.socialUser.email,
+          platform: 'web',
+          type: this.socialUser.provider,
+          social_user_id: this.socialUser.id,
+        };
+        //console.log(postData);
+        const sub_social = this.account.login(postData).subscribe(
+          (response) => {
+            this.apiResponse = response;
+            this.token.handle(response.data.token);
+            this.formStatus.onFormSubmitResponse({
+              success: true,
+              messages: [],
+            });
+            this.logOut();
+            this.router.navigate(['pages/dashboard']);
+          },
+          (errorResponse: HttpErrorResponse) => {
+            const messages = extractErrorMessagesFromErrorResponse(
+              errorResponse
+            );
+            this.formStatus.onFormSubmitResponse({
+              success: false,
+              messages: messages,
+            });
+            this.logOut();
+          }
+        );
+        this.subscriptions.push(sub_social);
+      } else {
+        this.formStatus.onFormSubmitResponse({
+          success: false,
+          messages: ['Your social media doesn\'t have email, so kindly signup with email.']
+        });
+        this.logOut();
+      }
+    })
+    .catch((error) => {
+      window.alert(error);
+    });
   }
   loginWithFacebook(): void {
-    this.socialAuthService.signIn(FacebookLoginProvider.PROVIDER_ID);
+    this.socialAuthService.signIn(FacebookLoginProvider.PROVIDER_ID).then((user) => {
+      this.socialUser = user;
+      this.isLoggedin = user != null;
+      //console.log(this.isLoggedin);
+      this.formStatus.onFormSubmitting();
+      if ( this.socialUser && typeof this.socialUser.email !== 'undefined') {
+        let postData = {
+          email: this.socialUser.email,
+          platform: 'web',
+          type: this.socialUser.provider,
+          social_user_id: this.socialUser.id,
+        };
+        //console.log(postData);
+        const sub_social = this.account.login(postData).subscribe(
+          (response) => {
+            this.apiResponse = response;
+            this.token.handle(response.data.token);
+            this.formStatus.onFormSubmitResponse({
+              success: true,
+              messages: [],
+            });
+            this.logOut();
+            this.router.navigate(['pages/dashboard']);
+          },
+          (errorResponse: HttpErrorResponse) => {
+            const messages = extractErrorMessagesFromErrorResponse(
+              errorResponse
+            );
+            this.formStatus.onFormSubmitResponse({
+              success: false,
+              messages: messages,
+            });
+            this.logOut();
+          }
+        );
+        this.subscriptions.push(sub_social);
+      } else {
+        this.logOut();
+        this.formStatus.onFormSubmitResponse({
+          success: false,
+          messages: ['Your social media doesn\'t have email, so kindly signup with email.']
+        });
+      }
+    })
+    .catch((error) => {
+      window.alert(error);
+    });
+  }
+
+  // signUp With Twitter
+  loginWithTwitter(): void {
+    this.AuthTwitter(new auth.TwitterAuthProvider());
+  }
+
+  // Auth logic to run auth providers
+  AuthTwitter(provider) {
+    this.afAuth.auth
+      .signInWithPopup(provider).then((result: any) => {
+        console.log('You have been successfully logged in!');
+        let user = result.additionalUserInfo.profile;
+        this.isLoggedin = user != null;
+
+        this.formStatus.onFormSubmitting();
+        if(typeof user !== 'undefined' && user.email != ""){
+          let postData = {
+            email: user.email,
+            platform: 'web',
+            type: 'TWITTER',
+            social_user_id: user.id,
+          };
+          const sub_social = this.account.login(postData).subscribe(
+            (response) => {
+              this.apiResponse = response;
+              this.token.handle(response.data.token);
+              this.formStatus.onFormSubmitResponse({
+                success: true,
+                messages: [],
+              });
+              //this.TwitterSignOut();
+              //alert("navigate");
+              this.ngZone.run(() => {
+                this.router.navigate(['pages/dashboard']);
+              });
+            },
+            (errorResponse: HttpErrorResponse) => {
+              //console.log(errorResponse);
+              const messages = extractErrorMessagesFromErrorResponse(
+                errorResponse
+              );
+              this.formStatus.onFormSubmitResponse({
+                success: false,
+                messages: messages,
+              });
+              //this.TwitterSignOut();
+              //console.log('Messages', messages);
+            }
+          );
+          this.subscriptions.push(sub_social);
+          console.log(postData);
+        } else {
+          this.formStatus.onFormSubmitResponse({
+            success: false,
+            messages: [
+              "Your social media doesn't have email, so kindly signup with email.",
+            ],
+          });
+          //this.TwitterSignOut();
+        }
+      })
+      .catch((error) => {
+        window.alert(error);
+      });
   }
 
   logOut(): void {
     if(this.isLoggedin){
-      this.socialAuthService.signOut();
+      this.socialAuthService.signOut().then().catch(this.yourHandler);
     }
   }
-
+  /* SignOut method for logging out from the Angular/Firebase app */
+  TwitterSignOut() {
+    if(this.isLoggedin){
+      this.afAuth.auth.signOut().then().catch(this.yourHandler);
+    }
+  }
+  yourHandler(){
+    console.log("Social logged out");
+  }
   /*##################### Login Form #####################*/
 
   loginForm = this.formBuilder.group({
@@ -194,6 +370,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
     if(this.isLoggedin){
       this.logOut();
+      this.afAuth.auth.signOut();
     }
   }
 }

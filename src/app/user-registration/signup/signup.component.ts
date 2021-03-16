@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit,NgZone } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AccountApiService } from '../../services/account-api.service';
@@ -11,6 +11,14 @@ import {
   FacebookLoginProvider,
   SocialUser,
 } from 'angularx-social-login';
+//import { AuthTwitterService } from './../../services/auth-twitter.service';
+import { auth } from 'firebase/app';
+import { AngularFireAuth } from '@angular/fire/auth';
+import {
+  AngularFirestore,
+  AngularFirestoreDocument,
+} from '@angular/fire/firestore';
+import * as firebase from 'firebase/app';
 import { Subscription } from 'rxjs';
 import { TokenService } from 'src/app/services/token.service';
 
@@ -47,25 +55,36 @@ export class SignupComponent implements OnInit, OnDestroy {
     private account: AccountApiService,
     private router: Router,
     private token: TokenService,
-    private socialAuthService: SocialAuthService
+    private socialAuthService: SocialAuthService,
+    //public authTwitterService: AuthTwitterService,
+    public afs: AngularFirestore,
+    public afAuth: AngularFireAuth,
+    public ngZone: NgZone,
   ) {
     const subs_valuechange = this.registrationForm.valueChanges.subscribe(
       (data) => {
-        //console.log('value change');
         this.apiResponse = false;
-        //console.log(this.registrationForm?.valid);
-        //console.log(this.formStatus.submitted);
       }
     );
     this.subscriptions.push(subs_valuechange);
+
+    /*const sub_twitter_auth = this.afAuth.authState.subscribe((user) => {
+      if (user) {
+        console.log('Twitter Response');
+        console.log(user);
+      } else {
+      }
+    });
+    this.subscriptions.push(this.sub_social_auth);*/
   }
 
   ngOnInit(): void {
     if (this.isLoggedin) {
       this.logOut();
+      this.TwitterSignOut();
     }
 
-    this.sub_social_auth = this.socialAuthService.authState.subscribe(
+    /*this.sub_social_auth = this.socialAuthService.authState.subscribe(
       (user) => {
         this.socialUser = user;
         this.isLoggedin = user != null;
@@ -117,26 +136,202 @@ export class SignupComponent implements OnInit, OnDestroy {
         }
       }
     );
-    this.subscriptions.push(this.sub_social_auth);
+    this.subscriptions.push(this.sub_social_auth);*/
   }
   /*##################### Google Auth #####################*/
   async loginWithGoogle(): Promise<void> {
     await this.socialAuthService.signIn(
       GoogleLoginProvider.PROVIDER_ID,
       this.googleLoginOptions
-    );
+    ).then((user) => {
+      this.socialUser = user;
+        this.isLoggedin = user != null;
+        this.formStatus.onFormSubmitting();
+        if (this.socialUser && typeof this.socialUser.email !== 'undefined') {
+          let postData = {
+            first_name: this.socialUser.firstName,
+            last_name: this.socialUser.lastName,
+            email: this.socialUser.email,
+            platform: 'web',
+            type: this.socialUser.provider,
+            social_user_id: this.socialUser.id,
+            auth_token: this.socialUser.authToken,
+            profile_pic: this.socialUser.photoUrl,
+          };
+          const sub_social = this.account.createAccount(postData).subscribe(
+            (response) => {
+              this.apiResponse = response;
+              this.token.handle(response.data.token);
+              this.formStatus.onFormSubmitResponse({
+                success: true,
+                messages: [],
+              });
+              this.logOut();
+              this.router.navigate(['pages/dashboard']);
+            },
+            (errorResponse: HttpErrorResponse) => {
+              //console.log(errorResponse);
+              const messages = extractErrorMessagesFromErrorResponse(
+                errorResponse
+              );
+              this.formStatus.onFormSubmitResponse({
+                success: false,
+                messages: messages,
+              });
+              this.logOut();
+              //console.log('Messages', messages);
+            }
+          );
+          this.subscriptions.push(sub_social);
+        } else {
+          this.formStatus.onFormSubmitResponse({
+            success: false,
+            messages: [
+              "Your social media doesn't have email, so kindly signup with email.",
+            ],
+          });
+          this.logOut();
+        }
+    })
+    .catch((error) => {
+      window.alert(error);
+    });
   }
   async loginWithFacebook(): Promise<void> {
     await this.socialAuthService.signIn(
       FacebookLoginProvider.PROVIDER_ID,
       this.fbLoginOptions
-    );
+    ).then((user) => {
+      this.socialUser = user;
+        this.isLoggedin = user != null;
+        this.formStatus.onFormSubmitting();
+        if (this.socialUser && typeof this.socialUser.email !== 'undefined') {
+          let postData = {
+            first_name: this.socialUser.firstName,
+            last_name: this.socialUser.lastName,
+            email: this.socialUser.email,
+            platform: 'web',
+            type: this.socialUser.provider,
+            social_user_id: this.socialUser.id,
+            auth_token: this.socialUser.authToken,
+            profile_pic: this.socialUser.photoUrl,
+          };
+          const sub_social = this.account.createAccount(postData).subscribe(
+            (response) => {
+              this.apiResponse = response;
+              this.token.handle(response.data.token);
+              this.formStatus.onFormSubmitResponse({
+                success: true,
+                messages: [],
+              });
+              this.logOut();
+              this.router.navigate(['pages/dashboard']);
+            },
+            (errorResponse: HttpErrorResponse) => {
+              //console.log(errorResponse);
+              const messages = extractErrorMessagesFromErrorResponse(
+                errorResponse
+              );
+              this.formStatus.onFormSubmitResponse({
+                success: false,
+                messages: messages,
+              });
+              this.logOut();
+              //console.log('Messages', messages);
+            }
+          );
+          this.subscriptions.push(sub_social);
+        } else {
+          this.formStatus.onFormSubmitResponse({
+            success: false,
+            messages: [
+              "Your social media doesn't have email, so kindly signup with email.",
+            ],
+          });
+          this.logOut();
+        }
+    })
+    .catch((error) => {
+      window.alert(error);
+    });
+  }
+
+  // signUp With Twitter
+  signUpTwitter(): void {
+    this.AuthTwitter(new auth.TwitterAuthProvider());
+  }
+  // Auth logic to run auth providers
+  AuthTwitter(provider) {
+    this.afAuth.auth
+      .signInWithPopup(provider).then((result: any) => {
+        console.log('You have been successfully logged in!');
+        let user = result.additionalUserInfo.profile;
+        this.isLoggedin = user != null;
+
+        this.formStatus.onFormSubmitting();
+        if(typeof user !== 'undefined' && user.email != ""){
+          let postData = {
+            first_name: user.name,
+            email: user.email,
+            platform: 'web',
+            type: 'TWITTER',
+            social_user_id: user.id,
+            auth_token: result.credential.accessToken,
+            profile_pic: user.profile_image_url_https || '',
+          };
+          const sub_social = this.account.createAccount(postData).subscribe(
+            (response) => {
+              this.apiResponse = response;
+              this.token.handle(response.data.token);
+              this.formStatus.onFormSubmitResponse({
+                success: true,
+                messages: [],
+              });
+              //this.TwitterSignOut();
+              //alert("navigate");
+              this.ngZone.run(() => {
+                this.router.navigate(['pages/dashboard']);
+              });
+            },
+            (errorResponse: HttpErrorResponse) => {
+              //console.log(errorResponse);
+              const messages = extractErrorMessagesFromErrorResponse(
+                errorResponse
+              );
+              this.formStatus.onFormSubmitResponse({
+                success: false,
+                messages: messages,
+              });
+              this.TwitterSignOut();
+              //console.log('Messages', messages);
+            }
+          );
+          this.subscriptions.push(sub_social);
+        } else {
+          this.formStatus.onFormSubmitResponse({
+            success: false,
+            messages: [
+              "Your social media doesn't have email, so kindly signup with email.",
+            ],
+          });
+          this.TwitterSignOut();
+        }
+      })
+      .catch((error) => {
+        window.alert(error);
+      });
   }
 
   logOut(): void {
-    this.socialAuthService.signOut();
+    if (this.isLoggedin) {this.socialAuthService.signOut().then().catch(this.yourHandler);}
   }
-
+  /* SignOut method for logging out from the Angular/Firebase app */
+  TwitterSignOut() {
+    if (this.isLoggedin) {this.afAuth.auth.signOut().then().catch(this.yourHandler);}
+  }
+  yourHandler(){
+    console.log("Social logged out");
+  }
   /*##################### Registration Form #####################*/
 
   registrationForm = this.fb.group({
@@ -229,8 +424,7 @@ export class SignupComponent implements OnInit, OnDestroy {
       sub.unsubscribe();
     });
     //this.sub_social_auth.unsubscribe();
-    if (this.isLoggedin) {
-      this.logOut();
-    }
+    this.logOut();
+    this.TwitterSignOut();
   }
 }

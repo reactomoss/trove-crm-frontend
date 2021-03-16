@@ -22,7 +22,12 @@ import {
   SocialAuthServiceConfig,
 } from 'angularx-social-login';
 import { GoogleLoginProvider, FacebookLoginProvider } from 'angularx-social-login';
-import { environment } from 'src/environments/environment';
+import { AngularFireModule } from "@angular/fire";
+import { AngularFireAuthModule } from "@angular/fire/auth";
+
+import { environment } from '../environments/environment';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AuthTwitterService } from './services/auth-twitter.service';
 
 const routes: Routes = [
   { path: '', redirectTo: 'user', pathMatch: 'full' },
@@ -61,6 +66,9 @@ const routes: Routes = [
     HttpClientModule,
     UserRegistrationModule,
     SocialLoginModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
+    AngularFirestoreModule
   ],
   providers: [
     AccountApiService,
@@ -87,7 +95,8 @@ const routes: Routes = [
           }
         ]
       } as SocialAuthServiceConfig,
-    }
+    },
+    AuthTwitterService
   ],
   exports: [RouterModule],
   bootstrap: [AppComponent],

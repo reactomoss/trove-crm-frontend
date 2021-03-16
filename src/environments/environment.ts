@@ -3,8 +3,16 @@
 // The list of file replacements can be found in `angular.json`.
 export const environment = {
   production: false,
+  firebase: {
+    apiKey: "AIzaSyAxIWcCA6BhngwYB-JuSleua4GaU6Tm_6Y",
+    authDomain: "trove-crm.firebaseapp.com",
+    projectId: "trove-crm",
+    storageBucket: "trove-crm.appspot.com",
+    messagingSenderId: "287909577050",
+    appId: "1:287909577050:web:ebc04308247c94620fb363"
+  },
   envName: 'Development',
-  baseUrl: 'http://127.0.0.1:8000/api/v1/',
+  baseUrl: 'http://ct.trovecrm.in/api/v1/', //http://127.0.0.1:8000/api/v1/
 
   /** API Methods */
   register: 'account/register',
