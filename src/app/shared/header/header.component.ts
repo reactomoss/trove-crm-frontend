@@ -11,16 +11,12 @@ import { AccountApiService } from '../../services/account-api.service';
 export class HeaderComponent implements OnInit {
 
   isNotification:boolean = false
-<<<<<<< HEAD
+  menus: any[];
   constructor(
     private router: Router,
     private account: AccountApiService,
     private token: TokenService,
   ) { }
-=======
-  menus: any[];
-  constructor() { }
->>>>>>> 2ec1ff25676db44e4837d1980ec19af6533dc857
 
   ngOnInit(): void {
    this.menus=[

@@ -4,7 +4,6 @@
             <div class="col-auto menuItems">
                 <span class="userImage pb-3" [matMenuTriggerFor]="usersettings">
           <span><mat-icon aria-hidden="false">more_vert</mat-icon></span>
-<<<<<<< HEAD
                 <img alt="Image" src="../../../assets/images/user-sample.png">
                 <mat-menu #usersettings="matMenu" class="settingsPanel">
                     <ul class="settingsPanelUL">
@@ -22,56 +21,12 @@
                             <a class="f-14-400 color-253238"><img class="mr-2" src="../../../assets/images/getHelpIcon.png" alt="Image">Get Help</a>
                         </li>
                         <li mat-menu-item>
-                            <a class="f-14-400 color-253238" href="javascript:void(0);" (click)="logout()"><img class="mr-2" src="../../../assets/images/logoutIcon.png" alt="Image">Logout</a>
+                            <a routerLink='/user/login' class="f-14-400 color-253238"><img class="mr-2" src="../../../assets/images/logoutIcon.png" alt="Image">Logout</a>
                         </li>
                     </ul>
                 </mat-menu>
                 </span>
                 <span class="activeMenu">
-          <a routerLink='/pages/dashboard' class="ml-3 p-3">
-            <img src="../../../assets/images/menu001.png" alt="Image">
-          </a>
-          <span class="ml-3 p-3">
-            <img src="../../../assets/images/menu006.png" alt="Image">
-          </span>
-                <span class="ml-3 p-3">
-            <img src="../../../assets/images/menu002.png" alt="Image">
-          </span>
-                <span class="ml-3 p-3 activeMenuItem">
-            <img src="../../../assets/images/menu003.png" alt="Image">
-          </span>
-                <span class="ml-3 p-3">
-            <img src="../../../assets/images/menu004.png" alt="Image">
-          </span>
-                <span class="ml-3 p-3">
-            <img src="../../../assets/images/menu005.png" alt="Image">
-          </span>
-                </span>
-                <span class="ml-3 p-3" [matMenuTriggerFor]="notification">
-=======
-          <img alt="Image" src="../../../assets/images/user-sample.png">
-<mat-menu #usersettings="matMenu" class="settingsPanel">
-  <ul class="settingsPanelUL">
-    <li class="mb-2" mat-menu-item>
-     <div class="f-16-500 color-253238 mb-1">Stuart Broad</div>
-     <a  class="f-12-400 color-lite-O">View Profile</a>
-    </li>
-    <li mat-menu-item>
-    <a  class="f-14-400 color-253238"><img class="mr-2" src="../../../assets/images/startedIcon.png" alt="Image">Getting Started</a>
-     </li>
-     <li mat-menu-item>
-      <a routerLink='/pages/settings' class="f-14-400 color-253238"><img class="mr-2" src="../../../assets/images/settingsIcon.png" alt="Image">Settings</a>
-       </li>
-       <li mat-menu-item>
-        <a  class="f-14-400 color-253238"><img class="mr-2" src="../../../assets/images/getHelpIcon.png" alt="Image">Get Help</a>
-         </li>
-         <li mat-menu-item>
-          <a routerLink='/user/login' class="f-14-400 color-253238"><img class="mr-2" src="../../../assets/images/logoutIcon.png" alt="Image">Logout</a>
-           </li>
-  </ul>
-</mat-menu>
-        </span>
-        <span class="activeMenu">
           <ng-container *ngFor="let menu of menus;">
             <a routerLink="{{menu.link}}" class="ml-3 p-3"
             routerLinkActive="activeMenuItem"
@@ -80,8 +35,7 @@
             </a>
           </ng-container>
         </span>
-        <span class="ml-3 p-3"  [matMenuTriggerFor]="notification">
->>>>>>> 2ec1ff25676db44e4837d1980ec19af6533dc857
+                <span class="ml-3 p-3" [matMenuTriggerFor]="notification">
           <img src="../../../assets/images/menu007.png" alt="Image">
           <mat-menu #notification="matMenu" class="notificationPanel">
             <div class="notificationPanelWrap">
@@ -143,7 +97,6 @@
                     </div>
                 </li>
 
-<<<<<<< HEAD
                 <li mat-menu-item *ngIf="isNotification">
                     <div class="row alignText">
                         <div class="col-auto pr-0">
@@ -155,26 +108,9 @@
                     </div>
                 </li>
                 <li class="showMore text-center" mat-menu-item>
-                    <span class="f-12-500 color-002868" (click)="showNotification()">Show More</span>
+                    <span class="f-12-500 color-002868" (click)="showNotification() ; $event.stopPropagation()">Show More</span>
                 </li>
                 </ul>
-=======
-       <li mat-menu-item *ngIf="isNotification">
-        <div class="row alignText">
-         <div class="col-auto pr-0">
-           <img src="../../../assets/images/notification003.png" alt="Image">
-         </div>
-         <div class="col">
-          <div class="f-12-400 color-253238">More has been
-            completed, <a class="color-253238 textUnderline" href="javascript:void(0);">click here</a> to download the Excel file.</div>
-        </div>
-        </div>
-     </li>
-       <li class="showMore text-center" mat-menu-item>
-         <span class="f-12-500 color-002868" (click)="showNotification() ; $event.stopPropagation()">Show More</span>
-       </li>
-              </ul>
->>>>>>> 2ec1ff25676db44e4837d1980ec19af6533dc857
             </div>
             </mat-menu>
             </span>
