@@ -19,11 +19,11 @@ export class HeaderComponent implements OnInit {
       },
       {
         icon:'menu006.png',
-        link:'/pages/contact'
+        link:'/pages/leads'
       },
       {
         icon:'menu002.png',
-        link:'/pages/lead'
+        link:'/pages/contact'
       },
       {
         icon:'menu003.png',

@@ -71,6 +71,7 @@ cursor: pointer;
   object-fit: cover;
   object-position: center;
 }
+.table001 .mat-paginator {background-color: transparent;}
 /* Table */
 
   /* Vertical tab */

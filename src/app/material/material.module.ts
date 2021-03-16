@@ -26,14 +26,16 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatFormFieldModule,MatInputModule,MatIconModule,MatMenuModule,
     MatTabsModule,MatTableModule,MatPaginatorModule,MatSortModule,
     MatCheckboxModule,MatSelectModule,DragDropModule,MatSnackBarModule,
-    MatSidenavModule,MatGridListModule,MatCardModule,MatExpansionModule
+    MatSidenavModule,MatGridListModule,MatCardModule,MatExpansionModule,
+    FlexLayoutModule
   ],
   exports: [
     CommonModule,FormsModule,ReactiveFormsModule,MatButtonModule,
     MatFormFieldModule,MatInputModule,MatIconModule,MatMenuModule,
     MatTabsModule,MatTableModule,MatPaginatorModule,MatSortModule,
     MatCheckboxModule,MatSelectModule,DragDropModule,MatSnackBarModule,
-    MatSidenavModule,MatGridListModule,MatCardModule,MatExpansionModule
+    MatSidenavModule,MatGridListModule,MatCardModule,MatExpansionModule,
+    FlexLayoutModule
   ]
 })
 export class MaterialModule { }

@@ -6,7 +6,7 @@ import { SharedModule } from '../shared/shared.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { LeadsComponent } from './leads/leads.component';
 import { LeadTableComponent } from './leads/lead-table/lead-table.component';
-import {MaterialModule} from '../material/material.module'
+import {MaterialModule} from '../material/material.module';
 const routes : Routes = [
   {path:'' , redirectTo: 'dashboard' , pathMatch:'full'},
 {path: 'dashboard' , component:PagesComponent},
