@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+<<<<<<< HEAD
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -29,6 +30,8 @@ import { environment } from '../environments/environment';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AuthTwitterService } from './services/auth-twitter.service';
 
+=======
+>>>>>>> 2ec1ff25676db44e4837d1980ec19af6533dc857
 const routes: Routes = [
   { path: '', redirectTo: 'user', pathMatch: 'full' },
   {
@@ -52,6 +55,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [AppComponent],
   imports: [
+<<<<<<< HEAD
     BrowserModule,
     RouterModule.forRoot(routes),
     FormsModule,
@@ -97,6 +101,10 @@ const routes: Routes = [
       } as SocialAuthServiceConfig,
     },
     AuthTwitterService
+=======
+    BrowserModule,RouterModule.forRoot(routes),
+    BrowserAnimationsModule
+>>>>>>> 2ec1ff25676db44e4837d1980ec19af6533dc857
   ],
   exports: [RouterModule],
   bootstrap: [AppComponent],

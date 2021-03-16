@@ -11,14 +11,46 @@ import { AccountApiService } from '../../services/account-api.service';
 export class HeaderComponent implements OnInit {
 
   isNotification:boolean = false
+<<<<<<< HEAD
   constructor(
     private router: Router,
     private account: AccountApiService,
     private token: TokenService,
   ) { }
+=======
+  menus: any[];
+  constructor() { }
+>>>>>>> 2ec1ff25676db44e4837d1980ec19af6533dc857
 
   ngOnInit(): void {
+   this.menus=[
+      {
+        icon:'menu001.png',
+        link:'/pages/dashboard'
+      },
+      {
+        icon:'menu006.png',
+        link:'/pages/contact'
+      },
+      {
+        icon:'menu002.png',
+        link:'/pages/lead'
+      },
+      {
+        icon:'menu003.png',
+        link:'/pages/email'
+      },
+      {
+        icon:'menu004.png',
+        link:'/pages/calendar'
+      },
+      {
+        icon:'menu005.png',
+        link:'/pages/pipeline'
+      }
+    ]
   }
+
 
    showNotification(){
      this.isNotification = !this.isNotification
@@ -59,6 +91,7 @@ export class HeaderComponent implements OnInit {
       }
     );
    }
+
 
 
 }
