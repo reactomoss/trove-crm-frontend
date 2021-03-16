@@ -11,8 +11,15 @@ import { RouterModule,Routes } from '@angular/router';
 @NgModule({
   declarations: [HeaderComponent],
   imports: [
-    CommonModule,MatIconModule,MatMenuModule,MatButtonModule,RouterModule.forChild(routes)
+    CommonModule,
+    MatIconModule,
+    MatMenuModule,
+    MatButtonModule,
+    RouterModule.forChild(routes)
   ],
-  exports: [HeaderComponent,RouterModule]
+  exports: [
+    HeaderComponent,
+    RouterModule
+  ]
 })
 export class SharedModule { }

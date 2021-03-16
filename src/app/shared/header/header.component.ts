@@ -13,10 +13,8 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
   }
 
-   showNotification(){
-     this.isNotification = !this.isNotification
-   }
-
-
-
+  showNotification(){
+    this.isNotification = !this.isNotification
+  }
+  
 }

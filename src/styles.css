@@ -63,6 +63,7 @@ padding: 8px 10px;
 .customTabOne .mat-tab-body-content {
   overflow: initial;
 }
+
 @media(max-width: 767px){
   .customTabOne .mat-tab-header {
     width: 100%;
@@ -102,4 +103,12 @@ padding: 8px 10px;
   .container-fluid.px-5 {
     padding-left: 15px !important; padding-right: 15px !important;
   }
+}
+
+.flatIconTextButton .mat-icon{
+  margin-top: 5px;
+}
+
+.mat-expansion-panel .mat-expansion-panel-content {
+  background-color: rgba(239, 242, 247, 0.75);
 }
