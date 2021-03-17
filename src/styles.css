@@ -345,6 +345,31 @@ padding-top: .15rem; padding-left: .5rem;
 .cdk-global-overlay-wrapper, .cdk-overlay-container {
   z-index: 10000 !important;
   }
+  /* tab001 */
+  .tab001 .mat-tab-header{
+    border: 1px solid #D0D9DE;
+    border-radius: 3px;
+  }
+ .tab001 .mat-tab-body-wrapper {
+  margin-top: 20px;
+}
+.tab001 mat-ink-bar {
+  display: none;
+}
+.tab001 .mat-tab-labels {
+  display: table;
+  width: 100%;
+}
+.tab001 .mat-tab-label {
+  height: auto;opacity: 1;padding: 10px;font-size: 13px;
+  color: #253238;border-right: 1px solid #D0D9DE;
+  min-width: 140px;display: table-cell;
+}
+.tab001 .mat-tab-label:last-of-type {
+  border-right: 0;
+}
+.tab001  .mat-tab-label-active {background-color: #EFF2F7;}
+/* tab001 */
 @media(max-width:575px){
   .mb-10-xs {margin-bottom: 10px;}
 }

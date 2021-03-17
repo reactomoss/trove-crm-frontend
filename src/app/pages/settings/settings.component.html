@@ -6,6 +6,7 @@
         <div class="color-253238 f-20-500">Account Settings</div>
       </div>
     </div>
+
   </div>
 </section>
 <section class="sectionOne">
@@ -79,7 +80,7 @@
                   <div class="f-20-400 color-253238">Manage Role</div>
                 </div>
                 <div class="col text-right">
-                  <button (click)="open(modalNewRole)" class="btnColor1 f-16-500" mat-flat-button>New Role<span class="material-icons fs-16 ml-1">
+                  <button (click)="openNewRole(modalNewRole)" class="btnColor1 f-16-500" mat-flat-button>New Role<span class="material-icons fs-16 ml-1">
                     add
                     </span></button>
                 </div>
@@ -802,80 +803,101 @@
     <div class="px-2">
       <span class="color-253238 f-20-500">Create new role</span>
     </div>
-
   </div>
-
+  <div class="bg-EFF2F7 px-4 py-3 input001">
+    <form [formGroup]="newRoleForm" novalidate action="">
+        <div class="row color-253238">
+          <div class="col-sm-12 col-md-12 col-lg-6 col-xl-4">
+            <div>
+              <label  class="f-12-500">Role Name*</label>
+              <span *ngIf="newRoleForm.controls['role'].invalid && (newRoleForm.controls['role'].dirty || newRoleForm.controls['role'].touched)" class="color-ff0000 f-12-500 float-right">
+                <span *ngIf="newRoleForm.controls['role'].errors.required">
+                Please enter the role name.
+                </span>
+            </span>
+              <mat-form-field appearance="fill">
+               <input formControlName="role" matInput type="text" value="">
+             </mat-form-field>
+            </div>
+          </div>
+          <div class="w-100"></div>
+          <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8">
+            <div>
+              <label  class="f-12-500">Description</label>
+              <mat-form-field appearance="fill">
+              <textarea matInput name="" id="" cols="30" rows="1"></textarea>
+             </mat-form-field>
+            </div>
+          </div>
+        </div>
+    </form>
+  </div>
   <div class="modal-body">
     <div class="px-2 input001">
-       <div class="row">
-         <div class="col-12">
-          <form [formGroup]="newRoleForm" novalidate>
-          <div class="color-253238">
-            <label  class="f-12-500">Role*</label>
-            <span *ngIf="newRoleForm.controls['role'].invalid && (newRoleForm.controls['role'].dirty || newRoleForm.controls['role'].touched)" class="color-ff0000 f-12-500 float-right">
-              <span *ngIf="newRoleForm.controls['role'].errors.required">
-              Please enter the role name.
-              </span>
-          </span>
-            <mat-form-field appearance="fill">
-             <input formControlName="role" matInput type="text" value="">
-           </mat-form-field>
-          </div>
-          </form>
-         </div>
-         <div class="col-12">
-           <hr class="border-E4E9EF mt-1">
-           <div class="color-253238 f-16-500">
-             <span>Configure permissions</span>
-           </div>
-           <div class="table-responsive mt-3">
-            <table class="table table-borderless checkbox001 customTB001">
-              <thead class="color-253238 v-top">
-                <tr>
-                  <th>
-                    <div class="custom-control custom-checkbox pos-t-0">
-                      <input (change)="selectAllPermisssion()" type="checkbox" class="custom-control-input" id="customCheck1" [(ngModel)] = "isSelectAll">
-                      <label class="custom-control-label f-12-500 color-253238" for="customCheck1">All Modules</label>
-                    </div>
-                  </th>
-                  <th class="f-10-400">View</th>
-                  <th class="f-10-400">Create</th>
-                  <th class="f-10-400">Edit</th>
-                </tr>
-              </thead>
-              <tbody class="">
-                <tr *ngFor="let role of rolePermission ; let i=index">
-                  <td>
-                    <div class="custom-control custom-checkbox pos-t-0">
-                      <input (change)="unSelectAllPermisssion(role.isSelected)" [(ngModel)] = "role.isSelected" type="checkbox" class="custom-control-input" id="customCheck{{i}}{{i}}">
-                      <label class="custom-control-label f-12-500 color-253238" for="customCheck{{i}}{{i}}">{{role.name}}</label>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="custom-control custom-checkbox pos-t-0">
-                      <input type="checkbox" class="custom-control-input" id="customCheck{{i}}{{i+1}}">
-                      <label class="custom-control-label f-12-500 color-253238" for="customCheck{{i}}{{i+1}}"></label>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="custom-control custom-checkbox pos-t-0">
-                      <input type="checkbox" class="custom-control-input" id="customCheck{{i}}{{i+2}}">
-                      <label class="custom-control-label f-12-500 color-253238" for="customCheck{{i}}{{i+2}}"></label>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="custom-control custom-checkbox pos-t-0">
-                      <input type="checkbox" class="custom-control-input" id="customCheck{{i}}{{i+3}}">
-                      <label class="custom-control-label f-12-500 color-253238" for="customCheck{{i}}{{i+3}}"></label>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-           </div>
+      <div class="color-253238 f-16-500 mb-3">
+        <span>Configure permissions</span>
+      </div>
+      <div class="row mb-3">
+        <div class="col-12">
+          <mat-tab-group animationDuration="0ms" class="horizontalTab tab001">
+            <mat-tab label="Contacts">Contacts</mat-tab>
+            <mat-tab label="Leads">Leads</mat-tab>
+            <mat-tab label="Task">Task</mat-tab>
+            <mat-tab label="Appointment">Appointment</mat-tab>
+            <mat-tab label="Settings">
 
-         </div>
-       </div>
+                  <div class="table-responsive">
+                   <table class="table table-borderless checkbox001 customTB001">
+                     <thead class="color-253238 v-top">
+                       <tr>
+                         <th class="w-75">
+                           <div class="custom-control custom-checkbox pos-t-0">
+                             <input (change)="selectAllPermisssion()" type="checkbox" class="custom-control-input" id="customCheck1" [(ngModel)] = "isSelectAll">
+                             <label class="custom-control-label f-12-500 color-253238" for="customCheck1">All Modules</label>
+                           </div>
+                         </th>
+                         <th class="f-10-400">View</th>
+                         <th class="f-10-400">Create</th>
+                         <th class="f-10-400">Edit</th>
+                       </tr>
+                     </thead>
+                     <tbody class="">
+                       <tr *ngFor="let role of rolePermission ; let i=index">
+                         <td>
+                           <div class="custom-control custom-checkbox pos-t-0">
+                             <input (change)="unSelectAllPermisssion(role.isSelected)" [(ngModel)] = "role.isSelected" type="checkbox" class="custom-control-input" id="customCheck{{i}}{{i}}">
+                             <label class="custom-control-label f-12-500 color-253238" for="customCheck{{i}}{{i}}">{{role.name}}</label>
+                           </div>
+                         </td>
+                         <td>
+                           <div class="custom-control custom-checkbox pos-t-0">
+                             <input type="checkbox" class="custom-control-input" id="customCheck{{i}}{{i+1}}">
+                             <label class="custom-control-label f-12-500 color-253238" for="customCheck{{i}}{{i+1}}"></label>
+                           </div>
+                         </td>
+                         <td>
+                           <div class="custom-control custom-checkbox pos-t-0">
+                             <input type="checkbox" class="custom-control-input" id="customCheck{{i}}{{i+2}}">
+                             <label class="custom-control-label f-12-500 color-253238" for="customCheck{{i}}{{i+2}}"></label>
+                           </div>
+                         </td>
+                         <td>
+                           <div class="custom-control custom-checkbox pos-t-0">
+                             <input type="checkbox" class="custom-control-input" id="customCheck{{i}}{{i+3}}">
+                             <label class="custom-control-label f-12-500 color-253238" for="customCheck{{i}}{{i+3}}"></label>
+                           </div>
+                         </td>
+                       </tr>
+                     </tbody>
+                   </table>
+                  </div>
+
+            </mat-tab>
+            <mat-tab label="Email">Email</mat-tab>
+            <mat-tab label="Log">Log</mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
     </div>
   </div>
   <div class="modal-footer">

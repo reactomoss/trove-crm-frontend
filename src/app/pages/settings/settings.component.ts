@@ -224,6 +224,13 @@ closeResult = '';
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
   }
+  openNewRole(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'dialog001', size: 'xl'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
