@@ -4,11 +4,6 @@ import { AppComponent } from './app.component';
 import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { MatButtonModule} from '@angular/material/button';
-import { MatFormFieldModule} from '@angular/material/form-field';
-import { MatInputModule} from '@angular/material/input';
-import { MatIconModule} from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
 import { SharedModule } from './shared/shared.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -30,12 +25,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
     SharedModule,
-    MatMenuModule,
   ],
   providers: [],
   exports:[RouterModule],

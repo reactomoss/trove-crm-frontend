@@ -1,0 +1,260 @@
+<app-header></app-header>
+<div class="topBar">
+    <div class="top1">
+        <mat-icon (click)="goToList()">arrow_back</mat-icon>
+        <span>Packet Monster Sales opportunity</span>
+        <button mat-button class="ml-5">
+            <mat-icon class="iconInButton">edit</mat-icon>
+            Edit
+        </button>
+    </div>
+    <div class="top2">
+        <div class="stage-wrapper">
+            <div class="stage-item stage-active">Sales Pipeline</div>
+            <div class="stage-item">Discovery</div>
+            <div class="stage-item">Qualified</div>
+            <div class="stage-item">Evolution</div>
+            <div class="stage-item">Negotiation</div>
+            <div class="stage-item">Closed</div>
+            <div class="stage-item stage-new">New Stage</div>
+        </div>
+    </div>
+</div>
+
+<div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" class="mainPart">
+    <div class="leftPart" fxFlex="22">
+        <div class="leftItem1">
+            <mat-icon>edit</mat-icon>
+            <div>
+                <span class="span1">Packet Monster</span><br/>
+                <span class="span2">Employee at Packet Monster, Inc</span>
+            </div>
+        </div>
+        <div class="leftItem2">
+            <mat-form-field>
+                <mat-label>Status</mat-label>
+                <mat-select>
+                    <mat-option value="Progress">
+                        Progress
+                    </mat-option>
+                    <mat-option value="Won">
+                        Won
+                    </mat-option>
+                    <mat-option value="Lost">
+                        Lost
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="leftItem3">
+            <div class="personInfo">
+                <div>
+                    <img alt="Image" src="../../../assets/images/user-sample.png">
+                </div>
+                <div class="ml-2">
+                    <span class="span1">Wes Studi</span><br>
+                    <span class="span2">Manager</span>
+                </div>
+            </div>
+            <div class="panel">
+                <mat-icon>phone</mat-icon> Work <span class="span3">869 673 5678</span>
+            </div>
+            <div class="panel">
+                <mat-icon>phone</mat-icon> Personal <span class="span3">869 673 5678</span>
+            </div>
+            <div class="panel">
+                <mat-icon>email</mat-icon> Email <span class="span4">wesstudi@pocketmonster.com</span>
+            </div>
+        </div>
+        <div class="leftItem4">
+            <p class="pType1">Estimated cloding date</p>
+            <p class="pType2">16/1/2021</p>
+            <p class="pType1">Added on</p>
+            <p class="pType2">1/1/2021</p>
+            <p class="pType1">Lead source</p>
+            <p class="pType2">LinkedIn</p>
+            <p class="pType1">Description</p>
+            <p class="pType3">Enter a fixed salary, assign Recurring Schedule.</p>
+        </div>
+        <div class="leftItem5">
+            <p class="pType1">Tags</p>
+            <button mat-button>
+                James
+                <mat-icon class="iconInButton">close</mat-icon>
+            </button>
+        </div>
+    </div>
+    <div class="centerPart" fxFlex="50">
+        <app-text-editor></app-text-editor>
+        <div>
+            <span class="selectSpan">Displaying</span>
+            <mat-form-field style="width: 90px">
+                <mat-select>
+                    <mat-option value="0">
+                        All activity
+                    </mat-option>
+                    <mat-option value="1">
+                        Notes
+                    </mat-option>
+                    <mat-option value="2">
+                        Email
+                    </mat-option>
+                    <mat-option value="3">
+                        Call
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="centerContent">
+            <div class="centerItem">
+                <div class="centerTitle">
+                    <div class="infoDiv">
+                        <mat-icon class="commentIcon">comment</mat-icon>
+                        <div>
+                            <span class="span1">
+                                Wes Studi
+                            </span>
+                            <span class="span2">
+                                wrote a note for Brian Markinson
+                            </span>
+                        </div>
+                    </div>
+                    <div class="actionDiv">
+                        <mat-icon>edit</mat-icon>
+                        <mat-icon>delete</mat-icon>
+                        <span class="span3">1/1/2021 7:30AM</span>
+                    </div>
+                </div>
+                <div class="centerMsg">
+                    Helllo Markinson!<br>
+                    Hope your team will implement many new exciting features in the upcoming versions.
+                </div>
+            </div>
+            <div class="centerItem">
+                <div class="centerTitle">
+                    <div class="infoDiv">
+                        <mat-icon class="commentIcon">comment</mat-icon>
+                        <div>
+                            <span class="span1">
+                                Wes Studi
+                            </span>
+                            <span class="span2">
+                                wrote a note for Brian Markinson
+                            </span>
+                        </div>
+                    </div>
+                    <div class="actionDiv">
+                        <mat-icon>edit</mat-icon>
+                        <mat-icon>delete</mat-icon>
+                        <span class="span3">1/1/2021 7:30AM</span>
+                    </div>
+                </div>
+                <div class="centerMsg">
+                    Helllo Markinson!<br>
+                    Hope your team will implement many new exciting features in the upcoming versions.
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="rightPart" fxFlex="28">
+        <div>
+            <mat-accordion [multi]="true">
+                <mat-expansion-panel class="mat-elevation-z0" [hideToggle]="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <mat-icon class="mr-2">keyboard_arrow_down</mat-icon>
+                            Deal
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="panel-content1">
+                        <div>
+                            <span>Total Value</span><br>
+                            <span class="priceSpan">$430.00</span>
+                        </div>
+                        <div>
+                            <span>Total Expected</span><br>
+                            <span class="priceSpan">$430.00</span>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel class="mat-elevation-z0" [hideToggle]="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <mat-icon class="mr-2">keyboard_arrow_down</mat-icon>
+                            Associated Contacts
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="panel-content">
+                        <div class="personInfo">
+                            <div>
+                                <img alt="Image" src="../../../assets/images/user-sample.png">
+                            </div>
+                            <div class="ml-2">
+                                <span class="span1">Wes Studi</span><br>
+                                <span class="span2">Manager</span>
+                            </div>
+                        </div>
+                        <div class="personInfo mt-2">
+                            <div>
+                                <img alt="Image" src="../../../assets/images/user-sample.png">
+                            </div>
+                            <div class="ml-2">
+                                <span class="span1">Packet Monster</span><br>
+                                <span class="span2">Employee at Packet Monster, Inc.</span>
+                            </div>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel class="mat-elevation-z0" [hideToggle]="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title class="addPanelTitle">
+                            <div>
+                                <mat-icon class="mr-2">keyboard_arrow_down</mat-icon>
+                                Upcoming Appointments
+                            </div>
+                            <div>
+                                <button mat-button class="iconButton" (click)="addAppoint()">
+                                    <mat-icon>add</mat-icon>
+                                </button>
+                            </div>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="panel-content">
+                        *
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel class="mat-elevation-z0" [hideToggle]="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title class="addPanelTitle">
+                            <div>
+                                <mat-icon class="mr-2">keyboard_arrow_down</mat-icon>
+                                Tasks
+                            </div>
+                            <div>
+                                <button mat-button class="iconButton" (click)="addTask()">
+                                    <mat-icon>add</mat-icon>
+                                </button>
+                            </div>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="panel-content">
+                        <mat-checkbox color="primary">Packet Monster Sales opportunity</mat-checkbox>
+                        <mat-checkbox color="primary">Ux design meeting at 17:30hrs.</mat-checkbox>
+                        <mat-checkbox color="primary">Landing page required for new CRM app</mat-checkbox>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel class="mat-elevation-z0" [hideToggle]="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <mat-icon class="mr-2">keyboard_arrow_down</mat-icon>
+                            Files
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="panel-content">
+                        *
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+    </div>
+</div>

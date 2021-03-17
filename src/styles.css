@@ -116,3 +116,68 @@ padding: 8px 10px;
 .mat-form-field .mat-form-field-underline {
   height: 0 !important;
 }
+
+.mat-tab-label-active {
+  background-color: white;
+  border: 1px solid #D0D9DE;
+  border-bottom: white;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+.mat-tab-group .mat-tab-header {
+  border-bottom-width: 0;
+}
+
+.mat-tab-group .mat-tab-body {
+  background-color: white;
+  border: 1px solid #D0D9DE;
+  border-radius: 6px;
+  border-top-left-radius: 0;
+  border-top-color: white;
+}
+
+.mat-tab-group .mat-tab-label {
+  height: 35px;
+}
+
+.mat-tab-group .mat-tab-label-content {
+  font-size: 12px;
+}
+
+.mat-tab-group .mat-tab-label-content .mat-icon{
+  margin-right: 5px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;;
+}
+
+.mat-tab-group .mat-tab-header .mat-ink-bar {
+  display: none;
+}
+
+.cancelButton {
+  background: #EFF2F7;
+  border: 1px solid #D0D9DE;
+  box-sizing: border-box;
+  border-radius: 1.8305px;
+  line-height: 30px !important;
+  font-size: 12px;
+  margin-top: 10px !important;
+}
+
+.saveButton {
+  background: #002868;
+  color: white;
+  box-sizing: border-box;
+  border-radius: 1.8305px;
+  line-height: 30px !important;
+  font-size: 12px;
+  margin-top: 10px !important;
+  margin-left: 8px !important;
+}
+
+.mat-accordion-multi .mat-expansion-panel-body {
+  background-color: white;
+}
