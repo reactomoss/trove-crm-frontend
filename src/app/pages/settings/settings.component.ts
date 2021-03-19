@@ -198,33 +198,32 @@ pipelines: PIPELINESTAGE[]; /*For Pipeline Table*/
 importHistory: IMPORTHISTORY[]; /*For Imports History Table*/
 /*Create New Role Modal Settings All Modules checkbox*/
   isSelectAllSettings:boolean;
+  isSelectAllSettingsView:boolean;
+  isSelectAllSettingsCreate:boolean;
+  isSelectAllSettingsEdit:boolean;
   settingsPermission:any = [
     {
       name: "Administration",
-      isSelected: false
+      isSelected: false,
+      isSelectedView: false,
+      isSelectedCreate: false,
+      isSelectedEdit: false,
     },
     {
       name: "Lead access ",
-      isSelected: false
+      isSelected: false,
+      isSelectedView: false,
+      isSelectedCreate: false,
+      isSelectedEdit: false,
     },
     {
       name: "Contact access",
-      isSelected: false
+      isSelected: false,
+      isSelectedView: false,
+      isSelectedCreate: false,
+      isSelectedEdit: false,
     }
   ];
-/*Create New Role Modal Settings All Modules checkbox*/
-/*Create New Role Modal Settings View checkbox*/
-isSelectAllSettingsView:boolean;
-/*Create New Role Modal Settings View checkbox*/
-/*Create New Role Modal Settings Create checkbox*/
-isSelectAllSettingsCreate:boolean;
-
-/*Create New Role Modal Settings Create checkbox*/
-/*Create New Role Modal Settings Edit checkbox*/
-isSelectAllSettingsEdit:boolean;
-
-/*Create New Role Modal Settings Edit checkbox*/
-
 /*Notification user checkbox*/
 isNotiUserAll:boolean;
 notificationUser:any=[
@@ -419,7 +418,7 @@ this.accountForm = new FormGroup({
 /*Create New Role Modal Settings View checkbox*/
 selectAllSettingsView(){
   this.settingsPermission.map(r => {
-    r.isSelected= this.isSelectAllSettingsView;
+    r.isSelectedView= this.isSelectAllSettingsView;
   });
 }
 
@@ -427,14 +426,45 @@ unSelectAllSettingsView(isSelected){
  if(!isSelected){
    this.isSelectAllSettingsView=false;
  }else if(this.settingsPermission.length ===
-  this.settingsPermission.filter(r => {return r.isSelected === true}).length){
+  this.settingsPermission.filter(r => {return r.isSelectedView === true}).length){
     this.isSelectAllSettingsView=true;
  }
 }
 /*Create New Role Modal Settings View checkbox*/
 
+/*Create New Role Modal Settings Create checkbox*/
+selectAllSettingsCreate(){
+  this.settingsPermission.map(r => {
+    r.isSelectedCreate= this.isSelectAllSettingsCreate;
+  });
+}
 
+unSelectAllSettingsCreate(isSelected){
+ if(!isSelected){
+   this.isSelectAllSettingsCreate=false;
+ }else if(this.settingsPermission.length ===
+  this.settingsPermission.filter(r => {return r.isSelectedCreate === true}).length){
+    this.isSelectAllSettingsCreate=true;
+ }
+}
+/*Create New Role Modal Settings Create checkbox*/
 
+/*Create New Role Modal Settings Create checkbox*/
+selectAllSettingsEdit(){
+  this.settingsPermission.map(r => {
+    r.isSelectedEdit= this.isSelectAllSettingsEdit;
+  });
+}
+
+unSelectAllSettingsEdit(isSelected){
+ if(!isSelected){
+   this.isSelectAllSettingsEdit=false;
+ }else if(this.settingsPermission.length ===
+  this.settingsPermission.filter(r => {return r.isSelectedEdit === true}).length){
+    this.isSelectAllSettingsEdit=true;
+ }
+}
+/*Create New Role Modal Settings Edit checkbox*/
 
 /*Notification user checkbox*/
 selectAllNotiUser(){
@@ -691,3 +721,5 @@ files: any[] = [];
     this.dataSourceImport = new MatTableDataSource(this.importHistory)/*For Import History Table*/
   }
 }
+
+
