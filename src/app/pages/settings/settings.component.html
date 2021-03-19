@@ -74,110 +74,137 @@
                    </div>
                  </div>
             </mat-tab>
-            <mat-tab label="Role">
-              <div class="row mb-1">
+            <mat-tab label="Users & Roles">
+              <div class="row mb-3">
                 <div class="col-auto">
-                  <div class="f-20-400 color-253238">Manage Role</div>
-                </div>
-                <div class="col text-right">
-                  <button (click)="openNewRole(modalNewRole)" class="btnColor1 f-16-500" mat-flat-button>New Role<span class="material-icons fs-16 ml-1">
-                    add
-                    </span></button>
+                  <div class="f-20-400 color-253238">Users & Roles</div>
                 </div>
               </div>
-                <div class="table001 tablePagination">
-                  <div class="row justify-content-start">
-                    <div class="col-sm-6 col-md-6 col-lg-5 col-xl-3">
-                      <div class="input-group mb-3 inputSearch001">
-                        <input class="form-control" matInput  (keyup)="rolesFilter($event)" placeholder="Search..." #filterRoles>
-                        <div class="input-group-append">
-                          <span class="material-icons input-group-text">search</span>
+              <div class="row alignTabCSS">
+                <div class="col-sm-12">
+                  <mat-tab-group animationDuration="0ms" class="horizontalTab tab002 minWidth100">
+                    <mat-tab label="Users">
+                      <div class="table001 tablePagination">
+                        <div class="row justify-content-start">
+                          <div class="col-sm-6 col-md-6 col-lg-5 col-xl-3">
+                            <div class="input-group mb-3 inputSearch001">
+                              <input class="form-control" matInput (keyup)="usersFilter($event)" placeholder="Search..." #filterUsers>
+                              <div class="input-group-append">
+                                <span class="material-icons input-group-text">search</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col text-right mb-10-xs">
+                            <button (click)="open(modalNewUser)" class="btnColor1 f-16-500" mat-flat-button>New user<span class="material-icons fs-16 ml-1">
+                              add
+                              </span></button>
+                          </div>
                         </div>
+                        <div class="color-253238 table-responsive table001">
+                            <table class="w-100" mat-table [dataSource]="dataSourceUser" matSort #USERSSORT="matSort">
+                              <!-- Role Column -->
+
+                              <ng-container matColumnDef="user">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> User </th>
+                                <td mat-cell *matCellDef="let row">
+                                  <img class="userTableImg" [src]="row.profile" />{{row.user}} </td>
+                              </ng-container>
+                              <ng-container matColumnDef="role">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
+                                <td mat-cell *matCellDef="let row"> {{row.role}} </td>
+                              </ng-container>
+                               <ng-container matColumnDef="accessLevel">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Access Level </th>
+                                <td mat-cell *matCellDef="let row"> {{row.accessLevel}} </td>
+                              </ng-container>
+                               <ng-container matColumnDef="status">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+                                <td mat-cell *matCellDef="let row"> <mat-slide-toggle  class="slideToggle001"></mat-slide-toggle>
+                                </td>
+                              </ng-container>
+                              <ng-container matColumnDef="action">
+                                <th class="w-220px" mat-header-cell *matHeaderCellDef> Action </th>
+                                <td mat-cell *matCellDef="let row">
+                                <a (click)="open(modalNewUser)" mat-flat-button class="btnEdit1 f-14-400">
+                                  <span class="material-icons mr-1 fs-14">create</span>
+                                  Edit
+                                </a>
+                                <a (click)="open(modalDeletePipeline)" mat-flat-button class="btnDelete1 f-14-400 ml-2">Delete</a>
+                                </td>
+                              </ng-container>
+
+                              <tr mat-header-row *matHeaderRowDef="displayedUserColumns;"></tr>
+                              <tr mat-row *matRowDef="let row; columns: displayedUserColumns;"></tr>
+                              <!-- Row shown when there is no matching data. -->
+                              <tr class="mat-row" *matNoDataRow>
+                                <td class="mat-cell" colspan="4">No data matching the filter "{{filterUsers.value}}"</td>
+                              </tr>
+                            </table>
+                        </div>
+                        <mat-paginator #USERSPAGINATOR="matPaginator" [pageSizeOptions]="[7, 15, 100]"></mat-paginator>
                       </div>
+                    </mat-tab>
+                    <mat-tab label="Roles">
+                      <div class="table001 tablePagination">
+                        <div class="row justify-content-start">
+                          <div class="col-sm-6 col-md-6 col-lg-5 col-xl-3">
+                            <div class="input-group mb-3 inputSearch001">
+                              <input class="form-control" matInput  (keyup)="rolesFilter($event)" placeholder="Search..." #filterRoles>
+                              <div class="input-group-append">
+                                <span class="material-icons input-group-text">search</span>
+                              </div>
+                            </div>
 
-                    </div>
-                  </div>
-                  <div class="color-253238 table-responsive table001">
-                      <table class="w-100" mat-table [dataSource]="dataSourceRole" matSort #ROLESSORT="matSort">
-                        <!-- Role Column -->
-                        <ng-container matColumnDef="role">
-                          <th mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
-                          <td mat-cell *matCellDef="let row"> {{row.role}} </td>
-                        </ng-container>
+                          </div>
+                          <div class="col text-right mb-10-xs">
+                            <button (click)="openNewRole(modalNewRole)" class="btnColor1 f-16-500" mat-flat-button>New Role<span class="material-icons fs-16 ml-1">
+                              add
+                              </span></button>
+                          </div>
+                        </div>
+                        <div class="color-253238 table-responsive table001">
+                            <table class="w-100" mat-table [dataSource]="dataSourceRole" matSort #ROLESSORT="matSort">
+                              <!-- Role Column -->
+                              <ng-container matColumnDef="role">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
+                                <td mat-cell *matCellDef="let row"> {{row.role}} </td>
+                              </ng-container>
 
-                        <!-- AccessLevel Column -->
-                        <ng-container matColumnDef="accessLevel">
-                          <th mat-header-cell *matHeaderCellDef mat-sort-header> Access Level </th>
-                          <td mat-cell *matCellDef="let row"> {{row.accessLevel}} </td>
-                        </ng-container>
-                        <!-- Status Column -->
-                        <ng-container matColumnDef="status">
-                          <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-                          <td mat-cell *matCellDef="let row"> {{row.status}} </td>
-                        </ng-container>
+                              <!-- AccessLevel Column -->
+                              <ng-container matColumnDef="accessLevel">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+                                <td mat-cell *matCellDef="let row"> {{row.accessLevel}} </td>
+                              </ng-container>
+                              <!-- Status Column -->
+                              <ng-container matColumnDef="status">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+                                <td mat-cell *matCellDef="let row"> <mat-slide-toggle class="slideToggle001"></mat-slide-toggle>
+                                </td>
+                              </ng-container>
+                              <ng-container matColumnDef="action">
+                                <th class="w-220px" mat-header-cell *matHeaderCellDef> Action </th>
+                                <td mat-cell *matCellDef="let row">
+                                <a (click)="openNewRole(modalNewRole)" mat-flat-button class="btnEdit1 f-14-400">
+                                  <span class="material-icons mr-1 fs-14">create</span>
+                                  Edit
+                                </a>
+                                <a (click)="open(modalDeletePipeline)" mat-flat-button class="btnDelete1 f-14-400 ml-2">Delete</a>
+                                </td>
+                              </ng-container>
 
-                        <tr mat-header-row *matHeaderRowDef="displayedRoleColumns;"></tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedRoleColumns;"></tr>
-                        <!-- Row shown when there is no matching data. -->
-                        <tr class="mat-row" *matNoDataRow>
-                          <td class="mat-cell" colspan="4">No data matching the filter "{{filterRoles.value}}"</td>
-                        </tr>
-                      </table>
-                  </div>
-                  <mat-paginator #ROLESPAGINATOR="matPaginator" [pageSizeOptions]="[7, 15, 100]"></mat-paginator>
-                </div>
-            </mat-tab>
-            <mat-tab label="User">
-              <div class="row mb-1">
-                <div class="col-auto">
-                  <div class="f-20-400 color-253238">Manage User</div>
-                </div>
-                <div class="col text-right">
-                  <button (click)="open(modalNewUser)" class="btnColor1 f-16-500" mat-flat-button>New user<span class="material-icons fs-16 ml-1">
-                    add
-                    </span></button>
-                </div>
-              </div>
-              <div class="table001 tablePagination">
-                <div class="row justify-content-start">
-                  <div class="col-sm-6 col-md-6 col-lg-5 col-xl-3">
-                    <div class="input-group mb-3 inputSearch001">
-                      <input class="form-control" matInput (keyup)="usersFilter($event)" placeholder="Search..." #filterUsers>
-                      <div class="input-group-append">
-                        <span class="material-icons input-group-text">search</span>
+                              <tr mat-header-row *matHeaderRowDef="displayedRoleColumns;"></tr>
+                              <tr mat-row *matRowDef="let row; columns: displayedRoleColumns;"></tr>
+                              <!-- Row shown when there is no matching data. -->
+                              <tr class="mat-row" *matNoDataRow>
+                                <td class="mat-cell" colspan="4">No data matching the filter "{{filterRoles.value}}"</td>
+                              </tr>
+                            </table>
+                        </div>
+                        <mat-paginator #ROLESPAGINATOR="matPaginator" [pageSizeOptions]="[7, 15, 100]"></mat-paginator>
                       </div>
-                    </div>
-                  </div>
+                    </mat-tab>
+                    </mat-tab-group>
                 </div>
-                <div class="color-253238 table-responsive table001">
-                    <table class="w-100" mat-table [dataSource]="dataSourceUser" matSort #USERSSORT="matSort">
-                      <!-- Role Column -->
-
-                      <ng-container matColumnDef="user">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> User </th>
-                        <td mat-cell *matCellDef="let row">
-                          <img class="userTableImg" [src]="row.profile" />{{row.user}} </td>
-                      </ng-container>
-                      <ng-container matColumnDef="role">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
-                        <td mat-cell *matCellDef="let row"> {{row.role}} </td>
-                      </ng-container> <ng-container matColumnDef="accessLevel">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Access Level </th>
-                        <td mat-cell *matCellDef="let row"> {{row.accessLevel}} </td>
-                      </ng-container> <ng-container matColumnDef="status">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-                        <td mat-cell *matCellDef="let row"> {{row.status}} </td>
-                      </ng-container>
-
-                      <tr mat-header-row *matHeaderRowDef="displayedUserColumns;"></tr>
-                      <tr mat-row *matRowDef="let row; columns: displayedUserColumns;"></tr>
-                      <!-- Row shown when there is no matching data. -->
-                      <tr class="mat-row" *matNoDataRow>
-                        <td class="mat-cell" colspan="4">No data matching the filter "{{filterUsers.value}}"</td>
-                      </tr>
-                    </table>
-                </div>
-                <mat-paginator #USERSPAGINATOR="matPaginator" [pageSizeOptions]="[7, 15, 100]"></mat-paginator>
               </div>
             </mat-tab>
             <mat-tab label="Account">
@@ -186,7 +213,7 @@
                   <div class="f-20-400 color-253238">Account Preference</div>
                 </div>
               </div>
-              <form action="">
+              <form [formGroup]="accountForm" action="">
                 <div class="row input001 color-253238 v-Bottom">
                   <div class="col-sm-12 col-md-8 col-lg-6 col-xl-5">
                     <div>
@@ -196,8 +223,8 @@
                       <div class="row no-gutters">
                         <div class="col-7">
                           <mat-form-field appearance="fill" class="bg-F7F8FA">
-                            <mat-select>
-                              <mat-option  *ngFor="let timeZone of timeZone" [value]="timeZone">{{timeZone}}</mat-option>
+                            <mat-select [formControl]="timeZoneControl">
+                              <mat-option  *ngFor="let timeZone of timeZones" [value]="timeZone.value">{{timeZone.viewValue}}</mat-option>
                             </mat-select>
                           </mat-form-field>
                         </div>
@@ -213,16 +240,16 @@
                   <div class="col-sm-12 col-md-8 col-lg-3 col-xl-3">
                       <label class="f-12-400">Time Format</label>
                       <mat-form-field appearance="fill" class="bg-F7F8FA">
-                        <mat-select>
-                          <mat-option  *ngFor="let timeFormat of timeFormat" [value]="timeFormat">{{timeFormat}}</mat-option>
+                        <mat-select [formControl]="timeFormatControl">
+                          <mat-option  *ngFor="let timeFormat of timeFormats" [value]="timeFormat.value">{{timeFormat.viewValue}}</mat-option>
                         </mat-select>
                       </mat-form-field>
                   </div>
                   <div class="col-sm-12 col-md-8 col-lg-3 col-xl-3">
                     <label class="f-12-400">Date Format</label>
                     <mat-form-field appearance="fill" class="bg-F7F8FA">
-                      <mat-select>
-                        <mat-option  *ngFor="let dateFormat of dateFormat" [value]="dateFormat">{{dateFormat}}</mat-option>
+                      <mat-select [formControl]="dateFormatControl">
+                        <mat-option  *ngFor="let dateFormat of dateFormats" [value]="dateFormat.value">{{dateFormat.viewValue}}</mat-option>
                       </mat-select>
                     </mat-form-field>
                 </div>
@@ -230,8 +257,8 @@
                   <div class="col-sm-12 col-md-8 col-lg-7 col-xl-5">
                     <label class="f-12-400">Currency Format</label>
                     <mat-form-field appearance="fill" class="bg-F7F8FA">
-                      <mat-select>
-                        <mat-option  *ngFor="let currencyFormat of currencyFormat" [value]="currencyFormat">{{currencyFormat}}</mat-option>
+                      <mat-select [formControl]="currencyFormatControl">
+                        <mat-option  *ngFor="let currencyFormat of currencyFormats" [value]="currencyFormat.value">{{currencyFormat.viewValue}}</mat-option>
                       </mat-select>
                     </mat-form-field>
                 </div>
@@ -840,58 +867,153 @@
       <div class="row mb-3">
         <div class="col-12">
           <mat-tab-group animationDuration="0ms" class="horizontalTab tab001">
-            <mat-tab label="Contacts">Contacts</mat-tab>
-            <mat-tab label="Leads">Leads</mat-tab>
+            <mat-tab label="Contacts">
+              <div class="table-responsive">
+                <table class="table table-borderless checkbox001 customTB001">
+                  <thead class="color-253238 v-top">
+                    <tr>
+                      <th class="w-75">
+                        <div class="custom-control custom-checkbox pos-t-0">
+                          <input (change)="selectAllContacts()" type="checkbox" class="custom-control-input" id="selectAllCC" [(ngModel)] = "isSelectAllContacts">
+                          <label class="custom-control-label f-12-500 color-253238" for="selectAllCC">All Modules</label>
+                        </div>
+                      </th>
+                      <th class="f-10-400">View</th>
+                      <th class="f-10-400">Create</th>
+                      <th class="f-10-400">Edit</th>
+                    </tr>
+                  </thead>
+                  <tbody class="">
+                    <tr *ngFor="let role of contactsPermission ; let i=index">
+                      <td>
+                        <div class="custom-control custom-checkbox pos-t-0">
+                          <input (change)="unSelectAllContacts(role.isSelected)" [(ngModel)] = "role.isSelected" type="checkbox" class="custom-control-input" id="selectAllCC{{i}}{{i}}">
+                          <label class="custom-control-label f-12-500 color-253238" for="selectAllCC{{i}}{{i}}">{{role.name}}</label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="custom-control custom-checkbox pos-t-0">
+                          <input type="checkbox" class="custom-control-input" id="selectAllCC{{i}}{{i+1}}">
+                          <label class="custom-control-label f-12-500 color-253238" for="selectAllCC{{i}}{{i+1}}"></label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="custom-control custom-checkbox pos-t-0">
+                          <input type="checkbox" class="custom-control-input" id="selectAllCC{{i}}{{i+2}}">
+                          <label class="custom-control-label f-12-500 color-253238" for="selectAllCC{{i}}{{i+2}}"></label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="custom-control custom-checkbox pos-t-0">
+                          <input type="checkbox" class="custom-control-input" id="selectAllCC{{i}}{{i+3}}">
+                          <label class="custom-control-label f-12-500 color-253238" for="selectAllCC{{i}}{{i+3}}"></label>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+               </div>
+            </mat-tab>
+            <mat-tab label="Leads">
+              <div class="table-responsive">
+                <table class="table table-borderless checkbox001 customTB001">
+                  <thead class="color-253238 v-top">
+                    <tr>
+                      <th class="w-75">
+                        <div class="custom-control custom-checkbox pos-t-0">
+                          <input (change)="selectAllLeads()" type="checkbox" class="custom-control-input" id="selectAllCL" [(ngModel)] = "isSelectAllLeads">
+                          <label class="custom-control-label f-12-500 color-253238" for="selectAllCL">All Modules</label>
+                        </div>
+                      </th>
+                      <th class="f-10-400">View</th>
+                      <th class="f-10-400">Create</th>
+                      <th class="f-10-400">Edit</th>
+                    </tr>
+                  </thead>
+                  <tbody class="">
+                    <tr *ngFor="let role of leadsPermission ; let i=index">
+                      <td>
+                        <div class="custom-control custom-checkbox pos-t-0">
+                          <input (change)="unSelectAllLeads(role.isSelected)" [(ngModel)] = "role.isSelected" type="checkbox" class="custom-control-input" id="selectAllCL{{i}}{{i}}">
+                          <label class="custom-control-label f-12-500 color-253238" for="selectAllCL{{i}}{{i}}">{{role.name}}</label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="custom-control custom-checkbox pos-t-0">
+                          <input type="checkbox" class="custom-control-input" id="selectAllCL{{i}}{{i+1}}">
+                          <label class="custom-control-label f-12-500 color-253238" for="selectAllCL{{i}}{{i+1}}"></label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="custom-control custom-checkbox pos-t-0">
+                          <input type="checkbox" class="custom-control-input" id="selectAllCL{{i}}{{i+2}}">
+                          <label class="custom-control-label f-12-500 color-253238" for="selectAllCL{{i}}{{i+2}}"></label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="custom-control custom-checkbox pos-t-0">
+                          <input type="checkbox" class="custom-control-input" id="selectAllCL{{i}}{{i+3}}">
+                          <label class="custom-control-label f-12-500 color-253238" for="selectAllCL{{i}}{{i+3}}"></label>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+               </div>
+            </mat-tab>
             <mat-tab label="Task">Task</mat-tab>
             <mat-tab label="Appointment">Appointment</mat-tab>
             <mat-tab label="Settings">
-
                   <div class="table-responsive">
                    <table class="table table-borderless checkbox001 customTB001">
                      <thead class="color-253238 v-top">
                        <tr>
                          <th class="w-75">
                            <div class="custom-control custom-checkbox pos-t-0">
-                             <input (change)="selectAllPermisssion()" type="checkbox" class="custom-control-input" id="customCheck1" [(ngModel)] = "isSelectAll">
-                             <label class="custom-control-label f-12-500 color-253238" for="customCheck1">All Modules</label>
+                             <input (change)="selectAllSettings()" type="checkbox" class="custom-control-input" id="settingsChkAll" [(ngModel)] = "isSelectAllSettings">
+                             <label class="custom-control-label f-12-500 color-253238" for="settingsChkAll">All Modules</label>
                            </div>
                          </th>
-                         <th class="f-10-400">View</th>
+                         <th class="f-10-400">
+                          <div class="custom-control custom-checkbox pos-t-0">
+                            <input (change)="selectAllSettingsView()" type="checkbox" class="custom-control-input" id="settingsChkAllView" [(ngModel)] = "isSelectAllSettingsView">
+                            <label class="custom-control-label f-12-500 color-253238" for="settingsChkAllView">View</label>
+                          </div>
+                         </th>
                          <th class="f-10-400">Create</th>
                          <th class="f-10-400">Edit</th>
                        </tr>
                      </thead>
                      <tbody class="">
-                       <tr *ngFor="let role of rolePermission ; let i=index">
+                       <tr *ngFor="let role of settingsPermission ; let i=index">
                          <td>
                            <div class="custom-control custom-checkbox pos-t-0">
-                             <input (change)="unSelectAllPermisssion(role.isSelected)" [(ngModel)] = "role.isSelected" type="checkbox" class="custom-control-input" id="customCheck{{i}}{{i}}">
-                             <label class="custom-control-label f-12-500 color-253238" for="customCheck{{i}}{{i}}">{{role.name}}</label>
+                             <input (change)="unSelectAllSettings(role.isSelected)" [(ngModel)] = "role.isSelected" type="checkbox" class="custom-control-input" id="settingsChkAll{{i}}{{i}}">
+                             <label class="custom-control-label f-12-500 color-253238" for="settingsChkAll{{i}}{{i}}">{{role.name}}</label>
                            </div>
                          </td>
                          <td>
                            <div class="custom-control custom-checkbox pos-t-0">
-                             <input type="checkbox" class="custom-control-input" id="customCheck{{i}}{{i+1}}">
-                             <label class="custom-control-label f-12-500 color-253238" for="customCheck{{i}}{{i+1}}"></label>
+                             <input (change)="unSelectAllSettingsView(role.isSelected)" [(ngModel)] = "role.isSelected" type="checkbox" class="custom-control-input" id="settingsChkAll{{i}}{{i+1}}">
+                             <label class="custom-control-label f-12-500 color-253238" for="settingsChkAll{{i}}{{i+1}}"></label>
                            </div>
                          </td>
                          <td>
                            <div class="custom-control custom-checkbox pos-t-0">
-                             <input type="checkbox" class="custom-control-input" id="customCheck{{i}}{{i+2}}">
-                             <label class="custom-control-label f-12-500 color-253238" for="customCheck{{i}}{{i+2}}"></label>
+                             <input type="checkbox" class="custom-control-input" id="settingsChkAll{{i}}{{i+2}}">
+                             <label class="custom-control-label f-12-500 color-253238" for="settingsChkAll{{i}}{{i+2}}"></label>
                            </div>
                          </td>
                          <td>
                            <div class="custom-control custom-checkbox pos-t-0">
-                             <input type="checkbox" class="custom-control-input" id="customCheck{{i}}{{i+3}}">
-                             <label class="custom-control-label f-12-500 color-253238" for="customCheck{{i}}{{i+3}}"></label>
+                             <input type="checkbox" class="custom-control-input" id="settingsChkAll{{i}}{{i+3}}">
+                             <label class="custom-control-label f-12-500 color-253238" for="settingsChkAll{{i}}{{i+3}}"></label>
                            </div>
                          </td>
                        </tr>
                      </tbody>
                    </table>
                   </div>
-
             </mat-tab>
             <mat-tab label="Email">Email</mat-tab>
             <mat-tab label="Log">Log</mat-tab>
@@ -915,7 +1037,7 @@
   </div>
 <div class="bg-EFF2F7 px-4 py-3">
   <div class="row align-items-center">
-    <div class="col-sm-5 checkbox002 mb-10-xs">
+    <div class="col-sm-5 checkbox002 mb-10-xs d-none">
       <div class="input-group inputSearch001">
         <input type="text" matInput class="form-control" placeholder="Search field">
         <div class="input-group-append">
@@ -923,7 +1045,7 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-7 checkbox002 text-right">
+    <div class="col-sm-7 checkbox002 text-right ml-auto">
       <div class="custom-control custom-checkbox pos-t-0">
         <input  type="checkbox" class="custom-control-input" id="chkAddPerson" [(ngModel)]="isAddPersonMand">
         <label class="custom-control-label" for="chkAddPerson">Only show mandatory fields</label>
@@ -932,10 +1054,10 @@
   </div>
 
 </div>
-  <div class="modal-body">
-    <div [ngClass]="{'className': addClass450}">
+<div class="modal-body">
+    <div class="hgt400 customVerScroll">
     <form [formGroup]="addPersonForm" novalidate>
-    <div class="px-2 input001 color-253238 pb-0">
+    <div class="px-2 input001 color-253238 pb-0 v-Bottom">
        <div class="row">
         <div class="col-sm-2 mb-3">
            <div class="addPersonImg position-relative">
@@ -1037,8 +1159,8 @@
           <div class="">
             <label  class="f-12-500">Role</label>
             <mat-form-field appearance="fill">
-              <mat-select>
-                <mat-option  *ngFor="let addUserRole of addUserRole" [value]="addUserRole">{{addUserRole}}</mat-option>
+              <mat-select [formControl]="addPersonRoleControl">
+                <mat-option  *ngFor="let addUserRole of addPersonRoles" [value]="addUserRole.value">{{addUserRole.viewValue}}</mat-option>
               </mat-select>
             </mat-form-field>
 
@@ -1196,7 +1318,7 @@
   <div class="modal-footer">
     <div class="px-2">
     <button class="btnColor3-B px-4 f-16-700" mat-flat-button color="primary" (click)="modal.close()">Cancel</button>
-    <button  class="btnColor2 ml-2 px-4 f-16-700" mat-flat-button color="primary">Confirm</button>
+    <button (click)="triggerSnackBar('Are you sure want to delete ', 'Close')"  class="btnColor2 ml-2 px-4 f-16-700" mat-flat-button color="primary">Confirm</button>
     </div>
   </div>
 </ng-template>
