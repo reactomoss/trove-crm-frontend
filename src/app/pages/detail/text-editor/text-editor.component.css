@@ -6,3 +6,15 @@ mat-tab-group {
 .tabContent {
     padding: 10px
 }
+
+.editorButton {
+    width: 100%;
+    padding: 9px 12px;
+    font-weight: bold;
+    font-size: 13px;
+    line-height: 17px;
+    color: #253238;
+    border: 1px solid #D0D9DE;
+    box-sizing: border-box;
+    border-radius: 3px;
+}

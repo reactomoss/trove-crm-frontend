@@ -10,7 +10,7 @@
 
     <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Deal Name</th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        <td mat-cell *matCellDef="let element" class="nameCell"> {{element.name}} </td>
     </ng-container>
 
     <ng-container matColumnDef="stage">

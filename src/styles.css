@@ -114,7 +114,7 @@ padding: 8px 10px;
 }
 
 .mat-form-field .mat-form-field-underline {
-  height: 0 !important;
+  /* height: 0 !important; */
 }
 
 .mat-tab-label-active {
@@ -180,4 +180,50 @@ padding: 8px 10px;
 
 .mat-accordion-multi .mat-expansion-panel-body {
   background-color: white;
+}
+
+.mat-dialog-container {
+  padding: 0px !important;
+}
+
+.mat-form-field .mat-form-field-infix {
+  border-top: 0;
+  padding-bottom: 8px;
+  padding-top: 12px;
+}
+
+.mat-form-field .mat-form-field-infix .mat-select-arrow-wrapper {
+  padding-top: 10px;
+}
+
+.mat-checkbox .mat-checkbox-inner-container {
+  height: 20px;
+  width: 20px;
+  margin-right: 12px;
+}
+
+.mat-checkbox .mat-checkbox-label {
+  line-height: 20px;
+}
+
+.mat-dialog-content {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.mat-dialog-content::-webkit-scrollbar {
+  display: none;
+}
+
+.mat-form-field-outline {
+  background: white;
+  border-radius: 6px;
+}
+
+.mat-expansion-panel{
+  margin: 0 !important;
+}
+
+.mat-checkbox-checked .mat-checkbox-layout .mat-checkbox-inner-container .mat-checkbox-background {
+  background-color: #002868 !important;
 }

@@ -1,0 +1,104 @@
+.mat-dialog-title {
+    padding: 24px 40px ;
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 29px;
+    color: #253238;
+    margin-bottom: 0;
+}
+
+.mat-dialog-content {
+    margin: 0;
+    padding: 0;
+    max-height: none !important;
+}
+
+.mainContent {
+    margin: 20px 40px;
+}
+
+.filterPart {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: #E4E9EF solid 1.73px;
+    border-bottom: #E4E9EF solid 1.73px;
+    background: #EFF2F7;
+    padding: 10px 40px;
+}
+
+.filterPart mat-icon {
+    color: #D0D9DE;
+}
+
+.filterPart mat-form-field {
+    margin-bottom: -1em;
+}
+
+span {
+    font-size: 12px;
+    line-height: 17px;
+    color: #253238;
+}
+
+.formControl {
+    margin-bottom: -0.5em;
+    width: 100%;
+}
+
+.priceDiv {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ownerDiv {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.contactDiv {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.mat-dialog-actions {
+    border-top: #E4E9EF solid 1.73px;
+    background: #EFF2F7;
+    margin: 0;
+    padding: 10px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.deleteBtn {
+    background: white;
+    color: red;
+    border: 1px solid #D0D9DE;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 16px;
+    width: 119px;
+}
+
+.cancelBtn {
+    background: #EFF2F7;
+    border: 1px solid #D0D9DE;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 16px;
+    width: 119px;
+}
+
+.createBtn {
+    background: #1F304B;
+    border-radius: 3px;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    color: #FFFFFF;
+    width: 119px;
+}

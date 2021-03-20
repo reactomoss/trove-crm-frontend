@@ -1,21 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HeaderComponent } from './header/header.component';
-import {MatIconModule} from '@angular/material/icon';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatButtonModule} from '@angular/material/button';
+import { HeaderComponent, LeadDialog } from './header/header.component';
 import { RouterModule,Routes } from '@angular/router';
- const routes : Routes = [
+import { DemoMaterialModule } from '../material/material-module';
+import { FormsModule } from '@angular/forms';
 
- ]
+const routes: Routes = [
+
+]
+ 
 @NgModule({
-  declarations: [HeaderComponent],
+  declarations: [HeaderComponent, LeadDialog],
   imports: [
     CommonModule,
-    MatIconModule,
-    MatMenuModule,
-    MatButtonModule,
-    RouterModule.forChild(routes)
+    DemoMaterialModule,
+    RouterModule.forChild(routes),
+    FormsModule
   ],
   exports: [
     HeaderComponent,

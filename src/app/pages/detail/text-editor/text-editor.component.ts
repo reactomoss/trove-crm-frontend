@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
@@ -12,6 +12,7 @@ export class TextEditorComponent implements AfterViewInit {
     
   public tabGroup: any;
   public activeTabIndex: number | undefined = undefined;
+  public editorShow: boolean = false;
 
   public handleTabChange(e: MatTabChangeEvent) {
     this.activeTabIndex = e.index;
@@ -26,4 +27,11 @@ export class TextEditorComponent implements AfterViewInit {
     this.activeTabIndex = this.tabGroup.selectedIndex;
   }
 
+  public showEditor() {
+    this.editorShow = true 
+  }
+
+  public hideEditor() {
+    this.editorShow = false
+  }
 }

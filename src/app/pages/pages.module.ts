@@ -8,10 +8,13 @@ import { LeadsComponent } from './leads/leads.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { LeadTableComponent } from './leads/lead-table/lead-table.component';
-import { DetailComponent } from './detail/detail.component';
+import { DetailComponent, StageDialog, EditDialog, ConfirmDialog, TaskDialog, AppointDialog, StageSnack } from './detail/detail.component';
 import { DemoMaterialModule } from '../material/material-module';
 import { EditorModule } from "@tinymce/tinymce-angular";
 import { TextEditorComponent } from './detail/text-editor/text-editor.component';
+import { WidgetComponent } from './detail/widget/widget.component';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { FilterComponent } from './leads/filter/filter.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -28,7 +31,15 @@ const routes: Routes = [
     LeadsComponent,
     LeadTableComponent,
     DetailComponent,
-    TextEditorComponent
+    StageDialog,
+    EditDialog,
+    TaskDialog,
+    AppointDialog,
+    ConfirmDialog,
+    StageSnack,
+    TextEditorComponent,
+    WidgetComponent,
+    FilterComponent
   ],
   imports: [
     CommonModule,
@@ -38,7 +49,8 @@ const routes: Routes = [
     FormsModule,
     FlexLayoutModule,
     DemoMaterialModule,
-    EditorModule
+    EditorModule,
+    NgxSliderModule
   ],
   exports:[RouterModule],
 })

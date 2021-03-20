@@ -5,8 +5,9 @@
             Add a Note
         </ng-template>
         <div class="tabContent">
+            <button mat-button class="editorButton" *ngIf="!editorShow" (click)="showEditor()">Mindfatory Team</button>
             <editor 
-                *ngIf="activeTabIndex===0"
+                *ngIf="activeTabIndex===0 && editorShow"
                 apiKey="qddpqw4y0sca4zdtc103gq4cneo50qyyx2ss9febsvv6o269"
                 initialValue="<p>Initial content of the editor</p>" [init]="{
                         toolbar_location: 'bottom',
@@ -24,8 +25,10 @@
                         bullist numlist outdent indent | help'
                     }">
             </editor>
-            <button mat-button class="cancelButton">Cancel</button>
-            <button mat-button class="saveButton">Save</button>
+            <div *ngIf="editorShow">
+                <button mat-button class="cancelButton" (click)="hideEditor()">Cancel</button>
+                <button mat-button class="saveButton">Save</button>
+            </div>
         </div>
     </mat-tab>
 
@@ -35,8 +38,9 @@
             Send an Email
         </ng-template>
         <div class="tabContent">
+            <button mat-button class="editorButton" *ngIf="!editorShow" (click)="showEditor()">Mindfatory Team</button>
             <editor
-                *ngIf="activeTabIndex===1"
+                *ngIf="activeTabIndex===1 && editorShow"
                 apiKey="qddpqw4y0sca4zdtc103gq4cneo50qyyx2ss9febsvv6o269"
                 initialValue="<p>email</p>"
                 [init]="{
@@ -56,8 +60,10 @@
                 }"
                 >
             </editor>
-            <button mat-button class="cancelButton">Cancel</button>
-            <button mat-button class="saveButton">Save</button>
+            <div *ngIf="editorShow">
+                <button mat-button class="cancelButton" (click)="hideEditor()">Cancel</button>
+                <button mat-button class="saveButton">Save</button>
+            </div>
         </div>
     </mat-tab>
 
@@ -67,8 +73,9 @@
             Call
         </ng-template>
         <div class="tabContent">
+            <button mat-button class="editorButton" *ngIf="!editorShow" (click)="showEditor()">Mindfatory Team</button>
             <editor
-                *ngIf="activeTabIndex===2"
+                *ngIf="activeTabIndex===2 && editorShow"
                 apiKey="qddpqw4y0sca4zdtc103gq4cneo50qyyx2ss9febsvv6o269"
                 initialValue="<p>Call</p>"
                 [init]="{
@@ -88,8 +95,10 @@
                 }"
                 >
             </editor>
-            <button mat-button class="cancelButton">Cancel</button>
-            <button mat-button class="saveButton">Save</button>
+            <div *ngIf="editorShow">
+                <button mat-button class="cancelButton" (click)="hideEditor()">Cancel</button>
+                <button mat-button class="saveButton">Save</button>
+            </div>
         </div>
     </mat-tab>
 </mat-tab-group>
