@@ -12,7 +12,7 @@ export const environment = {
     appId: "1:287909577050:web:ebc04308247c94620fb363"
   },
   envName: 'Development',
-  baseUrl: 'https://ct.trovecrm.in/api/v1/', //http://127.0.0.1:8000/api/v1/ | https://ct.trovecrm.in/api/v1/
+  baseUrl: 'http://127.0.0.1:8000/api/v1/', //http://127.0.0.1:8000/api/v1/ | https://ct.trovecrm.in/api/v1/
 
   /** API Methods */
   register: 'account/register',
