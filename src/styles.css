@@ -436,6 +436,7 @@ padding-top: .15rem; padding-left: .5rem;
 .slideToggle001.mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
   background-color: #fff;
 }
+
 @media(max-width:575px){
   .mb-10-xs {margin-bottom: 10px;}
 }

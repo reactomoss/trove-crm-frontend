@@ -4,6 +4,7 @@ import { AppComponent } from './app.component';
 import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 const routes: Routes = [
   { path: '', redirectTo: 'user', pathMatch: 'full' },
   { path: 'user', loadChildren: () => import('./user-registration/user-registration.module').then(m => m.UserRegistrationModule)},
@@ -17,7 +18,7 @@ const routes: Routes = [
   ],
   imports: [
     BrowserModule,RouterModule.forRoot(routes),
-    BrowserAnimationsModule,SharedModule
+    BrowserAnimationsModule,SharedModule,MatSnackBarModule
   ],
   providers: [],
   exports:[RouterModule],

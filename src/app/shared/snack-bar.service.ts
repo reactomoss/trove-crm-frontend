@@ -4,6 +4,7 @@ import {
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
+import { SnackbarComponent } from './snackbar/snackbar.component';
 
 @Injectable({
   providedIn: 'root'
@@ -49,10 +50,15 @@ export class SnackBarService {
   }
 
   openSnackBarBottomCenter(message: string, action: string) {
-    this.snackBar.open(message, action, {
+    this.snackBar.openFromComponent(SnackbarComponent, {
+      data: {
+         message: message,
+         action : action
+      },
        duration: 2000,
        horizontalPosition: this.horizontalPositionCenter,
        verticalPosition: this.verticalPositionBottom,
+       panelClass: 'themeSnackbar'
     });
   }
 
@@ -64,5 +70,4 @@ export class SnackBarService {
     });
   }
 }
-
 
