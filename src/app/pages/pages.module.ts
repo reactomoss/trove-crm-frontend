@@ -7,17 +7,47 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { LeadsComponent } from './leads/leads.component';
 import { LeadTableComponent } from './leads/lead-table/lead-table.component';
 import {MaterialModule} from '../material/material.module';
-const routes : Routes = [
-  {path:'' , redirectTo: 'dashboard' , pathMatch:'full'},
-{path: 'dashboard' , component:PagesComponent},
-{path:'settings' , loadChildren: () => import('./settings/settings.module') .then(m=>m.SettingsModule)},
-{ path: 'leads', component: LeadsComponent },
+import { SettingsComponent } from './settings/settings.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { DetailComponent, StageDialog, EditDialog, ConfirmDialog, TaskDialog, AppointDialog, StageSnack } from './detail/detail.component';
+import { DemoMaterialModule } from '../material/material-module';
+import { EditorModule } from "@tinymce/tinymce-angular";
+import { TextEditorComponent } from './detail/text-editor/text-editor.component';
+import { WidgetComponent } from './detail/widget/widget.component';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { FilterComponent } from './leads/filter/filter.component';
+const routes: Routes = [
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: 'dashboard', component: PagesComponent },
+  // {path:'settings' , loadChildren: () => import('./settings/settings.module') .then(m=>m.SettingsModule)},
+  { path: 'settings', component: SettingsComponent },
+  { path: 'leads', component: LeadsComponent },
+  { path: 'detail', component: DetailComponent }
 ]
 
 @NgModule({
-  declarations: [PagesComponent,LeadsComponent,LeadTableComponent],
+  declarations: [
+    PagesComponent,LeadsComponent,LeadTableComponent,SettingsComponent,
+    DetailComponent,
+    StageDialog,
+    EditDialog,
+    TaskDialog,
+    AppointDialog,
+    ConfirmDialog,
+    StageSnack,
+    TextEditorComponent,
+    WidgetComponent,
+    FilterComponent
+  ],
   imports: [
-    CommonModule, RouterModule.forChild(routes), SharedModule, NgbModule,MaterialModule
+    CommonModule, RouterModule.forChild(routes), SharedModule, NgbModule,MaterialModule,
+    ReactiveFormsModule,
+    FormsModule,
+    FlexLayoutModule,
+    DemoMaterialModule,
+    EditorModule,
+    NgxSliderModule
   ],
   exports:[RouterModule],
 })

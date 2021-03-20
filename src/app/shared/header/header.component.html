@@ -5,26 +5,26 @@
         <span class="userImage pb-3"  [matMenuTriggerFor]="usersettings">
           <span><mat-icon aria-hidden="false">more_vert</mat-icon></span>
           <img alt="Image" src="../../../assets/images/user-sample.png">
-<mat-menu #usersettings="matMenu" class="settingsPanel">
-  <ul class="settingsPanelUL">
-    <li class="mb-2" mat-menu-item>
-     <div class="f-16-500 color-253238 mb-1">Stuart Broad</div>
-     <a  class="f-12-400 color-lite-O">View Profile</a>
-    </li>
-    <li mat-menu-item>
-    <a  class="f-14-400 color-253238"><img class="mr-2" src="../../../assets/images/startedIcon.png" alt="Image">Getting Started</a>
-     </li>
-     <li mat-menu-item>
-      <a routerLink='/pages/settings' class="f-14-400 color-253238"><img class="mr-2" src="../../../assets/images/settingsIcon.png" alt="Image">Settings</a>
-       </li>
-       <li mat-menu-item>
-        <a  class="f-14-400 color-253238"><img class="mr-2" src="../../../assets/images/getHelpIcon.png" alt="Image">Get Help</a>
-         </li>
-         <li mat-menu-item>
-          <a routerLink='/user/login' class="f-14-400 color-253238"><img class="mr-2" src="../../../assets/images/logoutIcon.png" alt="Image">Logout</a>
-           </li>
-  </ul>
-</mat-menu>
+          <mat-menu #usersettings="matMenu" class="settingsPanel">
+            <ul class="settingsPanelUL">
+              <li class="mb-2" mat-menu-item>
+              <div class="f-16-500 color-253238 mb-1">Stuart Broad</div>
+              <a  class="f-12-400 color-lite-O">View Profile</a>
+              </li>
+              <li mat-menu-item>
+              <a  class="f-14-400 color-253238"><img class="mr-2" src="../../../assets/images/startedIcon.png" alt="Image">Getting Started</a>
+              </li>
+              <li mat-menu-item>
+                <a routerLink='/pages/settings' class="f-14-400 color-253238"><img class="mr-2" src="../../../assets/images/settingsIcon.png" alt="Image">Settings</a>
+                </li>
+                <li mat-menu-item>
+                  <a  class="f-14-400 color-253238"><img class="mr-2" src="../../../assets/images/getHelpIcon.png" alt="Image">Get Help</a>
+                  </li>
+                  <li mat-menu-item>
+                    <a routerLink='/user/login' class="f-14-400 color-253238"><img class="mr-2" src="../../../assets/images/logoutIcon.png" alt="Image">Logout</a>
+                    </li>
+            </ul>
+          </mat-menu>
         </span>
         <span class="activeMenu">
           <ng-container *ngFor="let menu of menus;">
@@ -126,16 +126,16 @@
             <mat-icon aria-hidden="false">add</mat-icon>
           </button>
           <mat-menu #addButton="matMenu" class="settingsPanel">
-            <ul class="addPanelUL">
+            <ul class="addPanelUL" (click)="clickLead()">
               <li mat-menu-item>
-              <a class="f-16-500 color-253238"><img class="mr-3" src="../../../assets/images/leadIcon.png" alt="Image">Lead</a>
-               </li>
-               <li mat-menu-item>
+                <a class="f-16-500 color-253238"><img class="mr-3" src="../../../assets/images/leadIcon.png" alt="Image">Lead</a>
+              </li>
+              <li mat-menu-item>
                 <a class="f-16-500 color-253238"><img class="mr-3" src="../../../assets/images/personIcon.png" alt="Image">Contact</a>
-                 </li>
-                 <li mat-menu-item>
-                  <a class="f-16-500 color-253238"><img class="mr-3" src="../../../assets/images/companyIcon.png" alt="Image">Company</a>
-                     </li>
+              </li>
+              <li mat-menu-item>
+                <a class="f-16-500 color-253238"><img class="mr-3" src="../../../assets/images/companyIcon.png" alt="Image">Company</a>
+              </li>
             </ul>
           </mat-menu>
         </span>
@@ -154,3 +154,4 @@
     </div>
   </div>
 </header>
+

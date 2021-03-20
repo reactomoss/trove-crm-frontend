@@ -24,6 +24,10 @@ table {
     margin-left: 5px;
 }
 
+tr {
+  cursor: pointer;
+}
+
 th {
     background: #E1E6EE;
     border: 1px solid #E6EAF0;

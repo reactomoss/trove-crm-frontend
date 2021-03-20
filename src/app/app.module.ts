@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { SharedModule } from './shared/shared.module';
 const routes: Routes = [
   { path: '', redirectTo: 'user', pathMatch: 'full' },
@@ -16,8 +17,12 @@ const routes: Routes = [
     AppComponent,
   ],
   imports: [
-    BrowserModule,RouterModule.forRoot(routes),
-    BrowserAnimationsModule,SharedModule
+    BrowserModule,
+    RouterModule.forRoot(routes),
+    FormsModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    SharedModule,
   ],
   providers: [],
   exports:[RouterModule],
