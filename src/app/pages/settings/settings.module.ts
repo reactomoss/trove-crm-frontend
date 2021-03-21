@@ -4,12 +4,11 @@ import { SettingsComponent } from './settings.component';
 import { RouterModule , Routes } from '@angular/router';
 import { MaterialModule } from '../../material/material.module';
 import { SharedModule } from '../../shared/shared.module';
-import { DragdropDirective } from './dragdrop.directive';
 const routes: Routes = [
   {path:'', component:SettingsComponent}
 ]
 @NgModule({
-  declarations: [SettingsComponent, DragdropDirective],
+  declarations: [SettingsComponent,],
   imports: [
     CommonModule,RouterModule.forChild(routes),MaterialModule,SharedModule
   ],

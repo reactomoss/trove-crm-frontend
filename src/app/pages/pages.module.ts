@@ -17,6 +17,16 @@ import { TextEditorComponent } from './detail/text-editor/text-editor.component'
 import { WidgetComponent } from './detail/widget/widget.component';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { FilterComponent } from './leads/filter/filter.component';
+import { ProfileComponent } from './settings/profile/profile.component';
+import { UsersrolesComponent } from './settings/usersroles/usersroles.component';
+import { AccountComponent } from './settings/account/account.component';
+import { NotificationComponent } from './settings/notification/notification.component';
+import { DragdropDirective } from './settings/data/dragdrop.directive';
+import { DataComponent } from './settings/data/data.component';
+import { PipelinestagesComponent } from './settings/pipelinestages/pipelinestages.component';
+import { TermsservicesComponent } from './settings/termsservices/termsservices.component';
+import { PrivacypolicyComponent } from './settings/privacypolicy/privacypolicy.component';
+import { PlanspricingComponent } from './settings/planspricing/planspricing.component';
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: PagesComponent },
@@ -38,7 +48,17 @@ const routes: Routes = [
     StageSnack,
     TextEditorComponent,
     WidgetComponent,
-    FilterComponent
+    FilterComponent,
+    ProfileComponent,
+    UsersrolesComponent,
+    AccountComponent,
+    NotificationComponent,
+    DragdropDirective,
+    DataComponent,
+    PipelinestagesComponent,
+    TermsservicesComponent,
+    PrivacypolicyComponent,
+    PlanspricingComponent
   ],
   imports: [
     CommonModule, RouterModule.forChild(routes), SharedModule, NgbModule,MaterialModule,
