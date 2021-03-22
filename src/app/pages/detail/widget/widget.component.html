@@ -1,0 +1,106 @@
+<div class="rightPart">
+    <mat-accordion [multi]="true">
+        <mat-expansion-panel class="mat-elevation-z0" [hideToggle]="true">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <mat-icon class="mr-2">keyboard_arrow_down</mat-icon>
+                    Deal
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="panel-content1">
+                <div>
+                    <span>Total Value</span><br>
+                    <span class="priceSpan">$430.00</span>
+                </div>
+                <div>
+                    <span>Total Expected</span><br>
+                    <span class="priceSpan">$430.00</span>
+                </div>
+            </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel class="mat-elevation-z0" [hideToggle]="true">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <mat-icon class="mr-2">keyboard_arrow_down</mat-icon>
+                    Associated Contacts
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="panel-content">
+                <div class="personInfo">
+                    <div>
+                        <img alt="Image" src="../../../assets/images/user-sample.png">
+                    </div>
+                    <div class="ml-2">
+                        <span class="span1">Wes Studi</span><br>
+                        <span class="span2">Manager</span>
+                    </div>
+                </div>
+                <div class="personInfo mt-2">
+                    <div>
+                        <img alt="Image" src="../../../assets/images/user-sample.png">
+                    </div>
+                    <div class="ml-2">
+                        <span class="span1">Packet Monster</span><br>
+                        <span class="span2">Employee at Packet Monster, Inc.</span>
+                    </div>
+                </div>
+            </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel class="mat-elevation-z0" [hideToggle]="true">
+            <mat-expansion-panel-header>
+                <mat-panel-title class="addPanelTitle">
+                    <div>
+                        <mat-icon class="mr-2">keyboard_arrow_down</mat-icon>
+                        Upcoming Appointments
+                    </div>
+                    <div>
+                        <button mat-button class="iconButton" (click)="addAppoint()">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </div>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="panel-content">
+                *
+            </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel class="mat-elevation-z0" [hideToggle]="true">
+            <mat-expansion-panel-header>
+                <mat-panel-title class="addPanelTitle">
+                    <div>
+                        <mat-icon class="mr-2">keyboard_arrow_down</mat-icon>
+                        Tasks
+                    </div>
+                    <div>
+                        <button mat-button class="iconButton" (click)="addTask()">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </div>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="panel-content">
+                <mat-checkbox color="primary">Packet Monster Sales opportunity</mat-checkbox>
+                <mat-checkbox color="primary">Ux design meeting at 17:30hrs.</mat-checkbox>
+                <mat-checkbox color="primary">Landing page required for new CRM app</mat-checkbox>
+            </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel class="mat-elevation-z0" [hideToggle]="true">
+            <mat-expansion-panel-header>
+                <mat-panel-title class="addPanelTitle">
+                    <div>
+                        <mat-icon class="mr-2">keyboard_arrow_down</mat-icon>
+                        Files
+                    </div>
+                    <div>
+                        <button mat-button class="iconButton">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </div>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="panel-content">
+                *
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>

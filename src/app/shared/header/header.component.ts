@@ -2,6 +2,7 @@ import { TokenService } from './../../services/token.service';
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import { AccountApiService } from '../../services/account-api.service';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-header',
@@ -14,7 +15,8 @@ export class HeaderComponent implements OnInit {
   constructor(
     private router: Router,
     private account: AccountApiService,
-    private token: TokenService
+    private token: TokenService,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -83,5 +85,47 @@ export class HeaderComponent implements OnInit {
         }
       }
     );
+  }
+
+  clickLead() {
+    const dialogRef = this.dialog.open(LeadDialog, {
+      width: '570px',
+    })
+    dialogRef.afterClosed().subscribe(result => {
+    })
+  }
+}
+
+
+@Component({
+  selector: 'lead-dialog',
+  templateUrl: 'lead-dialog/lead-dialog.html',
+  styleUrls: ['lead-dialog/lead-dialog.css']
+})
+export class LeadDialog {
+
+  showMandatory: boolean = false
+  search: string = ''
+
+  constructor(
+    public dialogRef: MatDialogRef<LeadDialog>
+    // @Inject(MAT_DIALOG_DATA) public data: DialogData
+  ) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  checkMandatory(e) {
+    this.showMandatory = e.checked
+  }
+
+  checkShow(name) {
+    if (!this.search)
+      return true
+    if (name.toUpperCase().search(this.search.toUpperCase()) == -1)
+      return false
+    else
+      return true
   }
 }

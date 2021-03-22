@@ -21,7 +21,7 @@
                             <a class="f-14-400 color-253238"><img class="mr-2" src="../../../assets/images/getHelpIcon.png" alt="Image">Get Help</a>
                         </li>
                         <li mat-menu-item>
-                            <a class="f-14-400 color-253238" (click)="logout()"><img class="mr-2" src="../../../assets/images/logoutIcon.png" alt="Image">Logout</a>
+                            <a routerLink='/user/login' class="f-14-400 color-253238" (click)="logout()"><img class="mr-2" src="../../../assets/images/logoutIcon.png" alt="Image">Logout</a>
                         </li>
                     </ul>
                 </mat-menu>
@@ -123,7 +123,7 @@
             <mat-icon aria-hidden="false">add</mat-icon>
             </button>
             <mat-menu #addButton="matMenu" class="settingsPanel">
-                <ul class="addPanelUL">
+                <ul class="addPanelUL" (click)="clickLead()">
                     <li mat-menu-item>
                         <a class="f-16-500 color-253238"><img class="mr-3" src="../../../assets/images/leadIcon.png" alt="Image">Lead</a>
                     </li>
@@ -148,6 +148,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
     </div>
 </header>
