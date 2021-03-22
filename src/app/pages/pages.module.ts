@@ -9,7 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { LeadTableComponent } from './leads/lead-table/lead-table.component';
 import { DetailComponent, StageDialog, EditDialog, ConfirmDialog, TaskDialog, AppointDialog, StageSnack } from './detail/detail.component';
-import { DemoMaterialModule } from '../material/material-module';
+import { DemoMaterialModule } from '../material/material.module';
 import { EditorModule } from "@tinymce/tinymce-angular";
 import { TextEditorComponent } from './detail/text-editor/text-editor.component';
 import { WidgetComponent } from './detail/widget/widget.component';

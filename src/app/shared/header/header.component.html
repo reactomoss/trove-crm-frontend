@@ -153,14 +153,42 @@
 
       </div>
       <div class="col-auto d-none-sm">
-          <div class="input-group topSearch">
+          <!-- <div class="input-group topSearch">
             <input type="text" class="form-control" placeholder="Search">
             <div class="input-group-append">
               <span class="input-group-text" id="basic-addon1">
                 <mat-icon aria-hidden="false">search</mat-icon>
               </span>
             </div>
-          </div>
+          </div> -->
+
+          <mat-form-field class="searchForm noLabelForm headerSearch" appearance="outline">
+            <input type="text" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto"
+              placeholder="Search">
+            <mat-icon matSuffix>search</mat-icon>
+            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="onSelectionChange($event)">
+              <div class="optionBtnContainer">
+                <button mat-button class={{activeClass(1)}} (click)="setActive(1)">
+                  <span>Person</span>
+                </button>
+                <button mat-button class={{activeClass(2)}} (click)="setActive(2)">
+                  <span>Company</span>
+                </button>
+                <button mat-button class={{activeClass(3)}} (click)="setActive(3)">
+                  <span>Lead</span>
+                </button>
+              </div>
+              <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                <div class="optionDiv">
+                  <img alt="Image" src="../../assets/images/user-sample.png">
+                  <div class="ml-3">
+                    <p class="span1">{{option}}</p>
+                    <p class="span2">{{option}} description</p>
+                  </div>
+                </div>
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
       </div>
     </div>
   </div>

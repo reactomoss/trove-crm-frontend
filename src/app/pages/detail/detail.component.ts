@@ -47,7 +47,7 @@ export class DetailComponent implements OnInit {
         this._snackBar.openFromComponent(StageSnack, {
           data: { name: stageName},
           panelClass: 'style-success',
-          duration: 30000,
+          duration: 3000,
           horizontalPosition: 'center',
           verticalPosition: 'bottom'
         })

@@ -211,7 +211,7 @@ mat-card {
     padding: 18px 12px;
     display: flex;
     align-items: center;
-    border-bottom: 1px solid #ddd;
+    /* border-bottom: 1px solid #ddd; */
 }
 
 .topInRightPart span {
@@ -236,12 +236,10 @@ mat-card {
 }
 
 .closeButton {
-    width: 24px;
-    height: 24px;
     padding: 0;
     border: 1px solid #E6EAF0;
     line-height: normal;
-    min-width: 0;
+    min-width: 24px;
 }
 
 .clearAllButton {
@@ -298,15 +296,15 @@ mat-card {
     margin-bottom: 0;
 }
 
-.searchForm mat-icon {
-    color: gray;
-}
-
 .tableContainer {
     max-height: calc(100vh - 140px);
     padding: 20px;
 }
 
-.filterContainer {
-    max-height: calc(100vh - 130px);
+.filterContainer1 {
+    max-height: calc(100vh - 200px);
+}
+
+.filterContainer2 {
+    max-height: calc(100vh - 120px);
 }

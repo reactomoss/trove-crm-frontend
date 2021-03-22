@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
@@ -8,10 +11,53 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 })
 export class HeaderComponent implements OnInit {
 
-  isNotification:boolean = false
+  isNotification: boolean = false
+    
+  myControl = new FormControl();
+  options: string[] = ['One', 'Two', 'Three'];
+  filteredOptions: Observable<string[]>;
+  active: number = 1
+
   constructor(public dialog: MatDialog) { }
 
   ngOnInit(): void {
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    )
+  }
+   
+  public activeClass(num) {
+    if (num == this.active)
+      return 'activeBtn'
+    else
+      return ''
+  }
+
+  public setActive(num) {
+    console.log('set active', num)
+    this.active = num
+    if (num == 1) {
+      this.options = ['One', 'Two', 'Three']
+    } else if (num == 2) {
+      this.options = ['Four', 'Five', 'Six']
+    } else if (num == 3) {
+      this.options = ['Seven', 'Eight', 'Nine']
+    }
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    )
+  }
+    
+  onSelectionChange(event) {
+
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.options.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
   }
 
   showNotification(){
@@ -38,6 +84,7 @@ export class LeadDialog {
   showMandatory: boolean = false
   search: string = ''
 
+
   constructor(
     public dialogRef: MatDialogRef<LeadDialog>
     // @Inject(MAT_DIALOG_DATA) public data: DialogData
@@ -59,4 +106,5 @@ export class LeadDialog {
     else
       return true
   }
+
 }

@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent, LeadDialog } from './header/header.component';
 import { RouterModule,Routes } from '@angular/router';
-import { DemoMaterialModule } from '../material/material-module';
-import { FormsModule } from '@angular/forms';
+import { DemoMaterialModule } from '../material/material.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
 
@@ -15,7 +15,8 @@ const routes: Routes = [
     CommonModule,
     DemoMaterialModule,
     RouterModule.forChild(routes),
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
     HeaderComponent,

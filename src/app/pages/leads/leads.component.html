@@ -1,7 +1,7 @@
 <app-header></app-header>
 <div *ngIf="!listShow">
     <mat-drawer-container hasBackdrop="true">
-        <mat-drawer #drawer mode="Over" position="end">
+        <mat-drawer #drawer mode="Over" position="end" class="noScrollDrawer">
             <div class="drawerContainer">
                 <div class="drawerContainerTop">
                     <button mat-button class="closeButton mr-4" (click)="drawer.toggle()">
@@ -13,7 +13,9 @@
                         Clear all
                     </button>
                 </div>
-                <app-filter></app-filter>
+                <ngx-simplebar [options]="scrollOptions" class="filterContainer1">
+                    <app-filter></app-filter>
+                </ngx-simplebar>
             </div>
         </mat-drawer>
 
@@ -22,7 +24,7 @@
                 <div class="topBarDiv">
                     <span class="title mr-3 fontObjektivMk mt-1">All Leads</span>
 
-                    <mat-form-field class="searchForm" appearance="outline">
+                    <mat-form-field class="searchForm noLabelForm" appearance="outline">
                         <input type="text" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto"
                                 placeholder="Search by contact name">
                         <mat-icon matSuffix>search</mat-icon>
@@ -54,7 +56,7 @@
                         <mat-icon class="iconInButton">arrow_drop_down</mat-icon>
                         Sales Pipeline 20...
                     </button>
-                    <mat-menu #menu2="matMenu">
+                    <mat-menu #menu2="matMenu" xPosition="before">
                         <button mat-menu-item>pipe1</button>
                         <button mat-menu-item>pipe2</button>
                         <button mat-menu-item>pipe3</button>
@@ -65,7 +67,7 @@
                         <mat-icon class="iconInButton">arrow_drop_down</mat-icon>
                         Option
                     </button>
-                    <mat-menu #menu3="matMenu">
+                    <mat-menu #menu3="matMenu" xPosition="before">
                         <button mat-menu-item>option1</button>
                         <button mat-menu-item>option2</button>
                         <button mat-menu-item>option3</button>
@@ -195,14 +197,34 @@
                 <div fxLayout="row" fxLayoutAlign="space-between" fxLayout.xs="column" fxLayout.sm="column">
                     <div class="topBarDiv">
                         <span class="title mr-3 fontObjektivMk mt-1">Leads</span>
-                        <div class="input-group topSearch">
-                            <input type="text" class="form-control" placeholder="Search by contact name">
-                            <div class="input-group-append">
-                                <span class="input-group-text" id="basic-addon1">
-                                    <mat-icon aria-hidden="false">search</mat-icon>
-                                </span>
-                            </div>
-                        </div>
+
+                        <mat-form-field class="searchForm noLabelForm" appearance="outline">
+                            <input type="text" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto"
+                                placeholder="Search by contact name">
+                            <mat-icon matSuffix>search</mat-icon>
+                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="onSelectionChange($event)">
+                                <div class="optionBtnContainer">
+                                    <button mat-button class={{activeClass(1)}} (click)="setActive(1)">
+                                        <span>Person</span>
+                                    </button>
+                                    <button mat-button class={{activeClass(2)}} (click)="setActive(2)">
+                                        <span>Company</span>
+                                    </button>
+                                    <button mat-button class={{activeClass(3)}} (click)="setActive(3)">
+                                        <span>Lead</span>
+                                    </button>
+                                </div>
+                                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                                    <div class="optionDiv">
+                                        <img alt="Image" src="../../assets/images/user-sample.png">
+                                        <div class="ml-3">
+                                            <p class="span1">{{option}}</p>
+                                            <p class="span2">{{option}} description</p>
+                                        </div>
+                                    </div>
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
                     </div>
                     <div class="topBarDiv">
                         <button mat-button class="flatIconTextButton mr-3">
@@ -227,7 +249,7 @@
                 <mat-icon>filter_alt</mat-icon>
                 <span>Filters</span>
             </div>
-            <ngx-simplebar [options]="scrollOptions" class="filterContainer">
+            <ngx-simplebar [options]="scrollOptions" class="filterContainer2">
                 <app-filter></app-filter>
             </ngx-simplebar>
         </div>

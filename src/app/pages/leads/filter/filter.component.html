@@ -1,4 +1,4 @@
-<mat-accordion>
+<mat-accordion class="grayAccordion">
     <mat-expansion-panel class="mat-elevation-z0 mat-panel2">
         <mat-expansion-panel-header>
             <mat-panel-title>
@@ -11,17 +11,17 @@
         <div class="panel-content">
             <div class="valueDiv">
                 <span>From</span>
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance="outline" class="noLabelForm">
                     <input matInput [(ngModel)]="minValue">
                 </mat-form-field>
                 <span>To</span>
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance="outline" class="noLabelForm">
                     <input matInput [(ngModel)]="highValue">
                 </mat-form-field>
             </div>
             <br>
             <div class="rangeDiv">
-                <ngx-slider [(value)]="minValue" [(highValue)]="highValue" [options]="options"></ngx-slider>
+                <ngx-slider [(value)]="minValue" [(highValue)]="highValue" [options]="sliderOptions"></ngx-slider>
             </div>
         </div>
     </mat-expansion-panel>
@@ -34,17 +34,17 @@
         </mat-expansion-panel-header>
         <div class="panel-content">
             <div>
-                <button mat-button class="userButton">
+                <button mat-button class="userButton" [class.activeButton] = "contactActive == 0" (click)="clickUser()">
                     User
                 </button>
-                <button mat-button class="companyButton">
+                <button mat-button class="companyButton" [class.activeButton] = "contactActive == 1" (click)="clickCompany()">
                     Company
                 </button>
             </div>
             <br>
-            <mat-form-field class="serachForm" appearance="outline">
+            <mat-form-field class="serachForm noLabelForm whiteBackground" appearance="outline">
                 <input type="text" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto"
-                        placeholder="Search by contact name">
+                        placeholder="Search by contact name" >
                 <mat-icon matSuffix>search</mat-icon>
                 <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="onSelectionChange($event)">
                     <div class="optionBtnContainer">
@@ -70,11 +70,10 @@
                 </mat-autocomplete>
             </mat-form-field>
 
-            <mat-checkbox color="primary">Emerson Dokidis</mat-checkbox>
-            <mat-checkbox color="primary">Charlie Aminoff</mat-checkbox>
-            <mat-checkbox color="primary">Alena Carder</mat-checkbox>
+            <mat-checkbox #checkboxes color="primary" *ngFor="let option of selectedContact">{{option}}</mat-checkbox>
+
             <div class="text-right">
-                <button mat-button class="clearButton ml-5">
+                <button mat-button class="clearButton ml-5" (click)="clearClick()">
                     Clear
                 </button>
             </div>
@@ -108,7 +107,7 @@
                         Sales Pipleline
                         <mat-icon>arrow_drop_down</mat-icon>
                     </button>
-                    <mat-menu #menu="matMenu">
+                    <mat-menu #menu="matMenu" xPosition="before">
                         <button mat-menu-item>pipe1</button>
                         <button mat-menu-item>pipe2</button>
                         <button mat-menu-item>pipe3</button>
@@ -136,7 +135,7 @@
                         Closed Lost
                         <mat-icon>arrow_drop_down</mat-icon>
                     </button>
-                    <mat-menu #menu1="matMenu">
+                    <mat-menu #menu1="matMenu"  xPosition="before">
                         <button mat-menu-item>progress</button>
                         <button mat-menu-item>won</button>
                         <button mat-menu-item>lost</button>
