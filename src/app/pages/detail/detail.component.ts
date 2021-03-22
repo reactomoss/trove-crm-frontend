@@ -13,7 +13,8 @@ import {map, startWith} from 'rxjs/operators';
 })
 export class DetailComponent implements OnInit {
   stages: string[];
-
+  scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
+  
   constructor(private router: Router, public dialog: MatDialog, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
