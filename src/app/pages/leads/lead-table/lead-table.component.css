@@ -1,0 +1,74 @@
+table {
+    width: 100%;
+}
+
+.avatar {
+    border-radius: 7.2px;
+}
+
+.avatarHeader {
+    width: 70px;
+}
+
+.avatarHeader div{
+    width: 24px;
+    height: 24px;
+    background: #FFFFFF;
+    border: 1px solid #D0D9DE;
+    box-sizing: border-box;
+    border-radius: 6px;
+    margin-left: 10px;
+}
+
+.avatarCell img {
+    margin-left: 5px;
+}
+
+th {
+    background: #E1E6EE;
+    border: 1px solid #E6EAF0;
+    font-size: 15px;
+    color: #253238;
+}
+
+/*stage*/
+.stage-wrapper {
+  display: flex;
+  margin: 0 20px 10px 0;
+  height: 6px;
+}
+.stage-item {
+  background-color: #E1E6EE;
+  border-color: #E1E6EE;
+  color: #E1E6EE;
+  flex-basis: 100%;
+  font-size: 2px;
+  padding: 4px 0 4px 10px;
+  position: relative;
+}
+.stage-item:before,
+.stage-item:after {
+  border: solid transparent;
+  content: " ";
+  left: 100%;
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+}
+.stage-item:after {
+  border-left-color: inherit;
+  border-width: 4px;
+  margin-top: -4px;
+}
+.stage-item:before {
+  border-color: rgba(255, 255, 255, 0);
+  border-left-color: #fff;
+  border-width: 8px;
+  margin-top: -8px;
+}
+.stage-item.stage-active {
+  background-color: #002868;
+}
+.stage-item.stage-active:after {
+  border-left-color: #002868;
+}

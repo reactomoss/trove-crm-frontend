@@ -5,18 +5,23 @@ import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { AuthGuardService } from '../services/auth-guard.service';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { LeadsComponent } from './leads/leads.component';
+import { LeadTableComponent } from './leads/lead-table/lead-table.component';
+import {MaterialModule} from '../material/material.module';
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: PagesComponent, canActivate:[AuthGuardService]},
   { path: 'settings', loadChildren: () => import('./settings/settings.module') .then(m=>m.SettingsModule), canActivate:[AuthGuardService]},
+  { path: 'leads', component: LeadsComponent },
 ];
 @NgModule({
-  declarations: [PagesComponent],
+  declarations: [PagesComponent,LeadsComponent,LeadTableComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
     SharedModule,
     NgbModule,
+    MaterialModule
   ],
   exports: [RouterModule],
 })

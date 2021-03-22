@@ -71,6 +71,7 @@ cursor: pointer;
   object-fit: cover;
   object-position: center;
 }
+.table001 .mat-paginator {background-color: transparent;}
 /* Table */
 
   /* Vertical tab */
@@ -84,9 +85,19 @@ cursor: pointer;
     flex-direction: column;
   }
 
+  :host ::ng-deep .alignTabCSS .mat-tab-labels {
+    flex-direction: initial;
+  }
+
   mat-tab-group {
     flex-grow: 1;
     display: flex;
+    flex-direction: row;
+  }
+  .mat-tab-group.horizontalTab {
+    flex-direction: column;
+  }
+  .horizontalTab .mat-tab-labels {
     flex-direction: row;
   }
 
@@ -118,6 +129,7 @@ cursor: pointer;
     /* background-color: lightgray; */
   }
  /* Vertical tab */
+
 
  /* Drag and drop CSS */
 .dragdrop-box {
@@ -260,6 +272,7 @@ margin-bottom: 30px;
   padding: 5px;
   border-radius: 100%;
 }
+
 @media(max-width:1024px){
   .actionDrag .dragDelete, .addPersonImg .delAddPerImg {
     visibility: visible;

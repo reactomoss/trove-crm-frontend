@@ -1,0 +1,47 @@
+<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z0">
+    <ng-container matColumnDef="avatar">
+        <th mat-header-cell *matHeaderCellDef class="avatarHeader">
+            <div></div>
+        </th>
+        <td mat-cell *matCellDef="let element" class="avatarCell"> 
+            <img class="avatar" alt="Image" src="{{element.avatar}}">
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Deal Name</th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="stage">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Stage</th>
+        <td mat-cell *matCellDef="let element"> 
+            {{element.stage}} 
+            <div class="stage-wrapper">
+                <div class="stage-item"></div>
+                <div class="stage-item"></div>
+                <div class="stage-item stage-active"></div>
+                <div class="stage-item"></div>
+                <div class="stage-item"></div>
+            </div>
+        </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="value">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Value</th>
+        <td mat-cell *matCellDef="let element"> {{element.value}} $</td>
+    </ng-container>
+    
+    <ng-container matColumnDef="day">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Activity Date</th>
+        <td mat-cell *matCellDef="let element"> {{element.day}} Day</td>
+    </ng-container>
+    
+    <ng-container matColumnDef="owner">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Owner</th>
+        <td mat-cell *matCellDef="let element"> {{element.owner}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

@@ -5,11 +5,33 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {SnackBarService} from '../../shared/snack-bar.service';
+// For Account Select Box
+interface TIMEZONE{
+  value: string;
+  viewValue: string;
+}
+interface TIMEFORMAT{
+  value: string;
+  viewValue: string;
+}
+interface DATEFORMAT{
+  value: string;
+  viewValue: string;
+}
+interface CURRENCYFORMAT{
+  value: string;
+  viewValue: string;
+}
+interface ADDPERSONROLE{
+  value: string;
+  viewValue:string;
+}
+// For Account Select Box
 /*For Role Table*/
 export interface ROLE {
   role: string;
   accessLevel: string;
-  status: string;
 }
 /*For Role Table*/
 /*For User Table*/
@@ -18,7 +40,6 @@ export interface USER {
   user:string;
   role: string;
   accessLevel: string;
-  status: string;
 }
 /*For User Table*/
 /*For PipelineStages Table*/
@@ -42,29 +63,97 @@ export interface IMPORTHISTORY{
 })
 export class SettingsComponent implements OnInit , AfterViewInit {
   /*For Account -- time zone select box*/
-  timeZone:any = [
-'Denver (GMT-6)' , 'Newyork (GMT-6)', 'Kolkatta (GMT-6)' , 'Chennai (GMT-6)'
-  ];
-  timeFormat:any = [
-    '24 hours' , '12 hours'
-  ];
-  currencyFormat:any = [
-    'United States Dollar' , 'Singapore Dollar' , 'Dubai Dirhams' , 'Indian Rupees'
-  ];
-  dateFormat:any = [
-    'mm/dd/yy', 'dd/mm/yy', 'yy/mm/dd'
+  accountForm: FormGroup;
+  timeZones: TIMEZONE[] = [
+    {
+      value: 'Denver(GMT-6)',
+      viewValue: 'Denver (GMT-6)'
+    },
+    {
+      value: 'Newyork(GMT-6)',
+      viewValue: 'Newyork (GMT-6)'
+    },
+    {
+      value: 'Kolkata(GMT-6)',
+      viewValue: 'Kolkata (GMT-6)'
+    },
+    {
+      value: 'Chennai(GMTTT-6)',
+      viewValue: 'Chennai (GMT-6)'
+    }
   ]
+
+  timeFormats: TIMEFORMAT[] = [
+    {
+      value: '24Hours',
+      viewValue: '24 Hours'
+    },
+    {
+      value: '12Hours',
+      viewValue: '12 Hours'
+    }
+  ]
+
+  dateFormats: DATEFORMAT[] = [
+    {
+      value: 'mm/dd/yy',
+      viewValue: 'mm/dd/yy'
+    },
+    {
+      value: 'dd/mm/yy',
+      viewValue: 'dd/mm/yy'
+    },
+    {
+      value: 'yy/mm/dd',
+      viewValue: 'yy/mm/dd'
+    }
+  ]
+
+  currencyFormats: CURRENCYFORMAT[] = [
+    {
+      value: 'UnitedStatesDollar',
+      viewValue: 'United States Dollar'
+    },
+    {
+      value: 'SingaporeDollar',
+      viewValue: 'Singapore Dollar'
+    },
+    {
+      value: 'DubaiDirhams',
+      viewValue: 'Dubai Dirhams'
+    },
+    {
+      value: 'IndianRupees',
+      viewValue: 'Indian Rupees'
+    }
+  ]
+
+  addPersonRoles: ADDPERSONROLE[] = [
+    {
+      value: 'Operationsmanager',
+      viewValue: 'Operations manager'
+    },
+    {
+      value: 'Officemanager',
+      viewValue: 'Office manager'
+    },
+    {
+      value: 'Admin',
+      viewValue: 'Admin'
+    }
+  ]
+
+  timeZoneControl = new FormControl(this.timeZones[3].value);
+  timeFormatControl = new FormControl(this.timeFormats[0].value)
+  dateFormatControl = new FormControl(this.dateFormats[2].value)
+  currencyFormatControl = new FormControl(this.currencyFormats[3].value)
+  addPersonRoleControl = new FormControl(this.addPersonRoles[2].value)
   /*For Account -- time zone select box*/
-  /*For User -- role select box*/
-  addUserRole:any = [
-    'Operations manager', 'Admin'
-  ]
-  /*For User -- role select box*/
 /*For Role Table*/
-  displayedRoleColumns: string[] = ['role', 'accessLevel', 'status'];
+  displayedRoleColumns: string[] = ['role', 'accessLevel', 'status', 'action'];
 /*For Role Table*/
 /*For User Table*/
-displayedUserColumns: string[] = ['user', 'role', 'accessLevel', 'status'];
+displayedUserColumns: string[] = ['user', 'role', 'accessLevel', 'status' , 'action'];
 /*For User Table*/
 /*For PipelineStages Table*/
 displayedPipelineColumns: any[] = ['pipelineStages', 'dealStages', 'action'];
@@ -107,23 +196,34 @@ roles: ROLE[]; /*For Role Table*/
 users: USER[]; /*For user Table*/
 pipelines: PIPELINESTAGE[]; /*For Pipeline Table*/
 importHistory: IMPORTHISTORY[]; /*For Imports History Table*/
-/*Create New Role Modal Configure permissions checkbox*/
-  isSelectAll:boolean;
-  rolePermission:any = [
+/*Create New Role Modal Settings All Modules checkbox*/
+  isSelectAllSettings:boolean;
+  isSelectAllSettingsView:boolean;
+  isSelectAllSettingsCreate:boolean;
+  isSelectAllSettingsEdit:boolean;
+  settingsPermission:any = [
     {
       name: "Administration",
-      isSelected: false
+      isSelected: false,
+      isSelectedView: false,
+      isSelectedCreate: false,
+      isSelectedEdit: false,
     },
     {
       name: "Lead access ",
-      isSelected: false
+      isSelected: false,
+      isSelectedView: false,
+      isSelectedCreate: false,
+      isSelectedEdit: false,
     },
     {
       name: "Contact access",
-      isSelected: false
+      isSelected: false,
+      isSelectedView: false,
+      isSelectedCreate: false,
+      isSelectedEdit: false,
     }
   ];
-/*Create New Role Modal Configure permissions checkbox*/
 /*Notification user checkbox*/
 isNotiUserAll:boolean;
 notificationUser:any=[
@@ -187,7 +287,8 @@ isAddPersonMand:boolean;
       lastName: ['', Validators.required ],
       mobileNumber:['', Validators.required],
       workNumber: ['', Validators.required ],
-      emailAddress:['', Validators.required]
+      emailAddress:['', Validators.required],
+      addPersonRole: this.addPersonRoleControl
    });
  }
 
@@ -207,18 +308,38 @@ isAddPersonMand:boolean;
 /*Modal dialog*/
 closeResult = '';
 /*Modal dialog*/
-  constructor(private modalService: NgbModal , private fb: FormBuilder) {
+  constructor(private modalService: NgbModal , private fb: FormBuilder,
+    private sb: SnackBarService) {
 /*Form Validation*/
     this.changePassword();
     this.newRole();
     this.addPerson();
     this.addPipeline();
 /*Form Validation*/
+this.accountForm = new FormGroup({
+  timeZone: this.timeZoneControl,
+  timeFormat: this.timeFormatControl,
+  dateFormat: this.dateFormatControl,
+  currencyFormat: this.currencyFormatControl
+});
+  }
+
+  //defining method for display of SnackBar
+  triggerSnackBar(message:string, action:string)
+  {
+   this.sb.openSnackBarBottomCenter(message, action);
   }
 
 /*Modal dialog*/
   open(content) {
     this.modalService.open(content, {ariaLabelledBy: 'dialog001'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+  openNewRole(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'dialog001', size: 'xl'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -277,22 +398,74 @@ closeResult = '';
 
  /*Browse file*/
 
-/*Create New Role Modal Select checkbox*/
-  selectAllPermisssion(){
-    this.rolePermission.map(r => {
-      r.isSelected= this.isSelectAll;
+/*Create New Role Modal Settings All Modules checkbox*/
+  selectAllSettings(){
+    this.settingsPermission.map(r => {
+      r.isSelected= this.isSelectAllSettings;
     });
   }
 
-  unSelectAllPermisssion(isSelected){
+  unSelectAllSettings(isSelected){
    if(!isSelected){
-     this.isSelectAll=false;
-   }else if(this.rolePermission.length ===
-    this.rolePermission.filter(r => {return r.isSelected === true}).length){
-      this.isSelectAll=true;
+     this.isSelectAllSettings=false;
+   }else if(this.settingsPermission.length ===
+    this.settingsPermission.filter(r => {return r.isSelected === true}).length){
+      this.isSelectAllSettings=true;
    }
   }
-/*Create New Role Modal Select checkbox*/
+/*Create New Role Modal Settings All Modules checkbox*/
+
+/*Create New Role Modal Settings View checkbox*/
+selectAllSettingsView(){
+  this.settingsPermission.map(r => {
+    r.isSelectedView= this.isSelectAllSettingsView;
+  });
+}
+
+unSelectAllSettingsView(isSelected){
+ if(!isSelected){
+   this.isSelectAllSettingsView=false;
+ }else if(this.settingsPermission.length ===
+  this.settingsPermission.filter(r => {return r.isSelectedView === true}).length){
+    this.isSelectAllSettingsView=true;
+ }
+}
+/*Create New Role Modal Settings View checkbox*/
+
+/*Create New Role Modal Settings Create checkbox*/
+selectAllSettingsCreate(){
+  this.settingsPermission.map(r => {
+    r.isSelectedCreate= this.isSelectAllSettingsCreate;
+  });
+}
+
+unSelectAllSettingsCreate(isSelected){
+ if(!isSelected){
+   this.isSelectAllSettingsCreate=false;
+ }else if(this.settingsPermission.length ===
+  this.settingsPermission.filter(r => {return r.isSelectedCreate === true}).length){
+    this.isSelectAllSettingsCreate=true;
+ }
+}
+/*Create New Role Modal Settings Create checkbox*/
+
+/*Create New Role Modal Settings Create checkbox*/
+selectAllSettingsEdit(){
+  this.settingsPermission.map(r => {
+    r.isSelectedEdit= this.isSelectAllSettingsEdit;
+  });
+}
+
+unSelectAllSettingsEdit(isSelected){
+ if(!isSelected){
+   this.isSelectAllSettingsEdit=false;
+ }else if(this.settingsPermission.length ===
+  this.settingsPermission.filter(r => {return r.isSelectedEdit === true}).length){
+    this.isSelectAllSettingsEdit=true;
+ }
+}
+/*Create New Role Modal Settings Edit checkbox*/
+
 /*Notification user checkbox*/
 selectAllNotiUser(){
   this.notificationUser.map(r => {
@@ -453,58 +626,47 @@ files: any[] = [];
     this.roles = [
       {
         role: 'Operations manager',
-        accessLevel: 'Full access',
-        status: 'Active'
+        accessLevel: 'Full access'
       },
       {
         role: 'Office manager',
-        accessLevel: 'Limited access',
-        status: 'Inctive'
+        accessLevel: 'Limited access'
       },
       {
         role: 'Office manager',
-        accessLevel: 'Limited access',
-        status: 'Inctive'
+        accessLevel: 'View only'
       },
       {
         role: 'Office manager',
-        accessLevel: 'Limited access',
-        status: 'Inctive'
+        accessLevel: 'Limited access'
       },
       {
         role: 'Office manager',
-        accessLevel: 'Limited access',
-        status: 'Inctive'
+        accessLevel: 'Edit only'
       },
       {
         role: 'Office manager',
-        accessLevel: 'Limited access',
-        status: 'Inctive'
+        accessLevel: 'Full access'
       },
       {
         role: 'Office manager',
-        accessLevel: 'Limited access',
-        status: 'Inctive'
+        accessLevel: 'Limited access'
       },
       {
         role: 'Office manager',
-        accessLevel: 'Limited access',
-        status: 'Inctive'
+        accessLevel: 'Limited access'
       },
       {
         role: 'Office manager',
-        accessLevel: 'Limited access',
-        status: 'Inctive'
+        accessLevel: 'Edit only'
       },
       {
         role: 'Office manager',
-        accessLevel: 'Limited access',
-        status: 'Inctive'
+        accessLevel: 'Limited access'
       },
       {
         role: 'Office manager',
-        accessLevel: 'Limited access',
-        status: 'Inctive'
+        accessLevel: 'Full access'
       }
     ];
 
@@ -514,15 +676,13 @@ files: any[] = [];
         profile:'http://localhost:4200/assets/images/welcomemail-image.jpg',
         user: 'Allen',
         role: 'Operations manager',
-        accessLevel: 'Full access',
-        status: 'Active'
+        accessLevel: 'Full access'
       },
       {
         profile:'http://localhost:4200/assets/images/user-sample.png',
         user: 'Peterson',
         role: 'Operations manager',
-        accessLevel: 'Full access',
-        status: 'Inactive'
+        accessLevel: 'Full access'
       }
     ];
     // For Pipeline table
@@ -561,3 +721,5 @@ files: any[] = [];
     this.dataSourceImport = new MatTableDataSource(this.importHistory)/*For Import History Table*/
   }
 }
+
+

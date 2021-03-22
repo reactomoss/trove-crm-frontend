@@ -6,53 +6,50 @@ import { AccountApiService } from '../../services/account-api.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
-
-  isNotification:boolean = false
+  isNotification: boolean = false;
   menus: any[];
   constructor(
     private router: Router,
     private account: AccountApiService,
-    private token: TokenService,
-  ) { }
+    private token: TokenService
+  ) {}
 
   ngOnInit(): void {
-   this.menus=[
+    this.menus = [
       {
-        icon:'menu001.png',
-        link:'/pages/dashboard'
+        icon: 'menu001.png',
+        link: '/pages/dashboard',
       },
       {
-        icon:'menu006.png',
-        link:'/pages/contact'
+        icon: 'menu006.png',
+        link: '/pages/leads',
       },
       {
-        icon:'menu002.png',
-        link:'/pages/lead'
+        icon: 'menu002.png',
+        link: '/pages/contact',
       },
       {
-        icon:'menu003.png',
-        link:'/pages/email'
+        icon: 'menu003.png',
+        link: '/pages/email',
       },
       {
-        icon:'menu004.png',
-        link:'/pages/calendar'
+        icon: 'menu004.png',
+        link: '/pages/calendar',
       },
       {
-        icon:'menu005.png',
-        link:'/pages/pipeline'
-      }
-    ]
+        icon: 'menu005.png',
+        link: '/pages/pipeline',
+      },
+    ];
+  }
+  showNotification() {
+    this.isNotification = !this.isNotification;
   }
 
-
-   showNotification(){
-     this.isNotification = !this.isNotification
-   }
-
-   logout(){
+  logout() {
     this.account.logout().subscribe(
       (response) => {
         console.log(response);
@@ -61,33 +58,30 @@ export class HeaderComponent implements OnInit {
         let objToSend: NavigationExtras = {
           queryParams: {
             success: response.success,
-            message: response.message
-          }
+            message: response.message,
+          },
         };
         this.router.navigate(['login'], {
-          state: objToSend
+          state: objToSend,
         });
         //this.router.navigate(['login'], {queryParams: { logout: 'true' } });
       },
       (err) => {
         console.log(err);
-        if(err.error.code == 113){
+        if (err.error.code == 113) {
           this.token.remove();
           let objToSend: NavigationExtras = {
             queryParams: {
               success: true,
-              message: "Logged out successfully!"
-            }
+              message: 'Logged out successfully!',
+            },
           };
           this.router.navigate(['login'], {
-            state: objToSend
+            state: objToSend,
           });
           //this.router.navigate(['login'], {queryParams: { logout: 'true' } });
         }
       }
     );
-   }
-
-
-
+  }
 }

@@ -15,6 +15,7 @@ export const environment = {
   baseUrl: 'http://127.0.0.1:8000/api/v1/', //http://127.0.0.1:8000/api/v1/ | https://ct.trovecrm.in/api/v1/
 
   /** API Methods */
+  /*======= Account ====================*/
   register: 'account/register',
   login: 'account/login',
   me: 'account/me',
@@ -22,8 +23,9 @@ export const environment = {
   resetPassword: 'account/resetPassword',
   validateResetPasswordToken: 'account/validateResetPasswordToken',
   verifyEmail: 'account/verifyEmail',
-
   logout: 'account/logout',
+
+  /*======= Settings ====================*/
 };
 
 /*
