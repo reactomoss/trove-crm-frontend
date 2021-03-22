@@ -15,6 +15,12 @@ export interface PeriodicElement {
 const ELEMENT_DATA: PeriodicElement[] = [
   { avatar: '../../../assets/images/user-sample.png', name: 'Edward James Olmos', stage: 'Qualified', value: 0, day: 1, owner: 'Packet Monster, Inc.' },
   { avatar: '../../../assets/images/user-sample.png', name: 'Edward James Olmos', stage: 'Evolution', value: 400, day: 1, owner: '' },
+  { avatar: '../../../assets/images/user-sample.png', name: 'Edward James Olmos', stage: 'Evolution', value: 300, day: 1, owner: '' },
+  { avatar: '../../../assets/images/user-sample.png', name: 'Edward James Olmos', stage: 'Evolution', value: 40, day: 1, owner: '' },
+  { avatar: '../../../assets/images/user-sample.png', name: 'Edward James Olmos', stage: 'Evolution', value: 2, day: 2, owner: '' },
+  { avatar: '../../../assets/images/user-sample.png', name: 'Edward James Olmos', stage: 'Evolution', value: 10000, day: 1, owner: '' },
+  { avatar: '../../../assets/images/user-sample.png', name: 'Edward James Olmos', stage: 'Evolution', value: 200, day: 1, owner: '' },
+  { avatar: '../../../assets/images/user-sample.png', name: 'Edward James Olmos', stage: 'Evolution', value: 60, day: 3, owner: 'Me' },
 ];
 
 

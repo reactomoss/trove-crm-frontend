@@ -187,9 +187,10 @@ export class ConfirmDialog {
   styleUrls: ['task-dialog/task-dialog.css']
 })
 export class TaskDialog {
-
-  myControl = new FormControl();
-  options: string[] = ['One', 'Two', 'Three'];
+  scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
+  
+  myControl = new FormControl()
+  options: string[] = ['One', 'Two', 'Three']
   filteredOptions: Observable<string[]>;
 
   selected: string[] = []

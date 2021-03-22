@@ -87,16 +87,6 @@
 .mainPart {
     padding: 20px 30px 0;
     max-height: calc(100vh - 190px);    
-    overflow: auto;
-}
-
-.mainPart {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-}
-
-.mainPart::-webkit-scrollbar {
-  display: none;
 }
 
 .leftPart {

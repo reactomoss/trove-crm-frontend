@@ -12,7 +12,8 @@
     color: #253238;
 }
 
-.main-content {
+.mainContent {
+    max-height: calc(100vh - 220px);
     background: #EFF2F7;
     padding: 0 20px;
 }
@@ -255,21 +256,6 @@ mat-card {
     font-weight: bold;
 }
 
-.scrollContainer {
-    max-height: calc(100vh - 210px);
-    overflow-y: scroll;
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-}
-
-.scrollContainer::-webkit-scrollbar {
-  display: none;
-}
-
-.tableContainer {
-    padding: 20px;
-}
-
 .searchForm {
     margin-bottom: -1.25em;
     width: 220px;
@@ -314,4 +300,13 @@ mat-card {
 
 .searchForm mat-icon {
     color: gray;
+}
+
+.tableContainer {
+    max-height: calc(100vh - 140px);
+    padding: 20px;
+}
+
+.filterContainer {
+    max-height: calc(100vh - 130px);
 }

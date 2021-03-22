@@ -20,6 +20,11 @@ table {
     margin-left: 10px;
 }
 
+.avatarCell {
+  padding-top: 15px !important;
+  padding-bottom: 15px !important;
+}
+
 .avatarCell img {
     margin-left: 5px;
 }

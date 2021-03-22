@@ -13,8 +13,8 @@ import { DemoMaterialModule } from '../material/material-module';
 import { EditorModule } from "@tinymce/tinymce-angular";
 import { TextEditorComponent } from './detail/text-editor/text-editor.component';
 import { WidgetComponent } from './detail/widget/widget.component';
-import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { FilterComponent } from './leads/filter/filter.component';
+import { SimplebarAngularModule } from 'simplebar-angular';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -50,7 +50,7 @@ const routes: Routes = [
     FlexLayoutModule,
     DemoMaterialModule,
     EditorModule,
-    NgxSliderModule
+    SimplebarAngularModule
   ],
   exports:[RouterModule],
 })

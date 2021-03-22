@@ -12,6 +12,8 @@ import { map, startWith } from 'rxjs/operators';
 
   
 export class LeadsComponent implements OnInit {
+  scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
+
   listShow: boolean = false
   stages: string[] = ['Discovery', 'Qualified', 'Evolution', 'Negotiation', 'Closed']
 
