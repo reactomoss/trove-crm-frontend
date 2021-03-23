@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl,FormBuilder, Validators} from '@angular/forms';
+import { AccountApiService } from 'src/app/services/account-api.service';
+
 interface TIMEZONE{
   value: string;
   viewValue: string;
@@ -94,7 +96,9 @@ dateFormatControl = new FormControl(this.dateFormats[2].value)
 currencyFormatControl = new FormControl(this.currencyFormats[3].value)
 
 /*For Account -- time zone select box*/
-  constructor() {
+  constructor(
+    private account: AccountApiService,
+  ) {
     this.accountForm = new FormGroup({
       timeZone: this.timeZoneControl,
       timeFormat: this.timeFormatControl,
@@ -104,6 +108,8 @@ currencyFormatControl = new FormControl(this.currencyFormats[3].value)
   }
 
   ngOnInit(): void {
+
   }
+
 
 }

@@ -1,46 +1,61 @@
-import {Component, OnInit} from '@angular/core';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-import { FormGroup, FormControl,FormBuilder, Validators} from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import {
+  FormGroup,
+  FormControl,
+  FormBuilder,
+  Validators,
+} from '@angular/forms';
 import { SnackBarService } from '../../../shared/snack-bar.service';
+import { AccountApiService } from 'src/app/services/account-api.service';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  styleUrls: ['./profile.component.css'],
 })
 export class ProfileComponent implements OnInit {
   /*Browse File*/
   profile: File = null;
-  imageUrl: string | ArrayBuffer = "../../../assets/images/settingsProfile.png";
-/*Browse File*/
+  userData;
+  imageUrl: string | ArrayBuffer = '../../../assets/images/settingsProfile.png';
+  /*Browse File*/
   changePasswordForm: FormGroup;
   changePassword() {
-   this.changePasswordForm = this.fb.group({
-      oldpassword: ['', Validators.required ],
-      newpassword:['', Validators.required],
-      confirmpassword:['', Validators.required]
-   });
- }
- closeResult = '';
-
-//  constructor starts
-  constructor(private modalService: NgbModal , private fb: FormBuilder,
-    private sb: SnackBarService) {
-      this.changePassword();
-     }
-//  constructor ends
-
-//defining method for display of SnackBar
-  triggerSnackBar(message:string, action:string)
-  {
-   this.sb.openSnackBarBottomCenter(message, action);
-  }
-    /*Modal dialog*/
-  open(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'dialog001'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    this.changePasswordForm = this.fb.group({
+      oldpassword: ['', Validators.required],
+      newpassword: ['', Validators.required],
+      confirmpassword: ['', Validators.required],
     });
+  }
+  closeResult = '';
+
+  //  constructor starts
+  constructor(
+    private modalService: NgbModal,
+    private fb: FormBuilder,
+    private sb: SnackBarService,
+    private account: AccountApiService
+  ) {
+    this.changePassword();
+  }
+  //  constructor ends
+
+  //defining method for display of SnackBar
+  triggerSnackBar(message: string, action: string) {
+    this.sb.openSnackBarBottomCenter(message, action);
+  }
+  /*Modal dialog*/
+  open(content) {
+    this.modalService
+      .open(content, { ariaLabelledBy: 'dialog001' })
+      .result.then(
+        (result) => {
+          this.closeResult = `Closed with: ${result}`;
+        },
+        (reason) => {
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        }
+      );
   }
 
   private getDismissReason(reason: any): string {
@@ -52,27 +67,36 @@ export class ProfileComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
-/*Modal dialog*/
+  /*Modal dialog*/
 
-profilePicture(event){
-  this.profile=event.target.files[0];
-}
-removeProfilePicture(){
-  this.profile = null;
-  this.imageUrl="../../../assets/images/settingsProfile.png";
-}
-onChangeProfile(profile: File) {
-  if (profile) {
-    this.profile = profile;
-    const reader = new FileReader();
-    reader.readAsDataURL(profile);
-    reader.onload = event => {
-      this.imageUrl = reader.result;
-    };
+  profilePicture(event) {
+    this.profile = event.target.files[0];
   }
-}
+  removeProfilePicture() {
+    this.profile = null;
+    this.imageUrl = '../../../assets/images/settingsProfile.png';
+  }
+  onChangeProfile(profile: File) {
+    if (profile) {
+      this.profile = profile;
+      const reader = new FileReader();
+      reader.readAsDataURL(profile);
+      reader.onload = (event) => {
+        this.imageUrl = reader.result;
+      };
+    }
+  }
 
   ngOnInit(): void {
+    this.account
+      .me()
+      .then((res: any) => {
+        //console.log(JSON.stringify(data));
+        console.log(res);
+        this.userData = res;
+      })
+      .catch((error) => {
+        console.log('Promise rejected with ' + JSON.stringify(error));
+      });
   }
-
 }

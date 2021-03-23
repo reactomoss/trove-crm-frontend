@@ -73,6 +73,7 @@ unSelectNotiSystem(isSelected){
 /*Notification System checkbox*/
 
   ngOnInit(): void {
+
   }
 
 }

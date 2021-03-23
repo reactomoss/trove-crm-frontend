@@ -5,8 +5,6 @@ import { retry, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http';
 
-
-
 @Injectable({
   providedIn: 'root',
 })
@@ -59,9 +57,9 @@ export class AccountApiService {
   }
 
   //me
-  me(): Observable<any> {
+  me(){
     let API_URL = `${this.baseURL + environment.me}`;
-    return this.httpClient.get(API_URL);
+    return this.httpClient.get(API_URL).toPromise();
   }
 
   //logout

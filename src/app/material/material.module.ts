@@ -20,6 +20,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @NgModule({
   declarations: [],
   imports: [
@@ -28,7 +29,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
     MatTabsModule,MatTableModule,MatPaginatorModule,MatSortModule,
     MatCheckboxModule,MatSelectModule,DragDropModule,MatSnackBarModule,
     MatSidenavModule,MatGridListModule,MatCardModule,MatExpansionModule,
-    FlexLayoutModule,MatSlideToggleModule
+    FlexLayoutModule,MatSlideToggleModule,MatProgressSpinnerModule
   ],
   exports: [
     CommonModule,FormsModule,ReactiveFormsModule,MatButtonModule,
@@ -36,7 +37,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
     MatTabsModule,MatTableModule,MatPaginatorModule,MatSortModule,
     MatCheckboxModule,MatSelectModule,DragDropModule,MatSnackBarModule,
     MatSidenavModule,MatGridListModule,MatCardModule,MatExpansionModule,
-    FlexLayoutModule,MatSlideToggleModule
+    FlexLayoutModule,MatSlideToggleModule,MatProgressSpinnerModule
   ]
 })
 export class MaterialModule { }

@@ -23,6 +23,8 @@ import { AngularFireAuthModule } from "@angular/fire/auth";
 import { environment } from '../environments/environment';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AuthTwitterService } from './services/auth-twitter.service';
+import { MaterialModule } from './material/material.module';
+import { SpinnerOverlayComponent } from './core/spinner-overlay/spinner-overlay.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'user', pathMatch: 'full' },
@@ -46,7 +48,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, SpinnerOverlayComponent],
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes),
@@ -59,7 +61,8 @@ const routes: Routes = [
     SocialLoginModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    MaterialModule
   ],
   providers: [
     AccountApiService,
