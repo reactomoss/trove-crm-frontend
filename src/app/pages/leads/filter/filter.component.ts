@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChildren, QueryList, ElementRef } from '@angular/core';
 import { Options } from "@angular-slider/ngx-slider";
-import {FormControl} from '@angular/forms';
-import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-filter',
@@ -96,8 +96,9 @@ export class FilterComponent implements OnInit {
   }
 
   public clearClick() {
-    this.checkboxes.forEach((element) => {
-      element.checked = false;
-    })
+    // this.checkboxes.forEach((element) => {
+    //   element.checked = false;
+    // })
+    console.log('clear clicked')
   }
 }
