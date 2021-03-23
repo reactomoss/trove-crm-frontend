@@ -11,7 +11,7 @@ import {map, startWith} from 'rxjs/operators';
 })
 export class FilterComponent implements OnInit {
   @ViewChildren("checkboxes") checkboxes: QueryList<ElementRef>;
-  
+
   myControl = new FormControl();
   searchOptions: string[] = ['One', 'Two', 'Three'];
   filteredOptions: Observable<string[]>;
@@ -36,7 +36,7 @@ export class FilterComponent implements OnInit {
       map(value => this._filter(value))
     );
   }
-    
+
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
@@ -72,7 +72,7 @@ export class FilterComponent implements OnInit {
       return ''
   }
 
-  //contact 
+  //contact
   public clickUser() {
     this.contactActive = 0
     this.active = 1
@@ -95,9 +95,9 @@ export class FilterComponent implements OnInit {
     this.selectedContact = ['Four', 'Five', 'Six']
   }
 
-  public clearClick() {
-    this.checkboxes.forEach((element) => {
-      element.checked = false;
-    })
-  }
+  // public clearClick() {
+  //   this.checkboxes.forEach((element) => {
+  //     element.checked = false;
+  //   })
+  // }
 }
