@@ -512,6 +512,12 @@ padding-top: .15rem; padding-left: .5rem;
   padding-top: 12px;
 }
 
+.userForm .mat-form-field .mat-form-field-infix {
+  padding-bottom: 1em;
+  padding-top: 1em;
+  border-top: .84375em solid transparent;
+}
+
 .mat-form-field .mat-form-field-infix .mat-select-arrow-wrapper {
   padding-top: 10px;
 }
