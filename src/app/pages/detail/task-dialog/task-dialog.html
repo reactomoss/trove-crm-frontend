@@ -1,18 +1,18 @@
 <h1 mat-dialog-title>New Task</h1>
 <div mat-dialog-content>
     <span>Task Content *</span>
-    <mat-form-field appearance="outline" class="formControl">
+    <mat-form-field appearance="outline" class="formControl noLabelForm">
         <textarea matInput ></textarea>
     </mat-form-field>
     <span>Due Date</span>
     <div class="dateDiv">
         <div>
-            <mat-form-field appearance="outline" class="formControl">
+            <mat-form-field appearance="outline" class="formControl noLabelForm">
                 <input matInput>
             </mat-form-field>
         </div>
         <div>
-            <mat-form-field appearance="outline" class="formControl">
+            <mat-form-field appearance="outline" class="formControl noLabelForm">
                 <input matInput>
             </mat-form-field>
         </div>
@@ -20,12 +20,12 @@
     <span>Reminder</span>
     <div class="reminderDiv">
         <div>
-            <mat-form-field appearance="outline" class="formControl">
+            <mat-form-field appearance="outline" class="formControl noLabelForm">
                 <input matInput>
             </mat-form-field>
         </div>
         <div>
-            <mat-form-field appearance="outline" class="formControl">
+            <mat-form-field appearance="outline" class="formControl noLabelForm">
                 <input matInput>
             </mat-form-field>
         </div>
@@ -38,7 +38,7 @@
             <p class="span2">{{e}} description</p>
         </div>
     </div>
-    <mat-form-field class="formControl" appearance="outline" *ngIf="showAuto">
+    <mat-form-field class="formControl noLabelForm" appearance="outline" *ngIf="showAuto">
         <input type="text" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
         <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="onSelectionChange($event)">
             <div class="optionBtnContainer">
@@ -62,7 +62,7 @@
     </button><br>
     
     <span>Owner</span>
-    <mat-form-field appearance="outline" class="formControl">
+    <mat-form-field appearance="outline" class="formControl noLabelForm">
         <mat-select>
             <mat-option value="1">Owner1</mat-option>
             <mat-option value="2">Owner2</mat-option>

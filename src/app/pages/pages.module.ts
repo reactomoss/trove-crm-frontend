@@ -11,11 +11,9 @@ import { SettingsComponent } from './settings/settings.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { DetailComponent, StageDialog, EditDialog, ConfirmDialog, TaskDialog, AppointDialog, StageSnack } from './detail/detail.component';
-import { DemoMaterialModule } from '../material/material-module';
 import { EditorModule } from "@tinymce/tinymce-angular";
 import { TextEditorComponent } from './detail/text-editor/text-editor.component';
 import { WidgetComponent } from './detail/widget/widget.component';
-import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { FilterComponent } from './leads/filter/filter.component';
 import { ProfileComponent } from './settings/profile/profile.component';
 import { UsersrolesComponent } from './settings/usersroles/usersroles.component';
@@ -27,6 +25,8 @@ import { PipelinestagesComponent } from './settings/pipelinestages/pipelinestage
 import { TermsservicesComponent } from './settings/termsservices/termsservices.component';
 import { PrivacypolicyComponent } from './settings/privacypolicy/privacypolicy.component';
 import { PlanspricingComponent } from './settings/planspricing/planspricing.component';
+import { SimplebarAngularModule } from 'simplebar-angular';
+import { NgxSliderModule } from "@angular-slider/ngx-slider";
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: PagesComponent },
@@ -65,8 +65,8 @@ const routes: Routes = [
     ReactiveFormsModule,
     FormsModule,
     FlexLayoutModule,
-    DemoMaterialModule,
     EditorModule,
+    SimplebarAngularModule,
     NgxSliderModule
   ],
   exports:[RouterModule],

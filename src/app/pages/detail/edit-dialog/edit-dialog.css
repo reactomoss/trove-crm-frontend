@@ -41,11 +41,6 @@ span {
     color: #253238;
 }
 
-.formControl {
-    margin-bottom: -0.5em;
-    width: 100%;
-}
-
 .priceDiv {
     display: flex;
     align-items: center;

@@ -13,7 +13,8 @@ import {map, startWith} from 'rxjs/operators';
 })
 export class DetailComponent implements OnInit {
   stages: string[];
-
+  scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
+  
   constructor(private router: Router, public dialog: MatDialog, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
@@ -46,7 +47,7 @@ export class DetailComponent implements OnInit {
         this._snackBar.openFromComponent(StageSnack, {
           data: { name: stageName},
           panelClass: 'style-success',
-          duration: 30000,
+          duration: 3000,
           horizontalPosition: 'center',
           verticalPosition: 'bottom'
         })
@@ -187,9 +188,10 @@ export class ConfirmDialog {
   styleUrls: ['task-dialog/task-dialog.css']
 })
 export class TaskDialog {
-
-  myControl = new FormControl();
-  options: string[] = ['One', 'Two', 'Three'];
+  scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
+  
+  myControl = new FormControl()
+  options: string[] = ['One', 'Two', 'Three']
   filteredOptions: Observable<string[]>;
 
   selected: string[] = []

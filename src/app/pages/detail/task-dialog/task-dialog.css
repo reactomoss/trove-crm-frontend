@@ -48,11 +48,6 @@ span {
     color: #253238;
 }
 
-.formControl {
-    margin-bottom: -0.5em;
-    width: 100%;
-}
-
 .dateDiv, .reminderDiv {
     display: flex;
     align-items: center;

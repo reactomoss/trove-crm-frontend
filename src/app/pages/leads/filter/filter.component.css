@@ -226,10 +226,15 @@
 .contactPanel .userButton {
     width: 50%;
     border: 1px solid #D0D9DE;
-    background-color: #EFF2F7;
+    background-color: #fff;
     border-radius: 3px 0 0 3px;
     font-size: 12.5px;
 }
+    
+.activeButton {
+    background-color: #EFF2F7 !important;
+}
+
 
 .contactPanel .companyButton {
     width: 50%;
