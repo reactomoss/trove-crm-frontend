@@ -8,21 +8,21 @@
           <mat-menu #usersettings="matMenu" class="settingsPanel">
             <ul class="settingsPanelUL">
               <li class="mb-2" mat-menu-item>
-              <div class="f-16-500 color-253238 mb-1">Stuart Broad</div>
-              <a  class="f-12-400 color-lite-O">View Profile</a>
+                <div class="f-16-500 color-253238 mb-1">Stuart Broad</div>
+                <a  class="f-12-400 color-lite-O">View Profile</a>
               </li>
               <li mat-menu-item>
-              <a  class="f-14-400 color-253238"><img class="mr-2" src="../../../assets/images/startedIcon.png" alt="Image">Getting Started</a>
+                <a  class="f-14-400 color-253238"><img class="mr-2" src="../../../assets/images/startedIcon.png" alt="Image">Getting Started</a>
               </li>
               <li mat-menu-item>
                 <a routerLink='/pages/settings' class="f-14-400 color-253238"><img class="mr-2" src="../../../assets/images/settingsIcon.png" alt="Image">Settings</a>
-                </li>
-                <li mat-menu-item>
-                  <a  class="f-14-400 color-253238"><img class="mr-2" src="../../../assets/images/getHelpIcon.png" alt="Image">Get Help</a>
-                  </li>
-                  <li mat-menu-item>
-                    <a routerLink='/user/login' class="f-14-400 color-253238"><img class="mr-2" src="../../../assets/images/logoutIcon.png" alt="Image">Logout</a>
-                    </li>
+              </li>
+              <li mat-menu-item>
+                <a  class="f-14-400 color-253238"><img class="mr-2" src="../../../assets/images/getHelpIcon.png" alt="Image">Get Help</a>
+              </li>
+              <li mat-menu-item>
+                <a routerLink='/user/login' class="f-14-400 color-253238"><img class="mr-2" src="../../../assets/images/logoutIcon.png" alt="Image">Logout</a>
+              </li>
             </ul>
           </mat-menu>
         </span>
@@ -126,14 +126,14 @@
             <mat-icon aria-hidden="false">add</mat-icon>
           </button>
           <mat-menu #addButton="matMenu" class="settingsPanel">
-            <ul class="addPanelUL" (click)="clickLead()">
-              <li mat-menu-item>
+            <ul class="addPanelUL">
+              <li mat-menu-item (click)="clickLead()">
                 <a class="f-16-500 color-253238"><img class="mr-3" src="../../../assets/images/leadIcon.png" alt="Image">Lead</a>
               </li>
-              <li mat-menu-item>
+              <li mat-menu-item (click)="clickContact()">
                 <a class="f-16-500 color-253238"><img class="mr-3" src="../../../assets/images/personIcon.png" alt="Image">Contact</a>
               </li>
-              <li mat-menu-item>
+              <li mat-menu-item (click)="clickCompany()">
                 <a class="f-16-500 color-253238"><img class="mr-3" src="../../../assets/images/companyIcon.png" alt="Image">Company</a>
               </li>
             </ul>
@@ -152,31 +152,8 @@
           </div> -->
 
           <mat-form-field class="searchForm noLabelForm headerSearch" appearance="outline">
-            <input type="text" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto"
-              placeholder="Search">
+            <input type="text" aria-label="Number" matInput placeholder="Search">
             <mat-icon matSuffix>search</mat-icon>
-            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="onSelectionChange($event)">
-              <div class="optionBtnContainer">
-                <button mat-button class={{activeClass(1)}} (click)="setActive(1)">
-                  <span>Person</span>
-                </button>
-                <button mat-button class={{activeClass(2)}} (click)="setActive(2)">
-                  <span>Company</span>
-                </button>
-                <button mat-button class={{activeClass(3)}} (click)="setActive(3)">
-                  <span>Lead</span>
-                </button>
-              </div>
-              <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                <div class="optionDiv">
-                  <img alt="Image" src="../../assets/images/user-sample.png">
-                  <div class="ml-3">
-                    <p class="span1">{{option}}</p>
-                    <p class="span2">{{option}} description</p>
-                  </div>
-                </div>
-              </mat-option>
-            </mat-autocomplete>
           </mat-form-field>
       </div>
     </div>

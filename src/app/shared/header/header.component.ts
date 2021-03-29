@@ -3,12 +3,19 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import {
+  MAT_MOMENT_DATE_FORMATS,
+  MomentDateAdapter,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+} from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
+
 export class HeaderComponent implements OnInit {
   menus: any[];
   isNotification:boolean = false
@@ -16,6 +23,7 @@ export class HeaderComponent implements OnInit {
   options: string[] = ['One', 'Two', 'Three'];
   filteredOptions: Observable<string[]>;
   active: number = 1
+  selectedStage: number = 3
   constructor(public dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -91,27 +99,108 @@ export class HeaderComponent implements OnInit {
 
   clickLead() {
     const dialogRef = this.dialog.open(LeadDialog, {
-      width: '570px',
+      width: '560px',
+      autoFocus: false
     })
     dialogRef.afterClosed().subscribe(result => {
     })
   }
-}
 
+  clickContact() {
+    const dialogRef = this.dialog.open(ContactDialog, {
+      width: '560px',
+    })
+    dialogRef.afterClosed().subscribe(result => {
+    })
+  }
+
+  clickCompany() {
+    const dialogRef = this.dialog.open(CompanyDialog, {
+      width: '560px',
+    })
+    dialogRef.afterClosed().subscribe(result => {
+    })
+  }
+
+}
 
 @Component({
   selector: 'lead-dialog',
   templateUrl: 'lead-dialog/lead-dialog.html',
-  styleUrls: ['lead-dialog/lead-dialog.css']
+  styleUrls: ['lead-dialog/lead-dialog.css'],
+  providers: [
+    // The locale would typically be provided on the root module of your application. We do it at
+    // the component level here, due to limitations of our example generation script.
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
+
+    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
+    // `MatMomentDateModule` in your applications root module. We provide it at the component level
+    // here, due to limitations of our example generation script.
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+  ],
 })
 export class LeadDialog {
+  searchControl = new FormControl()
+  options: string[] = ['Lead Name', 'Primary Contact', 'Value', 'Company', 'Owner', 'Source', 'Secondary Contact',
+                      'Added On', 'Estimate Close Date', 'Pipeline Category', 'Stage', 'Description']
+  filteredOptions: Observable<string[]>
 
   showMandatory: boolean = false
   search: string = ''
 
-
   constructor(
     public dialogRef: MatDialogRef<LeadDialog>
+    // @Inject(MAT_DIALOG_DATA) public data: DialogData
+  ) {
+    this.filteredOptions = this.searchControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      )
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.options.filter(option => option.toLowerCase().includes(filterValue));
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  checkMandatory(e) {
+    this.showMandatory = e.checked
+  }
+
+  checkShow(name) {
+    if (!this.search)
+      return true
+    if (name.toUpperCase().search(this.search.toUpperCase()) == -1)
+      return false
+    else
+      return true
+  }
+
+}
+
+@Component({
+  selector: 'contact-dialog',
+  templateUrl: 'contact-dialog/contact-dialog.html',
+  styleUrls: ['contact-dialog/contact-dialog.css']
+})
+export class ContactDialog {
+
+  showMandatory: boolean = false
+  search: string = ''
+
+  constructor(
+    public dialogRef: MatDialogRef<ContactDialog>
     // @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) { }
 
@@ -131,5 +220,37 @@ export class LeadDialog {
     else
       return true
   }
+}
 
+@Component({
+  selector: 'company-dialog',
+  templateUrl: 'company-dialog/company-dialog.html',
+  styleUrls: ['company-dialog/company-dialog.css']
+})
+export class CompanyDialog {
+
+  showMandatory: boolean = false
+  search: string = ''
+
+  constructor(
+    public dialogRef: MatDialogRef<CompanyDialog>
+    // @Inject(MAT_DIALOG_DATA) public data: DialogData
+  ) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  checkMandatory(e) {
+    this.showMandatory = e.checked
+  }
+
+  checkShow(name) {
+    if (!this.search)
+      return true
+    if (name.toUpperCase().search(this.search.toUpperCase()) == -1)
+      return false
+    else
+      return true
+  }
 }

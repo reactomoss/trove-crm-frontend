@@ -27,13 +27,17 @@ import { PrivacypolicyComponent } from './settings/privacypolicy/privacypolicy.c
 import { PlanspricingComponent } from './settings/planspricing/planspricing.component';
 import { SimplebarAngularModule } from 'simplebar-angular';
 import { NgxSliderModule } from "@angular-slider/ngx-slider";
+import { ContactFilterComponent } from './contact/filter/filter.component';
+import { ContactTableComponent } from './contact/contact-table/contact-table.component';
+import { ContactComponent } from './contact/contact.component';
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: PagesComponent },
   // {path:'settings' , loadChildren: () => import('./settings/settings.module') .then(m=>m.SettingsModule)},
   { path: 'settings', component: SettingsComponent },
   { path: 'leads', component: LeadsComponent },
-  { path: 'detail', component: DetailComponent }
+  { path: 'detail', component: DetailComponent },
+  { path: 'contact', component: ContactComponent },
 ]
 
 @NgModule({
@@ -58,7 +62,11 @@ const routes: Routes = [
     PipelinestagesComponent,
     TermsservicesComponent,
     PrivacypolicyComponent,
-    PlanspricingComponent
+    PlanspricingComponent,
+    ContactFilterComponent,
+    ContactComponent,
+    ContactTableComponent
+
   ],
   imports: [
     CommonModule, RouterModule.forChild(routes), SharedModule, NgbModule,MaterialModule,

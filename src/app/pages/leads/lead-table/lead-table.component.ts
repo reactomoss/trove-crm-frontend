@@ -31,8 +31,9 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
   
 export class LeadTableComponent implements AfterViewInit  {
-  displayedColumns: string[] = ['avatar', 'name', 'stage', 'value', 'day', 'owner'];
+  displayedColumns: string[] = ['name', 'stage', 'value', 'day', 'owner'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
+  selectedTh = ''
 
   constructor(private router: Router) { }
 
@@ -47,4 +48,8 @@ export class LeadTableComponent implements AfterViewInit  {
     this.router.navigate(['/pages/detail']);
   }
 
+  clickTh(type) {
+    this.selectedTh = type
+    console.log(this.selectedTh)
+  }
 }

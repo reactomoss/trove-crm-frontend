@@ -3,6 +3,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-leads',
@@ -10,14 +11,13 @@ import { map, startWith } from 'rxjs/operators';
   styleUrls: ['./leads.component.css']
 })
 
-  
 export class LeadsComponent implements OnInit {
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
 
   listShow: boolean = false
   stages: string[] = ['Discovery', 'Qualified', 'Evolution', 'Negotiation', 'Closed']
 
-  discovery: number[] = [1, 2, 3, 4, 5]
+  discovery: number[] = [100, 2, 3, 4, 5]
   qualified: number[] = [1, 2]
   evolution: number[] = [1]
   negotiation: number[] = [1]
@@ -28,7 +28,9 @@ export class LeadsComponent implements OnInit {
   filteredOptions: Observable<string[]>;
   active: number = 1
 
-  constructor() { }
+  filterCount: number = 0
+
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     this.filteredOptions = this.myControl.valueChanges.pipe(
@@ -84,15 +86,22 @@ export class LeadsComponent implements OnInit {
         event.container.data,
         event.previousIndex,
         event.currentIndex
-      );
+      )
     } else {
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex
-      );
+      )
    }
   }
 
+  clickCard() {
+    this.router.navigate(['/pages/detail']);
+  }
+
+  filterCountChangedHandler(e) {
+    this.filterCount = e
+  }
 }

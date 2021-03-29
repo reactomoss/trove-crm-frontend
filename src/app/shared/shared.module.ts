@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HeaderComponent, LeadDialog } from './header/header.component';
+import { HeaderComponent, LeadDialog, ContactDialog, CompanyDialog } from './header/header.component';
 import { RouterModule,Routes } from '@angular/router';
 import { MaterialModule } from '../material/material.module';
 import { SnackbarComponent } from './snackbar/snackbar.component';
@@ -11,7 +11,9 @@ const routes: Routes = [
 ]
 
 @NgModule({
-  declarations: [HeaderComponent, SnackbarComponent, LeadDialog],
+  declarations: [HeaderComponent, SnackbarComponent, LeadDialog,ContactDialog,
+    CompanyDialog
+  ],
   imports: [
     CommonModule,RouterModule.forChild(routes),MaterialModule,
     FormsModule,

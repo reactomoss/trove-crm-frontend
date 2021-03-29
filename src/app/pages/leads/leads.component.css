@@ -13,9 +13,15 @@
 }
 
 .mainContent {
-    max-height: calc(100vh - 220px);
     background: #EFF2F7;
-    padding: 0 20px;
+}
+
+.cardWrapper {
+    height: calc(100vh - 247px);
+}
+
+.cardWrapper mat-card-title {
+    margin-bottom: 0;
 }
 
 .footer {
@@ -85,7 +91,7 @@
     background: #E9EDF2;
     padding: 0 10px;
     margin: 0 5px;
-    min-width: 160px;
+    min-width: 270px;
 }
 
 .list-title {
@@ -94,7 +100,7 @@
     font-size: 14px;
     line-height: 20px;
     color: #202D3F;
-    margin: 15px;
+    margin: 10px 15px 0;
 }
 
 mat-card {
@@ -125,7 +131,7 @@ mat-card {
 .card-sub-title2 {
     font-style: normal;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 20px;
     color: #253238;
 }
@@ -133,10 +139,11 @@ mat-card {
 .card-sub-title3 {
     font-style: normal;
     font-weight: normal;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 17px;
 
     color: #253238;
+    margin-bottom: 0;
 }
 
 .card-sub-title4 {
@@ -202,7 +209,6 @@ mat-card {
 
 .rightPart {
     border-left: solid 1px #ddd;
-    max-width: 330px;
     min-width: 324px;
 }
 
@@ -247,6 +253,7 @@ mat-card {
     border: 1px solid #D0D9DE;
     font-size: 12px;
     line-height: 30px;
+    margin-left: 100px;
 }
 
 .drawerContainerTop span {
@@ -306,5 +313,26 @@ mat-card {
 }
 
 .filterContainer2 {
-    max-height: calc(100vh - 120px);
+    max-height: calc(100vh - 130px);
+}
+
+p {
+    font-family: objektiv-mk3, sans-serif; 
+}
+
+.moneyIcon {
+    width: 35px;
+    height: 35px;
+    background: #F3F5F9;
+    font-size: 25px;
+    display: flex;
+    color: #455B66;
+    align-items: center;
+    justify-content: center;
+    border-radius: 7.2px;
+}
+
+.smallIcon {
+    font-size: 20px;
+    margin-top: 6px;
 }
