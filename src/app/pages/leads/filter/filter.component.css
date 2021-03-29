@@ -3,7 +3,7 @@
     width: 100%
 }
 
-.mat-panel3, .mat-panel2, .mat-panel1, .mat-panel5, .mat-panel6, .mat-panel4 {
+.mat-panel3, .mat-panel2, .mat-panel5, .mat-panel6, .mat-panel4 {
     border-bottom: #ddd solid 1px;
 }
 
@@ -11,7 +11,7 @@
     border-top: #ddd solid 1px;
 }
 
-.mat-panel2  mat-panel-title span{
+mat-panel-title span{
     font-size: 12px;
 }
 
@@ -28,10 +28,6 @@
 
 .mat-panel5 span {
     font-size: 11px;
-}
-
-.panel-content {
-  padding-top: 20px;
 }
 
 .tableContainer {
@@ -89,7 +85,7 @@
 }
 
 .trapezoid3 {
-    border-top: 37px solid #002868 !important;
+    border-top: 37px solid white !important;
     border-left: 10px solid transparent !important;
     border-right: 10px solid transparent !important;
     width: calc(100% - 40px);
@@ -106,7 +102,7 @@
     top: -20px;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: white;
+    color: black;
     width: 100%;
     display: flex;
     align-items: center;
@@ -214,8 +210,12 @@
     font-weight: normal;
 }
 
-.contactPanel mat-expansion-panel-header {
-    /* background-color: rgba(239, 242, 247, 0.75); */
+.activePipe {
+    border-top: 37px solid #002868 !important;
+}
+
+.activePipe .text {
+    color: white;
 }
 
 .contactPanel mat-checkbox {
@@ -235,7 +235,6 @@
     background-color: #EFF2F7 !important;
 }
 
-
 .contactPanel .companyButton {
     width: 50%;
     border: 1px solid #D0D9DE;
@@ -244,10 +243,12 @@
     font-size: 12.5px;
 }
 
-.contactPanel .clearButton {
+.clearButton {
     border: 1px solid #D0D9DE;
     background-color: #EFF2F7;
-    font-size: 12.5px;
+    font-size: 12px;
+    width: 90px;
+    height: 35px;
 }
 
 /* .searchForm {
@@ -297,4 +298,33 @@
 
 .searchForm mat-icon {
     color: gray;
+}
+
+.valueInput {
+    font-size: 12px;
+}
+
+.customDateDiv {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.customDateDiv span {
+    font-size: 12px;
+}
+
+.customDateDiv mat-form-field {
+  width: 120px;  
+  font-size: 12px;
+}
+
+.listContent {
+    font-size: 13px;
+}
+
+.avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 18px;
 }

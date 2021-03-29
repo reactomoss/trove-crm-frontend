@@ -1,0 +1,210 @@
+<h1 mat-dialog-title>Add Person</h1>
+<div class="filterPart">
+    <mat-form-field appearance="outline" class="whiteBackground noLabelForm">
+        <input matInput placeholder="search field" [(ngModel)]="search">
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+    <mat-checkbox color="primary" class="mandatoryCheck" (change)="checkMandatory($event)" >Only show mandatory fields</mat-checkbox>
+</div>
+<div mat-dialog-content>
+    <div class="mainContent">
+        <div class="threeDiv">
+            <div *ngIf="checkShow('First Name') || checkShow('Last Name')">
+                <mat-icon class="roundIcon">account_circle</mat-icon>
+            </div>
+            <div *ngIf="checkShow('First Name')">
+                <span>First Name</span><br>
+                <mat-form-field appearance="outline" class="formControl noLabelForm formMaxWidth">
+                    <input matInput>
+                </mat-form-field>
+            </div>
+            <div *ngIf="checkShow('Last Name')">
+                <span>Last Name</span><br>
+                <mat-form-field appearance="outline" class="formControl noLabelForm formMaxWidth">
+                    <input matInput>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="threeDiv">
+            <div *ngIf="checkShow('Mobile Number') || checkShow('Work Number')">
+                <mat-icon class="roundIcon">business</mat-icon>
+            </div>
+            <div *ngIf="checkShow('Mobile Number')">
+                <span>Mobile Number</span><br>
+                <mat-form-field appearance="outline" class="formControl noLabelForm formMaxWidth">
+                    <input matInput>
+                </mat-form-field>
+            </div>
+            <div *ngIf="checkShow('Work Number')">
+                <span>Work Number</span><br>
+                <mat-form-field appearance="outline" class="formControl noLabelForm formMaxWidth">
+                    <input matInput>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="twoDiv" *ngIf="!showMandatory">
+            <div *ngIf="checkShow('Company Name')">
+                <mat-icon class="roundIcon">phone</mat-icon>
+            </div>
+            <div *ngIf="checkShow('Company Name')">
+                <span>Company Name</span><br>
+                <mat-form-field appearance="outline" class="formControl noLabelForm">
+                    <mat-select>
+                        <mat-option value="1">company1</mat-option>
+                        <mat-option value="2">company2</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="twoDiv">
+            <div *ngIf="checkShow('Email Address')">
+                <mat-icon class="roundIcon">email</mat-icon>
+            </div>
+            <div *ngIf="checkShow('Email Address')">
+                <span>Email Address</span><br>
+                <mat-form-field appearance="outline" class="formControl noLabelForm">
+                    <input matInput type="email">
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="threeDiv" *ngIf="!showMandatory">
+            <div *ngIf="checkShow('Contact Type') || checkShow('Contact Group')">
+            </div>
+            <div *ngIf="checkShow('Contact Type')">
+                <span>Contact Type</span><br>
+                <mat-form-field appearance="outline" class="formControl noLabelForm">
+                    <mat-select>
+                        <mat-option value="1">type1</mat-option>
+                        <mat-option value="2">type2</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div *ngIf="checkShow('Contact Group')">
+                <span>Contact Group</span><br>
+                <mat-form-field appearance="outline" class="formControl noLabelForm">
+                    <mat-select>
+                        <mat-option value="1">group1</mat-option>
+                        <mat-option value="2">group2</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <!-- <div *ngIf="checkShow('Deal Name')">
+            <span>Deal Name *</span><br>
+            <mat-form-field appearance="outline" class="formControl noLabelForm">
+                <input matInput>
+            </mat-form-field>
+        </div>
+        <div class="priceDiv" >
+            <div *ngIf="checkShow('Primary Contact')">
+                <span>Primary Contact*</span><br>
+                <mat-form-field appearance="outline" class="formControl noLabelForm">
+                    <mat-select>
+                        <mat-option value="1">contact1</mat-option>
+                        <mat-option value="2">contact2</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div *ngIf="checkShow('Value')">
+                <span>Value</span><br>
+                <mat-form-field appearance="outline" class="formControl noLabelForm">
+                    <input matInput>
+                </mat-form-field>
+            </div>
+        </div>
+        <div *ngIf="!showMandatory && checkShow('Company')">
+            <span>Company</span><br>
+            <mat-form-field appearance="outline" class="formControl noLabelForm">
+                <mat-select>
+                    <mat-option value="1">company1</mat-option>
+                    <mat-option value="2">company2</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="ownerDiv" *ngIf="!showMandatory">
+            <div *ngIf="checkShow('Owner')">
+                <span>Owner</span><br>
+                <mat-form-field appearance="outline" class="formControl noLabelForm">
+                    <mat-select>
+                        <mat-option value="1">owner1</mat-option>
+                        <mat-option value="2">owner2</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div *ngIf="checkShow('Source')">
+                <span>Source</span><br>
+                <mat-form-field appearance="outline" class="formControl noLabelForm">
+                    <mat-select>
+                        <mat-option value="1">source1</mat-option>
+                        <mat-option value="2">source2</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="contactDiv">
+            <div *ngIf="checkShow('Secondary Contact')">
+                <span>Secondary Contact*</span><br>
+                <mat-form-field appearance="outline" class="formControl noLabelForm">
+                    <mat-select>
+                        <mat-option value="1">contact1</mat-option>
+                        <mat-option value="2">contact2</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div *ngIf="!showMandatory && checkShow('Add On')">
+                <span>Add On</span><br>
+                <mat-form-field appearance="outline" class="formControl noLabelForm">
+                    <input type="date" matInput>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="halfDiv" *ngIf="!showMandatory && checkShow('Estimate Close Date')">
+            <span>Estimate Close Date</span><br>
+            <mat-form-field appearance="outline" class="formControl">
+                <input type="date" matInput>
+            </mat-form-field>
+        </div>
+        <div class="halfDiv" *ngIf="!showMandatory && checkShow('Pipeline Category')">
+            <span>Pipeline Category</span><br>
+            <mat-form-field appearance="outline" class="formControl noLabelForm">
+                <mat-select>
+                    <mat-option value="1">category1</mat-option>
+                    <mat-option value="2">category2</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div *ngIf="!showMandatory  && checkShow('Stage')">
+            <span>Stage</span><br>
+            <div class="stage-wrapper mb-2">
+                <div class="stage-item">
+                    Discovery
+                </div>
+                <div class="stage-item">
+                    <span>Qualified</span>
+                </div>
+                <div class="stage-item">
+                    <span>Evolution</span>
+                </div>
+                <div class="stage-item">
+                    <span>Negotiation</span>
+                </div>
+                <div class="stage-item">
+                    <span>Closed</span>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="!showMandatory && checkShow('Description')">
+            <span>Description</span><br>
+            <div>
+                <mat-form-field appearance="outline" class="formControl noLabelForm">
+                    <textarea matInput></textarea>
+                </mat-form-field>
+            </div>
+        </div> -->
+    </div>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()" class="cancelBtn">Cancel</button>
+    <button mat-button class="createBtn ml-3">Create</button>
+</div>

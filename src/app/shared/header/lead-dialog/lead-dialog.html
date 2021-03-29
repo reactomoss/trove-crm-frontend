@@ -1,15 +1,26 @@
-<h1 mat-dialog-title>Add Deal</h1>
+<h1 mat-dialog-title>Add Lead</h1>
 <div class="filterPart">
-    <mat-form-field appearance="outline" class="whiteBackground noLabelForm">
+    <!-- <mat-form-field appearance="outline" class="whiteBackground noLabelForm">
         <input matInput placeholder="search field" [(ngModel)]="search">
         <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field> -->
+    <mat-form-field class="dialogSearchFormField whiteBackground" appearance="outline">
+        <input type="text" placeholder="Search field" aria-label="Number" matInput [formControl]="searchControl"
+            [matAutocomplete]="auto" [(ngModel)]="search">
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                {{option}}
+            </mat-option>
+        </mat-autocomplete>
     </mat-form-field>
-    <mat-checkbox color="primary" (change)="checkMandatory($event)" >Only show mandatory fields</mat-checkbox>
+
+    <mat-checkbox color="primary" class="mandatoryCheck" (change)="checkMandatory($event)" >Only show mandatory fields</mat-checkbox>
 </div>
 <div mat-dialog-content>
     <div class="mainContent">
-        <div *ngIf="checkShow('Deal Name')">
-            <span>Deal Name *</span><br>
+        <div *ngIf="checkShow('Lead Name')">
+            <span>Lead Name *</span><br>
             <mat-form-field appearance="outline" class="formControl noLabelForm">
                 <input matInput>
             </mat-form-field>
@@ -17,7 +28,7 @@
         <div class="priceDiv" >
             <div *ngIf="checkShow('Primary Contact')">
                 <span>Primary Contact*</span><br>
-                <mat-form-field appearance="outline" class="formControl noLabelForm">
+                <mat-form-field appearance="outline" class="grayBackground formControl noLabelForm" [style.width.px]="232">
                     <mat-select>
                         <mat-option value="1">contact1</mat-option>
                         <mat-option value="2">contact2</mat-option>
@@ -26,14 +37,15 @@
             </div>
             <div *ngIf="checkShow('Value')">
                 <span>Value</span><br>
-                <mat-form-field appearance="outline" class="formControl noLabelForm">
-                    <input matInput>
+                <mat-form-field appearance="outline" class="formControl noLabelForm" [style.width.px]="232">
+                    <span class="currencySpan">USD</span>
+                    <input matInput style="padding-left: 98px">
                 </mat-form-field>
             </div>
         </div>
         <div *ngIf="!showMandatory && checkShow('Company')">
             <span>Company</span><br>
-            <mat-form-field appearance="outline" class="formControl noLabelForm">
+            <mat-form-field appearance="outline" class="grayBackground formControl noLabelForm">
                 <mat-select>
                     <mat-option value="1">company1</mat-option>
                     <mat-option value="2">company2</mat-option>
@@ -43,7 +55,7 @@
         <div class="ownerDiv" *ngIf="!showMandatory">
             <div *ngIf="checkShow('Owner')">
                 <span>Owner</span><br>
-                <mat-form-field appearance="outline" class="formControl noLabelForm">
+                <mat-form-field appearance="outline" class="grayBackground formControl noLabelForm" [style.width.px]="232">
                     <mat-select>
                         <mat-option value="1">owner1</mat-option>
                         <mat-option value="2">owner2</mat-option>
@@ -52,7 +64,7 @@
             </div>
             <div *ngIf="checkShow('Source')">
                 <span>Source</span><br>
-                <mat-form-field appearance="outline" class="formControl noLabelForm">
+                <mat-form-field appearance="outline" class="grayBackground formControl noLabelForm" [style.width.px]="232">
                     <mat-select>
                         <mat-option value="1">source1</mat-option>
                         <mat-option value="2">source2</mat-option>
@@ -63,29 +75,33 @@
         <div class="contactDiv">
             <div *ngIf="checkShow('Secondary Contact')">
                 <span>Secondary Contact*</span><br>
-                <mat-form-field appearance="outline" class="formControl noLabelForm">
+                <mat-form-field appearance="outline" class="grayBackground formControl noLabelForm" [style.width.px]="232">
                     <mat-select>
                         <mat-option value="1">contact1</mat-option>
                         <mat-option value="2">contact2</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
-            <div *ngIf="!showMandatory && checkShow('Add On')">
-                <span>Add On</span><br>
-                <mat-form-field appearance="outline" class="formControl noLabelForm">
-                    <input type="date" matInput>
+            <div *ngIf="!showMandatory && checkShow('Added On')">
+                <span>Added On</span><br>
+                <mat-form-field appearance="outline" class="formControl noLabelForm" [style.width.px]="232">
+                    <input matInput [matDatepicker]="picker">
+                    <mat-datepicker-toggle style="height: 10px" matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
             </div>
         </div>
         <div class="halfDiv" *ngIf="!showMandatory && checkShow('Estimate Close Date')">
             <span>Estimate Close Date</span><br>
-            <mat-form-field appearance="outline" class="formControl">
-                <input type="date" matInput>
+            <mat-form-field appearance="outline" class="formControl noLabelForm" [style.width.px]="232">
+                <input matInput [matDatepicker]="picker">
+                <mat-datepicker-toggle style="height: 10px" matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
         </div>
         <div class="halfDiv" *ngIf="!showMandatory && checkShow('Pipeline Category')">
             <span>Pipeline Category</span><br>
-            <mat-form-field appearance="outline" class="formControl noLabelForm">
+            <mat-form-field appearance="outline" class="grayBackground formControl noLabelForm" [style.width.px]="232">
                 <mat-select>
                     <mat-option value="1">category1</mat-option>
                     <mat-option value="2">category2</mat-option>
@@ -95,19 +111,19 @@
         <div *ngIf="!showMandatory  && checkShow('Stage')">
             <span>Stage</span><br>
             <div class="stage-wrapper mb-2">
-                <div class="stage-item">
+                <div class="stage-item" (click)="selectedStage = 1" [class.stage-active] = 'selectedStage == 1'>
                     Discovery
                 </div>
-                <div class="stage-item">
+                <div class="stage-item" (click)="selectedStage = 2" [class.stage-active] = 'selectedStage == 2'>
                     <span>Qualified</span>
                 </div>
-                <div class="stage-item">
+                <div class="stage-item" (click)="selectedStage = 3" [class.stage-active] = 'selectedStage == 3'>
                     <span>Evolution</span>
                 </div>
-                <div class="stage-item">
+                <div class="stage-item" (click)="selectedStage = 4" [class.stage-active] = 'selectedStage == 4'>
                     <span>Negotiation</span>
                 </div>
-                <div class="stage-item">
+                <div class="stage-item" (click)="selectedStage = 5" [class.stage-active] = 'selectedStage == 5'>
                     <span>Closed</span>
                 </div>
             </div>
@@ -124,5 +140,5 @@
 </div>
 <div mat-dialog-actions>
     <button mat-button (click)="onNoClick()" class="cancelBtn">Cancel</button>
-    <button mat-button class="createBtn ml-3">Create</button>
+    <button mat-button class="createBtn ml-3">Save</button>
 </div>

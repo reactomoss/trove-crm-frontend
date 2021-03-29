@@ -2,42 +2,24 @@ table {
     width: 100%;
 }
 
-.avatar {
-    border-radius: 7.2px;
-}
-
-.avatarHeader {
-    width: 70px;
-}
-
-.avatarHeader div{
-    width: 24px;
-    height: 24px;
-    background: #FFFFFF;
-    border: 1px solid #D0D9DE;
-    box-sizing: border-box;
-    border-radius: 6px;
-    margin-left: 10px;
-}
-
-.avatarCell {
-  padding-top: 15px !important;
-  padding-bottom: 15px !important;
-}
-
-.avatarCell img {
-    margin-left: 5px;
-}
-
 tr {
   cursor: pointer;
 }
 
 th {
-    background: #E1E6EE;
-    border: 1px solid #E6EAF0;
-    font-size: 15px;
-    color: #253238;
+  background: #E1E6EE;
+  font-size: 15px;
+  color: #253238;
+  font-family: objektiv-mk3, sans-serif; 
+}
+
+.activeTh {
+  background: #E9EDF2;
+}
+
+td {
+  font-family: objektiv-mk3, sans-serif; 
+  color: #253238;
 }
 
 /*stage*/
@@ -80,4 +62,42 @@ th {
 }
 .stage-item.stage-active:after {
   border-left-color: #002868;
+}
+
+.deal {
+  width: 30%;
+}
+.stage {
+  width: 13%;
+}
+.value {
+  width: 10%;
+}
+.last {
+  width: 10%;
+}
+.owner {
+  width: 20%;
+}
+
+.nameCell {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.nameCell img {
+  border-radius: 6px;
+}
+
+.nameCell span {
+  font-weight: 500;
+  margin-left: 10px;
+}
+
+.valueCell span {
+  font-weight: 500;
+}
+
+.stageCell, .lastCell, .valueCell, .ownerCell {
+  padding-left: 8px;
 }

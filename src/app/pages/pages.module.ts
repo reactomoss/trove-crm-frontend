@@ -14,15 +14,19 @@ import { EditorModule } from "@tinymce/tinymce-angular";
 import { TextEditorComponent } from './detail/text-editor/text-editor.component';
 import { WidgetComponent } from './detail/widget/widget.component';
 import { FilterComponent } from './leads/filter/filter.component';
+import { ContactFilterComponent } from './contact/filter/filter.component';
 import { SimplebarAngularModule } from 'simplebar-angular';
 import { NgxSliderModule } from "@angular-slider/ngx-slider";
+import { ContactComponent } from './contact/contact.component';
+import { ContactTableComponent } from './contact/contact-table/contact-table.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: PagesComponent },
   { path: 'settings', component: SettingsComponent },
   { path: 'leads', component: LeadsComponent },
-  { path: 'detail', component: DetailComponent }
+  { path: 'detail', component: DetailComponent },
+  { path: 'contact', component: ContactComponent },
 ]
 
 @NgModule({
@@ -40,7 +44,10 @@ const routes: Routes = [
     StageSnack,
     TextEditorComponent,
     WidgetComponent,
-    FilterComponent
+    FilterComponent,
+    ContactFilterComponent,
+    ContactComponent,
+    ContactTableComponent
   ],
   imports: [
     CommonModule,
