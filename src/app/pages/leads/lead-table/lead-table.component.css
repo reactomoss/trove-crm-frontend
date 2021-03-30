@@ -83,15 +83,23 @@ td {
 .nameCell {
   padding-top: 20px;
   padding-bottom: 20px;
+  display: flex;
+  align-items: center;
 }
 
 .nameCell img {
   border-radius: 6px;
 }
 
-.nameCell span {
+.nameCell .nameSpan {
   font-weight: 500;
   margin-left: 10px;
+  font-size: 16px;
+}
+
+.nameCell .descSpan {
+  margin-left: 10px;
+  font-size: 14px;
 }
 
 .valueCell span {

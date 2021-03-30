@@ -4,7 +4,10 @@
         [class.activeTh]="selectedTh == 'name'">Deal Name</th>
         <td mat-cell *matCellDef="let element" class="nameCell"> 
             <img class="avatar" alt="Image" src="{{element.avatar}}">
-            <span>{{element.name}}</span>
+            <div>
+                <span class="nameSpan">{{element.name}}</span><br>
+                <span class="descSpan">{{element.description}}</span>
+            </div>
         </td>
     </ng-container>
 

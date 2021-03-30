@@ -105,6 +105,7 @@ export class FilterComponent implements OnInit {
     new Contact('Apple'),
     new Contact('Amazon'),
     new Contact('Facebook'),
+    new Contact('hexagonitsolutions software pvt ltd')
   ]
   sources = [
     new Source('SMS'),
