@@ -5,6 +5,12 @@ import { MatSnackBar, MatSnackBarConfig, MAT_SNACK_BAR_DATA, MatSnackBarRef } fr
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
+import {
+  MAT_MOMENT_DATE_FORMATS,
+  MomentDateAdapter,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+} from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 
 @Component({
   selector: 'app-detail',
@@ -92,7 +98,7 @@ export class DetailComponent implements OnInit {
 
   openTaskDialog() {
     const dialogRef = this.dialog.open(TaskDialog, {
-      width: '520px',
+      width: '405px',
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -213,7 +219,22 @@ export class ConfirmDialog {
 @Component({
   selector: 'task-dialog',
   templateUrl: 'task-dialog/task-dialog.html',
-  styleUrls: ['task-dialog/task-dialog.css']
+  styleUrls: ['task-dialog/task-dialog.css'],
+  providers: [
+    // The locale would typically be provided on the root module of your application. We do it at
+    // the component level here, due to limitations of our example generation script.
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
+
+    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
+    // `MatMomentDateModule` in your applications root module. We provide it at the component level
+    // here, due to limitations of our example generation script.
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+  ],
 })
 export class TaskDialog {
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
@@ -284,7 +305,22 @@ export class TaskDialog {
 @Component({
   selector: 'appoint-dialog',
   templateUrl: 'appoint-dialog/appoint-dialog.html',
-  styleUrls: ['appoint-dialog/appoint-dialog.css']
+  styleUrls: ['appoint-dialog/appoint-dialog.css'],
+  providers: [
+    // The locale would typically be provided on the root module of your application. We do it at
+    // the component level here, due to limitations of our example generation script.
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
+
+    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
+    // `MatMomentDateModule` in your applications root module. We provide it at the component level
+    // here, due to limitations of our example generation script.
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+  ],
 })
 export class AppointDialog {
 

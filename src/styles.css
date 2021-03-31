@@ -590,3 +590,7 @@ padding: 8px 10px;
 .mat-checkbox .mat-checkbox-label {
   white-space: normal;
 }
+
+.datePicker .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-suffix .mat-datepicker-toggle .mat-focus-indicator{
+  height: 2em !important;
+}

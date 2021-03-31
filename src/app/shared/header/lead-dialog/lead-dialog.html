@@ -84,7 +84,7 @@
             </div>
             <div *ngIf="!showMandatory && checkShow('Added On')">
                 <span>Added On</span><br>
-                <mat-form-field appearance="outline" class="formControl noLabelForm" [style.width.px]="232">
+                <mat-form-field appearance="outline" class="formControl noLabelForm datePicker" [style.width.px]="232">
                     <input matInput [matDatepicker]="picker">
                     <mat-datepicker-toggle style="height: 10px" matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>

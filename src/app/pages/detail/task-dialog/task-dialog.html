@@ -7,25 +7,29 @@
     <span>Due Date</span>
     <div class="dateDiv">
         <div>
-            <mat-form-field appearance="outline" class="formControl noLabelForm">
-                <input matInput>
+            <mat-form-field appearance="outline" [style.width.px]=155 class="formControl noLabelForm datePicker">
+                <input matInput [matDatepicker]="fromPicker" readonly>
+                <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                <mat-datepicker #fromPicker></mat-datepicker>
             </mat-form-field>
         </div>
         <div>
-            <mat-form-field appearance="outline" class="formControl noLabelForm">
-                <input matInput>
+            <mat-form-field appearance="outline" [style.width.px]=155 class="formControl noLabelForm datePicker">
+                <input matInput [matDatepicker]="toPicker" readonly>
+                <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                <mat-datepicker #toPicker></mat-datepicker>
             </mat-form-field>
         </div>
     </div>
     <span>Reminder</span>
     <div class="reminderDiv">
         <div>
-            <mat-form-field appearance="outline" class="formControl noLabelForm">
+            <mat-form-field appearance="outline" class="formControl noLabelForm" [style.width.px]="155">
                 <input matInput>
             </mat-form-field>
         </div>
         <div>
-            <mat-form-field appearance="outline" class="formControl noLabelForm">
+            <mat-form-field appearance="outline" class="formControl noLabelForm" [style.width.px]="155">
                 <input matInput>
             </mat-form-field>
         </div>

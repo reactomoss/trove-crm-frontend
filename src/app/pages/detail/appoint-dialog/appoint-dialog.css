@@ -48,7 +48,7 @@ span {
     color: #253238;
 }
 
-.titleDiv, .dateDiv, .startDiv, .endDiv {
+.titleDiv, .dateDiv, .startDiv, .endDiv, .associateDiv {
     display: flex;
     align-items: center;
     justify-content: space-between;
