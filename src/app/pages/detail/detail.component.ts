@@ -15,6 +15,12 @@ export class DetailComponent implements OnInit {
   stages: string[];
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
   
+  status:string = "Progress"
+
+  selectedStage: number
+
+  selectedDisplay = "all"
+
   constructor(private router: Router, public dialog: MatDialog, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
@@ -27,15 +33,19 @@ export class DetailComponent implements OnInit {
   
   getStageClass(i) {
     if (i == 0) {
-      return "stage-active stage-item"
+      return "stage-first stage-item"
     } else {
       return "stage-item"
     }
   }
 
+  clickStage(index) {
+    this.selectedStage = index
+  }
+
   openStageDialog(): void {
     const dialogRef = this.dialog.open(StageDialog, {
-      width: '470px',
+      width: '470px'
     })
 
     dialogRef.afterClosed().subscribe(result => {
@@ -46,8 +56,8 @@ export class DetailComponent implements OnInit {
 
         this._snackBar.openFromComponent(StageSnack, {
           data: { name: stageName},
-          panelClass: 'style-success',
-          duration: 3000,
+          panelClass: 'stage-success',
+          duration: 30000,
           horizontalPosition: 'center',
           verticalPosition: 'bottom'
         })
@@ -58,6 +68,7 @@ export class DetailComponent implements OnInit {
   openEditDialog() {
     const dialogRef = this.dialog.open(EditDialog, {
       width: '560px',
+      autoFocus: false
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -111,6 +122,7 @@ export class DetailComponent implements OnInit {
 export class StageDialog {
 
   public stageName:string = "Demo"
+  stagePosition = "before"
 
   constructor(
     public dialogRef: MatDialogRef<StageDialog>
@@ -134,6 +146,10 @@ export class StageDialog {
   styleUrls: ['edit-dialog/edit-dialog.css']
 })
 export class EditDialog {
+  searchControl = new FormControl()
+  options: string[] = ['Lead Name', 'Primary Contact', 'Value', 'Company', 'Owner', 'Source', 'Secondary Contact',
+                      'Added On']
+  filteredOptions: Observable<string[]>
 
   showMandatory: boolean = false
   search: string = ''
@@ -141,7 +157,19 @@ export class EditDialog {
   constructor(
     public dialogRef: MatDialogRef<EditDialog>
     // @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) { }
+  ) {
+    this.filteredOptions = this.searchControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      )
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.options.filter(option => option.toLowerCase().includes(filterValue));
+  }
 
   checkMandatory(e) {
     this.showMandatory = e.checked

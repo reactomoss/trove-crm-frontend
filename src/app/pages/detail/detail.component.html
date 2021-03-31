@@ -10,7 +10,8 @@
     </div>
     <div class="top2">
         <div class="stage-wrapper">
-            <div *ngFor="let stage of stages; let i = index" class={{getStageClass(i)}}>
+            <div *ngFor="let stage of stages; let i = index" class={{getStageClass(i)}} (click)="clickStage(i)"
+                 [class.stage-active]="i == selectedStage">
                 <span>{{stage}}</span>
             </div>
             <!-- <div class="stage-item stage-active">Sales Pipeline</div>
@@ -30,16 +31,18 @@
     <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column">
             <div class="leftPart" fxFlex="22" fxFill>
                 <div class="leftItem1">
-                    <mat-icon>edit</mat-icon>
+                    <div class="roundBusiness">
+                        <img alt="Image" src="../../../assets/images/business.svg" width="14" height="14">
+                    </div>
                     <div>
                         <span class="span1">Packet Monster</span><br/>
                         <span class="span2">Employee at Packet Monster, Inc</span>
                     </div>
                 </div>
                 <div class="leftItem2">
-                    <mat-form-field>
-                        <mat-label>Status</mat-label>
-                        <mat-select>
+                    <span class="selectLabel">Status</span><br>
+                    <mat-form-field class="statusSelect">
+                        <mat-select [(value)]="status">
                             <mat-option value="Progress">
                                 Progress
                             </mat-option>
@@ -82,30 +85,24 @@
                     <p class="pType1">Description</p>
                     <p class="pType3">Enter a fixed salary, assign Recurring Schedule.</p>
                 </div>
-                <div class="leftItem5">
-                    <p class="pType1">Tags</p>
-                    <button mat-button>
-                        James
-                        <mat-icon class="iconInButton">close</mat-icon>
-                    </button>
-                </div>
             </div>
+            
             <div class="centerPart" fxFlex="50">
                 <app-text-editor></app-text-editor>
-                <div>
-                    <span class="selectSpan">Displaying</span>
-                    <mat-form-field style="width: 90px">
-                        <mat-select>
-                            <mat-option value="0">
+                <div class="my-2">
+                    <span class="selectLabel mr-2" style="margin-left: 12px;">Displaying</span>
+                    <mat-form-field class="statusSelect blackSelect" [style.width.px]="110">
+                        <mat-select [(value)]="selectedDisplay">
+                            <mat-option value="all">
                                 All activity
                             </mat-option>
-                            <mat-option value="1">
+                            <mat-option value="note">
                                 Notes
                             </mat-option>
-                            <mat-option value="2">
+                            <mat-option value="email">
                                 Email
                             </mat-option>
-                            <mat-option value="3">
+                            <mat-option value="call">
                                 Call
                             </mat-option>
                         </mat-select>
@@ -115,8 +112,10 @@
                     <div class="centerItem">
                         <div class="centerTitle">
                             <div class="infoDiv">
-                                <mat-icon class="commentIcon">comment</mat-icon>
-                                <div>
+                                <span class="commentIcon">
+                                    <img alt="Image" src="../../../assets/images/comment-icon.svg">
+                                </span>
+                                <div class="ml-2">
                                     <span class="span1">
                                         Wes Studi
                                     </span>
@@ -139,25 +138,31 @@
                     <div class="centerItem">
                         <div class="centerTitle">
                             <div class="infoDiv">
-                                <mat-icon class="commentIcon">comment</mat-icon>
-                                <div>
-                                    <span class="span1">
+                                <span class="commentIcon">
+                                    <img alt="Image" src="../../../assets/images/email-icon.svg">
+                                </span>
+                                <div class="ml-2">
+                                    <span class="span1 mr-1">
                                         Wes Studi
                                     </span>
-                                    <span class="span2">
-                                        wrote a note for Brian Markinson
+                                    <img alt="Image" src="../../../assets/images/small-right-arrow.svg">
+                                    <span class="span2 ml-1">
+                                        Brian Markinson
                                     </span>
                                 </div>
                             </div>
                             <div class="actionDiv">
-                                <mat-icon>edit</mat-icon>
-                                <mat-icon>delete</mat-icon>
                                 <span class="span3">1/1/2021 7:30AM</span>
                             </div>
                         </div>
-                        <div class="centerMsg">
-                            Helllo Markinson!<br>
-                            Hope your team will implement many new exciting features in the upcoming versions.
+                        <div class="centerMsg1">
+                            <span class="tx14">Helllo Markinson!</span><br>
+                            <span class="lineHeightMd">I’d love to know the new features that are implemented in the last versions.</span><br>
+                            <span class="txItalic lineHeightMd">Thank you!</span><br>
+                            <span class="txItalic lineHeightMd">
+                                Click here to viw the 
+                                <span class="txComment">comments</span>
+                            </span>
                         </div>
                     </div>
                 </div>

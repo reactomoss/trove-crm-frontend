@@ -4,6 +4,7 @@
     line-height: 29px;
     color: #253238;
     padding: 23px 40px;
+    margin-bottom: 0;
 }
 
 .mat-dialog-content {
@@ -48,4 +49,5 @@ span {
 
 mat-form-field {
     width: 100%;
+    margin-bottom: -0.2em;
 }

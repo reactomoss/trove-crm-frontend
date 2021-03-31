@@ -54,9 +54,6 @@ span {
     justify-content: space-between;
 }
 
-.titleDiv div {
-    width: 300px;
-}
 
 .optionDiv {
     display: flex;

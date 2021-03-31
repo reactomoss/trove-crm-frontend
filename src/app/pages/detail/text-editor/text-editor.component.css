@@ -4,10 +4,11 @@ mat-tab-group {
 }
 
 .tabContent {
-    padding: 10px
+    padding: 18px 20px;
 }
 
 .editorButton {
+    text-align: left;
     width: 100%;
     padding: 9px 12px;
     font-weight: bold;
@@ -17,4 +18,34 @@ mat-tab-group {
     border: 1px solid #D0D9DE;
     box-sizing: border-box;
     border-radius: 3px;
+}
+
+.borderCover1 {
+    width: 158px;
+    height: 1px;
+    background: white;
+    left: 11px;
+    position: absolute;
+    top: 35px;
+    z-index: 100;
+}
+
+.borderCover2 {
+    width: 159px;
+    height: 1px;
+    background: white;
+    left: 171px;
+    position: absolute;
+    top: 35px;
+    z-index: 100;
+}
+
+.borderCover3 {
+    width: 158px;
+    height: 1px;
+    background: white;
+    left: 331px;
+    position: absolute;
+    top: 35px;
+    z-index: 100;
 }

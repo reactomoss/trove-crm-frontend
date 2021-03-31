@@ -1,8 +1,11 @@
+<div [class.borderCover1]="activeTabIndex == 0" [class.borderCover2]="activeTabIndex == 1" 
+        [class.borderCover3]="activeTabIndex == 2">
+</div>
 <mat-tab-group #tabGroup (selectedTabChange)="handleTabChange($event)">
     <mat-tab>
         <ng-template mat-tab-label>
-            <mat-icon class="example-tab-icon">comment</mat-icon>
-            Add a Note
+            <img alt="Image" src="../../../assets/images/comment-icon.svg">
+            <span class="ml-2">Add a Note</span>
         </ng-template>
         <div class="tabContent">
             <button mat-button class="editorButton" *ngIf="!editorShow" (click)="showEditor()">Mindfatory Team</button>
@@ -34,8 +37,8 @@
 
     <mat-tab>
         <ng-template mat-tab-label>
-            <mat-icon class="example-tab-icon">email</mat-icon>
-            Send an Email
+            <img alt="Image" src="../../../assets/images/email-icon.svg">
+            <span class="ml-2">Send an Email</span>
         </ng-template>
         <div class="tabContent">
             <button mat-button class="editorButton" *ngIf="!editorShow" (click)="showEditor()">Mindfatory Team</button>
@@ -69,8 +72,8 @@
 
     <mat-tab>
         <ng-template mat-tab-label>
-            <mat-icon class="example-tab-icon">local_phone</mat-icon>
-            Call
+            <img alt="Image" src="../../../assets/images/phone-icon.svg">
+            <span class="ml-2">Call</span>
         </ng-template>
         <div class="tabContent">
             <button mat-button class="editorButton" *ngIf="!editorShow" (click)="showEditor()">Mindfatory Team</button>
