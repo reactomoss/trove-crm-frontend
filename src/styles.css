@@ -594,3 +594,8 @@ padding: 8px 10px;
 .datePicker .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-suffix .mat-datepicker-toggle .mat-focus-indicator{
   height: 2em !important;
 }
+
+.fr-box .fr-toolbar div button svg {
+  width: 18px !important;
+  height: 18px !important;
+}
