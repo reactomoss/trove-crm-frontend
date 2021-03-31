@@ -10,7 +10,7 @@
 .mat-dialog-content {
     margin: 0;
     padding: 0;
-    max-height: 370px !important;
+    height: 380px !important;
 }
 
 .mainContent {
@@ -35,14 +35,11 @@
     color: #D0D9DE;
 }
 
-.filterPart mat-form-field {
-    margin-bottom: -1em;
-}
-
 span {
     font-size: 12px;
     line-height: 17px;
     color: #253238;
+    font-weight: 500;
 }
 
 .priceDiv {

@@ -339,6 +339,18 @@ padding: 8px 10px;
     align-items: center;
     justify-content: center;
     border-radius: 24px;
+    color: #455B66;
+}
+
+.bigRoundIcon {
+    background: #EFF2F7;
+    width: 58px !important;
+    height: 58px !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30px;
+    color: #455B66;
 }
 
 .mat-checkbox .mat-checkbox-layout {
@@ -598,4 +610,8 @@ padding: 8px 10px;
 .fr-box .fr-toolbar div button svg {
   width: 18px !important;
   height: 18px !important;
+}
+
+.inputSelectForm .mat-form-field-infix {
+  /* display: inherit; */
 }

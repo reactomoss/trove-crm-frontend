@@ -19,8 +19,8 @@
 
     <div class="topBar">
         <div fxLayout="row" fxLayoutAlign="space-between" fxLayout.xs="column">
-            <div class="topBarDiv" [matMenuTriggerFor]="contactMenu">
-                <button mat-button>
+            <div class="topBarDiv" >
+                <button mat-button [matMenuTriggerFor]="contactMenu">
                     <span class="title fontObjektivMk mt-1">{{typeString}}</span>
                     <mat-icon class="iconInButton">arrow_drop_down</mat-icon>
                 </button>
@@ -34,6 +34,11 @@
                         </li>
                     </ul>
                 </mat-menu>
+
+                <mat-form-field class="searchForm noLabelForm" appearance="outline" >
+                    <input type="text" matInput placeholder="Search by contact name">
+                    <mat-icon matSuffix>search</mat-icon>
+                </mat-form-field>
             </div>
             <div class="topBarDiv">
                 <button mat-button class="flatIconTextButton mr-3" [matMenuTriggerFor]="optionMenu">
@@ -84,12 +89,13 @@
                                 (click)="clickCheck($event)" *ngIf="setCheckStatus(item)"
                                 color="primary"></mat-checkbox>
                     <mat-card-header>
-                        <div mat-card-avatar class="example-header-image">
-                            <img *ngIf="!item.company; else elseBlock" alt="Image" src="../../../assets/images/user-sample.png" class="avatar">
-                            <ng-template #elseBlock>
-                                <mat-icon class="roundIcon">business</mat-icon>
-                            </ng-template>
-                        </div>
+                    <div mat-card-avatar class="iconContainer">
+                        <img *ngIf="!item.company; else elseBlock" alt="Image" src="../../../assets/images/face.svg" class="avatar">
+                        <ng-template #elseBlock>
+                            <!-- <mat-icon class="roundIcon">business</mat-icon> -->
+                            <img alt="Image" src="../../../assets/images/business19.svg">
+                        </ng-template>
+                    </div>
                     </mat-card-header><br>
                     <mat-card-content *ngIf="item.company; else companyContent">
                         <span class="cardText1">{{item.name}}</span><br>
