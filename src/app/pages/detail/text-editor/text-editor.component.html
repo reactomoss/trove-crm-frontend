@@ -1,7 +1,7 @@
 <div [class.borderCover1]="activeTabIndex == 0" [class.borderCover2]="activeTabIndex == 1" 
         [class.borderCover3]="activeTabIndex == 2">
 </div>
-<mat-tab-group #tabGroup (selectedTabChange)="handleTabChange($event)">
+<mat-tab-group #tabGroup (selectedTabChange)="handleTabChange($event)" class="froalaTab">
     <mat-tab>
         <ng-template mat-tab-label>
             <img alt="Image" src="../../../assets/images/comment-icon.svg">

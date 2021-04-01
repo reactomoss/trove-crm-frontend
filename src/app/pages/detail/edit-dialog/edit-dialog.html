@@ -11,7 +11,7 @@
                 </mat-option>
             </mat-autocomplete>
         </mat-form-field>
-        <mat-checkbox class="mandatoryCheck" color="primary" (change)="checkMandatory($event)">Only show mandatory fields</mat-checkbox>
+        <mat-checkbox class="mandatoryCheck customCheckBox" color="primary" (change)="checkMandatory($event)">Only show mandatory fields</mat-checkbox>
     </div>
     <div class="mainContent">
         <div *ngIf="checkShow('Lead Name')">

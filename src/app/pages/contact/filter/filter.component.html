@@ -1,4 +1,4 @@
-<mat-accordion class="grayAccordion">
+<mat-accordion class="grayAccordion customAccordion">
     <mat-expansion-panel class="mat-elevation-z0 topPanel">
         <mat-expansion-panel-header>
             <mat-panel-title>
@@ -9,7 +9,7 @@
             </mat-panel-title>
         </mat-expansion-panel-header>
         <div class="panel-content">
-            <mat-radio-group aria-labelledby="example-radio-group-label" class="statusRadio" [(ngModel)]="status">
+            <mat-radio-group aria-labelledby="example-radio-group-label" class="statusRadio customRadio" [(ngModel)]="status">
                 <mat-radio-button color="primary" class="example-radio-button" *ngFor="let type of statusTypes" [value]="type">
                     {{type}}
                 </mat-radio-button>
@@ -38,10 +38,11 @@
                     <input type="text" placeholder="Search by name" aria-label="Search by name" matInput [matAutocomplete]="auto"
                         [formControl]="contactControl" style="font-size: 13px" >
                 </mat-form-field>
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" class="customAutocomplete">
                     <mat-option *ngFor="let contact of filteredContacts | async" [value]="selectedContacts">
                         <div (click)="optionClicked($event, contact)">
-                            <mat-checkbox [checked]="contact.selected" (change)="toggleSelection(contact)" color="primary">
+                            <mat-checkbox [checked]="contact.selected" (change)="toggleSelection(contact)" color="primary"
+                                            class="customCheckBox">
                                 <img alt="Image" src="../../../assets/images/contact.svg" class="avatar">
                                 {{ contact.name }}
                             </mat-checkbox>
@@ -52,7 +53,8 @@
                     <!-- <mat-list-item *ngIf="selectedUsers?.length === 0">(None)</mat-list-item> -->
                     <mat-list-item *ngFor="let contact of selectedContacts" class="mb-2">
                         <div class="listContent">
-                            <mat-checkbox [checked]="contact.selected" (click)="toggleSelection(contact)" color="primary" style="font-size: 12px">
+                            <mat-checkbox [checked]="contact.selected" (click)="toggleSelection(contact)" color="primary" style="font-size: 12px"
+                                        class="customCheckBox">
                                 <img alt="Image" src="../../../assets/images/contact.svg" class="avatar">
                                 {{ contact.name }}
                             </mat-checkbox>
@@ -77,7 +79,7 @@
             </mat-panel-title>
         </mat-expansion-panel-header>
         <div class="panel-content">
-            <mat-radio-group aria-labelledby="example-radio-group-label" class="statusRadio px-4" [(ngModel)]="dateType">
+            <mat-radio-group aria-labelledby="example-radio-group-label" class="statusRadio px-4 customRadio" [(ngModel)]="dateType">
                 <mat-radio-button color="primary" class="example-radio-button" *ngFor="let type of dateTypes" [value]="type">
                     {{dateTypeString[type]}}
                 </mat-radio-button>
@@ -115,7 +117,7 @@
             </mat-panel-title>
         </mat-expansion-panel-header>
         <div class="panel-content">
-            <mat-radio-group aria-labelledby="example-radio-group-label" class="statusRadio px-4" [(ngModel)]="addDateType">
+            <mat-radio-group aria-labelledby="example-radio-group-label" class="statusRadio px-4 customRadio" [(ngModel)]="addDateType">
                 <mat-radio-button color="primary" class="example-radio-button" *ngFor="let type of addDateTypes" [value]="type">
                     {{addDateTypeString[type]}}
                 </mat-radio-button>
@@ -154,7 +156,7 @@
         </mat-expansion-panel-header>
         <div class="panel-content displayColumn">
             <mat-checkbox *ngFor="let e of types" color="primary" (change)="clickType($event, e)"
-                        [checked]="e.selected">
+                        [checked]="e.selected" class="customCheckBox">
                 {{e.name}}
             </mat-checkbox>
         </div>

@@ -1,4 +1,4 @@
-<mat-accordion class="grayAccordion">
+<mat-accordion class="grayAccordion customAccordion">
     <mat-expansion-panel *ngIf="listShow" class="mat-elevation-z0 mat-panel1">
         <mat-expansion-panel-header [@.disabled]="true">
             <mat-panel-title>
@@ -111,10 +111,10 @@
                     <input type="text" placeholder="Search by name" aria-label="Search by name" matInput [matAutocomplete]="auto"
                         [formControl]="contactControl" style="font-size: 13px" >
                 </mat-form-field>
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" class="customAutocomplete">
                     <mat-option *ngFor="let contact of filteredContacts | async" [value]="selectedContacts">
                         <div (click)="optionClicked($event, contact)">
-                            <mat-checkbox [checked]="contact.selected" (change)="toggleSelection(contact)" color="primary">
+                            <mat-checkbox [checked]="contact.selected" (change)="toggleSelection(contact)" color="primary" class="customCheckBox">
                                 <img alt="Image" src="../../../assets/images/user-sample.png" class="avatar">
                                 {{ contact.name }}
                             </mat-checkbox>
@@ -125,7 +125,7 @@
                     <!-- <mat-list-item *ngIf="selectedUsers?.length === 0">(None)</mat-list-item> -->
                     <mat-list-item *ngFor="let contact of selectedContacts" class="mb-2">
                         <div class="listContent">
-                            <mat-checkbox [checked]="contact.selected" (click)="toggleSelection(contact)" color="primary">
+                            <mat-checkbox [checked]="contact.selected" (click)="toggleSelection(contact)" color="primary" class="customCheckBox">
                                 <img alt="Image" src="../../../assets/images/user-sample.png" class="avatar">
                                 {{ contact.name }}
                             </mat-checkbox>
@@ -154,9 +154,9 @@
         </mat-expansion-panel-header>
         <div class="panel-content">
             <ngx-simplebar [options]="scrollOptions" style="height: 120px">
-                <mat-checkbox class="mb-1" [checked]="sourceAll" color="primary" (change)="allSourceSelect($event)">All</mat-checkbox>
+                <mat-checkbox class="mb-1" [checked]="sourceAll" color="primary" (change)="allSourceSelect($event)" class="customCheckBox">All</mat-checkbox>
                 <div *ngFor="let e of sources">
-                    <mat-checkbox class="mb-1" color="primary" 
+                    <mat-checkbox class="mb-1 customCheckBox" color="primary"
                                     [checked]="e.selected" (change)="sourceSelect(e)">{{e.name}}</mat-checkbox>
                 </div>
             </ngx-simplebar>
@@ -173,7 +173,7 @@
             </mat-panel-title>
         </mat-expansion-panel-header>
         <div class="panel-content">
-            <mat-radio-group aria-label="Select an option" class="displayColumn" color="primary" [(ngModel)]="statusType">
+            <mat-radio-group aria-label="Select an option" class="displayColumn customRadio" color="primary" [(ngModel)]="statusType">
                 <mat-radio-button value="All">All</mat-radio-button>
                 <mat-radio-button value="Active">Active</mat-radio-button>
                 <mat-radio-button value="Inactive">Inactive</mat-radio-button>
@@ -191,7 +191,7 @@
             </mat-panel-title>
         </mat-expansion-panel-header>
         <div class="panel-content">
-            <mat-radio-group aria-labelledby="example-radio-group-label" class="displayColumn" [(ngModel)]="dateType">
+            <mat-radio-group aria-labelledby="example-radio-group-label" class="displayColumn customRadio" [(ngModel)]="dateType">
                 <mat-radio-button color="primary" class="example-radio-button" *ngFor="let type of dateTypes" [value]="type">
                     {{dateTypeString[type]}}
                 </mat-radio-button>

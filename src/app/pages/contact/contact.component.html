@@ -67,12 +67,12 @@
 
     <ngx-simplebar [options]="scrollOptions" class="mainContainer" [class.listHeight] = "listShow" [class.gridHeight] = "!listShow">
         <div *ngIf="!selectedItems.length" class="checkDiv m-3">
-            <mat-checkbox color="primary" class="contactCheck mr-4" (click)="clickEmptyCheck()"><span>{{items.length}} Contacts</span></mat-checkbox>
+            <mat-checkbox color="primary" class="contactCheck mr-4 customCheckBox" (click)="clickEmptyCheck()"><span>{{items.length}} Contacts</span></mat-checkbox>
             <span class="pt-1">Sorted by last activity date</span>
         </div>
         <div *ngIf="selectedItems.length" class="checkDiv m-3">
             <mat-checkbox color="primary" [indeterminate]="selectedItems.length" (click)="clickIndeterminate()"
-                        class="contactCheck mr-4"><span>{{selectedItems.length}} / {{items.length}} Selected</span></mat-checkbox>
+                        class="contactCheck mr-4 customCheckBox"><span>{{selectedItems.length}} / {{items.length}} Selected</span></mat-checkbox>
             <button mat-button class="deleteBtn">Delete</button>
             <button mat-button class="smallIconBtn ml-2" (click)="clickEmail()">
                 <mat-icon>email</mat-icon>
@@ -87,7 +87,7 @@
             <ng-container  *ngFor="let item of items; let i = index">
                 <div class="col-lg-2 col-md-3 col-sm-4">
                     <mat-card class="mat-elevation-z0 p-3 mb-4" style="position: relative" (click)="clickCard(item)">
-                        <mat-checkbox class="cardCheckBox" [checked]='setCheckStatus(item)' 
+                        <mat-checkbox class="cardCheckBox customCheckBox" [checked]='setCheckStatus(item)' 
                                     (click)="clickCheck($event)" *ngIf="setCheckStatus(item)"
                                     color="primary"></mat-checkbox>
                         <mat-card-header>
