@@ -48,15 +48,12 @@ span {
     color: #253238;
 }
 
-.titleDiv, .dateDiv, .startDiv, .endDiv {
+.titleDiv, .dateDiv, .startDiv, .endDiv, .associateDiv {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.titleDiv div {
-    width: 300px;
-}
 
 .optionDiv {
     display: flex;

@@ -30,6 +30,7 @@ import { NgxSliderModule } from "@angular-slider/ngx-slider";
 import { ContactFilterComponent } from './contact/filter/filter.component';
 import { ContactTableComponent } from './contact/contact-table/contact-table.component';
 import { ContactComponent } from './contact/contact.component';
+import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: PagesComponent },
@@ -39,7 +40,6 @@ const routes: Routes = [
   { path: 'detail', component: DetailComponent },
   { path: 'contact', component: ContactComponent },
 ]
-
 @NgModule({
   declarations: [
     PagesComponent,LeadsComponent,LeadTableComponent,SettingsComponent,
@@ -75,7 +75,9 @@ const routes: Routes = [
     FlexLayoutModule,
     EditorModule,
     SimplebarAngularModule,
-    NgxSliderModule
+    NgxSliderModule,
+    FroalaEditorModule.forRoot(),
+    FroalaViewModule.forRoot()
   ],
   exports:[RouterModule],
 })

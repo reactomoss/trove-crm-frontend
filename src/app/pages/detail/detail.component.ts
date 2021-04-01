@@ -5,6 +5,12 @@ import { MatSnackBar, MatSnackBarConfig, MAT_SNACK_BAR_DATA, MatSnackBarRef } fr
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
+import {
+  MAT_MOMENT_DATE_FORMATS,
+  MomentDateAdapter,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+} from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 
 @Component({
   selector: 'app-detail',
@@ -15,6 +21,12 @@ export class DetailComponent implements OnInit {
   stages: string[];
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
   
+  status:string = "Progress"
+
+  selectedStage: number
+
+  selectedDisplay = "all"
+
   constructor(private router: Router, public dialog: MatDialog, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
@@ -27,15 +39,19 @@ export class DetailComponent implements OnInit {
   
   getStageClass(i) {
     if (i == 0) {
-      return "stage-active stage-item"
+      return "stage-first stage-item"
     } else {
       return "stage-item"
     }
   }
 
+  clickStage(index) {
+    this.selectedStage = index
+  }
+
   openStageDialog(): void {
     const dialogRef = this.dialog.open(StageDialog, {
-      width: '470px',
+      width: '470px'
     })
 
     dialogRef.afterClosed().subscribe(result => {
@@ -46,8 +62,8 @@ export class DetailComponent implements OnInit {
 
         this._snackBar.openFromComponent(StageSnack, {
           data: { name: stageName},
-          panelClass: 'style-success',
-          duration: 3000,
+          panelClass: 'stage-success',
+          duration: 30000,
           horizontalPosition: 'center',
           verticalPosition: 'bottom'
         })
@@ -58,6 +74,7 @@ export class DetailComponent implements OnInit {
   openEditDialog() {
     const dialogRef = this.dialog.open(EditDialog, {
       width: '560px',
+      autoFocus: false
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -81,7 +98,7 @@ export class DetailComponent implements OnInit {
 
   openTaskDialog() {
     const dialogRef = this.dialog.open(TaskDialog, {
-      width: '520px',
+      width: '405px',
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -111,6 +128,7 @@ export class DetailComponent implements OnInit {
 export class StageDialog {
 
   public stageName:string = "Demo"
+  stagePosition = "before"
 
   constructor(
     public dialogRef: MatDialogRef<StageDialog>
@@ -134,6 +152,10 @@ export class StageDialog {
   styleUrls: ['edit-dialog/edit-dialog.css']
 })
 export class EditDialog {
+  searchControl = new FormControl()
+  options: string[] = ['Lead Name', 'Primary Contact', 'Value', 'Company', 'Owner', 'Source', 'Secondary Contact',
+                      'Added On']
+  filteredOptions: Observable<string[]>
 
   showMandatory: boolean = false
   search: string = ''
@@ -141,7 +163,19 @@ export class EditDialog {
   constructor(
     public dialogRef: MatDialogRef<EditDialog>
     // @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) { }
+  ) {
+    this.filteredOptions = this.searchControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      )
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.options.filter(option => option.toLowerCase().includes(filterValue));
+  }
 
   checkMandatory(e) {
     this.showMandatory = e.checked
@@ -185,7 +219,22 @@ export class ConfirmDialog {
 @Component({
   selector: 'task-dialog',
   templateUrl: 'task-dialog/task-dialog.html',
-  styleUrls: ['task-dialog/task-dialog.css']
+  styleUrls: ['task-dialog/task-dialog.css'],
+  providers: [
+    // The locale would typically be provided on the root module of your application. We do it at
+    // the component level here, due to limitations of our example generation script.
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
+
+    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
+    // `MatMomentDateModule` in your applications root module. We provide it at the component level
+    // here, due to limitations of our example generation script.
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+  ],
 })
 export class TaskDialog {
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
@@ -256,7 +305,22 @@ export class TaskDialog {
 @Component({
   selector: 'appoint-dialog',
   templateUrl: 'appoint-dialog/appoint-dialog.html',
-  styleUrls: ['appoint-dialog/appoint-dialog.css']
+  styleUrls: ['appoint-dialog/appoint-dialog.css'],
+  providers: [
+    // The locale would typically be provided on the root module of your application. We do it at
+    // the component level here, due to limitations of our example generation script.
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
+
+    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
+    // `MatMomentDateModule` in your applications root module. We provide it at the component level
+    // here, due to limitations of our example generation script.
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+  ],
 })
 export class AppointDialog {
 

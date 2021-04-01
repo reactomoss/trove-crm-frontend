@@ -1,30 +1,17 @@
+<div [class.borderCover1]="activeTabIndex == 0" [class.borderCover2]="activeTabIndex == 1" 
+        [class.borderCover3]="activeTabIndex == 2">
+</div>
 <mat-tab-group #tabGroup (selectedTabChange)="handleTabChange($event)">
     <mat-tab>
         <ng-template mat-tab-label>
-            <mat-icon class="example-tab-icon">comment</mat-icon>
-            Add a Note
+            <img alt="Image" src="../../../assets/images/comment-icon.svg">
+            <span class="ml-2">Add a Note</span>
         </ng-template>
         <div class="tabContent">
             <button mat-button class="editorButton" *ngIf="!editorShow" (click)="showEditor()">Mindfatory Team</button>
-            <editor 
-                *ngIf="activeTabIndex===0 && editorShow"
-                apiKey="qddpqw4y0sca4zdtc103gq4cneo50qyyx2ss9febsvv6o269"
-                initialValue="<p>Initial content of the editor</p>" [init]="{
-                        toolbar_location: 'bottom',
-                        height: 200,
-                        menubar: false,
-                        plugins: [
-                        'advlist autolink lists link image charmap print',
-                        'preview anchor searchreplace visualblocks code',
-                        'fullscreen insertdatetime media table paste',
-                        'help wordcount'
-                        ],
-                        toolbar:
-                        'undo redo | formatselect | bold italic | \
-                        alignleft aligncenter alignright alignjustify | \
-                        bullist numlist outdent indent | help'
-                    }">
-            </editor>
+            
+            <div [froalaEditor] *ngIf="activeTabIndex===0 && editorShow" [froalaEditor]="titleOptions1">Note</div>
+
             <div *ngIf="editorShow">
                 <button mat-button class="cancelButton" (click)="hideEditor()">Cancel</button>
                 <button mat-button class="saveButton">Save</button>
@@ -34,32 +21,12 @@
 
     <mat-tab>
         <ng-template mat-tab-label>
-            <mat-icon class="example-tab-icon">email</mat-icon>
-            Send an Email
+            <img alt="Image" src="../../../assets/images/email-icon.svg">
+            <span class="ml-2">Send an Email</span>
         </ng-template>
         <div class="tabContent">
             <button mat-button class="editorButton" *ngIf="!editorShow" (click)="showEditor()">Mindfatory Team</button>
-            <editor
-                *ngIf="activeTabIndex===1 && editorShow"
-                apiKey="qddpqw4y0sca4zdtc103gq4cneo50qyyx2ss9febsvv6o269"
-                initialValue="<p>email</p>"
-                [init]="{
-                    toolbar_location: 'bottom',
-                    height: 200,
-                    menubar: false,
-                    plugins: [
-                    'advlist autolink lists link image charmap print',
-                    'preview anchor searchreplace visualblocks code',
-                    'fullscreen insertdatetime media table paste',
-                    'help wordcount'
-                    ],
-                    toolbar:
-                    'undo redo | formatselect | bold italic | \
-                    alignleft aligncenter alignright alignjustify | \
-                    bullist numlist outdent indent | help'
-                }"
-                >
-            </editor>
+            <div [froalaEditor] *ngIf="activeTabIndex===1 && editorShow" [froalaEditor]="titleOptions2">Email</div>
             <div *ngIf="editorShow">
                 <button mat-button class="cancelButton" (click)="hideEditor()">Cancel</button>
                 <button mat-button class="saveButton">Save</button>
@@ -69,32 +36,12 @@
 
     <mat-tab>
         <ng-template mat-tab-label>
-            <mat-icon class="example-tab-icon">local_phone</mat-icon>
-            Call
+            <img alt="Image" src="../../../assets/images/phone-icon.svg">
+            <span class="ml-2">Call</span>
         </ng-template>
         <div class="tabContent">
             <button mat-button class="editorButton" *ngIf="!editorShow" (click)="showEditor()">Mindfatory Team</button>
-            <editor
-                *ngIf="activeTabIndex===2 && editorShow"
-                apiKey="qddpqw4y0sca4zdtc103gq4cneo50qyyx2ss9febsvv6o269"
-                initialValue="<p>Call</p>"
-                [init]="{
-                    toolbar_location: 'bottom',
-                    height: 200,
-                    menubar: false,
-                    plugins: [
-                    'advlist autolink lists link image charmap print',
-                    'preview anchor searchreplace visualblocks code',
-                    'fullscreen insertdatetime media table paste',
-                    'help wordcount'
-                    ],
-                    toolbar:
-                    'undo redo | formatselect | bold italic | \
-                    alignleft aligncenter alignright alignjustify | \
-                    bullist numlist outdent indent | help'
-                }"
-                >
-            </editor>
+            <div [froalaEditor] *ngIf="activeTabIndex===2 && editorShow" [froalaEditor]="titleOptions3">Call</div>
             <div *ngIf="editorShow">
                 <button mat-button class="cancelButton" (click)="hideEditor()">Cancel</button>
                 <button mat-button class="saveButton">Save</button>

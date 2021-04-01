@@ -5,10 +5,10 @@
         <input matInput [(ngModel)]="stageName">
     </mat-form-field><br>
     <span>Place</span><br>
-    <mat-form-field appearance="outline" class="noLabelForm">
-        <mat-select>
-            <mat-option value="1">Before Closed</mat-option>
-            <mat-option value="2">After Closed</mat-option>
+    <mat-form-field appearance="outline" class="noLabelForm grayBackground">
+        <mat-select [(value)]="stagePosition">
+            <mat-option value="before">Before Closed</mat-option>
+            <mat-option value="after">After Closed</mat-option>
         </mat-select>
     </mat-form-field>
 </div>

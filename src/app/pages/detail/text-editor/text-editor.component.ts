@@ -14,6 +14,51 @@ export class TextEditorComponent implements AfterViewInit {
   public activeTabIndex: number | undefined = undefined;
   public editorShow: boolean = false;
 
+  public titleOptions1: Object = {
+    // placeholderText: 'Edit Your Content Here!',
+    // charCounterCount: false,
+    // toolbarInline: true,
+    
+    toolbarBottom: true,
+    events: {
+      "initialized": () => {
+        console.log('initialized');
+      },
+      "contentChanged": () => {
+        console.log("content changed");
+      }
+    }
+  }
+
+  public titleOptions2: Object = {
+    // placeholderText: 'Edit Your Content Here!',
+    // charCounterCount: false,
+    // toolbarInline: true,
+    toolbarBottom: true,
+    events: {
+      "initialized": () => {
+        console.log('initialized');
+      },
+      "contentChanged": () => {
+        console.log("content changed");
+      }
+    }
+  }
+  
+  public titleOptions3: Object = {
+    // placeholderText: 'Edit Your Content Here!',
+    // charCounterCount: false,
+    // toolbarInline: true,
+    toolbarBottom: true,
+    events: {
+      "initialized": () => {
+        console.log('initialized');
+      },
+      "contentChanged": () => {
+        console.log("content changed");
+      }
+    }
+  }
   public handleTabChange(e: MatTabChangeEvent) {
     this.activeTabIndex = e.index;
     console.log('tabIndex', this.activeTabIndex)

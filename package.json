@@ -26,6 +26,7 @@
     "@angular/router": "~11.0.5",
     "@ng-bootstrap/ng-bootstrap": "^9.0.2",
     "@tinymce/tinymce-angular": "^4.2.1",
+    "angular-froala-wysiwyg": "^3.2.6-1",
     "bootstrap": "^4.6.0",
     "moment": "^2.29.1",
     "ngx-countdown": "^11.0.1",

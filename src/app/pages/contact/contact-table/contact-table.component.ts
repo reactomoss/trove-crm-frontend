@@ -25,6 +25,7 @@ export class ContactTableComponent implements AfterViewInit {
 
   displayedColumns: string[] = ['contact', 'company', 'last', 'since', 'city', 'added', 'type', 'status', 'phone'];
   dataSource
+  selectedTh: string = ''
 
   constructor(private dateService: DateService) {
     this.dataSource = new MatTableDataSource(this.propItems);
@@ -67,5 +68,9 @@ export class ContactTableComponent implements AfterViewInit {
 
   dateToString(date) {
     return this.dateService.dateToString(date)
+  }
+
+  clickTh(th) {
+    this.selectedTh = th
   }
 }

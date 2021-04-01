@@ -10,6 +10,9 @@ div a:hover{text-decoration: none;}
 div, h1 {
   font-family: objektiv-mk3, sans-serif !important;
 }
+div, h1, .mat-checkbox, span {
+  font-family: objektiv-mk3, sans-serif !important; }
+
 .f-10-500 {font-size: 10px; font-weight: 500;line-height: 14px;}
 .f-12-400 {font-size: 12px; font-weight: 400;line-height: 17px;}
 .f-12-500 {font-size: 12px; font-weight: 500;line-height: 17px;}
@@ -442,6 +445,7 @@ padding-top: .15rem; padding-left: .5rem;
 
 /* .mat-tab-label-active {
 .mat-tab-label-active {
+  opacity: 1 !important;
   background-color: white;
   border: 1px solid #D0D9DE;
   border-bottom: white;
@@ -525,7 +529,8 @@ padding-top: .15rem; padding-left: .5rem;
 }
 .mat-expansion-panel{
   margin: 0 !important;
-  border-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
 }
 
 .mat-dialog-container {
@@ -533,8 +538,8 @@ padding-top: .15rem; padding-left: .5rem;
 }
 
 .mat-checkbox .mat-checkbox-inner-container {
-  height: 20px;
-  width: 20px;
+  height: 18px;
+  width: 18px;
   margin-right: 8px;
 }
 
@@ -695,6 +700,18 @@ padding-top: .15rem; padding-left: .5rem;
     align-items: center;
     justify-content: center;
     border-radius: 24px;
+    color: #455B66;
+}
+
+.bigRoundIcon {
+    background: #EFF2F7;
+    width: 58px !important;
+    height: 58px !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30px;
+    color: #455B66;
 }
 
 .mat-checkbox .mat-checkbox-layout {
@@ -815,6 +832,20 @@ padding-top: .15rem; padding-left: .5rem;
   transform: rotate(90deg) !important;
 }
 
+.mat-expanded .ownIcon {
+  transform: rotate(90deg);
+}
+
+.grayExpanded .mat-expanded {
+  border-radius: 0 !important;
+  background: rgba(239, 242, 247, 0.75) !important;
+  border-bottom: 1px solid #D0D9DE;
+}
+
+.grayExpanded .mat-expansion-panel-body {
+  background: rgba(239, 242, 247, 0.75) !important;
+}
+
 .mat-badge .mat-badge-content {
     font-size: 11px !important;
     width: 19px;
@@ -844,10 +875,10 @@ padding-top: .15rem; padding-left: .5rem;
   font-size: 12px;
 }
 
-.mat-autocomplete-panel .mat-checkbox .mat-checkbox-inner-container {
+/* .mat-autocomplete-panel .mat-checkbox .mat-checkbox-inner-container {
   height: 18px;
   width: 18px;
-}
+} */
 
 .mat-autocomplete-panel .mat-option {
   padding: 0
@@ -896,3 +927,49 @@ padding-top: .15rem; padding-left: .5rem;
 .dialogSearchFormField .mat-form-field-suffix {
   top: 7px !important;
 }
+
+.stage-success {
+  background: #253238;
+  border: 1px solid #E6EAF0;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.16);
+  border-radius: 3px;
+}
+
+.statusSelect .mat-form-field-infix {
+  border-top: 0;
+}
+
+.statusSelect .mat-form-field-wrapper {
+  padding-bottom: 0;
+}
+
+.statusSelect .mat-form-field-infix .mat-select-trigger .mat-select-value{
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+
+  color: #002868;
+}
+
+.statusSelect .mat-form-field-infix .mat-select-trigger .mat-select-value {
+  color: #253238;
+}
+
+.statusSelect .mat-form-field-underline {
+  display: none;
+}
+
+.mat-checkbox .mat-checkbox-label {
+  white-space: normal;
+}
+
+.datePicker .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-suffix .mat-datepicker-toggle .mat-focus-indicator{
+  height: 2em !important;
+}
+
+.fr-box .fr-toolbar div button svg {
+  width: 18px !important;
+  height: 18px !important;
+}
+

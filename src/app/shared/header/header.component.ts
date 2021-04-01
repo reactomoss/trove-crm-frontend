@@ -108,7 +108,8 @@ export class HeaderComponent implements OnInit {
 
   clickContact() {
     const dialogRef = this.dialog.open(ContactDialog, {
-      width: '560px',
+      width: '531px',
+      autoFocus: false
     })
     dialogRef.afterClosed().subscribe(result => {
     })
@@ -117,6 +118,7 @@ export class HeaderComponent implements OnInit {
   clickCompany() {
     const dialogRef = this.dialog.open(CompanyDialog, {
       width: '560px',
+      autoFocus: false
     })
     dialogRef.afterClosed().subscribe(result => {
     })
@@ -195,14 +197,32 @@ export class LeadDialog {
   styleUrls: ['contact-dialog/contact-dialog.css']
 })
 export class ContactDialog {
+  searchControl = new FormControl()
+  options: string[] = ['First Name', 'Last Name', 'Mobile Number', 'Work Number', 'Company Name', 'Email Address',
+                      'Contact Type', 'Contact Group', 'Address', 'Skype ID', 'Description']
+  filteredOptions: Observable<string[]>
 
   showMandatory: boolean = false
   search: string = ''
 
+  userHover: boolean = false
+
   constructor(
     public dialogRef: MatDialogRef<ContactDialog>
     // @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) { }
+  ) {
+    this.filteredOptions = this.searchControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      )
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.options.filter(option => option.toLowerCase().includes(filterValue));
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -220,6 +240,12 @@ export class ContactDialog {
     else
       return true
   }
+
+  getUserIcon() {
+    if (!this.userHover)
+      return 'account_circle'
+    return 'add'
+  }
 }
 
 @Component({
@@ -228,15 +254,35 @@ export class ContactDialog {
   styleUrls: ['company-dialog/company-dialog.css']
 })
 export class CompanyDialog {
+  searchControl = new FormControl()
+  options: string[] = ['Company Name', 'Mobile Number', 'Work Number', 'Address', 'City', 'Post Code', 'State/Region',
+                      'Country', 'Email Address', 'Owner', 'Skype ID', 'Description']
+  filteredOptions: Observable<string[]>
 
   showMandatory: boolean = false
   search: string = ''
 
+  mobileCode = 'USA'
+  
+  addressSelect = false
+
   constructor(
     public dialogRef: MatDialogRef<CompanyDialog>
     // @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) { }
+  ) {
+    this.filteredOptions = this.searchControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      )
+  }
 
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.options.filter(option => option.toLowerCase().includes(filterValue));
+  }
+  
   onNoClick(): void {
     this.dialogRef.close();
   }
