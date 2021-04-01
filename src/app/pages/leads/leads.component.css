@@ -17,7 +17,7 @@
 }
 
 .cardWrapper {
-    height: calc(100vh - 247px);
+    height: calc(100vh - 239px);
 }
 
 .cardWrapper mat-card-title {
@@ -262,7 +262,6 @@ mat-card {
 }
 
 .searchForm {
-    margin-bottom: -1.25em;
     width: 220px;
 }
 

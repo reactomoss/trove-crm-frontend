@@ -87,7 +87,7 @@
         </div>
     </mat-expansion-panel>
 
-    <mat-expansion-panel class="mat-elevation-z0 mat-panel3 contactPanel">
+    <mat-expansion-panel class="mat-elevation-z0 mat-panel3 contactPanel noPaddingPanel">
         <mat-expansion-panel-header [@.disabled]="true">
             <mat-panel-title>
                 <div>
@@ -173,7 +173,7 @@
             </mat-panel-title>
         </mat-expansion-panel-header>
         <div class="panel-content">
-            <mat-radio-group aria-label="Select an option" class="columnRadio" color="primary" [(ngModel)]="statusType">
+            <mat-radio-group aria-label="Select an option" class="displayColumn" color="primary" [(ngModel)]="statusType">
                 <mat-radio-button value="All">All</mat-radio-button>
                 <mat-radio-button value="Active">Active</mat-radio-button>
                 <mat-radio-button value="Inactive">Inactive</mat-radio-button>
@@ -191,7 +191,7 @@
             </mat-panel-title>
         </mat-expansion-panel-header>
         <div class="panel-content">
-            <mat-radio-group aria-labelledby="example-radio-group-label" class="columnRadio" [(ngModel)]="dateType">
+            <mat-radio-group aria-labelledby="example-radio-group-label" class="displayColumn" [(ngModel)]="dateType">
                 <mat-radio-button color="primary" class="example-radio-button" *ngFor="let type of dateTypes" [value]="type">
                     {{dateTypeString[type]}}
                 </mat-radio-button>
@@ -200,7 +200,7 @@
             <div class="customDateDiv mt-2" *ngIf="dateType == 6">
                 <span>From</span>
                 <mat-form-field appearance="outline" class="noLabelForm noSpaceField">
-                    <input matInput [matDatepicker]="picker" [(ngModel)]="startDate" (change)="onStartDate($event)">
+                    <input matInput [matDatepicker]="picker" [(ngModel)]="startDate">
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>

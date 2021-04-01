@@ -10,12 +10,16 @@ import {
 } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 
+interface HTMLInputEvent extends Event {
+  target: HTMLInputElement & EventTarget;
+}
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-  
+
 export class HeaderComponent implements OnInit {
 
   isNotification: boolean = false
@@ -182,6 +186,8 @@ export class ContactDialog {
   search: string = ''
 
   userHover: boolean = false
+  imageHover: boolean = false
+  imageSrc: string;
 
   constructor(
     public dialogRef: MatDialogRef<ContactDialog>
@@ -221,6 +227,32 @@ export class ContactDialog {
     if (!this.userHover)
       return 'account_circle'
     return 'add'
+  }
+
+  userIcon() {
+    let element:HTMLElement = document.getElementById('fileInput') as HTMLElement;
+    element.click()
+    this.imageHover = false
+  }
+
+  readURL(event: HTMLInputEvent): void {
+    if (event.target.files && event.target.files[0]) {
+        const file = event.target.files[0];
+
+        const reader = new FileReader();
+        reader.onload = e => this.imageSrc = reader.result as string
+
+        reader.readAsDataURL(file);
+    }
+    this.imageHover = false
+  }
+
+  removeImage() {
+    this.imageSrc = ''
+  }
+
+  showOverlay() {
+    return this.imageHover
   }
 }
 

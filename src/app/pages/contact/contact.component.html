@@ -35,7 +35,7 @@
                     </ul>
                 </mat-menu>
 
-                <mat-form-field class="searchForm noLabelForm" appearance="outline" >
+                <mat-form-field class="searchForm noLabelForm noSpaceForm" appearance="outline" >
                     <input type="text" matInput placeholder="Search by contact name">
                     <mat-icon matSuffix>search</mat-icon>
                 </mat-form-field>
@@ -67,7 +67,7 @@
 
     <ngx-simplebar [options]="scrollOptions" class="mainContainer" [class.listHeight] = "listShow" [class.gridHeight] = "!listShow">
         <div *ngIf="!selectedItems.length" class="checkDiv m-3">
-            <mat-checkbox color="primary" class="contactCheck mr-4"><span>{{items.length}} Contacts</span></mat-checkbox>
+            <mat-checkbox color="primary" class="contactCheck mr-4" (click)="clickEmptyCheck()"><span>{{items.length}} Contacts</span></mat-checkbox>
             <span class="pt-1">Sorted by last activity date</span>
         </div>
         <div *ngIf="selectedItems.length" class="checkDiv m-3">
@@ -83,32 +83,40 @@
         </div>
         
         <div *ngIf="!listShow" class="row">
-            <div class="col-lg-2 col-md-3 col-sm-4" *ngFor="let item of items">
-                <mat-card class="mat-elevation-z0 p-3 mb-4" style="position: relative" (click)="clickCard(item)">
-                    <mat-checkbox class="cardCheckBox" [checked]='setCheckStatus(item)' 
-                                (click)="clickCheck($event)" *ngIf="setCheckStatus(item)"
-                                color="primary"></mat-checkbox>
-                    <mat-card-header>
-                    <div mat-card-avatar class="iconContainer">
-                        <img *ngIf="!item.company; else elseBlock" alt="Image" src="../../../assets/images/face.svg" class="avatar">
-                        <ng-template #elseBlock>
-                            <!-- <mat-icon class="roundIcon">business</mat-icon> -->
-                            <img alt="Image" src="../../../assets/images/business19.svg">
+            <div class="fullWidth text-right dateDiv">January, 2021</div>
+            <ng-container  *ngFor="let item of items; let i = index">
+                <div class="col-lg-2 col-md-3 col-sm-4">
+                    <mat-card class="mat-elevation-z0 p-3 mb-4" style="position: relative" (click)="clickCard(item)">
+                        <mat-checkbox class="cardCheckBox" [checked]='setCheckStatus(item)' 
+                                    (click)="clickCheck($event)" *ngIf="setCheckStatus(item)"
+                                    color="primary"></mat-checkbox>
+                        <mat-card-header>
+                        <div mat-card-avatar class="iconContainer">
+                            <img *ngIf="!item.company; else elseBlock" alt="Image" src="../../../assets/images/face.svg" class="avatar">
+                            <ng-template #elseBlock>
+                                <!-- <mat-icon class="roundIcon">business</mat-icon> -->
+                                <img alt="Image" src="../../../assets/images/business19.svg">
+                            </ng-template>
+                        </div>
+                        </mat-card-header><br>
+                        <mat-card-content *ngIf="item.company; else companyContent">
+                            <span class="cardText1">{{item.name}}</span><br>
+                            <span class="cardText2">Owner: {{item.owner}}</span><br>
+                            <span class="cardText2">{{item.contactCount}} Contacts</span>
+                        </mat-card-content>
+                        <ng-template #companyContent>
+                            <span class="cardText1">{{item.name}}</span><br>
+                            <span class="cardText2">{{item.email}}</span><br>
+                            <span class="cardText2">{{item.companyName}}</span>
                         </ng-template>
-                    </div>
-                    </mat-card-header><br>
-                    <mat-card-content *ngIf="item.company; else companyContent">
-                        <span class="cardText1">{{item.name}}</span><br>
-                        <span class="cardText2">Owner: {{item.owner}}</span><br>
-                        <span class="cardText2">{{item.contactCount}} Contacts</span>
-                    </mat-card-content>
-                    <ng-template #companyContent>
-                        <span class="cardText1">{{item.name}}</span><br>
-                        <span class="cardText2">{{item.email}}</span><br>
-                        <span class="cardText2">{{item.companyName}}</span>
-                    </ng-template>
-                </mat-card>
-            </div>
+                    </mat-card>
+                </div>
+                <ng-container *ngIf="i == 6 || i == 0">
+                    <div class="fullWidth"></div>
+                    <div class="fullWidth text-right dateDiv" *ngIf="i == 0">December, 2020</div>
+                    <div class="fullWidth text-right dateDiv" *ngIf="i == 6">November, 2020</div>
+                </ng-container>
+            </ng-container>
         </div>
 
         <div *ngIf="listShow">

@@ -59,6 +59,7 @@ export class TextEditorComponent implements AfterViewInit {
       }
     }
   }
+  
   public handleTabChange(e: MatTabChangeEvent) {
     this.activeTabIndex = e.index;
     console.log('tabIndex', this.activeTabIndex)

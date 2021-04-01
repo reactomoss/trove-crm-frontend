@@ -366,8 +366,9 @@ padding: 8px 10px;
   align-items: center;
 }
 
-.contactCheck .mat-checkbox-label {
-  line-height: 14px;
+.contactCheck .mat-checkbox-layout .mat-checkbox-label {
+  position: relative;
+  top: 3px;
 }
 
 .mat-radio-group .mat-radio-outer-circle {
@@ -455,7 +456,7 @@ padding: 8px 10px;
   min-width: 136px !important;
 }
 
-.contactPanel .mat-expansion-panel-content .mat-expansion-panel-body {
+.noPaddingPanel .mat-expansion-panel-content .mat-expansion-panel-body {
   padding: 0;
 }
 
@@ -496,7 +497,7 @@ padding: 8px 10px;
   font-size: 12.5px;
 }
 
-.columnRadio {
+.displayColumn {
     display: flex;
     flex-direction: column;
 }
@@ -524,7 +525,7 @@ padding: 8px 10px;
 }
 
 .mat-autocomplete-panel .mat-option .mat-option-text .mat-checkbox {
-  padding-left: 16px;
+  /* padding-left: 16px; */
 }
 
 .mat-autocomplete-panel .mat-option .mat-option-text {
@@ -614,4 +615,33 @@ padding: 8px 10px;
 
 .inputSelectForm .mat-form-field-infix {
   /* display: inherit; */
+}
+
+.noSpaceForm .mat-form-field-wrapper {
+  margin: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.alignCenter {
+    display: flex;
+    align-items: center;
+}
+
+.dialogFroala .fr-wrapper {
+  border-radius: 0 !important;
+  border: 0 !important;
+  border-top: 1px solid #D0D9DE !important;
+}
+
+.dialogFroala .fr-wrapper .fr-element{
+  height: 230px;
+}
+
+.fr-wrapper .fr-element p {
+  margin-bottom: 0px !important;
+}
+
+.dialogFroala .fr-toolbar {
+  border: 0 !important;
+  border-top: 1px solid #D0D9DE !important;
 }
