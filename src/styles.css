@@ -1,7 +1,10 @@
 html {
   scroll-behavior: smooth;
 }
-body { margin: 0; background: #EFF2F7 !important; }
+body {
+   margin: 0;
+   /* background: #EFF2F7 !important;  */
+  }
 body.fontObjektivMk {font-family: objektiv-mk3, sans-serif; }
 div a:hover{text-decoration: none;}
 .bg-F6F8FA {background-color: #F6F8FA;}
@@ -443,7 +446,7 @@ padding-top: .15rem; padding-left: .5rem;
   background-color: #fff;
 }
 
-/* .mat-tab-label-active {
+/*
 .mat-tab-label-active {
   opacity: 1 !important;
   background-color: white;

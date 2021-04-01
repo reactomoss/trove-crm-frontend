@@ -3,9 +3,11 @@
     <div class="f-20-400 color-253238">Pipeline and Stages</div>
   </div>
   <div class="col text-right">
-    <button (click)="open(modalNewPipeline)" class="btnColor1 f-16-500" mat-flat-button>New Pipeline<span class="material-icons fs-16 ml-1">
+    <button (click)="open(modalNewPipeline)" class="btnColor1 f-16-500" mat-flat-button>New Pipeline
+      <i class="material-icons fs-16 ml-1">
       add
-      </span></button>
+      </i>
+    </button>
   </div>
 </div>
   <div class="color-253238 table-responsive table001">
@@ -26,7 +28,7 @@
         <th class="w-220px" mat-header-cell *matHeaderCellDef> Action </th>
         <td mat-cell *matCellDef="let element">
         <a (click)="open(modalNewPipeline)" mat-flat-button class="btnEdit1 f-14-400">
-          <span class="material-icons mr-1 fs-14">create</span>
+          <i class="material-icons mr-1 fs-14">create</i>
           Edit
         </a>
         <a (click)="open(modalDelete)" mat-flat-button class="btnDelete1 f-14-400 ml-2">Delete</a>
@@ -91,7 +93,7 @@
                   </div>
                   <div>
                     <button (click)="addPipelineStage()" mat-flat-button class="btnColor3-B px-2 mw-auto">
-                      <span class="material-icons">add</span>
+                      <i class="material-icons">add</i>
                     </button>
                   </div>
                 </div>

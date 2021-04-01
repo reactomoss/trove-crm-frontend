@@ -13,14 +13,16 @@
               <div class="input-group mb-3 inputSearch001">
                 <input class="form-control" matInput (keyup)="usersFilter($event)" placeholder="Search..." #filterUsers>
                 <div class="input-group-append">
-                  <span class="material-icons input-group-text">search</span>
+                  <i class="material-icons input-group-text">search</i>
                 </div>
               </div>
             </div>
             <div class="col text-right mb-10-xs">
-              <button (click)="open(modalNewUser)" class="btnColor1 f-16-500" mat-flat-button>New user<span class="material-icons fs-16 ml-1">
+              <button (click)="open(modalNewUser)" class="btnColor1 f-16-500" mat-flat-button>New user
+                <i class="material-icons fs-16 ml-1">
                 add
-                </span></button>
+                </i>
+              </button>
             </div>
           </div>
           <div class="color-253238 table-responsive table001">
@@ -49,7 +51,7 @@
                   <th class="w-220px" mat-header-cell *matHeaderCellDef> Action </th>
                   <td mat-cell *matCellDef="let row">
                   <a (click)="open(modalNewUser)" mat-flat-button class="btnEdit1 f-14-400">
-                    <span class="material-icons mr-1 fs-14">create</span>
+                    <i class="material-icons mr-1 fs-14">create</i>
                     Edit
                   </a>
                   <a (click)="open(modalDelete)" mat-flat-button class="btnDelete1 f-14-400 ml-2">Delete</a>
@@ -74,15 +76,17 @@
               <div class="input-group mb-3 inputSearch001">
                 <input class="form-control" matInput  (keyup)="rolesFilter($event)" placeholder="Search..." #filterRoles>
                 <div class="input-group-append">
-                  <span class="material-icons input-group-text">search</span>
+                  <i class="material-icons input-group-text">search</i>
                 </div>
               </div>
 
             </div>
             <div class="col text-right mb-10-xs">
-              <button (click)="openNewRole(modalNewRole)" class="btnColor1 f-16-500" mat-flat-button>New Role<span class="material-icons fs-16 ml-1">
+              <button (click)="openNewRole(modalNewRole)" class="btnColor1 f-16-500" mat-flat-button>New Role
+                <i class="material-icons fs-16 ml-1">
                 add
-                </span></button>
+                </i>
+              </button>
             </div>
           </div>
           <div class="color-253238 table-responsive table001">
@@ -108,7 +112,7 @@
                   <th class="w-220px" mat-header-cell *matHeaderCellDef> Action </th>
                   <td mat-cell *matCellDef="let row">
                   <a (click)="openNewRole(modalNewRole)" mat-flat-button class="btnEdit1 f-14-400">
-                    <span class="material-icons mr-1 fs-14">create</span>
+                    <i class="material-icons mr-1 fs-14">create</i>
                     Edit
                   </a>
                   <a (click)="open(modalDelete)" mat-flat-button class="btnDelete1 f-14-400 ml-2">Delete</a>
@@ -632,7 +636,7 @@
       <div class="input-group inputSearch001">
         <input type="text" matInput class="form-control" placeholder="Search field">
         <div class="input-group-append">
-          <span class="input-group-text material-icons">search</span>
+          <i class="input-group-text material-icons">search</i>
         </div>
       </div>
     </div>
@@ -688,9 +692,9 @@
        <div class="row">
         <div class="col-sm-2 mb-3">
            <div class="addPerIconWrap">
-            <span class="material-icons fs-20 color-455B66">
+            <i class="material-icons fs-20 color-455B66">
               call
-            </span>
+            </i>
           </div>
         </div>
          <div class="col-sm-5 mb-3">
@@ -723,9 +727,9 @@
        <div class="row">
         <div class="col-sm-2 mb-3">
            <div class="addPerIconWrap">
-            <span class="material-icons fs-20 color-455B66">
+            <i class="material-icons fs-20 color-455B66">
               email
-            </span>
+            </i>
           </div>
         </div>
          <div class="col-sm-10 mb-3">
