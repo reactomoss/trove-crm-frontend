@@ -59,11 +59,12 @@ export class DetailComponent implements OnInit {
         let stageName = result.name
         !stageName && (stageName = 'Demo')
         this.stages.push(stageName)
-
+        this.selectedStage = this.stages.length - 1
+        
         this._snackBar.openFromComponent(StageSnack, {
           data: { name: stageName},
           panelClass: 'stage-success',
-          duration: 30000,
+          duration: 4000,
           horizontalPosition: 'center',
           verticalPosition: 'bottom'
         })
@@ -116,6 +117,24 @@ export class DetailComponent implements OnInit {
       console.log(`Dialog sent: ${result}`);
       
     })
+  }
+  
+  getLeftOffset(index) {
+    return -10 * index
+  }
+
+  getStageSrc(index) {
+    if (index == 0) {
+      if (this.selectedStage == 0)  {
+        return '../../../assets/images/stage/start-active-stage-lg.svg'
+      } else {
+        return '../../../assets/images/stage/start-stage-lg.svg'
+      }
+    }
+    if (index == this.selectedStage) {
+      return '../../../assets/images/stage/active-stage-lg.svg'
+    }
+    return '../../../assets/images/stage/mid-stage-lg.svg'
   }
 }
 
@@ -300,6 +319,12 @@ export class TaskDialog {
   onNoClick(): void {
     this.dialogRef.close();
   }
+
+  deleteSelected(e) {
+    const index = this.selected.indexOf(e)
+    this.selected.splice(index, 1)
+    this.selected.length == 0 && (this.showAuto = true)
+  }
 }
 
 @Component({
@@ -384,6 +409,12 @@ export class AppointDialog {
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  deleteSelected(e) {
+    const index = this.selected.indexOf(e)
+    this.selected.splice(index, 1)
+    this.selected.length == 0 && (this.showAuto = true)
   }
 }
 

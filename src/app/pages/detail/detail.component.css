@@ -388,3 +388,28 @@
 .centerPart {
     position: relative;
 }
+
+
+
+.positionRelative {
+    position: relative;
+}
+
+.stageSpan {
+    position: absolute;
+    left: 25px;
+    top: 14px;
+    font-weight: normal;
+}
+
+.firstStagePan {
+    position: absolute;
+    left: 15px;
+    top: 14px;
+    font-weight: 600;
+    color: #002868;
+}
+
+.activeSpan {
+    color: white;
+}

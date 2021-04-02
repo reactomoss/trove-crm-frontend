@@ -4,7 +4,8 @@
         <mat-form-field class="dialogSearchFormField whiteBackground" appearance="outline">
             <input type="text" placeholder="Search field" aria-label="Number" matInput [formControl]="searchControl"
                 [matAutocomplete]="auto" [(ngModel)]="search">
-            <mat-icon matSuffix>search</mat-icon>
+            <mat-icon matSuffix *ngIf="!search">search</mat-icon>
+            <mat-icon matSuffix *ngIf="search" style="color: #253238;cursor: pointer" (click)="search = ''">close</mat-icon>
             <mat-autocomplete #auto="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
                     {{option}}

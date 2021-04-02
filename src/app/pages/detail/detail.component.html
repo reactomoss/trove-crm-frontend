@@ -9,19 +9,28 @@
         </button>
     </div>
     <div class="top2">
-        <div class="stage-wrapper">
+        <!-- <div class="stage-wrapper">
             <div *ngFor="let stage of stages; let i = index" class={{getStageClass(i)}} (click)="clickStage(i)"
                  [class.stage-active]="i == selectedStage">
                 <span>{{stage}}</span>
             </div>
-            <!-- <div class="stage-item stage-active">Sales Pipeline</div>
-            <div class="stage-item">Discovery</div>
-            <div class="stage-item">Qualified</div>
-            <div class="stage-item">Evolution</div>
-            <div class="stage-item">Negotiation</div>
-            <div class="stage-item">Closed</div> -->
             <div class="stage-item stage-new" (click)="openStageDialog()">
                 <span>New Stage</span>
+            </div>
+        </div> -->
+        <div class="alignCenter">
+            <ng-container *ngFor="let e of stages; let i = index" >
+                <div class="alignCenter positionRelative cursorPointer" [style.left.px]="getLeftOffset(i)"
+                    (click)="selectedStage = i">
+                    <img src="{{getStageSrc(i)}}">
+                    <span [class.stageSpan]="i > 0" [class.firstStagePan]="i == 0"
+                            [class.activeSpan]="selectedStage == i">{{e}}</span>
+                </div>
+            </ng-container>
+            <div class="alignCenter positionRelative cursorPointer" [style.left.px]="getLeftOffset(stages.length)"
+                (click)="openStageDialog()">
+                <img src="../../../assets/images/stage/new-stage-lg.png">
+                <span class="stageSpan">New Stage</span>
             </div>
         </div>
     </div>

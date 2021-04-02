@@ -35,12 +35,14 @@
         </div>
     </div>
     <span>Associated Contact</span><br>
-    <div *ngFor="let e of selected" class="optionDiv selectedDiv">
+    <div *ngFor="let e of selected" class="optionDiv selectedDiv" style="position: relative">
         <img alt="Image" src="../../../assets/images/user-sample.png">  
         <div class="ml-3">
             <p class="span1">{{e}}</p>
             <p class="span2">{{e}} description</p>
         </div>
+        <mat-icon style="position: absolute; right: 10px" class="cursorPointer" 
+                    (click)="deleteSelected(e)">close</mat-icon>
     </div>
     <mat-form-field class="formControl noLabelForm" appearance="outline" *ngIf="showAuto">
         <input type="text" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">

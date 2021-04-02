@@ -112,6 +112,10 @@ padding: 8px 10px;
   }
 }
 
+.cursorPointer {
+  cursor: pointer;
+}
+
 .flatIconTextButton .mat-icon{
   margin-top: 3px;
 }
@@ -220,32 +224,9 @@ padding: 8px 10px;
     color: #455B66;
 }
 
-
-
 .noSpaceField .mat-form-field-wrapper {
   padding: 0!important;
   margin: 0 !important;
-}
-
-.ngx-slider .ngx-slider-pointer {
-  width: 20px !important;
-  height: 20px !important;
-  top: -8px !important;
-  background-color: #455B66 !important;
-}
-
-.ngx-slider .ngx-slider-pointer:after {
-  background-color: #455B66 !important;
-  left: 7px !important;
-  top: 7px !important;
-}
-
-.ngx-slider .ngx-slider-selection {
-    background: #455B66 !important;
-}
-
-.ngx-slider .ngx-slider-bubble {
-  font-size: 12px !important;
 }
 
 .mat-form-field-appearance-outline .mat-form-field-outline-start {
@@ -253,7 +234,7 @@ padding: 8px 10px;
 }
 
 .mat-form-field-appearance-outline .mat-form-field-outline-end {
-    border-radius: 0 3px 3px 0 !important;
+  border-radius: 0 3px 3px 0 !important;
 }
 
 .noTopPrefixField .mat-form-field-prefix {
@@ -271,12 +252,10 @@ padding: 8px 10px;
   padding: 0;
 }
 
-
 .displayColumn {
     display: flex;
     flex-direction: column;
 }
-
 
 .serachForm .mat-form-field-wrapper {
   padding-bottom: 0;
@@ -359,6 +338,32 @@ padding: 8px 10px;
   display: none;
 }
 
+/* slider */
+.ngx-slider {
+  margin-top: 0 !important;
+}
+
+.ngx-slider .ngx-slider-pointer {
+  width: 20px !important;
+  height: 20px !important;
+  top: -8px !important;
+  background-color: #455B66 !important;
+}
+
+.ngx-slider .ngx-slider-pointer:after {
+  background-color: #455B66 !important;
+  left: 7px !important;
+  top: 7px !important;
+}
+
+.ngx-slider .ngx-slider-selection {
+    background: #455B66 !important;
+}
+
+.ngx-slider .ngx-slider-bubble {
+  font-size: 12px !important;
+  display: none !important;
+}
 
 /* froala */
 .dialogFroala .fr-wrapper {

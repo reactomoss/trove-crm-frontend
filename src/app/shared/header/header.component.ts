@@ -135,6 +135,9 @@ export class LeadDialog {
   showMandatory: boolean = false
   search: string = ''
 
+  stages: string[] = ['Discovery', 'Qualified', 'Evolution', 'Negotiation', 'Closed']
+  selectedStage = 0
+
   constructor(
     public dialogRef: MatDialogRef<LeadDialog>
     // @Inject(MAT_DIALOG_DATA) public data: DialogData
@@ -169,6 +172,23 @@ export class LeadDialog {
       return true
   }
 
+  getLeftOffset(index) {
+    return -8 * index
+  }
+
+  getStageSrc(index) {
+    if (index == 0) {
+      if (this.selectedStage == 0)  {
+        return '../../../../assets/images/stage/start-active-stage-md.svg'
+      } else {
+        return '../../../../assets/images/stage/start-stage-md.svg'
+      }
+    }
+    if (index == this.selectedStage) {
+      return '../../../../assets/images/stage/active-stage-md.svg'
+    }
+    return '../../../../assets/images/stage/mid-stage-md.svg'
+  }
 }
 
 @Component({
