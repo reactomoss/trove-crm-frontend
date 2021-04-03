@@ -97,11 +97,11 @@
 }
 
 .gridHeight {
-    height: calc(100vh - 137px);
+    height: calc(100vh - 133px);
 }
 
 .listHeight {
-    height: calc(100vh - 195px);
+    height: calc(100vh - 190px);
 }
 
 /* .mainContainer .avatar {
@@ -146,7 +146,7 @@ mat-card {
 }
 
 .drawerContainer {
-    width: 350px;
+    width: 324px;
 }
 
 .drawerContainerTop {
@@ -203,4 +203,17 @@ mat-card {
     justify-content: center;
     width: 48px;
     height: 48px;
+}
+
+.fullWidth {
+    width: 100% !important;
+}
+
+.dateDiv {
+    padding-right: 15px;
+    padding-bottom: 10px;
+    font-weight: 600;
+    font-size: 12.5px;
+    line-height: 17px;
+    color: #455B66;
 }

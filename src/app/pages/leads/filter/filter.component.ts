@@ -237,8 +237,10 @@ export class FilterComponent implements OnInit {
     this.filterCountChanged.emit(this.selectedContacts.length)
   }
 
-  public clearClick() {
-  }
+  public clearValueClick() {
+    // this.minValue = null
+    // this.highValue = null
+  } 
 
   public clickDiscovery(item) {
     const index = this.selectedPipe.indexOf(item, 0);

@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 export interface item {
   id: number;
@@ -10,6 +12,10 @@ export interface item {
   company: boolean;
   last: Date;
   city: string;
+}
+
+export interface selectedData {
+  items: item[]
 }
 
 @Component({
@@ -160,7 +166,7 @@ export class ContactComponent implements OnInit {
   listShow: boolean = false
   typeString: string = 'Contact'
 
-  constructor() {
+  constructor(public dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -196,7 +202,6 @@ export class ContactComponent implements OnInit {
     } else {
       this.selectedItems.push(item)
     }
-    console.log(this.selectedItems)
   }
 
   clickCheck(e) {
@@ -212,12 +217,112 @@ export class ContactComponent implements OnInit {
     }
   }
 
+  clickEmptyCheck() {
+    this.selectedItems = this.items.reduce((acc, item) => {
+      acc.push(item)
+      return acc
+    }, [])
+  }
+  
   clickIndeterminate() {
     this.selectedItems = []
   }
 
   clickEmail() {
-    console.log(this.selectedItems)
+    const dialogRef = this.dialog.open(MailDialog, {
+      width: '745px',
+      autoFocus: false,
+      data: {items: this.selectedItems}
+    })
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('result ', result)
+      // if (result && result.data && result.data == 'delete') {
+      //   this.openConfirmDialog()
+      // }
+    })
   }
 
+}
+
+
+@Component({
+  selector: 'mail-dialog',
+  templateUrl: 'mail-dialog/mail-dialog.html',
+  styleUrls: ['mail-dialog/mail-dialog.css']
+})
+export class MailDialog {
+  scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
+  
+  activeTabIndex = 0
+  items: selectedData
+  constructor(
+    public dialogRef: MatDialogRef<MailDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: selectedData
+  ) {
+    this.items = data
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+  
+  public handleTabChange(e: MatTabChangeEvent) {
+    this.activeTabIndex = e.index
+    console.log(this.items)
+  }
+  
+  public titleOptions1: Object = {
+    // placeholderText: 'Edit Your Content Here!',
+    // charCounterCount: false,
+    // toolbarInline: true,
+    
+    toolbarBottom: true,
+    events: {
+      "initialized": () => {
+        console.log('initialized');
+      },
+      "contentChanged": () => {
+        console.log("content changed");
+      }
+    }
+  }
+  
+  public titleOptions2: Object = {
+    // placeholderText: 'Edit Your Content Here!',
+    // charCounterCount: false,
+    // toolbarInline: true,
+    
+    toolbarBottom: true,
+    events: {
+      "initialized": () => {
+        console.log('initialized');
+      },
+      "contentChanged": () => {
+        console.log("content changed");
+      }
+    }
+  }
+    
+  public titleOptions3: Object = {
+    // placeholderText: 'Edit Your Content Here!',
+    // charCounterCount: false,
+    // toolbarInline: true,
+    
+    toolbarBottom: true,
+    events: {
+      "initialized": () => {
+        console.log('initialized');
+      },
+      "contentChanged": () => {
+        console.log("content changed");
+      }
+    }
+  }
+
+  public deleteSelected(item) {
+    // console.log('selected', item, this.items.items)
+    const index = this.items.items.indexOf(item)
+    this.items.items.splice(index, 1)
+  }
 }

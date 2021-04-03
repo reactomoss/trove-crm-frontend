@@ -10,12 +10,15 @@ import {
 } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 
+interface HTMLInputEvent extends Event {
+  target: HTMLInputElement & EventTarget;
+}
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-
 export class HeaderComponent implements OnInit {
   menus: any[];
   isNotification:boolean = false
@@ -155,6 +158,9 @@ export class LeadDialog {
   showMandatory: boolean = false
   search: string = ''
 
+  stages: string[] = ['Discovery', 'Qualified', 'Evolution', 'Negotiation', 'Closed']
+  selectedStage = 0
+
   constructor(
     public dialogRef: MatDialogRef<LeadDialog>
     // @Inject(MAT_DIALOG_DATA) public data: DialogData
@@ -189,6 +195,23 @@ export class LeadDialog {
       return true
   }
 
+  getLeftOffset(index) {
+    return -8 * index
+  }
+
+  getStageSrc(index) {
+    if (index == 0) {
+      if (this.selectedStage == 0)  {
+        return '../../../../assets/images/stage/start-active-stage-md.svg'
+      } else {
+        return '../../../../assets/images/stage/start-stage-md.svg'
+      }
+    }
+    if (index == this.selectedStage) {
+      return '../../../../assets/images/stage/active-stage-md.svg'
+    }
+    return '../../../../assets/images/stage/mid-stage-md.svg'
+  }
 }
 
 @Component({
@@ -206,6 +229,8 @@ export class ContactDialog {
   search: string = ''
 
   userHover: boolean = false
+  imageHover: boolean = false
+  imageSrc: string;
 
   constructor(
     public dialogRef: MatDialogRef<ContactDialog>
@@ -246,6 +271,32 @@ export class ContactDialog {
       return 'account_circle'
     return 'add'
   }
+
+  userIcon() {
+    let element:HTMLElement = document.getElementById('fileInput') as HTMLElement;
+    element.click()
+    this.imageHover = false
+  }
+
+  readURL(event: HTMLInputEvent): void {
+    if (event.target.files && event.target.files[0]) {
+        const file = event.target.files[0];
+
+        const reader = new FileReader();
+        reader.onload = e => this.imageSrc = reader.result as string
+
+        reader.readAsDataURL(file);
+    }
+    this.imageHover = false
+  }
+
+  removeImage() {
+    this.imageSrc = ''
+  }
+
+  showOverlay() {
+    return this.imageHover
+  }
 }
 
 @Component({
@@ -263,7 +314,7 @@ export class CompanyDialog {
   search: string = ''
 
   mobileCode = 'USA'
-  
+
   addressSelect = false
 
   constructor(
@@ -282,7 +333,7 @@ export class CompanyDialog {
 
     return this.options.filter(option => option.toLowerCase().includes(filterValue));
   }
-  
+
   onNoClick(): void {
     this.dialogRef.close();
   }

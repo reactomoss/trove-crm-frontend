@@ -28,8 +28,8 @@ import { PlanspricingComponent } from './settings/planspricing/planspricing.comp
 import { SimplebarAngularModule } from 'simplebar-angular';
 import { NgxSliderModule } from "@angular-slider/ngx-slider";
 import { ContactFilterComponent } from './contact/filter/filter.component';
+import { ContactComponent, MailDialog } from './contact/contact.component';
 import { ContactTableComponent } from './contact/contact-table/contact-table.component';
-import { ContactComponent } from './contact/contact.component';
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -65,7 +65,8 @@ const routes: Routes = [
     PlanspricingComponent,
     ContactFilterComponent,
     ContactComponent,
-    ContactTableComponent
+    ContactTableComponent,
+    MailDialog
 
   ],
   imports: [

@@ -171,3 +171,25 @@ span {
     padding-left: 10px;
     padding-top: 2px;
 }
+
+.positionRelative {
+    position: relative;
+}
+
+.stageSpan {
+    position: absolute;
+    left: 20px;
+    top: 10px;
+    font-weight: normal;
+}
+
+.firstStagePan {
+    position: absolute;
+    left: 15px;
+    top: 10px;
+    font-weight: normal;
+}
+
+.activeSpan {
+    color: white;
+}

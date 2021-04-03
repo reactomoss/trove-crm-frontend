@@ -167,3 +167,30 @@ span {
 .formMaxWidth {
     max-width: 200px;
 }
+
+#preview {
+    border-radius: 99px;
+    position: relative;
+    left: -9px;
+}
+
+#fileInput {
+    display: none;
+}
+
+.overlay {
+    width: 58px;
+    height: 58px;
+    background: black;
+    position: absolute;
+    top: 0;
+    left: -9px;
+    border-radius: 99px;
+    opacity: .6;
+    color: white;
+    font-size: 11px;
+    padding-top: 32px;
+    padding-left: 7px;
+    text-decoration: underline;
+    cursor: pointer;
+}

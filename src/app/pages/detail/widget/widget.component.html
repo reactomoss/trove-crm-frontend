@@ -1,5 +1,5 @@
 <div class="rightPart">
-    <mat-accordion [multi]="true">
+    <mat-accordion [multi]="true" class="customAccordion">
         <mat-expansion-panel class="mat-elevation-z0" [hideToggle]="true">
             <mat-expansion-panel-header>
                 <mat-panel-title>
@@ -66,7 +66,7 @@
             </mat-expansion-panel-header>
             <div class="panel-content">
                 <div class="appointItem">
-                    <mat-checkbox color="primary" style="margin-bottom: 7px;">
+                    <mat-checkbox color="primary" style="margin-bottom: 7px;" class="customCheckBox">
                         Packet Monster Sales Opportunity
                     </mat-checkbox><br>
                     <span class="alertSpan">
@@ -76,7 +76,7 @@
                 </div>
                 <hr>
                 <div class="appointItem">
-                    <mat-checkbox color="primary" style="margin-bottom: 7px;">
+                    <mat-checkbox color="primary" style="margin-bottom: 7px;" class="customCheckBox">
                         UX design meeting at 17:30 hrs. sales pipeline design discussion.
                     </mat-checkbox><br>
                     <span class="alertSpan">
@@ -86,7 +86,7 @@
                 </div>
                 <hr>
                 <div class="appointItem">
-                    <mat-checkbox color="primary" style="margin-bottom: 7px;">
+                    <mat-checkbox color="primary" style="margin-bottom: 7px;" class="customCheckBox">
                         Landing page required for new CRM app
                     </mat-checkbox><br>
                 </div>
@@ -107,7 +107,7 @@
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="panel-content">
-                <mat-checkbox *ngFor="let e of tasks" color="primary" class="mb-1" [(ngModel)]="e.selected">
+                <mat-checkbox *ngFor="let e of tasks" color="primary" class="mb-1 customCheckBox" [(ngModel)]="e.selected">
                     <span [class.lineThrough]="e.selected">{{e.name}}</span>
                 </mat-checkbox>
             </div>

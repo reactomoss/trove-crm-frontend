@@ -56,12 +56,14 @@
     <div class="associateDiv">
         <div>
             <span>Associated Contact</span><br>
-            <div *ngFor="let e of selected" class="optionDiv selectedDiv" [style.width.px]="320">
+            <div *ngFor="let e of selected" class="optionDiv selectedDiv" [style.width.px]="320" style="position: relative">
                 <img alt="Image" src="../../../assets/images/user-sample.png">  
                 <div class="ml-3">
                     <p class="span1">{{e}}</p>
                     <p class="span2">{{e}} description</p>
                 </div>
+                <mat-icon style="position: absolute; right: 10px" class="cursorPointer" 
+                            (click)="deleteSelected(e)">close</mat-icon>
             </div>
             <mat-form-field class="halfControl noLabelForm" appearance="outline" *ngIf="showAuto" [style.width.px]="320">
                 <input type="text" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">

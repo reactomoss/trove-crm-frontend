@@ -49,3 +49,25 @@ mat-tab-group {
     top: 35px;
     z-index: 100;
 }
+
+
+.cancelButton {
+  background: #EFF2F7;
+  border: 1px solid #D0D9DE;
+  box-sizing: border-box;
+  border-radius: 1.8305px;
+  line-height: 30px !important;
+  font-size: 12px;
+  margin-top: 10px !important;
+}
+
+.saveButton {
+  background: #002868;
+  color: white;
+  box-sizing: border-box;
+  border-radius: 1.8305px;
+  line-height: 30px !important;
+  font-size: 12px;
+  margin-top: 10px !important;
+  margin-left: 8px !important;
+}
