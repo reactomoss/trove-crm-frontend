@@ -3,6 +3,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { DateService } from '../../../service/date.service';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 export interface item {
   name: string;
@@ -27,7 +28,7 @@ export class ContactTableComponent implements AfterViewInit {
   dataSource
   selectedTh: string = ''
 
-  constructor(private dateService: DateService) {
+  constructor(private dateService: DateService, private router: Router) {
     this.dataSource = new MatTableDataSource(this.propItems);
   }
 
@@ -72,5 +73,9 @@ export class ContactTableComponent implements AfterViewInit {
 
   clickTh(th) {
     this.selectedTh = th
+  }
+
+  clickItem(item) {
+    this.router.navigate(['/pages/contact_detail'])
   }
 }

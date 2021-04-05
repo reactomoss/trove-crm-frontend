@@ -46,7 +46,7 @@ export class LeadTableComponent implements AfterViewInit  {
 
   clickRow(row) {
     console.log('row', row)
-    this.router.navigate(['/pages/detail']);
+    this.router.navigate(['/pages/lead_detail']);
   }
 
   clickTh(type) {

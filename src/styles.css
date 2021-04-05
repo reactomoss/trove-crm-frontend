@@ -322,12 +322,16 @@ padding: 8px 10px;
   padding-bottom: 0;
 }
 
-.statusSelect .mat-form-field-infix .mat-select-trigger .mat-select-value{
+.statusSelect .mat-form-field-infix .mat-select-trigger .mat-select-value {
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
 
   color: #002868;
+}
+
+.smFontSelect .mat-form-field-infix .mat-select-trigger .mat-select-value {
+  font-size: 12px;
 }
 
 .statusSelect .mat-form-field-infix .mat-select-trigger .mat-select-value {
@@ -336,6 +340,10 @@ padding: 8px 10px;
 
 .statusSelect .mat-form-field-underline {
   display: none;
+}
+
+.greenSelect .mat-form-field-infix .mat-select-trigger .mat-select-value {
+  color: #228F67 !important;
 }
 
 /* slider */
