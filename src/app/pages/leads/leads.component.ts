@@ -98,7 +98,7 @@ export class LeadsComponent implements OnInit {
   }
 
   clickCard() {
-    this.router.navigate(['/pages/detail']);
+    this.router.navigate(['/pages/lead_detail']);
   }
 
   filterCountChangedHandler(e) {

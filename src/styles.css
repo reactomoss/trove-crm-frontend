@@ -381,7 +381,7 @@ padding-top: .15rem; padding-left: .5rem;
 
 .pb-0 .mat-form-field-wrapper {padding-bottom: 0;}
 .cdk-global-overlay-wrapper, .cdk-overlay-container {
-  z-index: 10000 !important;
+  /* z-index: 1000 !important; */
   }
   /* tab001 */
   .tab001 .mat-tab-header{
@@ -531,8 +531,9 @@ padding-top: .15rem; padding-left: .5rem;
 }
 
 .mat-form-field .mat-form-field-infix .mat-select-arrow-wrapper {
-  padding-top: 10px;
+  /* padding-top: 10px; */
 }
+
 .mat-expansion-panel{
   margin: 0 !important;
   border-bottom-left-radius: 0 !important;
@@ -764,12 +765,16 @@ padding-top: .15rem; padding-left: .5rem;
   padding-bottom: 0;
 }
 
-.statusSelect .mat-form-field-infix .mat-select-trigger .mat-select-value{
+.statusSelect .mat-form-field-infix .mat-select-trigger .mat-select-value {
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
 
   color: #002868;
+}
+
+.smFontSelect .mat-form-field-infix .mat-select-trigger .mat-select-value {
+  font-size: 12px;
 }
 
 .statusSelect .mat-form-field-infix .mat-select-trigger .mat-select-value {
@@ -778,6 +783,10 @@ padding-top: .15rem; padding-left: .5rem;
 
 .statusSelect .mat-form-field-underline {
   display: none;
+}
+
+.greenSelect .mat-form-field-infix .mat-select-trigger .mat-select-value {
+  color: #228F67 !important;
 }
 
 /* slider */
@@ -1030,6 +1039,10 @@ padding-top: .15rem; padding-left: .5rem;
 .customAutocomplete .mat-option .mat-option-text {
   font-size: 14px;
   padding-left: 6px;
+}
+
+.smFontAutocomplete .mat-option .mat-option-text {
+  font-size: 13px;
 }
 
 /* custom paginator */

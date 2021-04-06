@@ -85,19 +85,21 @@
         <div *ngIf="!listShow" class="row">
             <div class="fullWidth text-right dateDiv">January, 2021</div>
             <ng-container  *ngFor="let item of items; let i = index">
+
                 <div class="col-lg-2 col-md-3 col-sm-4">
-                    <mat-card class="mat-elevation-z0 p-3 mb-4" style="position: relative" (click)="clickCard(item)">
+                    <mat-card class="mat-elevation-z0 p-3 mb-4" style="position: relative" 
+                            (click)="clickCard(item)" (mouseover)="setHoveredItem(item)">
                         <mat-checkbox class="cardCheckBox customCheckBox" [checked]='setCheckStatus(item)' 
-                                    (click)="clickCheck($event)" *ngIf="setCheckStatus(item)"
+                                    (click)="clickCheck($event, item);$event.stopPropagation();" *ngIf="showCardCheckBox(item)"
                                     color="primary"></mat-checkbox>
                         <mat-card-header>
-                        <div mat-card-avatar class="iconContainer">
-                            <img *ngIf="!item.company; else elseBlock" alt="Image" src="../../../assets/images/face.svg" class="avatar">
-                            <ng-template #elseBlock>
-                                <!-- <mat-icon class="roundIcon">business</mat-icon> -->
-                                <img alt="Image" src="../../../assets/images/business19.svg">
-                            </ng-template>
-                        </div>
+                            <div mat-card-avatar class="iconContainer">
+                                <img *ngIf="!item.company; else elseBlock" alt="Image" src="../../../assets/images/face.svg" class="avatar">
+                                <ng-template #elseBlock>
+                                    <!-- <mat-icon class="roundIcon">business</mat-icon> -->
+                                    <img alt="Image" src="../../../assets/images/business19.svg">
+                                </ng-template>
+                            </div>
                         </mat-card-header><br>
                         <mat-card-content *ngIf="item.company; else companyContent">
                             <span class="cardText1">{{item.name}}</span><br>
@@ -111,6 +113,7 @@
                         </ng-template>
                     </mat-card>
                 </div>
+                
                 <ng-container *ngIf="i == 6 || i == 0">
                     <div class="fullWidth"></div>
                     <div class="fullWidth text-right dateDiv" *ngIf="i == 0">December, 2020</div>

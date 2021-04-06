@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 export interface item {
   id: number;
@@ -25,6 +26,10 @@ export interface selectedData {
 })
 export class ContactComponent implements OnInit {
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
+
+  hoveredItem
+  //detect for click card, check
+  detect: number
 
   allItems: item[] = [
     {
@@ -166,7 +171,7 @@ export class ContactComponent implements OnInit {
   listShow: boolean = false
   typeString: string = 'Contact'
 
-  constructor(public dialog: MatDialog) {
+  constructor(public dialog: MatDialog, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -196,25 +201,38 @@ export class ContactComponent implements OnInit {
   }
 
   clickCard(item) {
-    const index = this.selectedItems.indexOf(item, 0);
+    this.router.navigate(['/pages/contact_detail'])
+  }
+
+  clickCheck(e, item) {
+    this.detect = 1
+    e.preventDefault()
+    const index = this.selectedItems.indexOf(item, 0)
     if (index > -1) {
-      this.selectedItems.splice(index, 1);
+      this.selectedItems.splice(index, 1)
     } else {
       this.selectedItems.push(item)
     }
   }
 
-  clickCheck(e) {
-    e.preventDefault()
-  }
-
   setCheckStatus(item) {
-    const index = this.selectedItems.indexOf(item, 0);
+    const index = this.selectedItems.indexOf(item, 0)
     if (index > -1) {
       return true
     } else {
       return false
     }
+  }
+
+  showCardCheckBox(item) {
+    const index = this.selectedItems.indexOf(item, 0);
+    if (this.hoveredItem == item || index > -1)
+      return true
+    return false
+  }
+
+  setHoveredItem(item) {
+    this.hoveredItem = item
   }
 
   clickEmptyCheck() {

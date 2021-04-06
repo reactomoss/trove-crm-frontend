@@ -5,7 +5,7 @@
             [matAutocomplete]="auto" [(ngModel)]="search">
         <mat-icon matSuffix *ngIf="!search">search</mat-icon>
         <mat-icon matSuffix *ngIf="search" style="color: #253238;cursor: pointer" (click)="search = ''">close</mat-icon>
-        <mat-autocomplete #auto="matAutocomplete">
+        <mat-autocomplete #auto="matAutocomplete" class="smFontAutocomplete">
             <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
                 {{option}}
             </mat-option>

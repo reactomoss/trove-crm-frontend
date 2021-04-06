@@ -31,14 +31,17 @@ import { ContactFilterComponent } from './contact/filter/filter.component';
 import { ContactComponent, MailDialog } from './contact/contact.component';
 import { ContactTableComponent } from './contact/contact-table/contact-table.component';
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
+import { ContactDetailComponent } from './contact-detail/contact-detail.component';
+
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: PagesComponent },
   // {path:'settings' , loadChildren: () => import('./settings/settings.module') .then(m=>m.SettingsModule)},
   { path: 'settings', component: SettingsComponent },
   { path: 'leads', component: LeadsComponent },
-  { path: 'detail', component: DetailComponent },
+  { path: 'lead_detail', component: DetailComponent },
   { path: 'contact', component: ContactComponent },
+  { path: 'contact_detail', component: ContactDetailComponent },
 ]
 @NgModule({
   declarations: [
@@ -66,8 +69,8 @@ const routes: Routes = [
     ContactFilterComponent,
     ContactComponent,
     ContactTableComponent,
-    MailDialog
-
+    MailDialog,
+    ContactDetailComponent
   ],
   imports: [
     CommonModule, RouterModule.forChild(routes), SharedModule, NgbModule,MaterialModule,
