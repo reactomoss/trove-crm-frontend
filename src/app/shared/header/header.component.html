@@ -27,24 +27,13 @@
           </mat-menu>
         </span>
         <span class="activeMenu">
-          <a routerLink='/pages/dashboard' class="ml-3 p-3">
-            <img src="../../../assets/images/menu001.png" alt="Image">
-          </a>
-          <span class="ml-3 p-3">
-            <img src="../../../assets/images/menu006.png" alt="Image">
-          </span>
-          <span class="ml-3 p-3">
-            <img src="../../../assets/images/menu002.png" alt="Image">
-          </span>
-          <span class="ml-3 p-3 activeMenuItem">
-            <img src="../../../assets/images/menu003.png" alt="Image">
-          </span>
-          <span class="ml-3 p-3">
-            <img src="../../../assets/images/menu004.png" alt="Image">
-          </span>
-          <span class="ml-3 p-3">
-            <img src="../../../assets/images/menu005.png" alt="Image">
-          </span>
+          <ng-container *ngFor="let menu of menus;">
+            <a routerLink="{{menu.link}}" class="ml-3 p-3"
+            routerLinkActive="activeMenuItem"
+          [routerLinkActiveOptions]="{exact: true}">
+              <img src="../../../assets/images/{{menu.icon}}" alt="Image">
+            </a>
+          </ng-container>
         </span>
         <span class="ml-3 p-3"  [matMenuTriggerFor]="notification">
           <img src="../../../assets/images/menu007.png" alt="Image">
@@ -122,7 +111,7 @@
         </div>
      </li>
        <li class="showMore text-center" mat-menu-item>
-         <span class="f-12-500 color-002868" (click)="showNotification()">Show More</span>
+         <span class="f-12-500 color-002868" (click)="showNotification() ; $event.stopPropagation()">Show More</span>
        </li>
               </ul>
             </div>
@@ -170,3 +159,4 @@
     </div>
   </div>
 </header>
+

@@ -135,7 +135,7 @@ export class FilterComponent implements OnInit {
       map(filter => this.filter(filter))
     )
   }
-   
+
   // multi autocomplete
   filter(filter: string): Contact[] {
     if (filter) {
@@ -212,7 +212,7 @@ export class FilterComponent implements OnInit {
     return this.searchOptions.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
   }
 
-  //contact 
+  //contact
   public clickUser() {
     this.contactActive = 0
     this.selectedContacts.forEach(e => e.selected = false)
@@ -263,7 +263,7 @@ export class FilterComponent implements OnInit {
   //source
   public sourceSelect(source) {
     source.selected = !source.selected
-    
+
     this.sourceAll = this.sources != null && this.sources.every(t => t.selected);
   }
 

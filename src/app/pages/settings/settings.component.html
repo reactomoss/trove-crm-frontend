@@ -8,27 +8,42 @@
     </div>
   </div>
 </section>
-<section>
-  <div class="container-fluid px-5">
+<section class="sectionOne">
+  <div class="container-fluid pr-5 pl-0">
     <div class="row">
       <div class="col-12">
-        <div class="py-2 customTabOne">
-          <div class="f-14-500 color-253238 mb-2">Manage</div>
+        <div class="customTabOne py-3">
+          <div class="f-14-500 color-253238 mb-2 pl-5">Manage</div>
           <mat-tab-group [@.disabled]="true">
             <mat-tab label="Profile">
-              <div class="">
-                <div class="row">
-                  <div class="col-4">
-                    display soon..
-                  </div>
-
-                </div>
-              </div>
-
+              <app-profile></app-profile>
             </mat-tab>
-            <mat-tab label="Users"> Content 2 </mat-tab>
-            <mat-tab label="Account"> Content 3 </mat-tab>
+            <mat-tab label="Users & Roles">
+              <app-usersroles></app-usersroles>
+            </mat-tab>
+            <mat-tab label="Account">
+              <app-account></app-account>
+            </mat-tab>
+            <mat-tab label="Notification">
+              <app-notification></app-notification>
+            </mat-tab>
+            <mat-tab label="Data">
+            <app-data></app-data>
+            </mat-tab>
+            <!-- <mat-tab label="Plans & Pricing">
+              <app-planspricing></app-planspricing>
+            </mat-tab> -->
+            <mat-tab label="Pipeline and Stages">
+              <app-pipelinestages></app-pipelinestages>
+            </mat-tab>
+            <mat-tab label="Terms and Services">
+              <app-termsservices></app-termsservices>
+            </mat-tab>
+            <mat-tab label="Privacy Policy">
+              <app-privacypolicy></app-privacypolicy>
+            </mat-tab>
           </mat-tab-group>
+
         </div>
       </div>
     </div>

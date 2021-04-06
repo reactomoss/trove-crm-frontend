@@ -19,27 +19,49 @@ interface HTMLInputEvent extends Event {
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-
 export class HeaderComponent implements OnInit {
-
-  isNotification: boolean = false
-    
+  menus: any[];
+  isNotification:boolean = false
   myControl = new FormControl();
   options: string[] = ['One', 'Two', 'Three'];
   filteredOptions: Observable<string[]>;
   active: number = 1
-
   selectedStage: number = 3
-
   constructor(public dialog: MatDialog) { }
 
   ngOnInit(): void {
+   this.menus=[
+      {
+        icon:'menu001.png',
+        link:'/pages/dashboard'
+      },
+      {
+        icon:'menu006.png',
+        link:'/pages/leads'
+      },
+      {
+        icon:'menu002.png',
+        link:'/pages/contact'
+      },
+      {
+        icon:'menu003.png',
+        link:'/pages/email'
+      },
+      {
+        icon:'menu004.png',
+        link:'/pages/calendar'
+      },
+      {
+        icon:'menu005.png',
+        link:'/pages/pipeline'
+      }
+    ]
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value))
     )
   }
-   
+
   public activeClass(num) {
     if (num == this.active)
       return 'activeBtn'
@@ -62,7 +84,7 @@ export class HeaderComponent implements OnInit {
       map(value => this._filter(value))
     )
   }
-    
+
   onSelectionChange(event) {
 
   }
@@ -73,10 +95,11 @@ export class HeaderComponent implements OnInit {
     return this.options.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
   }
 
+
   showNotification(){
     this.isNotification = !this.isNotification
   }
-  
+
   clickLead() {
     const dialogRef = this.dialog.open(LeadDialog, {
       width: '560px',
@@ -291,7 +314,7 @@ export class CompanyDialog {
   search: string = ''
 
   mobileCode = 'USA'
-  
+
   addressSelect = false
 
   constructor(
@@ -310,7 +333,7 @@ export class CompanyDialog {
 
     return this.options.filter(option => option.toLowerCase().includes(filterValue));
   }
-  
+
   onNoClick(): void {
     this.dialogRef.close();
   }
