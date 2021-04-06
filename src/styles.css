@@ -1085,3 +1085,9 @@ padding-top: .15rem; padding-left: .5rem;
   top: -1px !important;
   background: #DB5353 !important;
 }
+
+
+/* mat list */
+.taskItem .mat-list-item-content {
+  justify-content: space-between;
+}

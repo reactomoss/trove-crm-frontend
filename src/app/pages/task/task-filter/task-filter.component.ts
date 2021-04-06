@@ -4,12 +4,6 @@ import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
-export class Type {
-  constructor(public name: string, public selected?: boolean) {
-    if (selected === undefined) selected = false;
-  }
-}
-
 // multi autocomplete
 export class Contact {
   constructor(public name: string, public selected?: boolean) {
@@ -18,15 +12,15 @@ export class Contact {
 }
 
 @Component({
-  selector: 'contact-filter',
-  templateUrl: './filter.component.html',
-  styleUrls: ['./filter.component.css']
+  selector: 'app-task-filter',
+  templateUrl: './task-filter.component.html',
+  styleUrls: ['./task-filter.component.css']
 })
-export class ContactFilterComponent implements OnInit {
+export class TaskFilterComponent implements OnInit {
 
   status: string
   statusTypes: string[] = ['All', 'Active', 'Inactive']
-
+  
   dateTypes: number[] = [0, 1, 2, 3, 4, 5, 6]
   dateTypeString: string[] = ['Today', 'Yesterday', 'Last Week', 'This month', 'Last month', 'This Quarter', 'Custom']
   dateType: number
@@ -40,15 +34,7 @@ export class ContactFilterComponent implements OnInit {
   addEndDate: Date = null
 
   contactType: string = 'contact'
-
-  types: Type[] = [
-    new Type('Added by user'),
-    new Type('Import from CSV'),
-    new Type('Google contacts'),
-    new Type('Twitter contacts'),
-    new Type('Outlook contacts')
-  ]
-
+  
   // multi autocomplete
   contactControl = new FormControl();
   selectedContacts: Contact[] = new Array<Contact>();
@@ -111,7 +97,7 @@ export class ContactFilterComponent implements OnInit {
       map(filter => this.filter(filter))
     )
   }
-   
+
   // multi autocomplete
   filter(filter: string): Contact[] {
     if (filter) {
@@ -132,7 +118,7 @@ export class ContactFilterComponent implements OnInit {
       }
     }
   }
-
+  
   // multi autocomplete
   displayFn(value: Contact[] | string): string | undefined {
     return ""
@@ -183,6 +169,26 @@ export class ContactFilterComponent implements OnInit {
 
     this.clearContact()
   }
+  
+  clickContact() {
+    this.contactType = 'contact'
+    this.clearContact()
+  }
+
+  clickCompany() {
+    this.contactType = 'company'
+    this.clearContact()
+  }
+
+  clearContact() {
+    this.selectedContacts.forEach(e => e.selected = false)
+    this.selectedContacts = []
+    this.filteredContacts = this.contactControl.valueChanges.pipe(
+      startWith<string | Contact[]>(''),
+      map(value => typeof value === 'string' ? value : ''),
+      map(filter => this.filter(filter))
+    )
+  }
 
   public displaySelectedUser() {
     let arr = []
@@ -198,18 +204,6 @@ export class ContactFilterComponent implements OnInit {
     arr.length == 2 && (ret += arr[0] + ', ' + arr[1])
     arr.length > 2 && (ret += arr[0] + ', ' + arr[1] + ' +' + (arr.length - 2))
     return ret
-  }
-
-  clickType(e, type) {
-    type.selected = e.checked
-  }
-
-  displaySelectedTypes() {
-    let arr = []
-    this.types.forEach(e => {
-      e.selected && arr.push(e.name)
-    })
-    return this.displayArray(arr)
   }
 
   public getSelectedDate() {
@@ -238,7 +232,11 @@ export class ContactFilterComponent implements OnInit {
         return firstDay + ' ~ ' + lastDay
     }
   }
-  
+
+  public clearDate() {
+    this.dateType = -1
+  }
+
   public getAddSelectedDate() {
     if (this.addDateType == -1) {
       return ''
@@ -266,31 +264,7 @@ export class ContactFilterComponent implements OnInit {
     }
   }
 
-  public clearDate() {
-    this.dateType = -1
-  }
-
   public clearAddDate() {
     this.addDateType = -1
-  }
-
-  clickContact() {
-    this.contactType = 'contact'
-    this.clearContact()
-  }
-
-  clickCompany() {
-    this.contactType = 'company'
-    this.clearContact()
-  }
-
-  clearContact() {
-    this.selectedContacts.forEach(e => e.selected = false)
-    this.selectedContacts = []
-    this.filteredContacts = this.contactControl.valueChanges.pipe(
-      startWith<string | Contact[]>(''),
-      map(value => typeof value === 'string' ? value : ''),
-      map(filter => this.filter(filter))
-    )
   }
 }

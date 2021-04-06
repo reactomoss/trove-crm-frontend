@@ -32,6 +32,8 @@ import { ContactComponent, MailDialog } from './contact/contact.component';
 import { ContactTableComponent } from './contact/contact-table/contact-table.component';
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 import { ContactDetailComponent } from './contact-detail/contact-detail.component';
+import { TaskComponent } from './task/task.component';
+import { TaskFilterComponent } from './task/task-filter/task-filter.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -42,6 +44,7 @@ const routes: Routes = [
   { path: 'lead_detail', component: DetailComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'contact_detail', component: ContactDetailComponent },
+  { path: 'task', component: TaskComponent }
 ]
 @NgModule({
   declarations: [
@@ -70,7 +73,9 @@ const routes: Routes = [
     ContactComponent,
     ContactTableComponent,
     MailDialog,
-    ContactDetailComponent
+    ContactDetailComponent,
+    TaskComponent,
+    TaskFilterComponent
   ],
   imports: [
     CommonModule, RouterModule.forChild(routes), SharedModule, NgbModule,MaterialModule,
