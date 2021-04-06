@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { SharedModule } from './shared/shared.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 const routes: Routes = [
   { path: '', redirectTo: 'user', pathMatch: 'full' },
   { path: 'user', loadChildren: () => import('./user-registration/user-registration.module').then(m => m.UserRegistrationModule)},
@@ -23,6 +24,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     BrowserAnimationsModule,
     SharedModule,
+    NgbModule,
   ],
   providers: [],
   exports:[RouterModule],

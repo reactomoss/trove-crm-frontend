@@ -381,7 +381,7 @@ padding-top: .15rem; padding-left: .5rem;
 
 .pb-0 .mat-form-field-wrapper {padding-bottom: 0;}
 .cdk-global-overlay-wrapper, .cdk-overlay-container {
-  z-index: 10000 !important;
+  /* z-index: 1000 !important; */
   }
   /* tab001 */
   .tab001 .mat-tab-header{
@@ -531,8 +531,9 @@ padding-top: .15rem; padding-left: .5rem;
 }
 
 .mat-form-field .mat-form-field-infix .mat-select-arrow-wrapper {
-  padding-top: 10px;
+  /* padding-top: 10px; */
 }
+
 .mat-expansion-panel{
   margin: 0 !important;
   border-bottom-left-radius: 0 !important;
@@ -1038,6 +1039,10 @@ padding-top: .15rem; padding-left: .5rem;
 .customAutocomplete .mat-option .mat-option-text {
   font-size: 14px;
   padding-left: 6px;
+}
+
+.smFontAutocomplete .mat-option .mat-option-text {
+  font-size: 13px;
 }
 
 /* custom paginator */

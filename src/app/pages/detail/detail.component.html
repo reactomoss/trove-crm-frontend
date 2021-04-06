@@ -9,15 +9,6 @@
         </button>
     </div>
     <div class="top2">
-        <!-- <div class="stage-wrapper">
-            <div *ngFor="let stage of stages; let i = index" class={{getStageClass(i)}} (click)="clickStage(i)"
-                 [class.stage-active]="i == selectedStage">
-                <span>{{stage}}</span>
-            </div>
-            <div class="stage-item stage-new" (click)="openStageDialog()">
-                <span>New Stage</span>
-            </div>
-        </div> -->
         <div class="alignCenter">
             <ng-container *ngFor="let e of stages; let i = index" >
                 <div class="alignCenter positionRelative cursorPointer" [style.left.px]="getLeftOffset(i)"
@@ -48,7 +39,8 @@
                     <span class="span2">Employee at Packet Monster, Inc</span>
                 </div>
             </div>
-            <div class="leftItem2 pb-2">
+
+            <div class="leftItem2">
                 <span class="selectLabel">Status</span><br>
                 <mat-form-field class="statusSelect">
                     <mat-select [(value)]="status">
@@ -64,6 +56,7 @@
                     </mat-select>
                 </mat-form-field>
             </div>
+
             <div class="leftItem3">
                 <div class="personInfo">
                     <div>
@@ -98,9 +91,9 @@
         
         <div class="centerPart" fxFlex="50">
             <app-text-editor></app-text-editor>
-            <div class="my-2">
+            <div class="my-2 alignCenter">
                 <span class="selectLabel mr-2" style="margin-left: 12px;">Displaying</span>
-                <mat-form-field class="statusSelect" [style.width.px]="110">
+                <mat-form-field class="statusSelect smFontSelect" [style.width.px]="110">
                     <mat-select [(value)]="selectedDisplay">
                         <mat-option value="all">
                             All activity

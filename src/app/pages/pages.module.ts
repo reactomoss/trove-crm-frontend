@@ -31,11 +31,8 @@ import { ContactFilterComponent } from './contact/filter/filter.component';
 import { ContactComponent, MailDialog } from './contact/contact.component';
 import { ContactTableComponent } from './contact/contact-table/contact-table.component';
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
-<<<<<<< HEAD
 import { ContactDetailComponent } from './contact-detail/contact-detail.component';
 
-=======
->>>>>>> origin/feature/phase1ui
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: PagesComponent },
@@ -72,13 +69,8 @@ const routes: Routes = [
     ContactFilterComponent,
     ContactComponent,
     ContactTableComponent,
-<<<<<<< HEAD
     MailDialog,
     ContactDetailComponent
-=======
-    MailDialog
-
->>>>>>> origin/feature/phase1ui
   ],
   imports: [
     CommonModule, RouterModule.forChild(routes), SharedModule, NgbModule,MaterialModule,
