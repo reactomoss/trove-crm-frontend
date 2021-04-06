@@ -314,13 +314,13 @@ this.settingsPermission.filter(r => {return r.isSelectedEdit === true}).length){
       /*For User Table*/
     this.users = [
       {
-        profile:'http://localhost:4200/assets/images/welcomemail-image.jpg',
+        profile:'../../../assets/images/welcomemail-image.jpg',
         user: 'Allen',
         role: 'Operations manager',
         accessLevel: 'Full access'
       },
       {
-        profile:'http://localhost:4200/assets/images/user-sample.png',
+        profile:'../../../assets/images/user-sample.png',
         user: 'Peterson',
         role: 'Operations manager',
         accessLevel: 'Full access'
