@@ -25,6 +25,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AuthTwitterService } from './services/auth-twitter.service';
 import { MaterialModule } from './material/material.module';
 import { SpinnerOverlayComponent } from './core/spinner-overlay/spinner-overlay.component';
+import {SettingsApiService} from './services/settings-api.service';
 
 const routes: Routes = [
   { path: '', redirectTo: 'user', pathMatch: 'full' },
@@ -67,6 +68,7 @@ const routes: Routes = [
   providers: [
     AccountApiService,
     TokenService,
+    SettingsApiService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpInterceptorService,
