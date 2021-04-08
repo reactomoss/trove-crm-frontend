@@ -1,6 +1,7 @@
 <mat-accordion class="grayAccordion customAccordion">
-    <mat-expansion-panel class="mat-elevation-z0 topPanel">
-        <mat-expansion-panel-header>
+    
+    <mat-expansion-panel class="mat-elevation-z0 borderBottom">
+        <mat-expansion-panel-header [@.disabled]="true">
             <mat-panel-title>
                 <div>
                     Status<br>
@@ -9,17 +10,16 @@
             </mat-panel-title>
         </mat-expansion-panel-header>
         <div class="panel-content">
-            <mat-radio-group aria-labelledby="example-radio-group-label" class="statusRadio customRadio" [(ngModel)]="status">
-                <mat-radio-button color="primary" class="example-radio-button" *ngFor="let type of statusTypes" [value]="type">
+            <mat-radio-group class="statusRadio customRadio displayColumn" [(ngModel)]="status">
+                <mat-radio-button color="primary" *ngFor="let type of statusTypes" [value]="type">
                     {{type}}
                 </mat-radio-button>
-                <br>
             </mat-radio-group>
         </div>
     </mat-expansion-panel>
-
-    <mat-expansion-panel class="mat-elevation-z0 noPaddingPanel">
-        <mat-expansion-panel-header>
+    
+    <mat-expansion-panel class="mat-elevation-z0 borderBottom noPaddingPanel">
+        <mat-expansion-panel-header [@.disabled]="true">
             <mat-panel-title>
                 <div>
                     Contact<br>
@@ -69,9 +69,9 @@
             </div>
         </div>
     </mat-expansion-panel>
-    
-    <mat-expansion-panel class="mat-elevation-z0 noPaddingPanel">
-        <mat-expansion-panel-header>
+
+    <mat-expansion-panel class="mat-elevation-z0 borderBottom noPaddingPanel">
+        <mat-expansion-panel-header [@.disabled]="true">
             <mat-panel-title>
                 <div>
                     Date Modified<br>
@@ -80,7 +80,7 @@
             </mat-panel-title>
         </mat-expansion-panel-header>
         <div class="panel-content">
-            <mat-radio-group aria-labelledby="example-radio-group-label" class="statusRadio px-4 customRadio" [(ngModel)]="dateType">
+            <mat-radio-group aria-labelledby="example-radio-group-label" class="statusRadio px-4 customRadio displayColumn" [(ngModel)]="dateType">
                 <mat-radio-button color="primary" class="example-radio-button" *ngFor="let type of dateTypes" [value]="type">
                     {{dateTypeString[type]}}
                 </mat-radio-button>
@@ -108,8 +108,8 @@
         </div>
     </mat-expansion-panel>
     
-    <mat-expansion-panel class="mat-elevation-z0 noPaddingPanel">
-        <mat-expansion-panel-header>
+    <mat-expansion-panel class="mat-elevation-z0 borderBottom noPaddingPanel">
+        <mat-expansion-panel-header [@.disabled]="true">
             <mat-panel-title>
                 <div>
                     Added on<br>
@@ -118,7 +118,7 @@
             </mat-panel-title>
         </mat-expansion-panel-header>
         <div class="panel-content">
-            <mat-radio-group aria-labelledby="example-radio-group-label" class="statusRadio px-4 customRadio" [(ngModel)]="addDateType">
+            <mat-radio-group class="statusRadio px-4 customRadio displayColumn" [(ngModel)]="addDateType">
                 <mat-radio-button color="primary" class="example-radio-button" *ngFor="let type of addDateTypes" [value]="type">
                     {{addDateTypeString[type]}}
                 </mat-radio-button>
@@ -143,23 +143,24 @@
             <div class="px-4 pb-3 text-right">
                 <button mat-button class="clearBtn" (click)="clearAddDate()">Clear</button>
             </div>
+    
         </div>
     </mat-expansion-panel>
-    
-    <mat-expansion-panel class="mat-elevation-z0">
-        <mat-expansion-panel-header>
+        
+    <mat-expansion-panel class="mat-elevation-z0 borderBottom">
+        <mat-expansion-panel-header [@.disabled]="true">
             <mat-panel-title>
                 <div>
-                    Type<br>
-                    <span class="subTitle">{{displaySelectedTypes()}}</span>
+                    Due Date<br>
+                    <span></span>
                 </div>
             </mat-panel-title>
         </mat-expansion-panel-header>
         <div class="panel-content displayColumn">
-            <mat-checkbox *ngFor="let e of types" color="primary" (change)="clickType($event, e)"
-                        [checked]="e.selected" class="customCheckBox">
-                {{e.name}}
-            </mat-checkbox>
+            <mat-checkbox class="customCheckBox mb-2">Today</mat-checkbox>
+            <mat-checkbox class="customCheckBox mb-2">Tomorrow</mat-checkbox>
+            <mat-checkbox class="customCheckBox mb-2">Next 7 days</mat-checkbox>
+            <mat-checkbox class="customCheckBox">Overdue</mat-checkbox>
         </div>
     </mat-expansion-panel>
 </mat-accordion>
