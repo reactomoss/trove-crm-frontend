@@ -7,7 +7,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { SnackBarService } from '../../../shared/snack-bar.service';
-import { AccountApiService } from 'src/app/services/account-api.service';
+import {SettingsApiService} from 'src/app/services/settings-api.service'
+import{UserProfile} from './user-profile'
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -16,7 +17,7 @@ import { AccountApiService } from 'src/app/services/account-api.service';
 export class ProfileComponent implements OnInit {
   /*Browse File*/
   profile: File = null;
-  userData;
+  userData: UserProfile;
   imageUrl: string | ArrayBuffer = '../../../assets/images/settingsProfile.png';
   /*Browse File*/
   changePasswordForm: FormGroup;
@@ -28,13 +29,14 @@ export class ProfileComponent implements OnInit {
     });
   }
   closeResult = '';
+  profileForm: FormGroup;
 
   //  constructor starts
   constructor(
     private modalService: NgbModal,
     private fb: FormBuilder,
     private sb: SnackBarService,
-    private account: AccountApiService
+    private settingsApiService: SettingsApiService
   ) {
     this.changePassword();
   }
@@ -88,15 +90,58 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.account
-      .me()
-      .then((res: any) => {
-        //console.log(JSON.stringify(data));
-        console.log(res);
-        this.userData = res;
-      })
-      .catch((error) => {
-        console.log('Promise rejected with ' + JSON.stringify(error));
-      });
+    // this.account
+    //   .me()
+    //   .then((res: any) => {
+    //     //console.log(JSON.stringify(data));
+    //     console.log(res);
+    //     this.userData = res;
+    //   })
+    //   .catch((error) => {
+    //     console.log('Promise rejected with ' + JSON.stringify(error));
+    //   });
+
+    this.settingsApiService.accountMe().subscribe((res:any) => {
+           console.log(res);
+           this.userData = res.data;
+    });
+
   }
+
+  updateProfile(){
+    const data = this.profileForm.value;
+    this.settingsApiService.updateProfile(data).subscribe((res: any) => {
+      this.triggerSnackBar(res.message, 'Close');
+      // this.userData = res.data;
+      this.userData.first_name = data.first_name;
+      this.userData.last_name = data.last_name;
+      this.modalService.dismissAll();
+    });
+  }
+
+  createProfileForm(){
+    this.profileForm = this.fb.group({
+      email: [
+        this.userData.email,
+        [
+          Validators.required,
+          Validators.maxLength(255),
+          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+        ],
+      ],
+      first_name: [
+        this.userData.first_name,
+        [
+          Validators.required
+        ],
+      ],
+      last_name: [
+        this.userData.last_name,
+        [
+          Validators.required
+        ],
+      ]
+    });
+  }
+
 }

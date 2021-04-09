@@ -22,19 +22,19 @@
     <ul class="listStyleNone detailsMP">
       <li class="f-12-400 color-253238">
        <div class="">First Name</div>
-       <div class="f-14-400">James Anderson</div>
+       <div class="f-14-400">{{userData.first_name}}</div>
       </li>
       <li class="f-12-400 color-253238">
         <div class="">Last Name</div>
-        <div class="f-14-400">Jonathan</div>
+        <div class="f-14-400">{{userData.last_name}}</div>
        </li>
        <li class="f-12-400 color-253238">
         <div class="">Email</div>
-        <div class="f-14-400">jamesanderson@globecorporation.com</div>
+        <div class="f-14-400">{{userData.email}}</div>
        </li>
     </ul>
     <div class="mt-3">
-      <button (click)="open(modalEditProfile)" class="btnColor4 f-12-500" mat-flat-button>Edit</button>
+      <button (click)="open(modalEditProfile);createProfileForm()" class="btnColor4 f-12-500" mat-flat-button>Edit</button>
     </div>
   </div>
 </div>
@@ -134,23 +134,23 @@
 
   <div class="modal-body">
     <div class="px-2 input001">
-     <form>
+     <form [formGroup]="profileForm">
        <div class="color-253238">
          <label  class="f-12-500">First name</label>
-         <mat-form-field appearance="fill">
-          <input matInput type="text" value="James Anderson">
-        </mat-form-field>
+          <mat-form-field appearance="fill">
+          <input  matInput type="text" formControlName="first_name">
+          </mat-form-field>
        </div>
        <div class="color-253238">
         <label  class="f-12-500">Last name</label>
         <mat-form-field appearance="fill">
-         <input matInput type="text" value="Jonathan">
+         <input matInput type="text" formControlName="last_name">
        </mat-form-field>
       </div>
       <div class="color-253238">
         <label  class="f-12-500">Email</label>
         <mat-form-field appearance="fill">
-         <input matInput type="email" value="jamesanderson@globecorporation.com">
+         <input matInput type="email" formControlName="email">
        </mat-form-field>
       </div>
         </form>
@@ -160,7 +160,7 @@
   <div class="modal-footer">
     <div class="px-2">
     <button class="btnColor3-B px-4 f-16-700" mat-flat-button color="primary" (click)="modal.close()">Cancel</button>
-    <button (click)="triggerSnackBar('Contact has been deleted', 'Close')" class="btnColor2 ml-2 px-4 f-16-700" mat-flat-button color="primary">Update</button>
+    <button (click)="updateProfile();" class="btnColor2 ml-2 px-4 f-16-700" mat-flat-button color="primary">Update</button>
     </div>
   </div>
 

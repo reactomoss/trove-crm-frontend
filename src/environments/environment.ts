@@ -25,6 +25,7 @@ export const environment = {
   verifyEmail: 'account/verifyEmail',
   logout: 'account/logout',
   /*======= Settings ====================*/
+  profile: 'settings/profile',
 };
 
 /*

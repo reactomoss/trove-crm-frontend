@@ -8,6 +8,19 @@ import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular
   providedIn: 'root'
 })
 export class SettingsApiService {
+  baseURL = environment.baseUrl;
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
+  constructor(private httpClient: HttpClient) { }
+  // Settings Profile View From
+  accountMe(): Observable<any> {
+    let API_URL = `${this.baseURL + environment.me}`;
+    return this.httpClient.get(API_URL);
+  }
 
-  constructor(private httpclient: HttpClient) { }
+  updateProfile(data: any): Observable<any>{
+    return this.httpClient.post(`${this.baseURL + environment.profile}`, data);
+  }
+
 }
