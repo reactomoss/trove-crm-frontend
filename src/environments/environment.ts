@@ -26,6 +26,7 @@ export const environment = {
   logout: 'account/logout',
   /*======= Settings ====================*/
   profile: 'settings/profile',
+  changePassword: 'settings/change-password',
 };
 
 /*

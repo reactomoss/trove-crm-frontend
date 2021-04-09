@@ -23,4 +23,8 @@ export class SettingsApiService {
     return this.httpClient.post(`${this.baseURL + environment.profile}`, data);
   }
 
+  changePassword(data: any): Observable<any>{
+    return this.httpClient.post(`${this.baseURL + environment.changePassword}`, data);
+  }
+
 }

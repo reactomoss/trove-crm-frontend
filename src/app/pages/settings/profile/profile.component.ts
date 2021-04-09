@@ -21,11 +21,11 @@ export class ProfileComponent implements OnInit {
   imageUrl: string | ArrayBuffer = '../../../assets/images/settingsProfile.png';
   /*Browse File*/
   changePasswordForm: FormGroup;
-  changePassword() {
+  createChangePasswordForm() {
     this.changePasswordForm = this.fb.group({
-      oldpassword: ['', Validators.required],
-      newpassword: ['', Validators.required],
-      confirmpassword: ['', Validators.required],
+      old_password: ['', Validators.required],
+      password: ['', Validators.required],
+      password_confirmation: ['', Validators.required],
     });
   }
   closeResult = '';
@@ -38,7 +38,7 @@ export class ProfileComponent implements OnInit {
     private sb: SnackBarService,
     private settingsApiService: SettingsApiService
   ) {
-    this.changePassword();
+    // this.changePassword();
   }
   //  constructor ends
 
@@ -119,6 +119,14 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  updateChangePassword(){
+    const data = this.changePasswordForm.value;
+    this.settingsApiService.changePassword(data).subscribe((res: any) => {
+      this.triggerSnackBar(res.message, 'Close');
+      this.modalService.dismissAll();
+    });
+  }
+
   createProfileForm(){
     this.profileForm = this.fb.group({
       email: [
@@ -142,6 +150,7 @@ export class ProfileComponent implements OnInit {
         ],
       ]
     });
+    this.profileForm.controls.email.disable();
   }
 
 }
