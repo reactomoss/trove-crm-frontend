@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import {
   FormGroup,
@@ -7,36 +7,40 @@ import {
   Validators,
 } from '@angular/forms';
 import { SnackBarService } from '../../../shared/snack-bar.service';
-import { AccountApiService } from 'src/app/services/account-api.service';
+import {SettingsApiService} from 'src/app/services/settings-api.service';
+import{UserProfile} from './user-profile';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css'],
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
   /*Browse File*/
+  private subscriptions: Subscription[] = [];
   profile: File = null;
-  userData;
+  userData: UserProfile;
   imageUrl: string | ArrayBuffer = '../../../assets/images/settingsProfile.png';
   /*Browse File*/
   changePasswordForm: FormGroup;
-  changePassword() {
+  createChangePasswordForm() {
     this.changePasswordForm = this.fb.group({
-      oldpassword: ['', Validators.required],
-      newpassword: ['', Validators.required],
-      confirmpassword: ['', Validators.required],
+      old_password: ['', Validators.required],
+      password: ['', Validators.required],
+      password_confirmation: ['', Validators.required],
     });
   }
   closeResult = '';
+  profileForm: FormGroup;
 
   //  constructor starts
   constructor(
     private modalService: NgbModal,
     private fb: FormBuilder,
     private sb: SnackBarService,
-    private account: AccountApiService
+    private settingsApiService: SettingsApiService
   ) {
-    this.changePassword();
+    // this.changePassword();
   }
   //  constructor ends
 
@@ -88,15 +92,74 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.account
-      .me()
-      .then((res: any) => {
-        //console.log(JSON.stringify(data));
-        console.log(res);
-        this.userData = res;
-      })
-      .catch((error) => {
-        console.log('Promise rejected with ' + JSON.stringify(error));
-      });
+    // this.account
+    //   .me()
+    //   .then((res: any) => {
+    //     //console.log(JSON.stringify(data));
+    //     console.log(res);
+    //     this.userData = res;
+    //   })
+    //   .catch((error) => {
+    //     console.log('Promise rejected with ' + JSON.stringify(error));
+    //   });
+
+    const subs_query_param_get = this.settingsApiService.accountMe().subscribe((res:any) => {
+           console.log(res);
+           this.userData = res.data;
+    });
+    this.subscriptions.push(subs_query_param_get);
   }
+
+  createProfileForm(){
+    this.profileForm = this.fb.group({
+      email: [
+        this.userData.email,
+        [
+          Validators.required,
+          Validators.maxLength(255),
+          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+        ],
+      ],
+      first_name: [
+        this.userData.first_name,
+        [
+          Validators.required
+        ],
+      ],
+      last_name: [
+        this.userData.last_name,
+        [
+          Validators.required
+        ],
+      ]
+    });
+    this.profileForm.controls.email.disable();
+  }
+
+  updateProfile(){
+    const data = this.profileForm.value;
+    const subs_query_param = this.settingsApiService.updateProfile(data).subscribe((res: any) => {
+      this.triggerSnackBar(res.message, 'Close');
+      // this.userData = res.data;
+      this.userData.first_name = data.first_name;
+      this.userData.last_name = data.last_name;
+      this.modalService.dismissAll();
+    });
+    this.subscriptions.push(subs_query_param);
+  }
+
+  updateChangePassword(){
+    const data = this.changePasswordForm.value;
+    this.settingsApiService.changePassword(data).subscribe((res: any) => {
+      this.triggerSnackBar(res.message, 'Close');
+      this.modalService.dismissAll();
+    });
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((sub) => {
+      sub.unsubscribe();
+    });
+  }
+
 }

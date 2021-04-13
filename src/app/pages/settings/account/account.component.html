@@ -13,8 +13,8 @@
         <div class="row no-gutters">
           <div class="col-7">
             <mat-form-field appearance="fill" class="bg-F7F8FA">
-              <mat-select [formControl]="timeZoneControl">
-                <mat-option  *ngFor="let timeZone of timeZones" [value]="timeZone.value">{{timeZone.viewValue}}</mat-option>
+              <mat-select formControlName="time_zone">
+                <mat-option  *ngFor="let timeZone of timeZonesData" [value]="timeZone.id">{{timeZone.zones}}</mat-option>
               </mat-select>
             </mat-form-field>
           </div>
@@ -30,16 +30,16 @@
     <div class="col-sm-12 col-md-8 col-lg-3 col-xl-3">
         <label class="f-12-400">Time Format</label>
         <mat-form-field appearance="fill" class="bg-F7F8FA">
-          <mat-select [formControl]="timeFormatControl">
-            <mat-option  *ngFor="let timeFormat of timeFormats" [value]="timeFormat.value">{{timeFormat.viewValue}}</mat-option>
+          <mat-select formControlName="time_format">
+            <mat-option  *ngFor="let timeFormat of timeFormatsData" [value]="timeFormat.id">{{timeFormat.timeformat}}</mat-option>
           </mat-select>
         </mat-form-field>
     </div>
     <div class="col-sm-12 col-md-8 col-lg-3 col-xl-3">
       <label class="f-12-400">Date Format</label>
       <mat-form-field appearance="fill" class="bg-F7F8FA">
-        <mat-select [formControl]="dateFormatControl">
-          <mat-option  *ngFor="let dateFormat of dateFormats" [value]="dateFormat.value">{{dateFormat.viewValue}}</mat-option>
+        <mat-select formControlName="date_format">
+          <mat-option  *ngFor="let dateFormat of dateFormatsData" [value]="dateFormat.id">{{dateFormat.dateformat}}</mat-option>
         </mat-select>
       </mat-form-field>
   </div>
@@ -47,8 +47,8 @@
     <div class="col-sm-12 col-md-8 col-lg-7 col-xl-5">
       <label class="f-12-400">Currency Format</label>
       <mat-form-field appearance="fill" class="bg-F7F8FA">
-        <mat-select [formControl]="currencyFormatControl">
-          <mat-option  *ngFor="let currencyFormat of currencyFormats" [value]="currencyFormat.value">{{currencyFormat.viewValue}}</mat-option>
+        <mat-select formControlName="currency">
+          <mat-option  *ngFor="let currencyFormat of currencyFormatsData" [value]="currencyFormat.id">{{currencyFormat.name}}</mat-option>
         </mat-select>
       </mat-form-field>
   </div>
@@ -61,6 +61,6 @@
 </div>
  </div>
  <div class="mt-2">
-  <button mat-flat-button class="btnColor4 f-14-700" type="button">Save Changes</button>
+  <button (click)="updatePreference()" mat-flat-button class="btnColor4 f-14-700" type="button">Save Changes</button>
 </div>
 </form>

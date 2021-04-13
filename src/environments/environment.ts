@@ -12,7 +12,7 @@ export const environment = {
     appId: "1:287909577050:web:ebc04308247c94620fb363"
   },
   envName: 'Development',
-  baseUrl: 'http://127.0.0.1:8000/api/v1/', //http://127.0.0.1:8000/api/v1/ | https://ct.trovecrm.in/api/v1/
+  baseUrl: 'https://ct.trovecrm.in/api/v1/', //http://127.0.0.1:8000/api/v1/ | https://ct.trovecrm.in/api/v1/
 
   /** API Methods */
   /*======= Account ====================*/
@@ -24,8 +24,10 @@ export const environment = {
   validateResetPasswordToken: 'account/validateResetPasswordToken',
   verifyEmail: 'account/verifyEmail',
   logout: 'account/logout',
-
   /*======= Settings ====================*/
+  profile: 'settings/profile',
+  changePassword: 'settings/change-password',
+  preference: 'settings/preference',
 };
 
 /*
