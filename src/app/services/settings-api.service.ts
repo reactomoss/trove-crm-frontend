@@ -27,4 +27,13 @@ export class SettingsApiService {
     return this.httpClient.post(`${this.baseURL + environment.changePassword}`, data);
   }
 
+  preferenceMe(): Observable<any> {
+    let API_URL = `${this.baseURL + environment.preference}`;
+    return this.httpClient.get(API_URL);
+  }
+
+  updatePreference(data: any): Observable<any>{
+    return this.httpClient.post(`${this.baseURL + environment.preference}`, data);
+  }
+
 }

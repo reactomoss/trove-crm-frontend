@@ -27,6 +27,7 @@ export const environment = {
   /*======= Settings ====================*/
   profile: 'settings/profile',
   changePassword: 'settings/change-password',
+  preference: 'settings/preference',
 };
 
 /*

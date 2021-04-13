@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import {
   FormGroup,
@@ -7,15 +7,17 @@ import {
   Validators,
 } from '@angular/forms';
 import { SnackBarService } from '../../../shared/snack-bar.service';
-import {SettingsApiService} from 'src/app/services/settings-api.service'
-import{UserProfile} from './user-profile'
+import {SettingsApiService} from 'src/app/services/settings-api.service';
+import{UserProfile} from './user-profile';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css'],
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
   /*Browse File*/
+  private subscriptions: Subscription[] = [];
   profile: File = null;
   userData: UserProfile;
   imageUrl: string | ArrayBuffer = '../../../assets/images/settingsProfile.png';
@@ -101,30 +103,11 @@ export class ProfileComponent implements OnInit {
     //     console.log('Promise rejected with ' + JSON.stringify(error));
     //   });
 
-    this.settingsApiService.accountMe().subscribe((res:any) => {
+    const subs_query_param_get = this.settingsApiService.accountMe().subscribe((res:any) => {
            console.log(res);
            this.userData = res.data;
     });
-
-  }
-
-  updateProfile(){
-    const data = this.profileForm.value;
-    this.settingsApiService.updateProfile(data).subscribe((res: any) => {
-      this.triggerSnackBar(res.message, 'Close');
-      // this.userData = res.data;
-      this.userData.first_name = data.first_name;
-      this.userData.last_name = data.last_name;
-      this.modalService.dismissAll();
-    });
-  }
-
-  updateChangePassword(){
-    const data = this.changePasswordForm.value;
-    this.settingsApiService.changePassword(data).subscribe((res: any) => {
-      this.triggerSnackBar(res.message, 'Close');
-      this.modalService.dismissAll();
-    });
+    this.subscriptions.push(subs_query_param_get);
   }
 
   createProfileForm(){
@@ -151,6 +134,32 @@ export class ProfileComponent implements OnInit {
       ]
     });
     this.profileForm.controls.email.disable();
+  }
+
+  updateProfile(){
+    const data = this.profileForm.value;
+    const subs_query_param = this.settingsApiService.updateProfile(data).subscribe((res: any) => {
+      this.triggerSnackBar(res.message, 'Close');
+      // this.userData = res.data;
+      this.userData.first_name = data.first_name;
+      this.userData.last_name = data.last_name;
+      this.modalService.dismissAll();
+    });
+    this.subscriptions.push(subs_query_param);
+  }
+
+  updateChangePassword(){
+    const data = this.changePasswordForm.value;
+    this.settingsApiService.changePassword(data).subscribe((res: any) => {
+      this.triggerSnackBar(res.message, 'Close');
+      this.modalService.dismissAll();
+    });
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((sub) => {
+      sub.unsubscribe();
+    });
   }
 
 }

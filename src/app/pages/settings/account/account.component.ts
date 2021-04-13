@@ -1,115 +1,75 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl,FormBuilder, Validators} from '@angular/forms';
-import { AccountApiService } from 'src/app/services/account-api.service';
-
-interface TIMEZONE{
-  value: string;
-  viewValue: string;
-}
-interface TIMEFORMAT{
-  value: string;
-  viewValue: string;
-}
-interface DATEFORMAT{
-  value: string;
-  viewValue: string;
-}
-interface CURRENCYFORMAT{
-  value: string;
-  viewValue: string;
-}
+import {SettingsApiService} from 'src/app/services/settings-api.service';
+import {TIMEFORMATS, TIMEZONES, DATEFORMATS, CURRENCYFORMATS, PREFERENCEDATA} from './preference-data';
+import { SnackBarService } from '../../../shared/snack-bar.service';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-account',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.css']
 })
-export class AccountComponent implements OnInit {
-/*For Account -- time zone select box*/
+export class AccountComponent implements OnInit, OnDestroy {
+  timeZonesData: TIMEZONES[];
+  timeFormatsData: TIMEFORMATS[];
+  dateFormatsData: DATEFORMATS[];
+  currencyFormatsData: CURRENCYFORMATS[];
+  preferenceData: PREFERENCEDATA;
 accountForm: FormGroup;
-timeZones: TIMEZONE[] = [
-  {
-    value: 'Denver(GMT-6)',
-    viewValue: 'Denver (GMT-6)'
-  },
-  {
-    value: 'Newyork(GMT-6)',
-    viewValue: 'Newyork (GMT-6)'
-  },
-  {
-    value: 'Kolkata(GMT-6)',
-    viewValue: 'Kolkata (GMT-6)'
-  },
-  {
-    value: 'Chennai(GMTTT-6)',
-    viewValue: 'Chennai (GMT-6)'
-  }
-]
-
-timeFormats: TIMEFORMAT[] = [
-  {
-    value: '24Hours',
-    viewValue: '24 Hours'
-  },
-  {
-    value: '12Hours',
-    viewValue: '12 Hours'
-  }
-]
-
-dateFormats: DATEFORMAT[] = [
-  {
-    value: 'mm/dd/yy',
-    viewValue: 'mm/dd/yy'
-  },
-  {
-    value: 'dd/mm/yy',
-    viewValue: 'dd/mm/yy'
-  },
-  {
-    value: 'yy/mm/dd',
-    viewValue: 'yy/mm/dd'
-  }
-]
-
-currencyFormats: CURRENCYFORMAT[] = [
-  {
-    value: 'UnitedStatesDollar',
-    viewValue: 'United States Dollar'
-  },
-  {
-    value: 'SingaporeDollar',
-    viewValue: 'Singapore Dollar'
-  },
-  {
-    value: 'DubaiDirhams',
-    viewValue: 'Dubai Dirhams'
-  },
-  {
-    value: 'IndianRupees',
-    viewValue: 'Indian Rupees'
-  }
-]
-
-timeZoneControl = new FormControl(this.timeZones[3].value);
-timeFormatControl = new FormControl(this.timeFormats[0].value)
-dateFormatControl = new FormControl(this.dateFormats[2].value)
-currencyFormatControl = new FormControl(this.currencyFormats[3].value)
-
+private subscriptions: Subscription[] = [];
 /*For Account -- time zone select box*/
   constructor(
-    private account: AccountApiService,
+    private settingsApiService: SettingsApiService,
+    private sb: SnackBarService,
+    private fb: FormBuilder,
   ) {
     this.accountForm = new FormGroup({
-      timeZone: this.timeZoneControl,
-      timeFormat: this.timeFormatControl,
-      dateFormat: this.dateFormatControl,
-      currencyFormat: this.currencyFormatControl
+      time_zone: new FormControl(),
+      time_format: new FormControl(),
+      date_format: new FormControl(),
+      currency: new FormControl()
     });
   }
-
+  triggerSnackBar(message: string, action: string) {
+    this.sb.openSnackBarBottomCenter(message, action);
+  }
   ngOnInit(): void {
+    const subs_query_param_get = this.settingsApiService.preferenceMe().subscribe((res:any) => {
+            console.log(res);
+            this.timeZonesData = res.data.timezones;
+            this.timeFormatsData = res.data.timeformats;
+            this.dateFormatsData = res.data.deteformats;
+            this.currencyFormatsData = res.data.currencies;
+            this.preferenceData = res.data.preference;
+            this.createPreferenceForm();
+      });
+      this.subscriptions.push(subs_query_param_get);
+  }
+
+
+  createPreferenceForm(){
+    this.accountForm = this.fb.group({
+      time_zone: [this.preferenceData ? this.preferenceData.timezone_id : ''],
+      time_format: [this.preferenceData ? this.preferenceData.timeformat_id : ''],
+      date_format: [this.preferenceData ? this.preferenceData.dateformat_id : ''],
+      currency: [this.preferenceData ? this.preferenceData.currency_id : '']
+    });
 
   }
 
+  updatePreference(){
+    const data = this.accountForm.value;
+    const subs_query_param = this.settingsApiService.updatePreference(data).subscribe((res: any) => {
+      console.log(res);
+      this.triggerSnackBar(res.message, 'Close');
+    });
+    this.subscriptions.push(subs_query_param);
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((sub) => {
+      sub.unsubscribe();
+    });
+  }
 
 }
