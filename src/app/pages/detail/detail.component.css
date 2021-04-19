@@ -92,7 +92,7 @@
 
 .mainPart {
     padding: 20px 30px 0;
-    max-height: calc(100vh - 195px);    
+    max-height: calc(100vh - 195px);
 }
 
 .leftPart {
@@ -235,7 +235,7 @@
     color: #455B66;
 }
 
-/* 
+/*
 .leftItem5 {
     padding: 15px 0;
 }
@@ -412,4 +412,18 @@
 
 .activeSpan {
     color: white;
+}
+
+.actionIcons {
+  visibility: hidden;
+}
+
+.centerItem:hover .actionIcons {
+  visibility: visible;
+}
+.actionIcons i {
+  cursor: pointer;
+  color: #455B66;
+  margin-right: 15px;
+  vertical-align: middle;
 }

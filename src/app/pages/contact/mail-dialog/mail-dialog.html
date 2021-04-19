@@ -28,20 +28,16 @@
         <mat-tab>
             <ng-template mat-tab-label>
                 <img alt="Image" src="../../../assets/images/email-icon.svg">
-                <span class="ml-2">Send an Email</span>
+                <span class="ml-2">Email Log</span>
             </ng-template>
             <div class="tabContent">
                 <div class="receiverDiv alignCenter">
                     <span class="toSpan">To:</span>
                     <div class="alignCenter">
-                        <span class="receiverSpan">
-                            <span class="receiverName">Davis Press</span>
-                            <mat-icon>close</mat-icon>
-                        </span>
-                        <span class="receiverSpan">
-                            <span class="receiverName">Davis Press</span>
-                            <mat-icon>close</mat-icon>
-                        </span>
+                      <span *ngFor="let e of items.items; let i = index" class="receiverSpan">
+                        <span class="receiverName">{{e.name}}</span>
+                        <mat-icon (click)="deleteSelected(e)">close</mat-icon>
+                    </span>
                     </div>
                 </div>
                 <div class="dialogFroala" [froalaEditor] [froalaEditor]="titleOptions2">Email</div>
@@ -51,20 +47,16 @@
         <mat-tab>
             <ng-template mat-tab-label>
                 <img alt="Image" src="../../../assets/images/phone-icon.svg">
-                <span class="ml-2">Call</span>
+                <span class="ml-2">Call Log</span>
             </ng-template>
             <div class="tabContent">
                 <div class="receiverDiv alignCenter">
                     <span class="toSpan">To:</span>
                     <div class="alignCenter">
-                        <span class="receiverSpan">
-                            <span class="receiverName">Davis Press</span>
-                            <mat-icon>close</mat-icon>
-                        </span>
-                        <span class="receiverSpan">
-                            <span class="receiverName">Davis Press</span>
-                            <mat-icon>close</mat-icon>
-                        </span>
+                      <span *ngFor="let e of items.items; let i = index" class="receiverSpan">
+                        <span class="receiverName">{{e.name}}</span>
+                        <mat-icon (click)="deleteSelected(e)">close</mat-icon>
+                    </span>
                     </div>
                 </div>
                 <div class="dialogFroala" [froalaEditor] [froalaEditor]="titleOptions3">Call</div>

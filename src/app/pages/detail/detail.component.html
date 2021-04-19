@@ -18,11 +18,11 @@
                             [class.activeSpan]="selectedStage == i">{{e}}</span>
                 </div>
             </ng-container>
-            <div class="alignCenter positionRelative cursorPointer" [style.left.px]="getLeftOffset(stages.length)"
+            <!-- <div class="alignCenter positionRelative cursorPointer" [style.left.px]="getLeftOffset(stages.length)"
                 (click)="openStageDialog()">
                 <img src="../../../assets/images/stage/new-stage-lg.png">
                 <span class="stageSpan">New Stage</span>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
@@ -88,7 +88,7 @@
                 <p class="pType3">Enter a fixed salary, assign Recurring Schedule.</p>
             </div>
         </div>
-        
+
         <div class="centerPart" fxFlex="50">
             <app-text-editor></app-text-editor>
             <div class="my-2 alignCenter">
@@ -126,10 +126,14 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="actionDiv">
-                            <mat-icon>edit</mat-icon>
-                            <mat-icon>delete</mat-icon>
-                            <span class="span3">1/1/2021 7:30AM</span>
+                        <div>
+                          <span class="actionIcons">
+                            <i class="material-icons fs-16">edit</i>
+                            <i class="material-icons fs-16">delete</i>
+                          </span>
+                          <span class="span3">
+                            1/1/2021 7:30AM
+                          </span>
                         </div>
                     </div>
                     <div class="centerMsg">
@@ -153,8 +157,14 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="actionDiv">
-                            <span class="span3">1/1/2021 7:30AM</span>
+                        <div>
+                          <span class="actionIcons">
+                            <i class="material-icons fs-16">edit</i>
+                            <i class="material-icons fs-16">delete</i>
+                          </span>
+                          <span class="span3">
+                            1/1/2021 8:30AM
+                          </span>
                         </div>
                     </div>
                     <div class="centerMsg1">
@@ -162,7 +172,7 @@
                         <span class="lineHeightMd">I’d love to know the new features that are implemented in the last versions.</span><br>
                         <span class="txItalic lineHeightMd">Thank you!</span><br>
                         <span class="txItalic lineHeightMd">
-                            Click here to view the 
+                            Click here to view the
                             <span class="txComment">comments</span>
                         </span>
                     </div>

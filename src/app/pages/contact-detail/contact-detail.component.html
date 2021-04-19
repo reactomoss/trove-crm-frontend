@@ -124,7 +124,16 @@
                                 </span>
                             </div>
                         </div>
-                        <span class="span3">1/1/2021 7:30AM</span>
+                        <div>
+                          <span class="actionIcons">
+                            <i class="material-icons fs-16">edit</i>
+                            <i class="material-icons fs-16">delete</i>
+                          </span>
+                          <span class="span3">
+                            1/1/2021 7:30AM
+                          </span>
+                        </div>
+
                     </div>
                     <div class="centerMsg">
                         Helllo Markinson!<br>
@@ -148,14 +157,21 @@
                                 </span>
                             </div>
                         </div>
-                        <span class="span3">1/1/2021 7:30AM</span>
+                        <div>
+                          <span class="actionIcons">
+                            <i class="material-icons fs-16">edit</i>
+                            <i class="material-icons fs-16">delete</i>
+                          </span>
+                          <span class="span3">1/1/2021 7:30AM</span>
+                        </div>
+
                     </div>
                     <div class="centerMsg1">
                         <span class="tx14">Helllo Markinson!</span><br>
                         <span class="lineHeightMd">I’d love to know the new features that are implemented in the last versions.</span><br>
                         <span class="txItalic lineHeightMd">Thank you!</span><br>
                         <span class="txItalic lineHeightMd">
-                            Click here to view the 
+                            Click here to view the
                             <span class="txComment">comments</span>
                         </span>
                     </div>
@@ -164,7 +180,7 @@
         </div>
 
         <div fxFlex="28">
-            <app-widget></app-widget>
+          <app-widget (addTaskClicked) = "openTaskDialog()" (addAppointClicked) = "openAppointDialog()"></app-widget>
         </div>
     </div>
 </ngx-simplebar>

@@ -75,21 +75,17 @@
                         class="contactCheck mr-4 customCheckBox"><span>{{selectedItems.length}} / {{items.length}} Selected</span></mat-checkbox>
             <button mat-button class="deleteBtn">Delete</button>
             <button mat-button class="smallIconBtn ml-2" (click)="clickEmail()">
-                <mat-icon>email</mat-icon>
-            </button>
-            <button mat-button class="smallIconBtn ml-2">
-                <mat-icon>phone</mat-icon>
+                <mat-icon>sticky_note_2</mat-icon>
             </button>
         </div>
-        
+
         <div *ngIf="!listShow" class="row">
             <div class="fullWidth text-right dateDiv">January, 2021</div>
             <ng-container  *ngFor="let item of items; let i = index">
-
                 <div class="col-lg-2 col-md-3 col-sm-4">
-                    <mat-card class="mat-elevation-z0 p-3 mb-4" style="position: relative" 
+                    <mat-card class="mat-elevation-z0 p-3 mb-4" style="position: relative"
                             (click)="clickCard(item)" (mouseover)="setHoveredItem(item)">
-                        <mat-checkbox class="cardCheckBox customCheckBox" [checked]='setCheckStatus(item)' 
+                        <mat-checkbox class="cardCheckBox customCheckBox" [checked]='setCheckStatus(item)'
                                     (click)="clickCheck($event, item);$event.stopPropagation();" *ngIf="showCardCheckBox(item)"
                                     color="primary"></mat-checkbox>
                         <mat-card-header>
@@ -113,7 +109,7 @@
                         </ng-template>
                     </mat-card>
                 </div>
-                
+
                 <ng-container *ngIf="i == 6 || i == 0">
                     <div class="fullWidth"></div>
                     <div class="fullWidth text-right dateDiv" *ngIf="i == 0">December, 2020</div>

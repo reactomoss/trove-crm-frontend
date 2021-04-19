@@ -1091,3 +1091,25 @@ padding-top: .15rem; padding-left: .5rem;
 .taskItem .mat-list-item-content {
   justify-content: space-between;
 }
+
+
+.px-0 .mat-expansion-panel-body {
+  padding-right: 0;
+}
+
+.px-0 .mat-expansion-panel-body .customVerScroll {
+  padding-right: 24px;
+}
+
+.mat-menu-panel.w-100 {
+  max-width: 100%;
+}
+.customMSTab .mat-tab-label-active {
+  border-bottom: 2px solid #002868;
+}
+.customMSTab .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+background-color:#002868 ;
+}
+.customMSTab .mat-checkbox-checked:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element, .customMSTab .mat-checkbox:active:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element {
+  background-color:#002868 ;
+}

@@ -1,11 +1,11 @@
 <div class="rightPart">
     <mat-accordion [multi]="true" class="customAccordion">
-        <mat-expansion-panel class="mat-elevation-z0" [hideToggle]="true">
+        <mat-expansion-panel class="mat-elevation-z0" [hideToggle]="true" [expanded]="true">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     <div>
                         <mat-icon class="mr-2 ownIcon">keyboard_arrow_right</mat-icon>
-                        Deal
+                        Leads
                     </div>
                 </mat-panel-title>
             </mat-expansion-panel-header>
@@ -20,20 +20,21 @@
                 </div>
             </div>
         </mat-expansion-panel>
-        <mat-expansion-panel class="mat-elevation-z0 grayExpanded" [hideToggle]="true">
+        <mat-expansion-panel class="mat-elevation-z0 grayExpanded px-0" [hideToggle]="true">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     <div>
                         <mat-icon class="mr-2 ownIcon">keyboard_arrow_right</mat-icon>
-                        Associated Contacts
+                        Associated With
                     </div>
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="panel-content">
+              <div class="customVerScroll hgt-200">
                 <div class="personInfo">
-                    <div>
-                        <img alt="Image" src="../../../assets/images/user-sample.png" width="35" height="35" style="border-radius: 10px">
-                    </div>
+                  <div class="roundBusiness">
+                    <i class="material-icons">person</i>
+                  </div>
                     <div class="ml-2">
                         <span class="span1">Wes Studi</span><br>
                         <span class="span2">Manager</span>
@@ -41,16 +42,35 @@
                 </div>
                 <div class="personInfo">
                     <div class="roundBusiness">
-                        <img alt="Image" src="../../../assets/images/business.svg" width="14" height="14">
+                      <i class="material-icons">business</i>
                     </div>
                     <div class="ml-2">
-                        <span class="span1">Packet Monster</span><br>
+                        <span class="span1">Company</span><br>
                         <span class="span2">Employee at Packet Monster, Inc.</span>
                     </div>
                 </div>
+                <div class="personInfo">
+                  <div class="roundBusiness">
+                    <i class="material-icons">business</i>
+                  </div>
+                  <div class="ml-2">
+                      <span class="span1">Company</span><br>
+                      <span class="span2">Employee at Packet Monster, Inc.</span>
+                  </div>
+              </div>
+              <div class="personInfo">
+                <div class="roundBusiness">
+                    <i class="material-icons">leaderboard</i>
+                </div>
+                <div class="ml-2">
+                    <span class="span1">Leads</span><br>
+                    <span class="span2">Employee at Packet Monster, Inc.</span>
+                </div>
+            </div>
+            </div>
             </div>
         </mat-expansion-panel>
-        <mat-expansion-panel class="mat-elevation-z0" [hideToggle]="true">
+        <mat-expansion-panel class="mat-elevation-z0 px-0" [hideToggle]="true">
             <mat-expansion-panel-header>
                 <mat-panel-title class="addPanelTitle">
                     <div>
@@ -58,37 +78,71 @@
                         Upcoming Appointments
                     </div>
                     <div>
-                        <button mat-button class="iconButton" (click)="addAppoint()">
+                        <button mat-button class="iconButton" (click)="addAppoint() ; $event.stopPropagation()">
                             <mat-icon>add</mat-icon>
                         </button>
                     </div>
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="panel-content">
+              <div class="customVerScroll hgt-200">
                 <div class="appointItem">
-                    <mat-checkbox color="primary" style="margin-bottom: 7px;" class="customCheckBox">
+                  <div class="row">
+                    <div class="col-auto pr-0">
+                      <mat-checkbox color="primary" style="margin-bottom: 7px;" class="customCheckBox">
+                      </mat-checkbox>
+                    </div>
+                    <div class="col pl-1">
+                      <div (click)="addAppoint()" class="color-253238 f-12-400 mb-2">
                         Packet Monster Sales Opportunity
-                    </mat-checkbox><br>
-                    <span class="alertSpan">
-                        <img alt="Image" src="../../../assets/images/ring.svg">
-                        <span style="margin-left: 2px;">Today at 9:00</span>
-                    </span>
+                      </div>
+
+                      <span class="alertSpan">
+                          <img alt="Image" src="../../../assets/images/ring.svg">
+                          <span style="margin-left: 2px;">Today at 9:00</span>
+                      </span>
+                    </div>
+                  </div>
+
+
                 </div>
                 <hr>
                 <div class="appointItem">
-                    <mat-checkbox color="primary" style="margin-bottom: 7px;" class="customCheckBox">
+                  <div class="row">
+                    <div class="col-auto pr-0">
+                      <mat-checkbox color="primary" style="margin-bottom: 7px;" class="customCheckBox">
+
+                      </mat-checkbox>
+                    </div>
+                    <div class="col pl-1">
+                      <div class="color-253238 f-12-400 mb-2">
                         UX design meeting at 17:30 hrs. sales pipeline design discussion.
-                    </mat-checkbox><br>
-                    <span class="alertSpan">
-                        <img alt="Image" src="../../../assets/images/calendar.svg">
-                        <span style="margin-left: 2px; color: red">Thu, 20 Dec, 2020</span>
-                    </span>
+                      </div>
+
+                      <span class="alertSpan">
+                          <img alt="Image" src="../../../assets/images/calendar.svg">
+                          <span style="margin-left: 2px; color: red">Thu, 20 Dec, 2020</span>
+                      </span>
+                    </div>
+                  </div>
+
+
                 </div>
                 <hr>
                 <div class="appointItem">
-                    <mat-checkbox color="primary" style="margin-bottom: 7px;" class="customCheckBox">
+                  <div class="row">
+                    <div class="col-auto pr-0">
+                      <mat-checkbox color="primary" style="margin-bottom: 7px;" class="customCheckBox">
+
+                      </mat-checkbox>
+                    </div>
+                    <div class="col pl-1">
+                      <div class="color-253238 f-12-400 mb-2">
                         Landing page required for new CRM app
-                    </mat-checkbox><br>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 </div>
             </div>
         </mat-expansion-panel>
@@ -100,19 +154,29 @@
                         Tasks
                     </div>
                     <div>
-                        <button mat-button class="iconButton" (click)="addTask()">
+                        <button mat-button class="iconButton" (click)="addTask() ; $event.stopPropagation()">
                             <mat-icon>add</mat-icon>
                         </button>
                     </div>
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="panel-content">
-                <mat-checkbox *ngFor="let e of tasks" color="primary" class="mb-1 customCheckBox" [(ngModel)]="e.selected">
-                    <span [class.lineThrough]="e.selected">{{e.name}}</span>
-                </mat-checkbox>
+              <div *ngFor="let e of tasks">
+                <div class="row">
+                  <div class="col-auto pr-0">
+                    <mat-checkbox color="primary" class="mb-1 customCheckBox" [(ngModel)]="e.selected">
+                    </mat-checkbox>
+                  </div>
+                  <div class="col pl-1">
+                    <span (click)="addTask()" [class.lineThrough]="e.selected">{{e.name}}</span>
+                  </div>
+                </div>
+              </div>
+
+
             </div>
         </mat-expansion-panel>
-        <mat-expansion-panel class="mat-elevation-z0" [hideToggle]="true">
+        <mat-expansion-panel class="mat-elevation-z0 px-0" [hideToggle]="true">
             <mat-expansion-panel-header>
                 <mat-panel-title class="addPanelTitle">
                     <div>
@@ -122,6 +186,7 @@
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="panel-content">
+              <div [class.hgt-275]="files.length > 5" class="customVerScroll">
                 <div *ngFor="let f of files;let i = index" class="fileItem"
                     [class.pb-2]="i == 0" [class.py-2]="i > 0" [class.borderBottom]="i < files.length - 1">
                     <img *ngIf="f.type == 'word'" alt="Image" src="../../../assets/images/word-icon.svg">
@@ -132,6 +197,7 @@
                         <span class="fileName">{{f.name}}</span><br>
                         <span class="fileDescription">{{f.description}}</span>
                     </div>
+                </div>
                 </div>
             </div>
         </mat-expansion-panel>

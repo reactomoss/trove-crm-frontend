@@ -17,7 +17,6 @@ export class File {
   styleUrls: ['./widget.component.css']
 })
 export class WidgetComponent implements OnInit {
-
   @Output() addTaskClicked = new EventEmitter()
   @Output() addAppointClicked = new EventEmitter()
 
@@ -31,7 +30,10 @@ export class WidgetComponent implements OnInit {
     new File("Sales guide to file.docx", "word", "57.35KB, 2021/01/16  14:05"),
     new File("Weekly sales reort(Jan 1-7).xls", "excel", "5 Bytes, 2021/01/16  14:05"),
     new File("FIle export-status.pdf", "pdf", "3.9 MB, 2021/01/16  14:05"),
-    new File("Sales guide to file1.docx", "word", "57.35KB, 2021/02/1  14:05")
+    new File("Sales guide to file1.docx", "word", "57.35KB, 2021/02/1  14:05"),
+    new File("Sales guide to file2.docx", "pdf", "57.35KB, 2021/02/2  15:05"),
+    new File("Sales guide to file3.docx", "excel", "57.35KB, 2021/02/3  16:05"),
+    new File("Sales guide to file4.docx", "word", "57.35KB, 2021/02/4  17:05")
   ]
 
   constructor() { }

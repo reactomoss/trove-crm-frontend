@@ -295,3 +295,17 @@ span {
 .lineHeightMd {
     line-height: 2;
 }
+
+.actionIcons {
+  visibility: hidden;
+}
+
+.centerItem:hover .actionIcons {
+  visibility: visible;
+}
+.actionIcons i {
+  cursor: pointer;
+  color: #455B66;
+  margin-right: 15px;
+  vertical-align: middle;
+}

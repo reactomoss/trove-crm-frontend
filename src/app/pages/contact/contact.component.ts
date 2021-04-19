@@ -241,7 +241,7 @@ export class ContactComponent implements OnInit {
       return acc
     }, [])
   }
-  
+
   clickIndeterminate() {
     this.selectedItems = []
   }
@@ -271,7 +271,7 @@ export class ContactComponent implements OnInit {
 })
 export class MailDialog {
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
-  
+
   activeTabIndex = 0
   items: selectedData
   constructor(
@@ -284,17 +284,17 @@ export class MailDialog {
   onNoClick(): void {
     this.dialogRef.close();
   }
-  
+
   public handleTabChange(e: MatTabChangeEvent) {
     this.activeTabIndex = e.index
     console.log(this.items)
   }
-  
+
   public titleOptions1: Object = {
     // placeholderText: 'Edit Your Content Here!',
     // charCounterCount: false,
     // toolbarInline: true,
-    
+
     toolbarBottom: true,
     events: {
       "initialized": () => {
@@ -305,12 +305,12 @@ export class MailDialog {
       }
     }
   }
-  
+
   public titleOptions2: Object = {
     // placeholderText: 'Edit Your Content Here!',
     // charCounterCount: false,
     // toolbarInline: true,
-    
+
     toolbarBottom: true,
     events: {
       "initialized": () => {
@@ -321,12 +321,12 @@ export class MailDialog {
       }
     }
   }
-    
+
   public titleOptions3: Object = {
     // placeholderText: 'Edit Your Content Here!',
     // charCounterCount: false,
     // toolbarInline: true,
-    
+
     toolbarBottom: true,
     events: {
       "initialized": () => {

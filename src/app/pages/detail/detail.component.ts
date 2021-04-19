@@ -20,7 +20,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 export class DetailComponent implements OnInit {
   stages: string[];
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
-  
+
   status:string = "Progress"
 
   selectedStage: number
@@ -36,7 +36,7 @@ export class DetailComponent implements OnInit {
   goToList() {
     this.router.navigate(['/pages/leads']);
   }
-  
+
   getStageClass(i) {
     if (i == 0) {
       return "stage-first stage-item"
@@ -60,7 +60,7 @@ export class DetailComponent implements OnInit {
         !stageName && (stageName = 'Demo')
         this.stages.push(stageName)
         this.selectedStage = this.stages.length - 1
-        
+
         this._snackBar.openFromComponent(StageSnack, {
           data: { name: stageName},
           panelClass: 'stage-success',
@@ -93,7 +93,7 @@ export class DetailComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog sent: ${result}`);
-      
+
     })
   }
 
@@ -104,7 +104,7 @@ export class DetailComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog sent: ${result}`);
-      
+
     })
   }
 
@@ -115,10 +115,10 @@ export class DetailComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog sent: ${result}`);
-      
+
     })
   }
-  
+
   getLeftOffset(index) {
     return -10 * index
   }
@@ -178,7 +178,7 @@ export class EditDialog {
 
   showMandatory: boolean = false
   search: string = ''
-  
+
   constructor(
     public dialogRef: MatDialogRef<EditDialog>
     // @Inject(MAT_DIALOG_DATA) public data: DialogData
@@ -207,7 +207,7 @@ export class EditDialog {
   onDeleteClick() {
     this.dialogRef.close({ data: 'delete' })
   }
-  
+
   checkShow(name) {
     if (!this.search)
       return true
@@ -257,14 +257,24 @@ export class ConfirmDialog {
 })
 export class TaskDialog {
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
-  
-  myControl = new FormControl()
-  options: string[] = ['One', 'Two', 'Three']
-  filteredOptions: Observable<string[]>;
 
-  selected: string[] = []
+  myControl = new FormControl()
+  options: any[] = [
+    {
+      name: "Person", description: "One", icon: "person"
+    },
+    {
+      name: "Person", description: "Two", icon: "person"
+    },
+    {
+      name: "Person", description: "Three", icon: "person"
+    }
+    ]
+  filteredOptions: Observable<any[]>;
+
+  selected: any[] = []
   showAuto: boolean = true
-  
+
   active: number = 1
 
   constructor(
@@ -276,11 +286,11 @@ export class TaskDialog {
       map(value => this._filter(value))
     );
   }
-  
+
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
-    return this.options.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
+    return this.options.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
   }
 
   public onSelectionChange(event) {
@@ -304,18 +314,49 @@ export class TaskDialog {
     console.log('set active', num)
     this.active = num
     if (num == 1) {
-      this.options = ['One', 'Two', 'Three']
+      this.options = [{
+        name: "Person", description: "One", icon: "person"
+      },
+      {
+        name: "Person", description: "Two", icon: "person"
+      }
+      ,
+      {
+        name: "Person", description: "Three", icon: "person"
+      }]
     } else if (num == 2) {
-      this.options = ['Four', 'Five', 'Six']
+      this.options = [{
+        name: "Company", description: "One", icon: "business"
+      },
+      {
+        name: "Company", description: "Two", icon: "business"
+      }
+      ,
+      {
+        name: "Company", description: "Three", icon: "business"
+      }]
     } else if (num == 3) {
-      this.options = ['Seven', 'Eight', 'Nine']
+      this.options = [{
+        name: "Leads", description: "One", icon: "leaderboard"
+      },
+      {
+        name: "Leads", description: "Two", icon: "leaderboard"
+      }
+      ,
+      {
+        name: "Leads", description: "Three", icon: "leaderboard"
+      }]
     }
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value))
     )
   }
-  
+
+  setEmpty(){
+    this.myControl.setValue('');
+   }
+
   onNoClick(): void {
     this.dialogRef.close();
   }
@@ -350,10 +391,20 @@ export class TaskDialog {
 export class AppointDialog {
 
   myControl = new FormControl();
-  options: string[] = ['One', 'Two', 'Three'];
-  filteredOptions: Observable<string[]>;
+  options: any[] = [
+    {
+      name: "Person", description: "One", icon: "person"
+    },
+    {
+      name: "Person", description: "Two", icon: "person"
+    },
+    {
+      name: "Person", description: "Three", icon: "person"
+    }
+    ]
+  filteredOptions: Observable<any[]>;
 
-  selected: string[] = []
+  selected: any[] = []
   showAuto: boolean = true
 
   active: number = 1
@@ -367,11 +418,13 @@ export class AppointDialog {
       map(value => this._filter(value))
     );
   }
-  
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
 
-    return this.options.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
+  private _filter(value: string): string[] {
+
+      const filterValue = value.toLowerCase();
+      return this.options.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
+
+
   }
 
   public onSelectionChange(event) {
@@ -395,17 +448,49 @@ export class AppointDialog {
     console.log('set active', num)
     this.active = num
     if (num == 1) {
-      this.options = ['One', 'Two', 'Three']
+      this.options = [{
+        name: "Person", description: "One", icon: "person"
+      },
+      {
+        name: "Person", description: "Two", icon: "person"
+      }
+      ,
+      {
+        name: "Person", description: "Three", icon: "person"
+      }]
     } else if (num == 2) {
-      this.options = ['Four', 'Five', 'Six']
+      this.options = [{
+        name: "Company", description: "One", icon: "business"
+      },
+      {
+        name: "Company", description: "Two", icon: "business"
+      }
+      ,
+      {
+        name: "Company", description: "Three", icon: "business"
+      }]
     } else if (num == 3) {
-      this.options = ['Seven', 'Eight', 'Nine']
+      this.options = [{
+        name: "Leads", description: "One", icon: "leaderboard"
+      },
+      {
+        name: "Leads", description: "Two", icon: "leaderboard"
+      }
+      ,
+      {
+        name: "Leads", description: "Three", icon: "leaderboard"
+      }]
     }
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value))
-    )
+    );
+
   }
+
+   setEmpty(){
+    this.myControl.setValue('');
+   }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -424,7 +509,7 @@ export class AppointDialog {
   styleUrls: ['stage-snack/stage-snack.css']
 })
 export class StageSnack {
-  constructor( 
+  constructor(
     public snackBarRef: MatSnackBarRef<StageSnack>,
     @Inject(MAT_SNACK_BAR_DATA) public data: any) { }
 }

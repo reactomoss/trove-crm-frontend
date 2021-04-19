@@ -71,3 +71,61 @@ mat-tab-group {
   margin-top: 10px !important;
   margin-left: 8px !important;
 }
+
+
+
+.optionDiv {
+  display: flex;
+  align-items: center;
+}
+
+.optionDiv img {
+  border-radius: 6px;
+}
+
+.optionDiv .span1 {
+  font-size: 12px;
+  line-height: 17px;
+  color: #253238;
+  margin-bottom: 0;
+}
+
+.optionDiv .span2 {
+  font-size: 10px;
+  line-height: 14px;
+  color: #455B66;
+  margin-bottom: 0;
+}
+
+
+.addBtn {
+  padding: 0;
+  background: rgba(208, 217, 222, 0.2);
+  border: 1px solid #D0D9DE;
+  box-sizing: border-box;
+  border-radius: 6px;
+  min-width: 36px;
+  margin-bottom: 2px;
+}
+
+.activeBtn {
+  border-bottom: 2px solid #002868;
+  border-radius: 0;
+}
+
+.optionDiv .pos-t-0 .custom-control-label::before, .optionDiv .pos-t-0 .custom-control-label::after {
+  top: 12px;
+}
+
+.selectedDiv .material-icons {
+   vertical-align: middle;
+}
+
+.selectedDiv .selectedSpan {
+  padding: 5px;
+  border: 1px solid #eff2f7;
+border-radius: 3px;
+}
+
+
+

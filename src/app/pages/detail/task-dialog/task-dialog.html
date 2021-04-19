@@ -1,5 +1,13 @@
 <h1 mat-dialog-title>New Task</h1>
 <div mat-dialog-content>
+  <div class="">
+    <span>Task Title *</span>
+    <div>
+      <mat-form-field appearance="outline" class="formControl noLabelForm">
+          <input matInput>
+      </mat-form-field>
+  </div>
+  </div>
     <span>Task Content *</span>
     <mat-form-field appearance="outline" class="formControl noLabelForm">
         <textarea matInput ></textarea>
@@ -36,12 +44,12 @@
     </div>
     <span>Associated Contact</span><br>
     <div *ngFor="let e of selected" class="optionDiv selectedDiv" style="position: relative">
-        <img alt="Image" src="../../../assets/images/user-sample.png">  
+       <i class="material-icons">{{e.icon}}</i>
         <div class="ml-3">
-            <p class="span1">{{e}}</p>
-            <p class="span2">{{e}} description</p>
+            <p class="span1">{{e.name}}</p>
+            <p class="span2">{{e.description}}</p>
         </div>
-        <mat-icon style="position: absolute; right: 10px" class="cursorPointer" 
+        <mat-icon style="position: absolute; right: 10px" class="cursorPointer"
                     (click)="deleteSelected(e)">close</mat-icon>
     </div>
     <mat-form-field class="formControl noLabelForm" appearance="outline" *ngIf="showAuto">
@@ -52,12 +60,12 @@
                 <button mat-button class={{activeClass(2)}} (click)="setActive(2)">Company</button>
                 <button mat-button class={{activeClass(3)}} (click)="setActive(3)">Lead</button>
             </div>
-            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (click)="setEmpty()">
                 <div class="optionDiv">
-                    <img alt="Image" src="../../../assets/images/user-sample.png">  
+                    <i class="material-icons">{{option.icon}}</i>
                     <div class="ml-3">
-                        <p class="span1">{{option}}</p>
-                        <p class="span2">{{option}} description</p>
+                        <p class="span1">{{option.name}}</p>
+                        <p class="span2">{{option.description}}</p>
                     </div>
                 </div>
             </mat-option>
@@ -66,7 +74,7 @@
     <button mat-button *ngIf="!showAuto" (click)="clickAdd()" class="addBtn">
         <mat-icon>add</mat-icon>
     </button><br>
-    
+
     <span>Owner</span>
     <mat-form-field appearance="outline" class="formControl noLabelForm grayBackground">
         <mat-select>
@@ -74,6 +82,7 @@
             <mat-option value="2">Owner2</mat-option>
         </mat-select>
     </mat-form-field>
+
 </div>
 <div mat-dialog-actions>
     <button mat-button (click)="onNoClick()" class="cancelBtn">Cancel</button>
