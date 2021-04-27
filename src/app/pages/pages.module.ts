@@ -34,6 +34,7 @@ import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 import { ContactDetailComponent } from './contact-detail/contact-detail.component';
 import { TaskComponent } from './task/task.component';
 import { TaskFilterComponent } from './task/task-filter/task-filter.component';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -86,7 +87,8 @@ const routes: Routes = [
     SimplebarAngularModule,
     NgxSliderModule,
     FroalaEditorModule.forRoot(),
-    FroalaViewModule.forRoot()
+    FroalaViewModule.forRoot(),
+    NgxMaterialTimepickerModule
   ],
   exports:[RouterModule],
 })

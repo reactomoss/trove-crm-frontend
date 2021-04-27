@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>New Task</h1>
+<h1 mat-dialog-title>{{isEdit ? 'Edit' : 'New'}} Task</h1>
 <div mat-dialog-content>
   <div class="">
     <span>Task Title *</span>
@@ -15,33 +15,42 @@
     <span>Due Date</span>
     <div class="dateDiv">
         <div>
-            <mat-form-field appearance="outline" [style.width.px]=155 class="formControl noLabelForm datePicker">
-                <input matInput [matDatepicker]="fromPicker" readonly>
-                <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
-                <mat-datepicker #fromPicker></mat-datepicker>
+            <mat-form-field appearance="outline" [style.width.px]=155 class="formControl noLabelForm datePicker iconColorPath">
+                <input matInput [matDatepicker]="dueDatePicker" readonly>
+                <mat-datepicker-toggle matSuffix [for]="dueDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #dueDatePicker></mat-datepicker>
             </mat-form-field>
         </div>
         <div>
-            <mat-form-field appearance="outline" [style.width.px]=155 class="formControl noLabelForm datePicker">
-                <input matInput [matDatepicker]="toPicker" readonly>
-                <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
-                <mat-datepicker #toPicker></mat-datepicker>
-            </mat-form-field>
+          <mat-form-field appearance="outline" [style.width.px]=155 class="formControl timePickerBox iconColorPath">
+            <div class="d-flex">
+              <input matInput [ngxTimepicker]="dueTimepicker" [disableClick]="true" readonly>
+            <ngx-material-timepicker-toggle [for]="dueTimepicker"></ngx-material-timepicker-toggle>
+            <ngx-material-timepicker #dueTimepicker></ngx-material-timepicker>
+            </div>
+
+        </mat-form-field>
         </div>
     </div>
     <span>Reminder</span>
-    <div class="reminderDiv">
-        <div>
-            <mat-form-field appearance="outline" class="formControl noLabelForm" [style.width.px]="155">
-                <input matInput>
-            </mat-form-field>
-        </div>
-        <div>
-            <mat-form-field appearance="outline" class="formControl noLabelForm" [style.width.px]="155">
-                <input matInput>
-            </mat-form-field>
-        </div>
-    </div>
+    <div class="dateDiv">
+      <div>
+          <mat-form-field appearance="outline" [style.width.px]=155 class="formControl noLabelForm datePicker iconColorPath">
+              <input matInput [matDatepicker]="reminderDatePicker" readonly>
+              <mat-datepicker-toggle matSuffix [for]="reminderDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #reminderDatePicker></mat-datepicker>
+          </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="outline" [style.width.px]=155 class="formControl timePickerBox iconColorPath">
+          <div class="d-flex">
+            <input matInput [ngxTimepicker]="reminderTimepicker" [disableClick]="true" readonly>
+          <ngx-material-timepicker-toggle [for]="reminderTimepicker"></ngx-material-timepicker-toggle>
+          <ngx-material-timepicker #reminderTimepicker></ngx-material-timepicker>
+          </div>
+      </mat-form-field>
+      </div>
+  </div>
     <span>Associated Contact</span><br>
     <div *ngFor="let e of selected" class="optionDiv selectedDiv" style="position: relative">
        <i class="material-icons">{{e.icon}}</i>
@@ -86,5 +95,5 @@
 </div>
 <div mat-dialog-actions>
     <button mat-button (click)="onNoClick()" class="cancelBtn">Cancel</button>
-    <button mat-button class="createBtn ml-3">Create</button>
+    <button mat-button class="createBtn ml-3">{{isEdit ? 'Update' : 'Save'}}</button>
 </div>

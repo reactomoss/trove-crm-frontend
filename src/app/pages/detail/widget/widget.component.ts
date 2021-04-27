@@ -23,7 +23,7 @@ export class WidgetComponent implements OnInit {
   tasks: Task[] = [
     new Task("Packet Monster Sales opportunity"),
     new Task("Ux design meeting at 17:30hrs."),
-    new Task("Landing page required for new CRM app")
+    new Task("Landing page required for new CRM app"),
   ]
 
   files: File[] = [
@@ -43,11 +43,20 @@ export class WidgetComponent implements OnInit {
 
   addAppoint() {
     console.log('add appoint')
-    this.addAppointClicked.emit()
+    this.addAppointClicked.emit(false)
+  }
+
+  editAppoint() {
+    console.log('Edit appoint')
+    this.addAppointClicked.emit(true)
   }
 
   addTask() {
     console.log('add task')
-    this.addTaskClicked.emit()
+    this.addTaskClicked.emit(false)
+  }
+  editTask() {
+    console.log('add task')
+    this.addTaskClicked.emit(true)
   }
 }

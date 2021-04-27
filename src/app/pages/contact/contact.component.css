@@ -118,6 +118,10 @@ mat-card {
     font-weight: 500;
     font-size: 16px;
     color: #253238;
+    display: block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .cardText2 {
@@ -146,7 +150,7 @@ mat-card {
 }
 
 .drawerContainer {
-    width: 324px;
+    width: 360px;
 }
 
 .drawerContainerTop {
@@ -216,4 +220,14 @@ mat-card {
     font-size: 12.5px;
     line-height: 17px;
     color: #455B66;
+}
+.filterContainer1 {
+  max-height: calc(100vh - 200px);
+}
+.clearAllButton {
+  background-color: #EFF2F7;
+  border: 1px solid #D0D9DE;
+  font-size: 12px;
+  line-height: 30px;
+  margin-left: 100px;
 }

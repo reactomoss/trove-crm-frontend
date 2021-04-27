@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Add Person</h1>
+<h1 mat-dialog-title>{{isEdit ? 'Edit' : 'Add'}} Person</h1>
 <div class="filterPart">
     <mat-form-field class="dialogSearchFormField whiteBackground" appearance="outline">
         <input type="text" placeholder="Search field" aria-label="Number" matInput [formControl]="searchControl"
@@ -25,7 +25,7 @@
                     (mouseover)="userHover = true" (mouseout)="userHover = false" (click)="userIcon()">
                     {{getUserIcon()}}
                 </mat-icon>
-                <img *ngIf="imageSrc" id="preview" [src]="imageSrc || 'http://placehold.it/180'" alt="your image" width="58" 
+                <img *ngIf="imageSrc" id="preview" [src]="imageSrc || 'http://placehold.it/180'" alt="your image" width="58"
                         height="58" (mouseover)="imageHover = true"/>
                 <div class="overlay" *ngIf="imageSrc && imageHover" (mouseover)="imageHover = true" (mouseout)="imageHover = false" (click)="removeImage()">
                     Remove
@@ -46,21 +46,33 @@
         </div>
         <div class="threeDiv">
             <div *ngIf="checkShow('Mobile Number') || checkShow('Work Number')">
-                <mat-icon class="roundIcon">phone</mat-icon>
+                <mat-icon class="roundIcon">phone_android</mat-icon>
             </div>
-            <div *ngIf="checkShow('Mobile Number')">
+            <div *ngIf="checkShow('Mobile Number')" class="mr-0 w-100 pl-15">
                 <span>Mobile Number</span><br>
-                <mat-form-field appearance="outline" class="formControl noLabelForm formMaxWidth" [style.width.px]="180">
-                    <input matInput>
+                <mat-form-field appearance="outline" class="formControl noLabelForm">
+                  <input matInput class="inputWithSelect">
+                  <mat-select class="selectWithInput" [(value)]="mobileCode">
+                      <mat-option value="USA">USA +1</mat-option>
+                      <mat-option value="UK">UK +2</mat-option>
+                  </mat-select>
                 </mat-form-field>
+
             </div>
-            <div *ngIf="checkShow('Work Number')">
-                <span>Work Number</span><br>
-                <mat-form-field appearance="outline" class="formControl noLabelForm formMaxWidth" [style.width.px]="180">
-                    <input matInput>
-                </mat-form-field>
-            </div>
+
         </div>
+        <div class="threeDiv">
+          <div *ngIf="checkShow('Mobile Number') || checkShow('Work Number')">
+              <mat-icon class="roundIcon">phone</mat-icon>
+          </div>
+
+          <div *ngIf="checkShow('Work Number')" class="mr-0 w-100 pl-15">
+              <span>Work Number</span><br>
+              <mat-form-field appearance="outline" class="formControl noLabelForm">
+                  <input matInput>
+              </mat-form-field>
+          </div>
+      </div>
         <div class="twoDiv" *ngIf="!showMandatory">
             <div *ngIf="checkShow('Company Name')">
                 <span class="roundIcon">
@@ -70,7 +82,7 @@
             <div *ngIf="checkShow('Company Name')">
                 <span>Company Name</span><br>
                 <mat-form-field appearance="outline" class="formControl noLabelForm grayBackground">
-                    <mat-select>
+                    <mat-select multiple class="fw-500">
                         <mat-option value="1">company1</mat-option>
                         <mat-option value="2">company2</mat-option>
                     </mat-select>
@@ -88,7 +100,7 @@
                 </mat-form-field>
             </div>
         </div>
-        <div class="threeDiv" *ngIf="!showMandatory">
+        <!-- <div class="threeDiv" *ngIf="!showMandatory">
             <div *ngIf="checkShow('Contact Type') || checkShow('Contact Group')">
             </div>
             <div *ngIf="checkShow('Contact Type')">
@@ -109,7 +121,7 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-        </div>
+        </div> -->
         <div class="twoDiv" *ngIf="!showMandatory">
             <div *ngIf="checkShow('Address')"></div>
             <div *ngIf="checkShow('Address')">
@@ -141,5 +153,5 @@
 </div>
 <div mat-dialog-actions>
     <button mat-button (click)="onNoClick()" class="cancelBtn">Cancel</button>
-    <button mat-button class="createBtn ml-3">Create</button>
+    <button mat-button class="btnColor2 ml-3 px-4">{{isEdit ? 'Update' : 'Save'}}</button>
 </div>

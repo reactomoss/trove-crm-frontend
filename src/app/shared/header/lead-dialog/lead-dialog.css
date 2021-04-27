@@ -193,3 +193,6 @@ span {
 .activeSpan {
     color: white;
 }
+input.mat-input-element , textarea.mat-input-element {
+  font-weight: 500;
+}

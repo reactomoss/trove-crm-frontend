@@ -127,6 +127,10 @@ mat-expansion-panel-header {
     color: #253238;
 }
 
+.alertSpan span.color-ff0000 {
+  color: #ff0000;
+}
+
 .lineThrough {
     text-decoration: line-through;
 }

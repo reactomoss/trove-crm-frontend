@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -160,11 +160,12 @@ export class LeadDialog {
 
   stages: string[] = ['Discovery', 'Qualified', 'Evolution', 'Negotiation', 'Closed']
   selectedStage = 0
-
+  isEdit: boolean = false;
   constructor(
-    public dialogRef: MatDialogRef<LeadDialog>
-    // @Inject(MAT_DIALOG_DATA) public data: DialogData
+    public dialogRef: MatDialogRef<LeadDialog>,
+     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
+    this.isEdit = this.data?.isEdit;
     this.filteredOptions = this.searchControl.valueChanges
       .pipe(
         startWith(''),
@@ -227,15 +228,17 @@ export class ContactDialog {
 
   showMandatory: boolean = false
   search: string = ''
-
+  mobileCode = 'USA'
   userHover: boolean = false
   imageHover: boolean = false
   imageSrc: string;
+  isEdit: boolean = false;
 
   constructor(
-    public dialogRef: MatDialogRef<ContactDialog>
-    // @Inject(MAT_DIALOG_DATA) public data: DialogData
+    public dialogRef: MatDialogRef<ContactDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
+    this.isEdit = this.data?.isEdit;
     this.filteredOptions = this.searchControl.valueChanges
       .pipe(
         startWith(''),

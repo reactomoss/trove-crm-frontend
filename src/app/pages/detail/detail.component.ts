@@ -11,7 +11,7 @@ import {
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
 } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-
+import { LeadDialog } from 'src/app/shared/header/header.component';
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
@@ -97,9 +97,10 @@ export class DetailComponent implements OnInit {
     })
   }
 
-  openTaskDialog() {
+  openTaskDialog(isEdit: boolean) {
     const dialogRef = this.dialog.open(TaskDialog, {
       width: '405px',
+      data : { isEdit: isEdit}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -108,9 +109,10 @@ export class DetailComponent implements OnInit {
     })
   }
 
-  openAppointDialog() {
+  openAppointDialog(isEdit: boolean) {
     const dialogRef = this.dialog.open(AppointDialog, {
       width: '740px',
+      data : { isEdit: isEdit}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -135,6 +137,15 @@ export class DetailComponent implements OnInit {
       return '../../../assets/images/stage/active-stage-lg.svg'
     }
     return '../../../assets/images/stage/mid-stage-lg.svg'
+  }
+  editLead() {
+    const dialogRef = this.dialog.open(LeadDialog, {
+      width: '560px',
+      autoFocus: false,
+      data : { isEdit : true}
+    })
+    dialogRef.afterClosed().subscribe(result => {
+    })
   }
 }
 
@@ -274,13 +285,14 @@ export class TaskDialog {
 
   selected: any[] = []
   showAuto: boolean = true
-
+  isEdit: boolean = false;
   active: number = 1
 
   constructor(
-    public dialogRef: MatDialogRef<AppointDialog>
-    // @Inject(MAT_DIALOG_DATA) public data: DialogData
+    public dialogRef: MatDialogRef<AppointDialog>,
+     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
+    this.isEdit = data.isEdit;
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value))
@@ -405,14 +417,16 @@ export class AppointDialog {
   filteredOptions: Observable<any[]>;
 
   selected: any[] = []
+  isEdit: boolean = false;
   showAuto: boolean = true
-
   active: number = 1
 
   constructor(
-    public dialogRef: MatDialogRef<AppointDialog>
-    // @Inject(MAT_DIALOG_DATA) public data: DialogData
+    public dialogRef: MatDialogRef<AppointDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
+    this.isEdit = data.isEdit;
+    console.log(this.isEdit);
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value))

@@ -194,3 +194,30 @@ span {
     text-decoration: underline;
     cursor: pointer;
 }
+.selectWithInput {
+  position: absolute;
+  left: 0;
+  width: 92px;
+  border: 1px solid #D0D9DE;
+  height: 33px;
+  left: -12px;
+  top: 3px;
+  border-radius: 3px;
+  padding-top: 8px;
+  padding-left: 14px;
+  background: #F7F8FA;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 17px;
+  color: #253238;
+}
+
+.inputWithSelect {
+  margin-left: 92px;
+}
+input.mat-input-element , textarea.mat-input-element {
+  font-weight: 500;
+}
+.pl-15 {
+  padding-left: 15px;
+}

@@ -32,14 +32,14 @@ mat-expansion-panel {
 
 .customDateDiv mat-form-field {
   font-size: 12px;
-  width: 120px;  
+  width: 120px;
 }
 
 .contactBtn {
   background: #FFFFFF;
   border: 1px solid #D0D9DE;
   box-sizing: border-box;
-  border-radius: 3px 0px 0px 3px; 
+  border-radius: 3px 0px 0px 3px;
   font-size: 13px;
   width: 50%;
   height: 35px;
@@ -75,3 +75,36 @@ mat-expansion-panel {
   font-weight: bold;
 }
 
+.filterContainer1 {
+  max-height: calc(100vh - 200px);
+}
+
+.drawerContainerTop {
+  padding: 19px 12px;
+  display: flex;
+  align-items: center;
+}
+
+.closeButton {
+  padding: 0;
+  border: 1px solid #E6EAF0;
+  line-height: normal;
+  min-width: 24px;
+}
+
+.clearAllButton {
+  background-color: #EFF2F7;
+  border: 1px solid #D0D9DE;
+  font-size: 12px;
+  line-height: 30px;
+  margin-left: 100px;
+}
+
+.drawerContainerTop span {
+  font-size: 16px;
+  font-weight: bold;
+}
+.adjThis {position: relative; top: 5px;}
+.hgt-150 {
+  height: 150px;
+}

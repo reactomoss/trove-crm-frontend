@@ -55,7 +55,7 @@ div, h1, .mat-checkbox, span {
 .color-lite-O {color: rgba(31, 48, 75, 0.7);}
 /* button colors */
 .mat-flat-button.btnColor1{background-color: #C41E41; color: #fff;}
-.mat-flat-button.btnColor2{background-color: #002868; color: #fff;}
+.mat-flat-button.btnColor2,.mat-button.btnColor2{background-color: #002868; color: #fff;}
 .mat-flat-button.btnColor3{background-color: #1F304B; color: #fff;}
 .mat-flat-button.btnColor4{background-color: #253238; color: #fff;}
 .mat-flat-button.btnColor5{background-color: #F6F7F8; color: #455B66;}
@@ -1112,4 +1112,62 @@ background-color:#002868 ;
 }
 .customMSTab .mat-checkbox-checked:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element, .customMSTab .mat-checkbox:active:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element {
   background-color:#002868 ;
+}
+
+.customMSTab .mat-checkbox-inner-container {
+  width:22px;
+  height: 22px;
+}
+.customMSTab .mat-checkbox-frame , .customMSTab .mat-checkbox-background {
+  border-radius: 6px;
+}
+
+.customMSTab .mat-tab-label {
+  padding: 0 15px;opacity: 1;justify-content: flex-start;min-width: 120px;
+}
+.hgt70 {
+  height: 70px;
+}
+
+.customMSTab .mat-menu-item {
+  line-height: normal; height: auto; padding-top: 10px; padding-bottom: 10px;
+}
+
+.customMSTab .mat-menu-item:hover:not([disabled]) {
+  background: rgba(193, 193, 193, 0.04);
+}
+
+.hgt-325 {height: 325px;}
+div.timepicker-overlay {z-index: 9999999 !important;}
+.timePickerBox .mat-form-field-infix {
+  padding: 2.5px 0;
+  border-top: 0;
+}
+.timePickerBox input.mat-input-element {
+  margin-top: 5px;
+}
+.iconColorPath path {
+  fill: #717273;
+}
+.mat-button.mw-40, .mw-40 {min-width: 40px;}
+.fw-500 .mat-select-value {
+  font-weight: 500;
+}
+.bgRoundIcon{
+  background-color: #f3f5f9;
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  box-sizing: content-box;
+  border-radius: 100%;
+}
+
+.tab001.activeTabBlue .mat-tab-label-active {
+  background-color: #002868;
+  color: #fff;
+}
+.filterContainer2 .drawerContainerTop .closeButton {
+  display: none;
 }

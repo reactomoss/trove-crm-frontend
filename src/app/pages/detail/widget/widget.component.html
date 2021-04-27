@@ -93,13 +93,13 @@
                       </mat-checkbox>
                     </div>
                     <div class="col pl-1">
-                      <div (click)="addAppoint()" class="color-253238 f-12-400 mb-2">
+                      <div (click)="editAppoint()" class="color-253238 f-12-400 mb-2">
                         Packet Monster Sales Opportunity
                       </div>
 
                       <span class="alertSpan">
-                          <img alt="Image" src="../../../assets/images/ring.svg">
-                          <span style="margin-left: 2px;">Today at 9:00</span>
+                        <mat-icon class="fs-14 align-text-top">notification_important</mat-icon>
+                          <span>Today at 9:00</span>
                       </span>
                     </div>
                   </div>
@@ -115,13 +115,13 @@
                       </mat-checkbox>
                     </div>
                     <div class="col pl-1">
-                      <div class="color-253238 f-12-400 mb-2">
+                      <div class="color-253238 f-12-400 mb-2" (click)="editAppoint()">
                         UX design meeting at 17:30 hrs. sales pipeline design discussion.
                       </div>
 
                       <span class="alertSpan">
-                          <img alt="Image" src="../../../assets/images/calendar.svg">
-                          <span style="margin-left: 2px; color: red">Thu, 20 Dec, 2020</span>
+                        <mat-icon class="fs-14 align-text-top">calendar_today</mat-icon>
+                          <span>Thu, 24 Apr, 2021</span>
                       </span>
                     </div>
                   </div>
@@ -137,9 +137,13 @@
                       </mat-checkbox>
                     </div>
                     <div class="col pl-1">
-                      <div class="color-253238 f-12-400 mb-2">
+                      <div class="color-253238 f-12-400 mb-2" (click)="editAppoint()">
                         Landing page required for new CRM app
                       </div>
+                      <span class="alertSpan color-ff0000">
+                        <mat-icon class="fs-14 align-text-top">calendar_today</mat-icon>
+                        <span class="color-ff0000">Thu, 20 Dec, 2020</span>
+                    </span>
                     </div>
                   </div>
                 </div>
@@ -161,19 +165,19 @@
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="panel-content">
-              <div *ngFor="let e of tasks">
+              <div [class.hgt-200]="tasks.length > 5" class="customVerScroll">
+              <div *ngFor="let e of tasks" class="mb-2">
                 <div class="row">
                   <div class="col-auto pr-0">
                     <mat-checkbox color="primary" class="mb-1 customCheckBox" [(ngModel)]="e.selected">
                     </mat-checkbox>
                   </div>
                   <div class="col pl-1">
-                    <span (click)="addTask()" [class.lineThrough]="e.selected">{{e.name}}</span>
+                    <span (click)="editTask()" [class.lineThrough]="e.selected">{{e.name}}</span>
                   </div>
                 </div>
               </div>
-
-
+              </div>
             </div>
         </mat-expansion-panel>
         <mat-expansion-panel class="mat-elevation-z0 px-0" [hideToggle]="true">

@@ -1,8 +1,5 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import {FormControl} from '@angular/forms';
-import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
 
 @Component({
   selector: 'app-text-editor',
@@ -75,35 +72,50 @@ export class TextEditorComponent implements AfterViewInit {
   // input data for company,leads,contacts
   optionsPerson: any[] = [
     {
-      name: "Person",  icon: "person", isChecked: false
+      name: "Person",
+      icon: "person",
+      isChecked: false,
+      email: "sampleperson@gmail.com"
     },
     {
-      name: "Person 2",  icon: "person", isChecked: false
+      name: "Person 2",
+      icon: "person",
+      isChecked: false,
+      email: "sampleperson2@gmail.com"
     },
     {
-      name: "Person 3",  icon: "person" , isChecked: false
+      name: "Person 3",
+      icon: "person",
+      isChecked: false,
+      email: "sampleperson3@gmail.com"
     }
     ]
     optionsCompany: any[] = [
       {
-        name: "Company",  icon: "business" , isChecked: false
+        name: "Company",  icon: "business" , isChecked: false,
+        desc: "Sample Description"
       },
       {
-        name: "Company 2",  icon: "business" , isChecked: false
+        name: "Company 2",  icon: "business" , isChecked: false,
+        desc: "Sample Description2"
       },
       {
-        name: "Company 3",  icon: "business" , isChecked: false
+        name: "Company 3",  icon: "business" , isChecked: false,
+        desc: "Sample Description3"
       }
       ]
       optionsLeads: any[] = [
         {
-          name: "Leads",  icon: "leaderboard" , isChecked: false
+          name: "Leads",  icon: "leaderboard" , isChecked: false,
+          desc: "Sample Description"
         },
         {
-          name: "Leads 2",  icon: "leaderboard" , isChecked: false
+          name: "Leads 2",  icon: "leaderboard" , isChecked: false,
+          desc: "Sample Description2"
         },
         {
-          name: "Leads 3",  icon: "leaderboard" , isChecked: false
+          name: "Leads 3",  icon: "leaderboard" , isChecked: false,
+          desc: "Sample Description3"
         }
         ]
 
@@ -131,6 +143,8 @@ export class TextEditorComponent implements AfterViewInit {
     const index = this.selected.indexOf(e)
     this.selected.splice(index, 1)
   }
+
+
   // input data for company,leads,contacts
 
   ngAfterViewInit(): void {

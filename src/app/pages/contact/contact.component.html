@@ -3,17 +3,20 @@
 <mat-drawer-container hasBackdrop="true">
     <mat-drawer #drawer mode="Over" position="end" class="noScrollDrawer">
         <div class="drawerContainer">
-            <div class="drawerContainerTop">
+            <!-- <div class="drawerContainerTop">
                 <button mat-button class="closeIconButton mr-4" (click)="drawer.toggle()">
                     <mat-icon>close</mat-icon>
                 </button>
                 <mat-icon>filter_alt</mat-icon>
-                <span class="mr-5 mt-1">Filters</span>
-            </div>
-            <!-- <ngx-simplebar [options]="scrollOptions" class="filterContainer1">
-                <app-filter></app-filter>
-            </ngx-simplebar> -->
-            <contact-filter></contact-filter>
+                <span class="mr-5" class="filterBadge" matBadge={{filterCount}} matBadgeColor="warn" matBadgePosition="above after" matBadgeOverlap="false">Filters</span>
+                    <button mat-button class="clearAllButton">
+                        Clear all
+                    </button>
+            </div> -->
+            <!-- <ngx-simplebar [options]="scrollOptions" class="filterContainer1"> -->
+                <contact-filter (closeDialog)="drawer.toggle()" (count)="filterCount=$event"></contact-filter>
+            <!-- </ngx-simplebar> -->
+            <!-- <contact-filter></contact-filter> -->
         </div>
     </mat-drawer>
 
@@ -41,7 +44,7 @@
                 </mat-form-field>
             </div>
             <div class="topBarDiv">
-                <button mat-button class="flatIconTextButton mr-3" [matMenuTriggerFor]="optionMenu">
+                <!-- <button mat-button class="flatIconTextButton mr-3" [matMenuTriggerFor]="optionMenu">
                     <mat-icon class="iconInButton">arrow_drop_down</mat-icon>
                     Option
                 </button>
@@ -49,8 +52,10 @@
                     <button mat-menu-item>option1</button>
                     <button mat-menu-item>option2</button>
                     <button mat-menu-item>option3</button>
-                </mat-menu>
-
+                </mat-menu> -->
+                <button matTooltip="Export" mat-button class="flatIconTextButton mr-3 mw-40 px-0">
+                  <mat-icon class="iconInButton">import_export</mat-icon>
+              </button>
                 <button mat-button class="showListButton" [class.activeBtn]="listShow" (click)="showList()">
                     <mat-icon>list</mat-icon>
                 </button>
@@ -59,7 +64,7 @@
                 </button>
                 <button mat-button class="flatIconTextButton ml-3" (click)="drawer.toggle()">
                     <mat-icon class="iconInButton">filter_alt</mat-icon>
-                    Filter(1)
+                    Filter({{filterCount}})
                 </button>
             </div>
         </div>
@@ -98,12 +103,12 @@
                             </div>
                         </mat-card-header><br>
                         <mat-card-content *ngIf="item.company; else companyContent">
-                            <span class="cardText1">{{item.name}}</span><br>
+                            <span class="cardText1">{{item.name}}</span>
                             <span class="cardText2">Owner: {{item.owner}}</span><br>
                             <span class="cardText2">{{item.contactCount}} Contacts</span>
                         </mat-card-content>
                         <ng-template #companyContent>
-                            <span class="cardText1">{{item.name}}</span><br>
+                            <span class="cardText1">{{item.name}}</span>
                             <span class="cardText2">{{item.email}}</span><br>
                             <span class="cardText2">{{item.companyName}}</span>
                         </ng-template>

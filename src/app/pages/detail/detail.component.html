@@ -3,7 +3,7 @@
     <div class="top1">
         <mat-icon (click)="goToList()">arrow_back</mat-icon>
         <span>Packet Monster Sales opportunity</span>
-        <button mat-button class="ml-5" (click)="openEditDialog()">
+        <button mat-button class="ml-5" (click)="editLead()">
             <mat-icon class="iconInButton">edit</mat-icon>
             Edit
         </button>
@@ -110,6 +110,8 @@
                     </mat-select>
                 </mat-form-field>
             </div>
+            <div class="py-2">
+              <div class="customVerScroll hgt-325">
             <div class="centerContent">
                 <div class="centerItem">
                     <div class="centerTitle">
@@ -177,10 +179,84 @@
                         </span>
                     </div>
                 </div>
+                <div class="centerItem">
+                  <div class="centerTitle">
+                      <div class="infoDiv">
+                          <span class="commentIcon">
+                              <img alt="Image" src="../../../assets/images/email-icon.svg">
+                          </span>
+                          <div class="ml-2">
+                              <span class="span1 mr-1">
+                                  Wes Studi
+                              </span>
+                              <img alt="Image" src="../../../assets/images/small-right-arrow.svg">
+                              <span class="span2 ml-1">
+                                  Brian Markinson
+                              </span>
+                          </div>
+                      </div>
+                      <div>
+                        <span class="actionIcons">
+                          <i class="material-icons fs-16">edit</i>
+                          <i class="material-icons fs-16">delete</i>
+                        </span>
+                        <span class="span3">
+                          1/1/2021 8:30AM
+                        </span>
+                      </div>
+                  </div>
+                  <div class="centerMsg1">
+                      <span class="tx14">Helllo Markinson!</span><br>
+                      <span class="lineHeightMd">I’d love to know the new features that are implemented in the last versions.</span><br>
+                      <span class="txItalic lineHeightMd">Thank you!</span><br>
+                      <span class="txItalic lineHeightMd">
+                          Click here to view the
+                          <span class="txComment">comments</span>
+                      </span>
+                  </div>
+              </div>
+              <div class="centerItem">
+                <div class="centerTitle">
+                    <div class="infoDiv">
+                        <span class="commentIcon">
+                            <img alt="Image" src="../../../assets/images/email-icon.svg">
+                        </span>
+                        <div class="ml-2">
+                            <span class="span1 mr-1">
+                                Wes Studi
+                            </span>
+                            <img alt="Image" src="../../../assets/images/small-right-arrow.svg">
+                            <span class="span2 ml-1">
+                                Brian Markinson
+                            </span>
+                        </div>
+                    </div>
+                    <div>
+                      <span class="actionIcons">
+                        <i class="material-icons fs-16">edit</i>
+                        <i class="material-icons fs-16">delete</i>
+                      </span>
+                      <span class="span3">
+                        1/1/2021 8:30AM
+                      </span>
+                    </div>
+                </div>
+                <div class="centerMsg1">
+                    <span class="tx14">Helllo Markinson!</span><br>
+                    <span class="lineHeightMd">I’d love to know the new features that are implemented in the last versions.</span><br>
+                    <span class="txItalic lineHeightMd">Thank you!</span><br>
+                    <span class="txItalic lineHeightMd">
+                        Click here to view the
+                        <span class="txComment">comments</span>
+                    </span>
+                </div>
+            </div>
+            </div>
+            </div>
             </div>
         </div>
         <div fxFlex="28">
-            <app-widget (addTaskClicked) = "openTaskDialog()" (addAppointClicked) = "openAppointDialog()"></app-widget>
+            <app-widget (addTaskClicked) = "openTaskDialog($event)" (addAppointClicked) = "openAppointDialog($event)"></app-widget>
         </div>
     </div>
 </ngx-simplebar>

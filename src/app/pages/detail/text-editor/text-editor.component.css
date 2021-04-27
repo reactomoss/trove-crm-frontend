@@ -127,5 +127,14 @@ mat-tab-group {
 border-radius: 3px;
 }
 
-
+.bgRoundIcon {
+  background-color: #f3f5f9;
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  box-sizing: content-box;
+  border-radius: 100%;
+}
 

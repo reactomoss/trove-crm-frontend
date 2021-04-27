@@ -209,7 +209,7 @@ mat-card {
 
 .rightPart {
     border-left: solid 1px #ddd;
-    min-width: 324px;
+    min-width: 360px;
 }
 
 .topInRightPart {
@@ -232,7 +232,8 @@ mat-card {
 }
 
 .drawerContainer {
-    width: 324px;
+    /* width: 324px; */
+    width:360px;
 }
 
 .drawerContainerTop {
@@ -253,7 +254,7 @@ mat-card {
     border: 1px solid #D0D9DE;
     font-size: 12px;
     line-height: 30px;
-    margin-left: 100px;
+    margin-left: auto;
 }
 
 .drawerContainerTop span {
@@ -284,7 +285,7 @@ mat-card {
     align-items: center;
 }
 
-.optionDiv img { 
+.optionDiv img {
     border-radius: 6px;
 }
 
@@ -316,7 +317,7 @@ mat-card {
 }
 
 p {
-    font-family: objektiv-mk3, sans-serif; 
+    font-family: objektiv-mk3, sans-serif;
 }
 
 .moneyIcon {
@@ -335,3 +336,4 @@ p {
     font-size: 20px;
     margin-top: 6px;
 }
+

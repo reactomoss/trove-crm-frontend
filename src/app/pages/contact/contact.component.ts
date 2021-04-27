@@ -25,6 +25,7 @@ export interface selectedData {
   styleUrls: ['./contact.component.css']
 })
 export class ContactComponent implements OnInit {
+  filterCount: number = 0
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
 
   hoveredItem
@@ -259,6 +260,9 @@ export class ContactComponent implements OnInit {
       //   this.openConfirmDialog()
       // }
     })
+  }
+  filterCountChangedHandler(e) {
+    this.filterCount = e
   }
 
 }
