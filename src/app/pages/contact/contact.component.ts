@@ -259,7 +259,7 @@ export class MailDialog {
     // placeholderText: 'Edit Your Content Here!',
     // charCounterCount: false,
     // toolbarInline: true,
-
+    key:'cJC7bA5D3G2F2C2G2yQNDMIJg1IQNSEa1EUAi1XVFQd1EaG3C2A5D5C4E3D2D4D2B2==',
     toolbarBottom: true,
     events: {
       "initialized": () => {
@@ -275,7 +275,7 @@ export class MailDialog {
     // placeholderText: 'Edit Your Content Here!',
     // charCounterCount: false,
     // toolbarInline: true,
-
+    key:'cJC7bA5D3G2F2C2G2yQNDMIJg1IQNSEa1EUAi1XVFQd1EaG3C2A5D5C4E3D2D4D2B2==',
     toolbarBottom: true,
     events: {
       "initialized": () => {
@@ -291,7 +291,7 @@ export class MailDialog {
     // placeholderText: 'Edit Your Content Here!',
     // charCounterCount: false,
     // toolbarInline: true,
-
+    key:'cJC7bA5D3G2F2C2G2yQNDMIJg1IQNSEa1EUAi1XVFQd1EaG3C2A5D5C4E3D2D4D2B2==',
     toolbarBottom: true,
     events: {
       "initialized": () => {
