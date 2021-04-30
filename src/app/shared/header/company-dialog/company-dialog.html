@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Add Company</h1>
+<h1 mat-dialog-title>{{isEdit ? 'Edit' : 'Add'}} Company</h1>
 <div class="filterPart">
     <mat-form-field class="dialogSearchFormField whiteBackground" appearance="outline">
         <input type="text" placeholder="Search field" aria-label="Number" matInput [formControl]="searchControl"
@@ -112,5 +112,5 @@
 </div>
 <div mat-dialog-actions>
     <button mat-button (click)="onNoClick()" class="cancelBtn">Cancel</button>
-    <button mat-button class="btnColor2 ml-3 px-4">Save</button>
+    <button mat-button class="btnColor2 ml-3 px-4">{{isEdit ? 'Update' : 'Save'}}</button>
 </div>

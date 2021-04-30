@@ -35,6 +35,10 @@ import { ContactDetailComponent } from './contact-detail/contact-detail.componen
 import { TaskComponent } from './task/task.component';
 import { TaskFilterComponent } from './task/task-filter/task-filter.component';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { CompanyComponent, CompanyMailDialog } from './company/company.component';
+import { CompanyTableComponent } from './company/company-table/company-table.component';
+import { CompanyDetailComponent } from './company-detail/company-detail.component';
+import {CompanyFilterComponent} from './company/filter/filter.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -45,7 +49,9 @@ const routes: Routes = [
   { path: 'lead_detail', component: DetailComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'contact_detail', component: ContactDetailComponent },
-  { path: 'task', component: TaskComponent }
+  { path: 'task', component: TaskComponent },
+  { path: 'company', component: CompanyComponent},
+  { path: 'company_detail', component: CompanyDetailComponent}
 ]
 @NgModule({
   declarations: [
@@ -76,7 +82,12 @@ const routes: Routes = [
     MailDialog,
     ContactDetailComponent,
     TaskComponent,
-    TaskFilterComponent
+    TaskFilterComponent,
+    CompanyComponent,
+    CompanyTableComponent,
+    CompanyDetailComponent,
+    CompanyFilterComponent,
+    CompanyMailDialog
   ],
   imports: [
     CommonModule, RouterModule.forChild(routes), SharedModule, NgbModule,MaterialModule,

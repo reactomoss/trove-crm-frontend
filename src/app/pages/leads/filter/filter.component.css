@@ -214,7 +214,11 @@ mat-panel-title span{
     border-top: 37px solid #002868 !important;
 }
 
-.activePipe .text {
+.activePipeDropdown {
+  background-color: #002868;
+}
+
+.activePipe .text , .activePipeDropdown.text {
     color: white;
 }
 
@@ -374,5 +378,12 @@ mat-panel-title span{
   font-size: 16px;
   font-weight: bold;
 }
+.iconBusiness {
+  font-size: 18px;
+  text-align: center;
+  margin-top: 6px;}
 
-
+.alignDDItem {
+  padding: 5px 15px;
+  min-width: 175px;
+}

@@ -30,9 +30,9 @@
             <div *ngIf="checkShow('Primary Contact')">
                 <span>Primary Contact*</span><br>
                 <mat-form-field appearance="outline" class="grayBackground formControl noLabelForm" [style.width.px]="232">
-                    <mat-select multiple class="fw-500">
-                        <mat-option value="1">contact1</mat-option>
-                        <mat-option value="2">contact2</mat-option>
+                    <mat-select multiple class="fw-500 customCheckBox">
+                        <mat-option data-class="chkbox" value="1">contact1</mat-option>
+                        <mat-option data-class="chkbox" value="2">contact2</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>

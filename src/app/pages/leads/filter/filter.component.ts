@@ -49,8 +49,8 @@ export class FilterComponent implements OnInit {
   searchOptions: string[] = ['One', 'Two', 'Three'];
   filteredOptions: Observable<string[]>;
 
-  minValue: number = null;
-  highValue: number = null;
+  minValue: number = 100;
+  highValue: number = 9000;
   sliderOptions: Options = {
     floor: 0,
     ceil: 100000

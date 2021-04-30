@@ -122,13 +122,117 @@ export class TextEditorComponent implements AfterViewInit {
   selected: any[] = []
   // input data for company,leads,contacts
 
+  // input data for company,leads,contacts
+  optionsPersonEmail: any[] = [
+    {
+      name: "Person",
+      icon: "person",
+      isChecked: false,
+      email: "sampleperson@gmail.com"
+    },
+    {
+      name: "Person 2",
+      icon: "person",
+      isChecked: false,
+      email: "sampleperson2@gmail.com"
+    },
+    {
+      name: "Person 3",
+      icon: "person",
+      isChecked: false,
+      email: "sampleperson3@gmail.com"
+    }
+    ]
+    optionsCompanyEmail: any[] = [
+      {
+        name: "Company",  icon: "business" , isChecked: false,
+        desc: "Sample Description"
+      },
+      {
+        name: "Company 2",  icon: "business" , isChecked: false,
+        desc: "Sample Description2"
+      },
+      {
+        name: "Company 3",  icon: "business" , isChecked: false,
+        desc: "Sample Description3"
+      }
+      ]
+      optionsLeadsEmail: any[] = [
+        {
+          name: "Leads",  icon: "leaderboard" , isChecked: false,
+          desc: "Sample Description"
+        },
+        {
+          name: "Leads 2",  icon: "leaderboard" , isChecked: false,
+          desc: "Sample Description2"
+        },
+        {
+          name: "Leads 3",  icon: "leaderboard" , isChecked: false,
+          desc: "Sample Description3"
+        }
+        ]
+
+  selectedEmail: any[] = []
+  // input data for company,leads,contacts
+
+  // input data for company,leads,contacts
+  optionsPersonCall: any[] = [
+    {
+      name: "Person",
+      icon: "person",
+      isChecked: false,
+      email: "sampleperson@gmail.com"
+    },
+    {
+      name: "Person 2",
+      icon: "person",
+      isChecked: false,
+      email: "sampleperson2@gmail.com"
+    },
+    {
+      name: "Person 3",
+      icon: "person",
+      isChecked: false,
+      email: "sampleperson3@gmail.com"
+    }
+    ]
+    optionsCompanyCall: any[] = [
+      {
+        name: "Company",  icon: "business" , isChecked: false,
+        desc: "Sample Description"
+      },
+      {
+        name: "Company 2",  icon: "business" , isChecked: false,
+        desc: "Sample Description2"
+      },
+      {
+        name: "Company 3",  icon: "business" , isChecked: false,
+        desc: "Sample Description3"
+      }
+      ]
+      optionsLeadsCall: any[] = [
+        {
+          name: "Leads",  icon: "leaderboard" , isChecked: false,
+          desc: "Sample Description"
+        },
+        {
+          name: "Leads 2",  icon: "leaderboard" , isChecked: false,
+          desc: "Sample Description2"
+        },
+        {
+          name: "Leads 3",  icon: "leaderboard" , isChecked: false,
+          desc: "Sample Description3"
+        }
+        ]
+
+  selectedCall: any[] = []
+  // input data for company,leads,contacts
+
   constructor() {
     this.activeTabIndex = 0;
   }
 
   // input data for company,leads,contacts
-
-
   public onSelectionChange(event) {
     if(event.isChecked) {
       this.selected.push(event);
@@ -143,8 +247,40 @@ export class TextEditorComponent implements AfterViewInit {
     const index = this.selected.indexOf(e)
     this.selected.splice(index, 1)
   }
+  // input data for company,leads,contacts
 
+   // input data for company,leads,contacts
+   public onSelectionChangeEmail(event) {
+    if(event.isChecked) {
+      this.selectedEmail.push(event);
+    }
+    else{
+      this.deleteSelectedEmail(event);
+    }
+  }
 
+  deleteSelectedEmail(e) {
+    e.isChecked = false;
+    const index = this.selectedEmail.indexOf(e)
+    this.selectedEmail.splice(index, 1)
+  }
+  // input data for company,leads,contacts
+
+  // input data for company,leads,contacts
+  public onSelectionChangeCall(event) {
+    if(event.isChecked) {
+      this.selectedCall.push(event);
+    }
+    else{
+      this.deleteSelectedCall(event);
+    }
+  }
+
+  deleteSelectedCall(e) {
+    e.isChecked = false;
+    const index = this.selectedCall.indexOf(e)
+    this.selectedCall.splice(index, 1)
+  }
   // input data for company,leads,contacts
 
   ngAfterViewInit(): void {

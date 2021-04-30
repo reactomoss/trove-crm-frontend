@@ -103,8 +103,25 @@
                       </span>
                     </div>
                   </div>
+                </div>
+                <hr>
+                <div class="appointItem">
+                  <div class="row">
+                    <div class="col-auto pr-0">
+                      <mat-checkbox color="primary" style="margin-bottom: 7px;" class="customCheckBox">
+                      </mat-checkbox>
+                    </div>
+                    <div class="col pl-1">
+                      <div (click)="editAppoint()" class="color-253238 f-12-400 mb-2">
+                        Monster Sales Opportunity
+                      </div>
 
-
+                      <span class="alertSpan">
+                        <mat-icon class="fs-14 align-text-top">notification_important</mat-icon>
+                          <span>Sat, 21 Apr, 2021</span>
+                      </span>
+                    </div>
+                  </div>
                 </div>
                 <hr>
                 <div class="appointItem">
@@ -150,7 +167,7 @@
                 </div>
             </div>
         </mat-expansion-panel>
-        <mat-expansion-panel class="mat-elevation-z0" [hideToggle]="true">
+        <mat-expansion-panel class="mat-elevation-z0 px-0" [hideToggle]="true">
             <mat-expansion-panel-header>
                 <mat-panel-title class="addPanelTitle">
                     <div>
@@ -165,15 +182,22 @@
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="panel-content">
-              <div [class.hgt-200]="tasks.length > 5" class="customVerScroll">
-              <div *ngFor="let e of tasks" class="mb-2">
+              <div [class.hgt-200]="tasks.length > 3" class="customVerScroll">
+              <div *ngFor="let e of tasks" class="mb-3">
                 <div class="row">
                   <div class="col-auto pr-0">
                     <mat-checkbox color="primary" class="mb-1 customCheckBox" [(ngModel)]="e.selected">
                     </mat-checkbox>
                   </div>
                   <div class="col pl-1">
-                    <span (click)="editTask()" [class.lineThrough]="e.selected">{{e.name}}</span>
+                    <div class="cursor-pointer" (click)="editTask()">
+                      <div class="mb-2"  [class.lineThrough]="e.selected">{{e.name}}</div>
+                    <span [class.color-ff0000]="e.color == 'red'" class="alertSpan">
+                      <mat-icon *ngIf="e.icon== 'notification'" class="fs-14 align-text-top">notification_important</mat-icon>
+                      <mat-icon *ngIf="e.icon== 'calendar'" class="fs-14 align-text-top">calendar_today</mat-icon>
+                      <span [class.color-ff0000]="e.color == 'red'" class="">{{e.desc}}</span>
+                  </span>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -1,5 +1,4 @@
 <app-header></app-header>
-
 <mat-drawer-container hasBackdrop="true">
     <mat-drawer #drawer mode="Over" position="end" class="noScrollDrawer">
         <div class="drawerContainer">
@@ -14,7 +13,7 @@
                     </button>
             </div> -->
             <!-- <ngx-simplebar [options]="scrollOptions" class="filterContainer1"> -->
-                <contact-filter (closeDialog)="drawer.toggle()" (count)="filterCount=$event"></contact-filter>
+                <company-filter (closeDialog)="drawer.toggle()" (count)="filterCount=$event"></company-filter>
             <!-- </ngx-simplebar> -->
             <!-- <contact-filter></contact-filter> -->
         </div>
@@ -23,18 +22,18 @@
     <div class="topBar">
         <div fxLayout="row" fxLayoutAlign="space-between" fxLayout.xs="column">
             <div class="topBarDiv" >
-                <button mat-button [matMenuTriggerFor]="contactMenu">
+                <button mat-button [matMenuTriggerFor]="companyMenu">
                     <span class="title fontObjektivMk mt-1">{{typeString}}</span>
                     <mat-icon class="iconInButton">arrow_drop_down</mat-icon>
                 </button>
-                <mat-menu #contactMenu="matMenu" class="settingsPanel">
+                <mat-menu #companyMenu="matMenu" class="settingsPanel">
                     <ul class="addPanelUL">
-                        <!-- <li mat-menu-item (click)="selectContact()">
+                        <li mat-menu-item (click)="clickContactPage()">
                             <a class="f-16-500 color-253238"><img class="mr-3" src="../../../assets/images/personIcon.png" alt="Image">Contact</a>
-                        </li> -->
-                        <li mat-menu-item (click)="clickCompanyPage()">
-                            <a class="f-16-500 color-253238"><img class="mr-3" src="../../../assets/images/companyIcon.png" alt="Image">Company</a>
                         </li>
+                        <!-- <li mat-menu-item (click)="selectCompany()">
+                            <a class="f-16-500 color-253238"><img class="mr-3" src="../../../assets/images/companyIcon.png" alt="Image">Company</a>
+                        </li> -->
                     </ul>
                 </mat-menu>
 
@@ -72,7 +71,7 @@
 
     <ngx-simplebar [options]="scrollOptions" class="mainContainer" [class.listHeight] = "listShow" [class.gridHeight] = "!listShow">
         <div *ngIf="!selectedItems.length" class="checkDiv m-3">
-            <mat-checkbox color="primary" class="contactCheck mr-4 customCheckBox" (click)="clickEmptyCheck()"><span>{{items.length}} Contacts</span></mat-checkbox>
+            <mat-checkbox color="primary" class="contactCheck mr-4 customCheckBox" (click)="clickEmptyCheck()"><span>{{items.length}} Companies</span></mat-checkbox>
             <span class="pt-1">Sorted by last activity date</span>
         </div>
         <div *ngIf="selectedItems.length" class="checkDiv m-3">
@@ -124,10 +123,10 @@
         </div>
 
         <div *ngIf="listShow">
-            <app-contact-table
+            <app-company-table
                 [propItems] = "items"
                 [selectedItems] = "selectedItems"
-            ></app-contact-table>
+            ></app-company-table>
         </div>
     </ngx-simplebar>
 

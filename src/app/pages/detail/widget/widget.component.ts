@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 
 export class Task {
-  constructor(public name: string, public selected?: boolean) {
+  constructor(public name: string, public icon: string , public color: string, public desc: string,  public selected?: boolean) {
     if (selected === undefined) selected = false
   }
 }
@@ -19,11 +19,11 @@ export class File {
 export class WidgetComponent implements OnInit {
   @Output() addTaskClicked = new EventEmitter()
   @Output() addAppointClicked = new EventEmitter()
-
   tasks: Task[] = [
-    new Task("Packet Monster Sales opportunity"),
-    new Task("Ux design meeting at 17:30hrs."),
-    new Task("Landing page required for new CRM app"),
+    new Task("Packet Monster Sales opportunity", "notification", "default", "Today at 9:00"),
+    new Task("Ux design meeting at 17:30hrs.", "calendar", "red", "Sat, 21 Apr, 2021"),
+    new Task("Landing page required for new CRM app", "notification", "default", "Sun, 22 Apr, 2021"),
+    new Task("Meeting required for new CRM app", "calendar", "default", "Mon, 23 Apr, 2021"),
   ]
 
   files: File[] = [

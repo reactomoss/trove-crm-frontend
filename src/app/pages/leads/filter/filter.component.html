@@ -51,13 +51,21 @@
             <div class="trapezoid7">
                 <div class="text">
                     <button mat-button [matMenuTriggerFor]="closeMenu">
-                        Closed Lost
+                        More
                         <mat-icon>arrow_drop_down</mat-icon>
                     </button>
                     <mat-menu #closeMenu="matMenu" xPosition="before" class="closeMenu">
-                        <button mat-menu-item>progress</button>
-                        <button mat-menu-item>won</button>
-                        <button mat-menu-item>lost</button>
+                        <ul class="m-0 p-0" (click)="$event.stopPropagation()">
+                          <li mat-menu-item class="px-0">
+                           <div [class.activePipeDropdown]="checkPipe('Progress')" class="text alignDDItem" (click)="clickDiscovery('Progress')">Progress</div>
+                          </li>
+                          <li mat-menu-item class="px-0">
+                            <div [class.activePipeDropdown]="checkPipe('Won')" class="text alignDDItem" (click)="clickDiscovery('Won')">Won</div>
+                           </li>
+                           <li mat-menu-item class="px-0">
+                            <div [class.activePipeDropdown]="checkPipe('Lost')" class="text alignDDItem" (click)="clickDiscovery('Lost')">Lost</div>
+                           </li>
+                        </ul>
                     </mat-menu>
                 </div>
             </div>
@@ -119,29 +127,29 @@
                     <div>
                       <mat-form-field appearance="outline" class="serachForm noLabelForm whiteBackground">
 
-                        <input matInput placeholder="Search by name" aria-label="Search by name" [matAutocomplete]="autoCreatedBy"
+                        <input class="typo" matInput placeholder="Search by name" aria-label="Search by name" [matAutocomplete]="autoCreatedBy"
                           [formControl]="contactCtrl">
-                        <mat-autocomplete #autoCreatedBy="matAutocomplete">
+                        <mat-autocomplete #autoCreatedBy="matAutocomplete" class="matAutoComplete001">
                           <mat-option class="h-auto" *ngFor="let state of filteredCont | async" [value]="state.name">
 
                             <div class="row" (click)="$event.stopPropagation()">
                               <div class="col-auto pr-0">
-                                <mat-checkbox color="primary" class="customCheckBox" [(ngModel)]="state.isChecked"
+                                <mat-checkbox color="primary" class="customCheckBox mt-1" [(ngModel)]="state.isChecked"
                                   (change)="createdBySelection(state)"></mat-checkbox>
                               </div>
                               <div class="col pl-0" (click)="state.isChecked = !state.isChecked;createdBySelection(state)">
                                 <span class="bgRoundIcon adjThis">
-                                  <i class="material-icons color-455B66">person</i>
+                                  <mat-icon class="mr-0 color-455B66">person</mat-icon>
                                 </span>
-                                <span class="ml-2">{{state.name}}</span>
+                                <span class="ml-2 typo">{{state.name}}</span>
                               </div>
                             </div>
 
                           </mat-option>
                         </mat-autocomplete>
                       </mat-form-field>
-                      <div [class.hgt-150]="selectedCreatedBy.length > 3" class="customVerScroll">
-                        <div class="mt-2" *ngFor="let state of selectedCreatedBy">
+                      <div [class.hgt-150]="selectedCreatedBy.length > 3" class="customVerScroll matAutoComplete001">
+                        <div class="" *ngFor="let state of selectedCreatedBy">
                           <div class="row align-items-center">
                             <div class="col-auto pr-0">
                               <mat-checkbox color="primary" class="customCheckBox" [(ngModel)]="state.isChecked"
@@ -149,11 +157,11 @@
                             </div>
                             <div class="col-auto p-0" (click)="state.isChecked = !state.isChecked;createdBySelection(state)">
                               <span class="bgRoundIcon bg-white">
-                                <i class="material-icons align-text-bottom color-455B66">person</i>
+                                <mat-icon class="mr-0 color-455B66">person</mat-icon>
                               </span>
                             </div>
                             <div class="col pl-0" (click)="state.isChecked = !state.isChecked;createdBySelection(state)">
-                               <span class="ml-2">{{state.name}}</span>
+                               <span class="ml-2 typo">{{state.name}}</span>
                             </div>
                           </div>
                         </div>
@@ -169,41 +177,41 @@
                     <div>
                       <mat-form-field appearance="outline" class="serachForm noLabelForm whiteBackground">
 
-                        <input matInput placeholder="Search by company" aria-label="Search by company" [matAutocomplete]="autoCompany"
+                        <input class="typo" matInput placeholder="Search by company" aria-label="Search by company" [matAutocomplete]="autoCompany"
                           [formControl]="companyCtrl">
-                        <mat-autocomplete #autoCompany="matAutocomplete">
+                        <mat-autocomplete #autoCompany="matAutocomplete" class="matAutoComplete001">
                           <mat-option class="h-auto" *ngFor="let state of filteredComp | async" [value]="state.name">
 
                             <div class="row" (click)="$event.stopPropagation()">
                               <div class="col-auto pr-0">
-                                <mat-checkbox color="primary" class="customCheckBox" [(ngModel)]="state.isChecked"
+                                <mat-checkbox color="primary" class="customCheckBox mt-1" [(ngModel)]="state.isChecked"
                                   (change)="companySelection(state)"></mat-checkbox>
                               </div>
                               <div class="col pl-0" (click)="state.isChecked = !state.isChecked;companySelection(state)">
                                 <span class="bgRoundIcon adjThis">
-                                  <i class="material-icons color-455B66">business</i>
+                                  <mat-icon class="mr-0 color-455B66 iconBusiness">business</mat-icon>
                                 </span>
-                                <span class="ml-2">{{state.name}}</span>
+                                <span class="ml-2 typo">{{state.name}}</span>
                               </div>
                             </div>
 
                           </mat-option>
                         </mat-autocomplete>
                       </mat-form-field>
-                      <div [class.hgt-150]="selectedCompany.length > 3" class="customVerScroll">
-                        <div class="mt-2" *ngFor="let state of selectedCompany">
+                      <div [class.hgt-150]="selectedCompany.length > 3" class="customVerScroll matAutoComplete001">
+                        <div class="" *ngFor="let state of selectedCompany">
                           <div class="row align-items-center">
                             <div class="col-auto pr-0">
                               <mat-checkbox color="primary" class="customCheckBox" [(ngModel)]="state.isChecked"
-                                (change)="createdBySelection(state)"></mat-checkbox>
+                                (change)="companySelection(state)"></mat-checkbox>
                             </div>
                             <div class="col-auto p-0" (click)="state.isChecked = !state.isChecked;companySelection(state)">
                               <span class="bgRoundIcon bg-white">
-                                <i class="material-icons align-text-bottom color-455B66">business</i>
+                                <mat-icon class="mr-0 color-455B66 iconBusiness">business</mat-icon>
                               </span>
                             </div>
                             <div class="col pl-0" (click)="state.isChecked = !state.isChecked;companySelection(state)">
-                               <span class="ml-2">{{state.name}}</span>
+                               <span class="ml-2 typo">{{state.name}}</span>
                             </div>
                           </div>
                         </div>

@@ -20,11 +20,12 @@ export interface selectedData {
 }
 
 @Component({
-  selector: 'app-contact',
-  templateUrl: './contact.component.html',
-  styleUrls: ['./contact.component.css']
+  selector: 'app-company',
+  templateUrl: './company.component.html',
+  styleUrls: ['./company.component.css']
 })
-export class ContactComponent implements OnInit {
+export class CompanyComponent implements OnInit {
+
   filterCount: number = 0
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
 
@@ -33,101 +34,56 @@ export class ContactComponent implements OnInit {
   detect: number
 
   allItems: item[] = [
-
     {
-      id: 2,
-      name: 'Bryce Dallas Howard',
-      owner: '',
-      contactCount: 0,
-      company: false,
-      companyName: 'Dona factory',
-      email: 'example@gmail.com',
-      last: new Date("2020-12-15"),
-      city: 'Fort Worth'
+      id: 1,
+      name: 'Alphabet Inc.',
+      owner: 'Henessy',
+      contactCount: 9,
+      company: true,
+      companyName: '',
+      email: '',
+      last: new Date("2021-1-1"),
+      city: 'boston'
     },
     {
-      id: 3,
-      name: 'Berry Watson',
-      owner: '',
-      contactCount: 0,
-      company: false,
-      companyName: 'Iv homes ltd',
-      email: 'example@gmail.com',
-      last: new Date("2020-12-14"),
-      city: 'San Francisco'
+      id: 6,
+      name: 'Packet Monster',
+      owner: 'Wes studi',
+      contactCount: 37,
+      company: true,
+      companyName: '',
+      email: '',
+      last: new Date("2020-11-30"),
+      city: 'London'
     },
     {
-      id: 4,
-      name: 'Berry Watson',
-      owner: '',
-      contactCount: 0,
-      company: false,
-      companyName: 'Iv homes ltd',
-      email: 'example@gmail.com',
-      last: new Date("2020-12-13"),
-      city: 'Los Angeles'
+      id: 9,
+      name: 'Packet Monster3',
+      owner: 'Wes studi',
+      contactCount: 3,
+      company: true,
+      companyName: '',
+      email: '',
+      last: new Date("2020-11-5"),
+      city: 'Barcelona'
     },
     {
-      id: 5,
-      name: 'Edward James Olmos',
-      owner: '',
-      contactCount: 0,
-      company: false,
-      companyName: 'Iv homes ltd',
-      email: 'example@gmail.com',
-      last: new Date("2020-12-12"),
-      city: 'San Antonio'
-    },
-    {
-      id: 7,
-      name: 'Tammy Gillis',
-      owner: '',
-      contactCount: 0,
-      company: false,
-      companyName: 'Iv homes ltd',
-      email: 'example@gmail.com',
-      last: new Date("2020-11-7"),
-      city: 'Paris'
-    },
-    {
-      id: 8,
-      name: 'Bryce Dallas Howard',
-      owner: '',
-      contactCount: 0,
-      company: false,
-      companyName: 'Dona factory',
-      email: 'example@gmail.com',
-      last: new Date("2020-11-6"),
-      city: 'Madrid'
-    },
-    {
-      id: 10,
-      name: 'Wes Studi',
-      owner: '',
-      contactCount: 0,
-      company: false,
-      companyName: 'Iv homes ltd',
-      email: 'example@gmail.com',
-      last: new Date("2020-11-4"),
-      city: 'Oklahoma City'
-    },
-    {
-      id: 12,
-      name: 'Berry Watson',
-      owner: '',
-      contactCount: 0,
-      company: false,
-      companyName: 'Iv homes ltd',
-      email: 'example@gmail.com',
-      last: new Date("2020-11-1"),
-      city: 'Chicago'
+      id: 11,
+      name: 'Packet Monster1',
+      owner: 'Wes studi',
+      contactCount: 2,
+      company: true,
+      companyName: '',
+      email: '',
+      last: new Date("2020-11-3"),
+      city: 'Utah'
     },
   ]
   items: item[] = []
   selectedItems: item[] = []
 
   listShow: boolean = false
-  typeString: string = 'Contact'
+  typeString: string = 'Companies'
 
   constructor(public dialog: MatDialog, private router: Router) {
   }
@@ -146,24 +102,23 @@ export class ContactComponent implements OnInit {
     this.selectedItems = []
   }
 
-  selectContact() {
-    this.items = this.allItems.filter(e => !e.company)
-    this.typeString = 'Contact'
-    this.selectedItems = []
-  }
+  // selectContact() {
+  //   this.items = this.allItems.filter(e => !e.company)
+  //   this.typeString = 'Contact'
+  //   this.selectedItems = []
+  // }
 
   selectCompany() {
     this.items = this.allItems.filter(e => e.company)
-    this.typeString = 'Company'
+    this.typeString = 'Companies'
     this.selectedItems = []
   }
 
   clickCard(item) {
-    this.router.navigate(['/pages/contact_detail'])
+    this.router.navigate(['/pages/company_detail'])
   }
-
-  clickCompanyPage() {
-    this.router.navigate(['/pages/company'])
+  clickContactPage() {
+    this.router.navigate(['/pages/contact'])
   }
 
   clickCheck(e, item) {
@@ -209,7 +164,7 @@ export class ContactComponent implements OnInit {
   }
 
   clickEmail() {
-    const dialogRef = this.dialog.open(MailDialog, {
+    const dialogRef = this.dialog.open(CompanyMailDialog, {
       width: '745px',
       autoFocus: false,
       data: {items: this.selectedItems}
@@ -234,13 +189,13 @@ export class ContactComponent implements OnInit {
   templateUrl: 'mail-dialog/mail-dialog.html',
   styleUrls: ['mail-dialog/mail-dialog.css']
 })
-export class MailDialog {
+export class CompanyMailDialog {
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
 
   activeTabIndex = 0
   items: selectedData
   constructor(
-    public dialogRef: MatDialogRef<MailDialog>,
+    public dialogRef: MatDialogRef<CompanyMailDialog>,
     @Inject(MAT_DIALOG_DATA) public data: selectedData
   ) {
     this.items = data
@@ -308,4 +263,5 @@ export class MailDialog {
     const index = this.items.items.indexOf(item)
     this.items.items.splice(index, 1)
   }
+
 }

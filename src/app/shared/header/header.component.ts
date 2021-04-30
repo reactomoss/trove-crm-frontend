@@ -45,7 +45,7 @@ export class HeaderComponent implements OnInit {
       },
       {
         icon:'menu003.png',
-        link:'/pages/email'
+        link:'/pages/company'
       },
       {
         icon:'menu004.png',
@@ -319,11 +319,12 @@ export class CompanyDialog {
   mobileCode = 'USA'
 
   addressSelect = false
-
+  isEdit: boolean = false;
   constructor(
-    public dialogRef: MatDialogRef<CompanyDialog>
-    // @Inject(MAT_DIALOG_DATA) public data: DialogData
+    public dialogRef: MatDialogRef<CompanyDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
+    this.isEdit = this.data?.isEdit;
     this.filteredOptions = this.searchControl.valueChanges
       .pipe(
         startWith(''),

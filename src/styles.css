@@ -82,8 +82,8 @@ color: #FF0000;
   vertical-align: sub;
 }
 /* button colors */
-.mat-typography , .mat-card , .mat-tab-group , .mat-table, .mat-button, .mat-raised-button, .mat-icon-button, .mat-stroked-button, .mat-flat-button , .mat-menu-item,.mat-tab-label {
-  font-family: objektiv-mk3, sans-serif;
+.mat-expansion-panel-content, .mat-radio-button , .mat-typography , .mat-card , .mat-tab-group , .mat-table, .mat-button, .mat-raised-button, .mat-icon-button, .mat-stroked-button, .mat-flat-button , .mat-menu-item, .mat-tab-label {
+  font-family: objektiv-mk3, sans-serif !important;
  }
  .border-E4E9EF{
   border-color: #E4E9EF;
@@ -380,9 +380,9 @@ padding-top: .15rem; padding-left: .5rem;
 /*custom checkbox*/
 
 .pb-0 .mat-form-field-wrapper {padding-bottom: 0;}
-.cdk-global-overlay-wrapper, .cdk-overlay-container {
-  /* z-index: 1000 !important; */
-  }
+ /* .cdk-global-overlay-wrapper, .cdk-overlay-container {
+  z-index: 1000 !important;
+  } */
   /* tab001 */
   .tab001 .mat-tab-header{
     border: 1px solid #D0D9DE;
@@ -513,11 +513,11 @@ padding-top: .15rem; padding-left: .5rem;
 }
 
 .grayAccordion .mat-expansion-panel .mat-expansion-panel-content {
-  background-color: rgba(239, 242, 247, 0.75);
+  background-color: #F3F5F9;
 }
 
 .grayAccordion .mat-expanded {
-  background-color: rgba(239, 242, 247, 0.75);
+  background-color: #F3F5F9;
 }
 
 .mat-accordion-multi .mat-expansion-panel-body {
@@ -528,10 +528,6 @@ padding-top: .15rem; padding-left: .5rem;
   padding-bottom: 1em;
   padding-top: 1em;
   border-top: .84375em solid transparent;
-}
-
-.mat-form-field .mat-form-field-infix .mat-select-arrow-wrapper {
-  /* padding-top: 10px; */
 }
 
 .mat-expansion-panel{
@@ -844,11 +840,11 @@ padding-top: .15rem; padding-left: .5rem;
 /* customAccordion*/
 
 .grayAccordion .mat-expansion-panel .mat-expansion-panel-content {
-  background-color: rgba(239, 242, 247, 0.75);
+  background-color: #F3F5F9;
 }
 
 .grayAccordion .mat-expanded {
-  background-color: rgba(239, 242, 247, 0.75);
+  background-color: #F3F5F9;
 }
 
 .grayExpanded .mat-expanded {
@@ -926,8 +922,8 @@ padding-top: .15rem; padding-left: .5rem;
 
 /* custom checkbox */
 .customCheckBox .mat-checkbox-inner-container {
-  height: 18px;
-  width: 18px;
+  height: 20px;
+  width: 20px;
   margin-right: 8px;
 }
 
@@ -944,7 +940,7 @@ padding-top: .15rem; padding-left: .5rem;
 }
 
 .customCheckBox .mat-checkbox-inner-container .mat-checkbox-frame {
-  border-radius: 5px;
+  border-radius: 6px;
   border: 1px solid #D0D9DE;
   background: white;
 }
@@ -959,19 +955,6 @@ padding-top: .15rem; padding-left: .5rem;
 
 .customCheckBox .mat-checkbox-label {
   white-space: normal;
-}
-
-.cardCheckBox .mat-checkbox-inner-container {
-  height: 15px;
-  width: 15px;
-}
-
-.cardCheckBox .mat-checkbox-inner-container .mat-checkbox-frame {
-  border-radius: 2px;
-}
-
-.cardCheckBox .mat-checkbox-background {
-  border-radius: 2px;
 }
 
 .mandatoryCheck .mat-checkbox-layout .mat-checkbox-inner-container{
@@ -1163,11 +1146,86 @@ div.timepicker-overlay {z-index: 9999999 !important;}
   box-sizing: content-box;
   border-radius: 100%;
 }
-
-.tab001.activeTabBlue .mat-tab-label-active {
-  background-color: #002868;
-  color: #fff;
+.tab001.activeTabBlue .mat-tab-label {
+  background-color: #fff;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+.tab001.activeTabBlue .mat-tab-label.mat-tab-label-active {
+  background-color: #EFF2F7;
+color: #253238;
+}
+.tab001.activeTabBlue .mat-tab-body-wrapper {
+  margin-top: 12px;
 }
 .filterContainer2 .drawerContainerTop .closeButton {
   display: none;
 }
+
+.matAutoComplete001 .customCheckBox .mat-checkbox-inner-container {
+  height: 20px;
+  width: 20px;
+}
+
+.matAutoComplete001 .bgRoundIcon {width: 27px; height: 27px;}
+.matAutoComplete001 .typo {
+  font-weight: 500; vertical-align: top; font-size: 12px; line-height: 37px;
+}
+.matAutoComplete001 .mat-option {line-height: 30px;}
+.matAutoComplete001 .mat-option:first-of-type {margin-top: 5px;}
+.matAutoComplete001 .mat-option:last-of-type {margin-bottom: 5px;}
+.matAutoComplete001 .bgRoundIcon.bg-white {position: relative;top: 2px;}
+input.mat-input-element.typo {
+  font-weight: 500;
+  color: #253238;
+  font-size: 13px;
+}
+
+.customRadio .mat-radio-checked .mat-radio-inner-circle {
+  transform: scale(0.9);
+}
+
+.customRadio .mat-radio-checked .mat-radio-inner-circle::before {
+  content: '';
+  position: absolute;
+  background-image: url(./assets/images/checkbox-bg2.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 14px;
+  height: 11px;
+  top: 4px;
+  left: 3px;
+}
+.closeMenu .mat-menu-item {height: auto; line-height: inherit; margin-bottom: 1px;}
+
+[data-class="chkbox"] .mat-pseudo-checkbox {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  color: #D0D9DE;
+}
+
+.mat-primary [data-class="chkbox"] .mat-pseudo-checkbox-checked{
+  background: #002868;
+}
+[data-class="chkbox"] .mat-pseudo-checkbox-checked::after {
+  top: 3px;
+  left: 2px;
+  width: 10px;
+  height: 5px;}
+
+.mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+    color: #002868;
+}
+.mat-form-field-appearance-outline .mat-form-field-outline-thick {
+  color: #253238;
+}
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: #002868;
+}
+
+.themeTable th , .themeTable td {
+  white-space: nowrap;
+  padding-left: 10px !important;
+}
+

@@ -45,10 +45,8 @@
       </mat-expansion-panel-header>
       <div class="panel-content">
         <div class="px-4">
-          <div>
-            <mat-tab-group animationDuration="0ms" class="horizontalTab tab001 activeTabBlue">
-              <mat-tab label="Created by">
-                  <div>
+                  <div class="">
+                    <div class="f-12-500">Created by:</div>
                     <mat-form-field appearance="outline" class="serachForm noLabelForm whiteBackground">
 
                       <input class="typo" matInput placeholder="Search by name" aria-label="Search by name" [matAutocomplete]="autoCreatedBy"
@@ -94,60 +92,7 @@
                       <button mat-button class="clearBtn" (click)="clearCreatedBy()">Clear</button>
                     </div>
                   </div>
-
-
-              </mat-tab>
-              <mat-tab label="Company">
-                  <div>
-                    <mat-form-field appearance="outline" class="serachForm noLabelForm whiteBackground">
-
-                      <input class="typo" matInput placeholder="Search by company" aria-label="Search by company" [matAutocomplete]="autoCompany"
-                        [formControl]="companyCtrl">
-                      <mat-autocomplete #autoCompany="matAutocomplete" class="matAutoComplete001">
-                        <mat-option class="h-auto" *ngFor="let state of filteredComp | async" [value]="state.name">
-
-                          <div class="row" (click)="$event.stopPropagation()">
-                            <div class="col-auto pr-0">
-                              <mat-checkbox color="primary" class="customCheckBox" [(ngModel)]="state.isChecked"
-                                (change)="companySelection(state)"></mat-checkbox>
-                            </div>
-                            <div class="col pl-0" (click)="state.isChecked = !state.isChecked;companySelection(state)">
-                              <span class="bgRoundIcon adjThis">
-                                <mat-icon class="mr-0 color-455B66 iconBusiness">business</mat-icon>
-                              </span>
-                              <span class="ml-2 typo">{{state.name}}</span>
-                            </div>
-                          </div>
-
-                        </mat-option>
-                      </mat-autocomplete>
-                    </mat-form-field>
-                    <div [class.hgt-150]="selectedCompany.length > 3" class="customVerScroll matAutoComplete001">
-                      <div class="" *ngFor="let state of selectedCompany">
-                        <div class="row align-items-center">
-                          <div class="col-auto pr-0">
-                            <mat-checkbox color="primary" class="customCheckBox" [(ngModel)]="state.isChecked"
-                              (change)="companySelection(state)"></mat-checkbox>
-                          </div>
-                          <div class="col-auto p-0" (click)="state.isChecked = !state.isChecked;companySelection(state)">
-                            <span class="bgRoundIcon bg-white">
-                              <mat-icon class="mr-0 color-455B66 iconBusiness">business</mat-icon>
-                            </span>
-                          </div>
-                          <div class="col pl-0" (click)="state.isChecked = !state.isChecked;companySelection(state)">
-                             <span class="ml-2 typo">{{state.name}}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="py-3 text-right">
-                      <button mat-button class="clearBtn" (click)="clearCompany()">Clear</button>
-                    </div>
-                  </div>
-              </mat-tab>
-            </mat-tab-group>
-          </div>
-        </div>
+                 </div>
 
       </div>
     </mat-expansion-panel>
@@ -231,24 +176,6 @@
       </div>
     </mat-expansion-panel>
 
-    <mat-expansion-panel class="mat-elevation-z0">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          <div>
-            Type<br>
-            <span class="subTitle">{{displaySelectedTypes()}}</span>
-          </div>
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <div class="panel-content displayColumn">
-        <mat-checkbox *ngFor="let e of types" color="primary" (change)="clickType($event, e)" [checked]="e.selected"
-          class="customCheckBox">
-          {{e.name}}
-        </mat-checkbox>
-        <div class="px-2 py-2 text-right">
-          <button mat-button class="clearBtn" (click)="clearType()">Clear</button>
-        </div>
-      </div>
-    </mat-expansion-panel>
+
   </mat-accordion>
 </ngx-simplebar>

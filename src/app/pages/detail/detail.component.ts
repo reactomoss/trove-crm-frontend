@@ -30,7 +30,7 @@ export class DetailComponent implements OnInit {
   constructor(private router: Router, public dialog: MatDialog, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    this.stages = ["Sales Pipeline", "Discovery", "Qualified", "Evolution", "Negotiation", "Closed"]
+    this.stages = ["Discovery", "Qualified", "Evolution", "Negotiation", "Closed"]
   }
 
   goToList() {
@@ -126,13 +126,13 @@ export class DetailComponent implements OnInit {
   }
 
   getStageSrc(index) {
-    if (index == 0) {
-      if (this.selectedStage == 0)  {
-        return '../../../assets/images/stage/start-active-stage-lg.svg'
-      } else {
-        return '../../../assets/images/stage/start-stage-lg.svg'
-      }
-    }
+    // if (index == 0) {
+    //   if (this.selectedStage == 0)  {
+    //     return '../../../assets/images/stage/start-active-stage-lg.svg'
+    //   } else {
+    //     return '../../../assets/images/stage/start-stage-lg.svg'
+    //   }
+    // }
     if (index == this.selectedStage) {
       return '../../../assets/images/stage/active-stage-lg.svg'
     }
