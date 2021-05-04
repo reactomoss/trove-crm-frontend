@@ -42,6 +42,7 @@ import {CompanyFilterComponent} from './company/filter/filter.component';
 import { EditnoteComponent } from './editnote/editnote.component';
 import { AddnoteComponent } from './addnote/addnote.component';
 
+
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: PagesComponent },
