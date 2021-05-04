@@ -1238,7 +1238,12 @@ input.mat-input-element.typo {
   border-top: 0 !important;
 }
 .froalaMob .fr-toolbar .fr-newline {margin-left: 0 ;margin-right: 0 ;}
-
+.customRadio .mat-radio-button.mat-accent .mat-radio-inner-circle,
+.customRadio .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element:not(.mat-radio-persistent-ripple),
+.customRadio .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-persistent-ripple,
+.customRadio .mat-radio-button.mat-accent:active .mat-radio-persistent-ripple {
+  background-color: #3f51b5;
+}
 @media(min-width: 1050px) {
   .froalaMob .fr-toolbar .fr-btn-grp {
     padding-left: 1.7em;

@@ -1,36 +1,11 @@
-<app-header></app-header>
 <mat-drawer-container hasBackdrop="true">
-
-<section class="bg-32424d py-2 text-white">
-  <div class="container-fluid px-5">
-    <div class="row align-items-center">
-     <div class="col-auto">
-       <span *ngIf="!isEdit">
-        <mat-icon class="adjIcon">arrow_back</mat-icon>
-        <span  class="f-20-500">Add new note</span>
-       </span>
-       <span *ngIf="isEdit"  (click)="editNote()">
-        <mat-icon class="adjIcon">arrow_back</mat-icon>
-        <span  class="f-20-500">Edit note</span>
-       </span>
-
-
-
-     </div>
-     <div class="col-auto ml-auto" *ngIf="isEdit">
-       <mat-icon class="align-middle">delete</mat-icon>
-     </div>
-    </div>
-    </div>
-</section>
-
   <ngx-simplebar [options]="scrollOptions" class="mainContainer listHeight bg-e5e5e5">
     <section>
     <div class="container-fluid px-5">
       <div class="py-3">
         <div class="row">
           <div class="col-auto pr-0">
-            <span class="color-253238 fs-16">To:</span>
+            <span class="color-253238 fs-16">Associate With:</span>
           </div>
           <div class="col" [matMenuTriggerFor]="menuTabs">
             <div [class.hgt70]="selected.length > 4" class="customVerScroll py-1">
@@ -122,39 +97,14 @@
         Hey!<br>
         You can personalise your notifications to receive alerts based on your interests.
       </div>
-      <div class="container-fluid px-5">
-        <div class="attachWrap py-3">
-          <div class="mb-1">
-            <span class="color-242E4C f-16-500">Attachments</span>
-          </div>
-           <div>
-             <ul class="attachWrapList">
-               <li *ngFor="let i of attachmentItems" class="">
-                 <div class="row align-items-center">
-                   <div class="col">
-                     <div>{{i.name}}</div>
-                     <span class="text-muted">{{i.size}}</span>
-                   </div>
-                   <div class="col-auto ml-auto">
-                    <span class="iconBorder">
-                      <mat-icon *ngIf="!isEdit" (click)="editNote()" class="">create</mat-icon>
-                      <mat-icon *ngIf="isEdit"  class="">delete</mat-icon>
-                    </span>
-                  </div>
-                 </div>
-               </li>
-              </ul>
-           </div>
-        </div>
-      </div>
     </section>
 
    <section class="py-3">
     <div class="container-fluid px-5">
       <mat-radio-group aria-label="Select an option" class="customRadio">
-        <mat-radio-button value="Note">Note</mat-radio-button>
-        <mat-radio-button value="EmailNote">Email Note</mat-radio-button>
-        <mat-radio-button value="CallNote">Call Note</mat-radio-button>
+        <mat-radio-button class="mb-1" value="Note">Note</mat-radio-button>
+        <mat-radio-button class="mb-1" value="EmailNote">Email Note</mat-radio-button>
+        <mat-radio-button class="mb-1" value="CallNote">Call Note</mat-radio-button>
       </mat-radio-group>
 
       <div class="row pt-5">
@@ -162,8 +112,7 @@
          <button mat-flat-button class="btnColor2-B bg-white">Cancel</button>
        </div>
        <div class="col pl-0">
-        <button *ngIf="!isEdit" mat-flat-button class="btnColor3 w-100">Save note</button>
-        <button *ngIf="isEdit" mat-flat-button class="btnColor3 w-100">Update note</button>
+        <button  mat-flat-button class="btnColor3 w-100">Update note</button>
       </div>
       </div>
 

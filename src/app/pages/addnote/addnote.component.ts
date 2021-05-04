@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+
 @Component({
-  selector: 'app-notes',
-  templateUrl: './notes.component.html',
-  styleUrls: ['./notes.component.css']
+  selector: 'app-addnote',
+  templateUrl: './addnote.component.html',
+  styleUrls: ['./addnote.component.css']
 })
-export class NotesComponent implements OnInit {
-  isEdit: boolean;
+export class AddnoteComponent implements OnInit {
+
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
   // input data for company,leads,contacts
   optionsPerson: any[] = [
@@ -108,9 +109,7 @@ export class NotesComponent implements OnInit {
       size: "175kb"
      }
    ]
-   editNote(){
-     this.isEdit = !this.isEdit;
-   }
+
 
   ngOnInit(): void {
   }
