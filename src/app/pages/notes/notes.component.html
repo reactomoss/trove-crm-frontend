@@ -1,0 +1,176 @@
+<app-header></app-header>
+<mat-drawer-container hasBackdrop="true">
+
+<section class="bg-32424d py-2 text-white">
+  <div class="container-fluid px-5">
+    <div class="row align-items-center">
+     <div class="col-auto">
+       <span *ngIf="!isEdit">
+        <mat-icon class="adjIcon">arrow_back</mat-icon>
+        <span  class="f-20-500">Add new note</span>
+       </span>
+       <span *ngIf="isEdit"  (click)="editNote()">
+        <mat-icon class="adjIcon">arrow_back</mat-icon>
+        <span  class="f-20-500">Edit note</span>
+       </span>
+
+
+
+     </div>
+     <div class="col-auto ml-auto" *ngIf="isEdit">
+       <mat-icon class="align-middle">delete</mat-icon>
+     </div>
+    </div>
+    </div>
+</section>
+
+  <ngx-simplebar [options]="scrollOptions" class="mainContainer listHeight bg-e5e5e5">
+    <section>
+    <div class="container-fluid px-5">
+      <div class="py-3">
+        <div class="row">
+          <div class="col-auto pr-0">
+            <span class="color-253238 fs-16">To:</span>
+          </div>
+          <div class="col" [matMenuTriggerFor]="menuTabs">
+            <div [class.hgt70]="selected.length > 4" class="customVerScroll py-1">
+          <div class="row">
+            <div class="col-auto pr-0 mb-3 selectedDiv" *ngFor="let e of selected">
+              <span  class="selectedSpan">
+                <!-- <i class="material-icons">{{e.icon}}</i> -->
+                <span class="ml-1">
+                    {{e.name}}
+                </span>
+                <i  class="cursorPointer material-icons fs-14"
+                    (click)="deleteSelected(e)">close
+                  </i>
+              </span>
+            </div>
+          </div>
+          </div>
+          </div>
+        </div>
+      <mat-menu #menuTabs="matMenu" class="w-100">
+        <mat-tab-group animationDuration="0ms" (click)="$event.stopPropagation()" class="customMSTab">
+          <mat-tab  label="Person">
+            <ul class="p-0">
+              <li mat-menu-item *ngFor="let person of optionsPerson">
+                <div class="row align-items-end">
+                  <div class="col-auto">
+                    <mat-checkbox class="example-margin" (change)="onSelectionChange(person)" [(ngModel)] = "person.isChecked"></mat-checkbox>
+                  </div>
+                  <div class="col-auto px-0" (click)="person.isChecked = !person.isChecked ; onSelectionChange(person)">
+                  <span class="bgRoundIcon">
+                    <i class="material-icons align-text-bottom color-455B66">{{person.icon}}</i>
+                  </span>
+                  </div>
+                  <div class="col" (click)="person.isChecked = !person.isChecked ; onSelectionChange(person)">
+                    <div class="f-16-500">{{person.name}}</div>
+                    <div class="color-lite-O">{{person.email}}</div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </mat-tab>
+          <mat-tab  label="Company">
+            <ul class="p-0">
+              <li mat-menu-item *ngFor="let company of optionsCompany">
+                <div class="row align-items-end">
+                  <div class="col-auto">
+                    <mat-checkbox class="example-margin" (change)="onSelectionChange(company)" [(ngModel)] = "company.isChecked"></mat-checkbox>
+                  </div>
+                  <div class="col-auto px-0" (click)="company.isChecked = !company.isChecked ; onSelectionChange(company)">
+                  <span class="bgRoundIcon">
+                    <i class="material-icons align-text-bottom color-455B66">{{company.icon}}</i>
+                  </span>
+                  </div>
+                  <div class="col" (click)="company.isChecked = !company.isChecked ; onSelectionChange(company)">
+                    <div class="f-16-500">{{company.name}}</div>
+                    <div class="color-lite-O">{{company.desc}}</div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </mat-tab>
+          <mat-tab  label="Lead">
+            <ul class="p-0">
+              <li mat-menu-item *ngFor="let lead of optionsLeads">
+                <div class="row align-items-end">
+                  <div class="col-auto">
+                    <mat-checkbox class="example-margin" (change)="onSelectionChange(lead)" [(ngModel)] = "lead.isChecked"></mat-checkbox>
+                  </div>
+                  <div class="col-auto px-0" (click)="lead.isChecked = !lead.isChecked ; onSelectionChange(lead)">
+                  <span class="bgRoundIcon">
+                    <i class="material-icons align-text-bottom color-455B66">{{lead.icon}}</i>
+                  </span>
+                  </div>
+                  <div class="col" (click)="lead.isChecked = !lead.isChecked ; onSelectionChange(lead)">
+                    <div class="f-16-500">{{lead.name}}</div>
+                    <div class="color-lite-O">{{lead.desc}}</div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-menu>
+    </div>
+    </div>
+    </section>
+    <section class="bg-white">
+      <div class="dialogFroala froalaMob" [froalaEditor] [froalaEditor]="titleOptions1">
+        Hey!<br>
+        You can personalise your notifications to receive alerts based on your interests.
+      </div>
+      <div class="container-fluid px-5">
+        <div class="attachWrap py-3">
+          <div class="mb-1">
+            <span class="color-242E4C f-16-500">Attachments</span>
+          </div>
+           <div>
+             <ul class="attachWrapList">
+               <li *ngFor="let i of attachmentItems" class="">
+                 <div class="row align-items-center">
+                   <div class="col">
+                     <div>{{i.name}}</div>
+                     <span class="text-muted">{{i.size}}</span>
+                   </div>
+                   <div class="col-auto ml-auto">
+                    <span class="iconBorder">
+                      <mat-icon *ngIf="!isEdit" (click)="editNote()" class="">create</mat-icon>
+                      <mat-icon *ngIf="isEdit"  class="">delete</mat-icon>
+                    </span>
+                  </div>
+                 </div>
+               </li>
+              </ul>
+           </div>
+        </div>
+      </div>
+    </section>
+
+   <section class="py-3">
+    <div class="container-fluid px-5">
+      <mat-radio-group aria-label="Select an option" class="customRadio">
+        <mat-radio-button value="Note">Note</mat-radio-button>
+        <mat-radio-button value="EmailNote">Email Note</mat-radio-button>
+        <mat-radio-button value="CallNote">Call Note</mat-radio-button>
+      </mat-radio-group>
+
+      <div class="row pt-5">
+       <div class="col-auto">
+         <button mat-flat-button class="btnColor2-B bg-white">Cancel</button>
+       </div>
+       <div class="col pl-0">
+        <button *ngIf="!isEdit" mat-flat-button class="btnColor3 w-100">Save note</button>
+        <button *ngIf="isEdit" mat-flat-button class="btnColor3 w-100">Update note</button>
+      </div>
+      </div>
+
+    </div>
+   </section>
+
+
+  </ngx-simplebar>
+
+</mat-drawer-container>

@@ -39,6 +39,7 @@ import { CompanyComponent, CompanyMailDialog } from './company/company.component
 import { CompanyTableComponent } from './company/company-table/company-table.component';
 import { CompanyDetailComponent } from './company-detail/company-detail.component';
 import {CompanyFilterComponent} from './company/filter/filter.component';
+import { NotesComponent } from './notes/notes.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -51,7 +52,8 @@ const routes: Routes = [
   { path: 'contact_detail', component: ContactDetailComponent },
   { path: 'task', component: TaskComponent },
   { path: 'company', component: CompanyComponent},
-  { path: 'company_detail', component: CompanyDetailComponent}
+  { path: 'company_detail', component: CompanyDetailComponent},
+  { path: 'notes', component: NotesComponent}
 ]
 @NgModule({
   declarations: [
@@ -87,7 +89,8 @@ const routes: Routes = [
     CompanyTableComponent,
     CompanyDetailComponent,
     CompanyFilterComponent,
-    CompanyMailDialog
+    CompanyMailDialog,
+    NotesComponent
   ],
   imports: [
     CommonModule, RouterModule.forChild(routes), SharedModule, NgbModule,MaterialModule,

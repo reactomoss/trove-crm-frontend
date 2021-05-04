@@ -1228,4 +1228,24 @@ input.mat-input-element.typo {
   white-space: nowrap;
   padding-left: 10px !important;
 }
+.froalaMob .fr-second-toolbar {
+  border-bottom-color: #E1E6EE;
+}
+.froalaMob .fr-second-toolbar #fr-logo {
+  display: none;
+}
+.dialogFroala.froalaMob .fr-toolbar , .dialogFroala.froalaMob .fr-wrapper {
+  border-top: 0 !important;
+}
+.froalaMob .fr-toolbar .fr-newline {margin-left: 0 ;margin-right: 0 ;}
 
+@media(min-width: 1050px) {
+  .froalaMob .fr-toolbar .fr-btn-grp {
+    padding-left: 1.7em;
+    padding-right: 1.7em;
+  }
+  .froalaMob  .fr-wrapper {
+    padding-left: 2em;
+    padding-right: 2em;
+  }
+}
