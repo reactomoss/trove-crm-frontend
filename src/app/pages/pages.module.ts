@@ -34,12 +34,14 @@ import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 import { ContactDetailComponent } from './contact-detail/contact-detail.component';
 import { TaskComponent } from './task/task.component';
 import { TaskFilterComponent } from './task/task-filter/task-filter.component';
-import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { CompanyComponent, CompanyMailDialog } from './company/company.component';
 import { CompanyTableComponent } from './company/company-table/company-table.component';
 import { CompanyDetailComponent } from './company-detail/company-detail.component';
-import {CompanyFilterComponent} from './company/filter/filter.component';
+import { CompanyFilterComponent} from './company/filter/filter.component';
 import { NotesComponent } from './notes/notes.component';
+import { CalendarFilterComponent } from './calendar/filter/filter.component';
+import { CalendarComponent } from './calendar/calendar.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -53,7 +55,8 @@ const routes: Routes = [
   { path: 'task', component: TaskComponent },
   { path: 'company', component: CompanyComponent},
   { path: 'company_detail', component: CompanyDetailComponent},
-  { path: 'notes', component: NotesComponent}
+  { path: 'notes', component: NotesComponent},
+  { path: 'calendar', component: CalendarComponent }
 ]
 @NgModule({
   declarations: [
@@ -90,7 +93,9 @@ const routes: Routes = [
     CompanyDetailComponent,
     CompanyFilterComponent,
     CompanyMailDialog,
-    NotesComponent
+    NotesComponent,
+    CalendarFilterComponent,
+    CalendarComponent
   ],
   imports: [
     CommonModule, RouterModule.forChild(routes), SharedModule, NgbModule,MaterialModule,
