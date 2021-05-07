@@ -54,6 +54,18 @@
     line-height: 30px;
 }
 
+.scheduleAppointment {
+    background: #002868;
+    border-radius: 9px 9px 9px 0px;
+
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 21px;
+    text-align: center;
+    color: #FFFFFF;
+    padding: 8px 15px;
+}
+
 .activeBtn {
     background: #F6F7F8;
 }
@@ -231,3 +243,28 @@ mat-card {
   line-height: 30px;
   margin-left: 100px;
 }
+
+::ng-deep .fc-col-header-cell {
+  text-align: right!important;
+}
+
+::ng-deep .fc-col-header-cell-cushion {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+::ng-deep .fc-daygrid-day-number {
+  color: rgba(0, 0, 0, 0.8);   
+}
+
+::ng-deep .fc .fc-daygrid-day.fc-day-today {
+  background-color: rgba(0, 0, 0, 0.0)!important;
+}
+
+::ng-deep .fc-day-today .fc-daygrid-day-number {
+  background-color: #002868 !important;
+  border-radius: 5px;
+  width: 25px;
+  height: 25px;
+  color: white;
+  text-align: center;
+} 

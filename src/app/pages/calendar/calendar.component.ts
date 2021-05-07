@@ -2,21 +2,13 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { CalendarOptions } from '@fullcalendar/angular';
+import { AppointDialog, TaskDialog } from '../detail/detail.component';
 
-export interface item {
-  id: number;
-  name: string;
-  owner: string;
-  contactCount: number;
-  email: string;
-  companyName: string;
-  company: boolean;
-  last: Date;
-  city: string;
-}
-
-export interface selectedData {
-  items: item[]
+export class Task {
+  constructor(public name: string, public icon: string , public color: string, public desc: string,  public selected?: boolean) {
+    if (selected === undefined) selected = false
+  }
 }
 
 @Component({
@@ -27,192 +19,75 @@ export interface selectedData {
 export class CalendarComponent implements OnInit {
   filterCount: number = 0
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
+  calendarOptions: CalendarOptions = {
+    initialView: 'dayGridMonth',
+    headerToolbar: {
+      left: '',
+      center: '',
+      right: ''
+    },
+    dayMaxEvents: true, // allow "more" link when too many events
+    firstDay: 1,
+    events: [
+      { title: 'Packet Monster Sales opportunity', start: '2021-05-07', end: '2021-05-10', 'groupId': 'appointment'},
+      { title: 'Ux design meeting at 17:30hrs.', date: '2021-05-08', 'groupId': 'task'},
+    ],
+    eventClick: (info) => {
+      info.jsEvent.preventDefault(); // don't let the browser navigate
+      //info.event.title
 
-  hoveredItem
-  //detect for click card, check
-  detect: number
+      // change the border color just for fun
+      //info.el.style.borderColor = 'red';
+    
+      console.log(info.event.groupId)
+      if (info.event.groupId == 'appointment') {
+        this.openAppointDialog(true)
+      }
+      else if (info.event.groupId == 'task') {
+        this.openTaskDialog(true)
+      }
+    }
+  }
 
-  allItems: item[] = [
-
-    {
-      id: 2,
-      name: 'Bryce Dallas Howard',
-      owner: '',
-      contactCount: 0,
-      company: false,
-      companyName: 'Dona factory',
-      email: 'example@gmail.com',
-      last: new Date("2020-12-15"),
-      city: 'Fort Worth'
-    },
-    {
-      id: 3,
-      name: 'Berry Watson',
-      owner: '',
-      contactCount: 0,
-      company: false,
-      companyName: 'Iv homes ltd',
-      email: 'example@gmail.com',
-      last: new Date("2020-12-14"),
-      city: 'San Francisco'
-    },
-    {
-      id: 4,
-      name: 'Berry Watson',
-      owner: '',
-      contactCount: 0,
-      company: false,
-      companyName: 'Iv homes ltd',
-      email: 'example@gmail.com',
-      last: new Date("2020-12-13"),
-      city: 'Los Angeles'
-    },
-    {
-      id: 5,
-      name: 'Edward James Olmos',
-      owner: '',
-      contactCount: 0,
-      company: false,
-      companyName: 'Iv homes ltd',
-      email: 'example@gmail.com',
-      last: new Date("2020-12-12"),
-      city: 'San Antonio'
-    },
-    {
-      id: 7,
-      name: 'Tammy Gillis',
-      owner: '',
-      contactCount: 0,
-      company: false,
-      companyName: 'Iv homes ltd',
-      email: 'example@gmail.com',
-      last: new Date("2020-11-7"),
-      city: 'Paris'
-    },
-    {
-      id: 8,
-      name: 'Bryce Dallas Howard',
-      owner: '',
-      contactCount: 0,
-      company: false,
-      companyName: 'Dona factory',
-      email: 'example@gmail.com',
-      last: new Date("2020-11-6"),
-      city: 'Madrid'
-    },
-    {
-      id: 10,
-      name: 'Wes Studi',
-      owner: '',
-      contactCount: 0,
-      company: false,
-      companyName: 'Iv homes ltd',
-      email: 'example@gmail.com',
-      last: new Date("2020-11-4"),
-      city: 'Oklahoma City'
-    },
-    {
-      id: 12,
-      name: 'Berry Watson',
-      owner: '',
-      contactCount: 0,
-      company: false,
-      companyName: 'Iv homes ltd',
-      email: 'example@gmail.com',
-      last: new Date("2020-11-1"),
-      city: 'Chicago'
-    },
+  tasks: Task[] = [
+    new Task("Packet Monster Sales opportunity", "notification", "default", "Today at 9:00"),
+    new Task("Ux design meeting at 17:30hrs.", "calendar", "red", "Sat, 21 Apr, 2021"),
+    new Task("Landing page required for new CRM app", "notification", "default", "Sun, 22 Apr, 2021"),
+    new Task("Meeting required for new CRM app", "calendar", "default", "Mon, 23 Apr, 2021"),
   ]
-  items: item[] = []
-  selectedItems: item[] = []
 
-  listShow: boolean = false
-  typeString: string = 'Contact'
-
-  constructor(public dialog: MatDialog, private router: Router) {
+  constructor(
+    public dialog: MatDialog, 
+    private router: Router) {
   }
 
   ngOnInit(): void {
-    this.items = this.allItems
   }
-
-  showList() {
-    this.listShow = true
-    this.selectedItems = []
-  }
-
-  showGrid() {
-    this.listShow = false
-    this.selectedItems = []
-  }
-
-  selectContact() {
-    this.items = this.allItems.filter(e => !e.company)
-    this.typeString = 'Contact'
-    this.selectedItems = []
-  }
-
-  selectCompany() {
-    this.items = this.allItems.filter(e => e.company)
-    this.typeString = 'Company'
-    this.selectedItems = []
-  }
-
-  clickCard(item) {
-    this.router.navigate(['/pages/contact_detail'])
-  }
-
-  clickCompanyPage() {
-    this.router.navigate(['/pages/company'])
-  }
-
-  clickCheck(e, item) {
-    this.detect = 1
-    e.preventDefault()
-    const index = this.selectedItems.indexOf(item, 0)
-    if (index > -1) {
-      this.selectedItems.splice(index, 1)
-    } else {
-      this.selectedItems.push(item)
-    }
-  }
-
-  setCheckStatus(item) {
-    const index = this.selectedItems.indexOf(item, 0)
-    if (index > -1) {
-      return true
-    } else {
-      return false
-    }
-  }
-
-  showCardCheckBox(item) {
-    const index = this.selectedItems.indexOf(item, 0);
-    if (this.hoveredItem == item || index > -1)
-      return true
-    return false
-  }
-
-  setHoveredItem(item) {
-    this.hoveredItem = item
-  }
-
-  clickEmptyCheck() {
-    this.selectedItems = this.items.reduce((acc, item) => {
-      acc.push(item)
-      return acc
-    }, [])
-  }
-
-  clickIndeterminate() {
-    this.selectedItems = []
-  }
-
-  clickEmail() {
-    
-  }
+  
   filterCountChangedHandler(e) {
     this.filterCount = e
   }
 
+  openTaskDialog(isEdit: boolean) {
+    const dialogRef = this.dialog.open(TaskDialog, {
+      width: '405px',
+      data : { isEdit: isEdit}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog sent: ${result}`);
+
+    })
+  }
+
+  openAppointDialog(isEdit: boolean) {
+    const dialogRef = this.dialog.open(AppointDialog, {
+      width: '740px',
+      data : { isEdit: isEdit}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog sent: ${result}`);
+    })
+  }
 }

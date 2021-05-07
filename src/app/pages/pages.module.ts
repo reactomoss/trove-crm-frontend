@@ -42,6 +42,14 @@ import { CompanyFilterComponent} from './company/filter/filter.component';
 import { NotesComponent } from './notes/notes.component';
 import { CalendarFilterComponent } from './calendar/filter/filter.component';
 import { CalendarComponent } from './calendar/calendar.component';
+import { FullCalendarModule } from '@fullcalendar/angular'; 
+import dayGridPlugin from '@fullcalendar/daygrid'; 
+import interactionPlugin from '@fullcalendar/interaction';
+
+FullCalendarModule.registerPlugins([ 
+  dayGridPlugin,
+  interactionPlugin,
+]);
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -56,7 +64,7 @@ const routes: Routes = [
   { path: 'company', component: CompanyComponent},
   { path: 'company_detail', component: CompanyDetailComponent},
   { path: 'notes', component: NotesComponent},
-  { path: 'calendar', component: CalendarComponent }
+  { path: 'pipeline', component: CalendarComponent }
 ]
 @NgModule({
   declarations: [
@@ -107,6 +115,7 @@ const routes: Routes = [
     NgxSliderModule,
     FroalaEditorModule.forRoot(),
     FroalaViewModule.forRoot(),
+    FullCalendarModule,
     NgxMaterialTimepickerModule
   ],
   exports:[RouterModule],
