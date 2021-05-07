@@ -34,11 +34,6 @@ export class CalendarComponent implements OnInit {
     ],
     eventClick: (info) => {
       info.jsEvent.preventDefault(); // don't let the browser navigate
-      //info.event.title
-
-      // change the border color just for fun
-      //info.el.style.borderColor = 'red';
-    
       console.log(info.event.groupId)
       if (info.event.groupId == 'appointment') {
         this.openAppointDialog(true)

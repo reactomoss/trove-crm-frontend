@@ -12,6 +12,7 @@ import {
 } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { LeadDialog } from 'src/app/shared/header/header.component';
+
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
@@ -401,7 +402,6 @@ export class TaskDialog {
   ],
 })
 export class AppointDialog {
-
   myControl = new FormControl();
   options: any[] = [
     {
@@ -420,6 +420,19 @@ export class AppointDialog {
   isEdit: boolean = false;
   showAuto: boolean = true
   active: number = 1
+  
+  appointment = {
+    title: "",
+    where: "",
+    description: "",
+    start_date: null,
+    start_time: null,
+    end_date: null,
+    end_time: null,
+    contact: null,
+    remainder_date: null,
+    remainder_time: null,
+  }
 
   constructor(
     public dialogRef: MatDialogRef<AppointDialog>,
@@ -434,11 +447,8 @@ export class AppointDialog {
   }
 
   private _filter(value: string): string[] {
-
-      const filterValue = value.toLowerCase();
-      return this.options.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
-
-
+    const filterValue = value.toLowerCase();
+    return this.options.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
   }
 
   public onSelectionChange(event) {
@@ -499,15 +509,19 @@ export class AppointDialog {
       startWith(''),
       map(value => this._filter(value))
     );
-
   }
 
    setEmpty(){
-    this.myControl.setValue('');
+    this.myControl.setValue('')
    }
 
   onNoClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close()
+  }
+
+  onConfirm() : void {
+    console.log('appointment:', this.appointment)
+    this.dialogRef.close(this.appointment)
   }
 
   deleteSelected(e) {
