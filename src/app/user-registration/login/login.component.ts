@@ -349,6 +349,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.clicked = false;
           this.apiResponse = response;
           this.token.handle(response.data.token);
+          localStorage.setItem('me', JSON.stringify(response.data.me));
           this.router.navigate(['pages/dashboard']);
         },
         (errorResponse: HttpErrorResponse) => {

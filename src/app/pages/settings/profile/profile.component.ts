@@ -7,9 +7,14 @@ import {
   Validators,
 } from '@angular/forms';
 import { SnackBarService } from '../../../shared/snack-bar.service';
-import {SettingsApiService} from 'src/app/services/settings-api.service';
-import{UserProfile} from './user-profile';
+import { AccountApiService } from 'src/app/services/account-api.service';
+import { TokenService } from 'src/app/services/token.service';
+import { SettingsApiService } from 'src/app/services/settings-api.service';
+import { UserProfile } from './user-profile';
 import { Subscription } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Router, NavigationExtras } from '@angular/router';
+import { extractErrorMessagesFromErrorResponse } from 'src/app/services/extract-error-messages-from-error-response';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -32,13 +37,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
   closeResult = '';
   profileForm: FormGroup;
+  account_id: string;
 
   //  constructor starts
   constructor(
     private modalService: NgbModal,
     private fb: FormBuilder,
     private sb: SnackBarService,
-    private settingsApiService: SettingsApiService
+    private settingsApiService: SettingsApiService,
+    private account: AccountApiService,
+    private token: TokenService,
+    private router: Router,
   ) {
     // this.changePassword();
   }
@@ -77,10 +86,23 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.profile = event.target.files[0];
   }
   removeProfilePicture() {
-    this.profile = null;
-    this.imageUrl = '../../../assets/images/settingsProfile.png';
+    this.settingsApiService.removeProfilePic().subscribe(
+      (res: any) => {
+        this.triggerSnackBar(res.message, 'Close');
+        this.profile = null;
+        this.imageUrl = '../../../assets/images/settingsProfile.png';
+      },
+      (errorResponse: HttpErrorResponse) => {
+        //console.log(errorResponse);
+        const messages = extractErrorMessagesFromErrorResponse(errorResponse);
+        console.log(messages);
+        this.triggerSnackBar(messages.toString(), 'Close');
+      }
+    );
   }
   onChangeProfile(profile: File) {
+    console.log("profile: "+profile);
+    //alert("Check Console");
     if (profile) {
       this.profile = profile;
       const reader = new FileReader();
@@ -88,29 +110,39 @@ export class ProfileComponent implements OnInit, OnDestroy {
       reader.onload = (event) => {
         this.imageUrl = reader.result;
       };
+      this.settingsApiService.changeProfilePic(this.profile).subscribe(
+        (res: any) => {
+          this.triggerSnackBar(res.message, 'Close');
+          this.imageUrl = res.data.profile_image_url;
+        },
+        (errorResponse: HttpErrorResponse) => {
+          //console.log(errorResponse);
+          this.profile = null;
+          this.imageUrl = '../../../assets/images/settingsProfile.png';
+          const messages = extractErrorMessagesFromErrorResponse(errorResponse);
+          console.log(messages);
+          this.triggerSnackBar(messages.toString(), 'Close');
+        }
+      );
     }
   }
 
   ngOnInit(): void {
-    // this.account
-    //   .me()
-    //   .then((res: any) => {
-    //     //console.log(JSON.stringify(data));
-    //     console.log(res);
-    //     this.userData = res;
-    //   })
-    //   .catch((error) => {
-    //     console.log('Promise rejected with ' + JSON.stringify(error));
-    //   });
-
-    const subs_query_param_get = this.settingsApiService.accountMe().subscribe((res:any) => {
-           console.log(res);
-           this.userData = res.data;
-    });
+    console.log("profile ngOnInit");
+    const subs_query_param_get = this.settingsApiService
+      .accountMe()
+      .subscribe((res: any) => {
+        console.log(res);
+        this.userData = res.data;
+        this.account_id = res.data.account_id;
+        if(res.success){
+          this.imageUrl = res.data.profile_pic;
+        }
+      });
     this.subscriptions.push(subs_query_param_get);
   }
 
-  createProfileForm(){
+  createProfileForm() {
     this.profileForm = this.fb.group({
       email: [
         this.userData.email,
@@ -120,40 +152,76 @@ export class ProfileComponent implements OnInit, OnDestroy {
           Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
         ],
       ],
-      first_name: [
-        this.userData.first_name,
-        [
-          Validators.required
-        ],
-      ],
-      last_name: [
-        this.userData.last_name,
-        [
-          Validators.required
-        ],
-      ]
+      first_name: [this.userData.first_name, [Validators.required]],
+      last_name: [this.userData.last_name, [Validators.required]],
     });
     this.profileForm.controls.email.disable();
   }
 
-  updateProfile(){
+  updateProfile() {
     const data = this.profileForm.value;
-    const subs_query_param = this.settingsApiService.updateProfile(data).subscribe((res: any) => {
-      this.triggerSnackBar(res.message, 'Close');
-      // this.userData = res.data;
-      this.userData.first_name = data.first_name;
-      this.userData.last_name = data.last_name;
-      this.modalService.dismissAll();
-    });
+    const subs_query_param = this.settingsApiService
+      .updateProfile(data)
+      .subscribe((res: any) => {
+        this.triggerSnackBar(res.message, 'Close');
+        // this.userData = res.data;
+        this.userData.first_name = data.first_name;
+        this.userData.last_name = data.last_name;
+        this.modalService.dismissAll();
+      });
     this.subscriptions.push(subs_query_param);
   }
 
-  updateChangePassword(){
+  updateChangePassword() {
     const data = this.changePasswordForm.value;
-    this.settingsApiService.changePassword(data).subscribe((res: any) => {
-      this.triggerSnackBar(res.message, 'Close');
-      this.modalService.dismissAll();
-    });
+    this.settingsApiService.changePassword(data).subscribe(
+      (res: any) => {
+        this.triggerSnackBar(res.message, 'Close');
+        this.modalService.dismissAll();
+        this.logout();
+      },
+      (errorResponse: HttpErrorResponse) => {
+        //console.log(errorResponse);
+        const messages = extractErrorMessagesFromErrorResponse(errorResponse);
+        console.log(messages);
+        this.triggerSnackBar(messages.toString(), 'Close');
+      }
+    );
+  }
+  logout() {
+    this.account.logout().subscribe(
+      (response) => {
+        console.log(response);
+        this.token.remove();
+        //this.router.navigate(['login']);
+        let objToSend: NavigationExtras = {
+          queryParams: {
+            success: response.success,
+            message: response.message,
+          },
+        };
+        this.router.navigate(['login'], {
+          state: objToSend,
+        });
+        //this.router.navigate(['login'], {queryParams: { logout: 'true' } });
+      },
+      (err) => {
+        console.log(err);
+        if (err.error.code == 113) {
+          this.token.remove();
+          let objToSend: NavigationExtras = {
+            queryParams: {
+              success: true,
+              message: 'Password Changed successfully!',
+            },
+          };
+          this.router.navigate(['login'], {
+            state: objToSend,
+          });
+          //this.router.navigate(['login'], {queryParams: { logout: 'true' } });
+        }
+      }
+    );
   }
 
   ngOnDestroy() {
@@ -161,5 +229,4 @@ export class ProfileComponent implements OnInit, OnDestroy {
       sub.unsubscribe();
     });
   }
-
 }

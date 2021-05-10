@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PagesComponent } from './pages.component';
-import { RouterModule, Routes } from '@angular/router';
+import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { AuthGuardService } from '../services/auth-guard.service';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -28,13 +28,15 @@ import { PipelinestagesComponent } from './settings/pipelinestages/pipelinestage
 import { TermsservicesComponent } from './settings/termsservices/termsservices.component';
 import { PrivacypolicyComponent } from './settings/privacypolicy/privacypolicy.component';
 import { PlanspricingComponent } from './settings/planspricing/planspricing.component';
+import { RolesComponent } from './settings/usersroles/roles/roles.component';
 const routes: Routes = [
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  //{ path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: PagesComponent, canActivate:[AuthGuardService]},
   //{ path: 'settings', loadChildren: () => import('./settings/settings.module') .then(m=>m.SettingsModule), canActivate:[AuthGuardService]},
-  { path: 'settings', component: SettingsComponent , canActivate:[AuthGuardService]},
+  { path: 'settings', component: SettingsComponent},
   { path: 'leads', component: LeadsComponent , canActivate:[AuthGuardService]},
-  { path: 'detail', component: DetailComponent , canActivate:[AuthGuardService]}
+  { path: 'detail', component: DetailComponent , canActivate:[AuthGuardService]},
+  {path: '**', component: LeadsComponent}
 ];
 @NgModule({
   declarations: [
@@ -51,6 +53,7 @@ const routes: Routes = [
     FilterComponent,
     ProfileComponent,
     UsersrolesComponent,
+    RolesComponent,
     AccountComponent,
     NotificationComponent,
     DragdropDirective,

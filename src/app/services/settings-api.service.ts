@@ -2,29 +2,38 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpErrorResponse,
+  HttpParams,
+} from '@angular/common/http';
+//import { start } from 'repl';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SettingsApiService {
   baseURL = environment.baseUrl;
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {}
   // Settings Profile View From
   accountMe(): Observable<any> {
     let API_URL = `${this.baseURL + environment.me}`;
     return this.httpClient.get(API_URL);
   }
 
-  updateProfile(data: any): Observable<any>{
+  updateProfile(data: any): Observable<any> {
     return this.httpClient.post(`${this.baseURL + environment.profile}`, data);
   }
 
-  changePassword(data: any): Observable<any>{
-    return this.httpClient.post(`${this.baseURL + environment.changePassword}`, data);
+  changePassword(data: any): Observable<any> {
+    return this.httpClient.post(
+      `${this.baseURL + environment.changePassword}`,
+      data
+    );
   }
 
   preferenceMe(): Observable<any> {
@@ -32,8 +41,140 @@ export class SettingsApiService {
     return this.httpClient.get(API_URL);
   }
 
-  updatePreference(data: any): Observable<any>{
-    return this.httpClient.post(`${this.baseURL + environment.preference}`, data);
+  updatePreference(data: any): Observable<any> {
+    return this.httpClient.post(
+      `${this.baseURL + environment.preference}`,
+      data
+    );
   }
 
+  changeProfilePic(profile_pic: any): Observable<any> {
+    // Create form data
+    const formData = new FormData();
+
+    // Store form name as "file" with file data
+    formData.append('profile_pic', profile_pic, profile_pic.name);
+    return this.httpClient.post(
+      `${this.baseURL + environment.profile_picture}`,
+      formData
+    );
+  }
+  removeProfilePic(){
+    return this.httpClient.get(`${this.baseURL + environment.profile_picture}`);
+  }
+
+  initUserForm(id = ''): Observable<any> {
+    var param = "";
+    if(id){
+      param = "/"+id;
+    }
+    return this.httpClient.get(`${this.baseURL + environment.users + param}`);
+  }
+
+  addUser(data: any): Observable<any> {
+    return this.httpClient.post(`${this.baseURL + environment.users}`, data);
+  }
+
+  updateUser(data: any, id): Observable<any>{
+    return this.httpClient.post(`${this.baseURL + environment.users + "/" + id +"?_method=PUT"}`, data);
+  }
+
+  changeUserStatus(status, id){
+    return this.httpClient.put(`${this.baseURL + environment.users + "/status/"+ id}`, {user_status: status});
+  }
+
+  deleteUser(id): Observable<any>{
+    return this.httpClient.delete(`${this.baseURL + environment.users + "/" + id}`);
+  }
+
+  listUser(
+    sort: string,
+    order: string,
+    page: number,
+    pageSize: number,
+    search: string = ''
+  ): Observable<any> {
+    var start, length;
+    var items_per_page = 10;
+
+    var data = {
+      search: search,
+      start: page * pageSize,
+      length: pageSize,
+    };
+    console.log('API req');
+    console.log(sort);
+    console.log(order);
+    if (typeof sort != 'undefined' && typeof order != 'undefined') {
+      console.log('if');
+      data['order'] = [{ column: sort, dir: order }];
+    }
+    return this.httpClient.post(
+      `${this.baseURL + environment.listusers}`,
+      data
+    );
+  }
+
+  initRoleForm(id = ''): Observable<any> {
+    var param = "";
+    if(id){
+      param = "/"+id;
+    }
+    return this.httpClient.get(
+      `${this.baseURL + environment.roles + param}`
+    );
+  }
+
+  addRole(data: any): Observable<any> {
+    return this.httpClient.post(`${this.baseURL + environment.roles}`, data);
+  }
+  updateRole(data:any, id): Observable<any>{
+    return this.httpClient.post(`${this.baseURL + environment.roles + "/" + id +"?_method=PUT"}`, data);
+  }
+
+  changeRoleStatus(status, id){
+    return this.httpClient.put(`${this.baseURL + environment.roles + "/status/"+ id}`, {user_status: status});
+  }
+
+  listRoles(
+    sort: string,
+    order: string,
+    page: number,
+    pageSize: number,
+    search: string = ''
+  ): Observable<any> {
+    var start, length;
+    var items_per_page = 10;
+
+    var data = {
+      search: search,
+      start: page * pageSize,
+      length: pageSize,
+    };
+    console.log('API req list roles');
+    console.log(sort);
+    console.log(order);
+    if (typeof sort != 'undefined' && typeof order != 'undefined') {
+      console.log('if');
+      data['order'] = [{ column: sort, dir: order }];
+    }
+    return this.httpClient.post(
+      `${this.baseURL + environment.listroles}`,
+      data
+    );
+  }
+  deleteRole(id): Observable<any>{
+    return this.httpClient.delete(`${this.baseURL + environment.roles + "/" + id}`);
+  }
+
+  getNotificationSettings() {
+    return this.httpClient.get(`${this.baseURL + environment.notifications}`);
+  }
+
+  saveNotificationSettings(data: any) {
+    return this.httpClient.post(
+      `${this.baseURL + environment.notifications}`,
+      data
+    );
+  }
 }

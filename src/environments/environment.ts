@@ -26,8 +26,14 @@ export const environment = {
   logout: 'account/logout',
   /*======= Settings ====================*/
   profile: 'settings/profile',
+  profile_picture: 'settings/profile-picture',
   changePassword: 'settings/change-password',
   preference: 'settings/preference',
+  users: 'settings/users',
+  listusers: 'settings/users/index',
+  roles: 'settings/roles',
+  listroles: 'settings/roles/index',
+  notifications: 'settings/notifications',
 };
 
 /*

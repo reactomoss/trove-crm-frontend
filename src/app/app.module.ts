@@ -2,7 +2,7 @@ import { HttpInterceptorService } from './services/http-interceptor.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
-import { RouterModule, Routes } from '@angular/router';
+import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { SharedModule } from './shared/shared.module';
@@ -47,12 +47,15 @@ const routes: Routes = [
       import('./shared/shared.module').then((m) => m.SharedModule),
   },
 ];
-
+const config: ExtraOptions = {
+  //useHash: true,
+  onSameUrlNavigation: 'reload'
+};
 @NgModule({
   declarations: [AppComponent, SpinnerOverlayComponent],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, config),
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
