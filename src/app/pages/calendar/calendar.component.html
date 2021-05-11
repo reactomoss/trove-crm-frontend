@@ -9,18 +9,9 @@
 
     <div class="row">
         <div class="col-md-10">
-            <div class="topBar">
-                <div fxLayout="row" fxLayoutAlign="space-between" fxLayout.xs="column" >
-                    <div class="topBarDiv">
-                        <span class="title mr-3 fontObjektivMk mt-1">January 2021</span>
-                        <button mat-button class="scheduleAppointment" (click)="openAppointDialog(false, null)">Schedule an appointment</button>
-                        <button mat-button class="scheduleAppointment" (click)="openTaskDialog(false, null)">Schedule an task</button>
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <full-calendar #calendar [(options)]="calendarOptions"></full-calendar>
+            <div class="fullcalendar">
+                <full-calendar #calendar [(options)]="calendarOptions">
+                </full-calendar>
             </div>
         </div>
         <div class="col-md-2">

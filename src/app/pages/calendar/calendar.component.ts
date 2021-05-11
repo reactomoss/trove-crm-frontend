@@ -7,6 +7,9 @@ import { FullCalendarComponent, CalendarOptions, DateSelectArg, EventClickArg, E
 import { AppointDialog, Appointment } from '../detail/appoint-dialog/appoint-dialog';
 import { TaskDialog, NTask } from '../detail/task-dialog/task-dialog';
 import { INITIAL_EVENTS, createEventId } from './event-utils';
+import { EmbeddedViewRef } from '@angular/core';
+import { TemplateRef } from '@angular/core';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-calendar',
@@ -16,13 +19,23 @@ import { INITIAL_EVENTS, createEventId } from './event-utils';
 export class CalendarComponent implements OnInit {
   @ViewChild('calendar') calendarComponent: FullCalendarComponent;
   calendarOptions: CalendarOptions = {
+    customButtons: {
+      scheduleAppointment: {
+        text: 'Schedule an appointment',
+        click: () => this.openAppointDialog(false, null)
+      },
+      scheduleTask: {
+        text: 'Schedule a task',
+        click: () => this.openTaskDialog(false, null)
+      }
+    },
     headerToolbar: {
-      left: '',
-      center: '',
-      right: ''
+        left: 'title',
+        center:'prev,next scheduleAppointment',
+        right: 'scheduleTask',
     },
     initialView: 'dayGridMonth',
-    //initialEvents: INITIAL_EVENTS,
+    initialEvents: INITIAL_EVENTS,
     weekends: true,
     //editable: true,
     //selectable: true,
@@ -31,7 +44,8 @@ export class CalendarComponent implements OnInit {
     firstDay: 1,
     //select: this.handleDateSelect.bind(this),
     eventClick: this.handleEventClick.bind(this),
-    eventsSet: this.handleEvents.bind(this)
+    eventsSet: this.handleEvents.bind(this),
+    eventContent: this.handleEventContent.bind(this),
   }
   currentEvents: EventApi[] = [];
 
@@ -103,9 +117,11 @@ export class CalendarComponent implements OnInit {
         start: appointment.start_date.format('YYYY-MM-DD'),
         end: appointment.end_date.format('YYYY-MM-DD'),
         extendedProps: {
-          'type': 'appointment',
+          'isTask': false,
           'appointment': appointment 
-        }
+        },
+        color: '#e9effb',
+        textColor: '#315186'
       })
     }
   }
@@ -132,15 +148,24 @@ export class CalendarComponent implements OnInit {
     else {
       const eventId = createEventId()
       task.id = eventId
-        
+
+      let color = 'rgb(255, 214, 193)'
+      let textColor = 'rgb(230, 74, 0)'
+      if (task.due_date > moment()) {
+        color = '#f9e8ec'
+        textColor = '#d5617a'
+      }
+
       calendarApi.addEvent({
         id: eventId,
         title: task.title,
         date: task.due_date.format('YYYY-MM-DD'),
         extendedProps: {
-          'type': 'task',
+          'isTask': true,
           'task': task 
-        }
+        },
+        color: color,
+        textColor: textColor
       })
     }
   }
@@ -173,23 +198,34 @@ export class CalendarComponent implements OnInit {
   handleEventClick(clickInfo: EventClickArg) {
     console.log(clickInfo.event, clickInfo.event.extendedProps)
     
-    const extendedProps = clickInfo.event.extendedProps
-    const type = extendedProps["type"]
-    if (type == 'appointment') {
-      const appointment = clickInfo.event.extendedProps['appointment'];
-      this.openAppointDialog(true, appointment)
-    }
-    else if (type == 'task') {
+    if (clickInfo.event.extendedProps.isTask) {
       const task = clickInfo.event.extendedProps['task'];
       this.openTaskDialog(true, task)
     }
-    /*if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-       clickInfo.event.remove();
-    }*/
+    else {
+      const appointment = clickInfo.event.extendedProps['appointment'];
+      this.openAppointDialog(true, appointment)
+    }
   }
 
   handleEvents(events: EventApi[]) {
     this.currentEvents = events;
     console.log('currentEvents', this.currentEvents)
+  }
+
+  handleEventContent(arg) {
+    let divEl = document.createElement('div')
+    divEl.className = 'checkbox-inline'
+
+    console.log('handleEventContent', arg.event.extendedProps)
+    if (arg.event.extendedProps.isTask) {
+        const task = arg.event.extendedProps.task
+        divEl.innerHTML = `<input type='checkbox' class='event-checkbox'>${task.due_time??''} ${arg.event.title}`
+    } else {
+        divEl.innerHTML = arg.event.title
+    }
+    
+    let arrayOfDomNodes = [ divEl ]
+    return { domNodes: arrayOfDomNodes }
   }
 }

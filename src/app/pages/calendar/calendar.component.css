@@ -54,8 +54,20 @@
     line-height: 30px;
 }
 
+::ng-deep .fc-scheduleAppointment-button {
+    background: #002868!important;
+    border-radius: 9px 9px 9px 0px!important;
+
+    font-weight: normal!important;
+    font-size: 16px!important;
+    line-height: 21px!important;
+    text-align: center!important;
+    color: #FFFFFF!important;
+    padding: 8px 15px!important;
+}
+
 .scheduleAppointment {
-    background: #002868;
+    background: #002868!important;
     border-radius: 9px 9px 9px 0px;
 
     font-weight: normal;
@@ -108,14 +120,6 @@
     padding: 10px 20px;
 }
 
-.gridHeight {
-    height: calc(100vh - 133px);
-}
-
-.listHeight {
-    height: calc(100vh - 190px);
-}
-
 /* .mainContainer .avatar {
     border-radius: 99px;
     width: 48px;
@@ -124,22 +128,6 @@
 
 mat-card {
     border-radius: 6px;
-}
-
-.cardText1 {
-    font-weight: 500;
-    font-size: 16px;
-    color: #253238;
-    display: block;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-.cardText2 {
-    font-weight: normal;
-    font-size: 12px;
-    color: #455B66;
 }
 
 .checkDiv {
@@ -194,54 +182,29 @@ mat-card {
     background: white;
 }
 
-.smallIconBtn {
-    min-width: 24px;
-    border: 1px solid #D0D9DE;
-    border-radius: 6px;
-    padding: 2px;
-    line-height: 28px;
-    background: white;
-}
-
-.smallIconBtn mat-icon {
-    font-size: 20px;
-    color: #455B66;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.iconContainer {
-    background: #F3F5F9;
-    border-radius: 99px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-}
-
 .fullWidth {
     width: 100% !important;
 }
 
-.dateDiv {
-    padding-right: 15px;
-    padding-bottom: 10px;
-    font-weight: 600;
-    font-size: 12.5px;
-    line-height: 17px;
-    color: #455B66;
+.fullcalendar {
+    margin: 10px 50px 0px 50px;
 }
-.filterContainer1 {
-  max-height: calc(100vh - 200px);
+
+::ng-deep .checkbox-inline {
+    vertical-align: middle;
+    padding: 2px;
+    display: flex;
+    align-items: center;
 }
-.clearAllButton {
-  background-color: #EFF2F7;
-  border: 1px solid #D0D9DE;
-  font-size: 12px;
-  line-height: 30px;
-  margin-left: 100px;
+
+::ng-deep .event-checkbox {
+    margin-right: 4px;
+    margin-top: -4px
+}
+
+::ng-deep .event-label {
+    margin: 3px 0px 0px 0px;
+    font-weight: bold;
 }
 
 ::ng-deep .fc-col-header-cell {
@@ -268,3 +231,21 @@ mat-card {
   color: white;
   text-align: center;
 } 
+
+::ng-deep .fc .fc-toolbar {
+  justify-content: left!important;
+}
+
+::ng-deep h2.fc-toolbar-title {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 29px;
+  color: #253238;  
+  width: 200px!important;
+}
+
+::ng-deep.fc-prev-button, ::ng-deep.fc-next-button {
+  background-color: white!important;
+  color: rgba(0, 0, 0, 0.8)!important;
+}
