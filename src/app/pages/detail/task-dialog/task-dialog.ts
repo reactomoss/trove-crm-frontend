@@ -9,6 +9,18 @@ import {
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
 } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { Moment } from 'moment';
+
+export interface NTask {
+  id: string,
+  title: string,
+  content: string
+  due_date: Moment,
+  due_time: string,
+  remainder_date: string,
+  remainder_time: string,
+  owner: string,
+}
 
 @Component({
   selector: 'task-dialog',
@@ -52,11 +64,25 @@ export class TaskDialog {
   isEdit: boolean = false;
   active: number = 1
 
+  task: NTask = {
+    id: null,
+    title: null,
+    content: null,
+    due_date: null,
+    due_time: null,
+    remainder_date: null,
+    remainder_time: null,
+    owner: null,
+  }
+
   constructor(
     public dialogRef: MatDialogRef<TaskDialog>,
      @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.isEdit = data.isEdit;
+    if (data.task) {
+      this.task = data.task
+    } 
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value))
@@ -135,6 +161,11 @@ export class TaskDialog {
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  onConfirm() : void {
+    console.log('task:', this.task)
+    this.dialogRef.close(this.task)
   }
 
   deleteSelected(e) {

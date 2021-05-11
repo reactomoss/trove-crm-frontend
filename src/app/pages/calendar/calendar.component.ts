@@ -5,7 +5,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { EventInput } from '@fullcalendar/core';
 import { FullCalendarComponent, CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/angular';
 import { AppointDialog, Appointment } from '../detail/appoint-dialog/appoint-dialog';
-import { TaskDialog } from '../detail/task-dialog/task-dialog';
+import { TaskDialog, NTask } from '../detail/task-dialog/task-dialog';
 import { INITIAL_EVENTS, createEventId } from './event-utils';
 
 @Component({
@@ -22,14 +22,14 @@ export class CalendarComponent implements OnInit {
       right: ''
     },
     initialView: 'dayGridMonth',
-    initialEvents: INITIAL_EVENTS,
+    //initialEvents: INITIAL_EVENTS,
     weekends: true,
-    editable: true,
-    selectable: true,
-    selectMirror: true,
+    //editable: true,
+    //selectable: true,
+    //selectMirror: true,
     dayMaxEvents: true,
     firstDay: 1,
-    select: this.handleDateSelect.bind(this),
+    //select: this.handleDateSelect.bind(this),
     eventClick: this.handleEventClick.bind(this),
     eventsSet: this.handleEvents.bind(this)
   }
@@ -42,37 +42,37 @@ export class CalendarComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  
-  openTaskDialog(isEdit: boolean) {
-    const dialogRef = this.dialog.open(TaskDialog, {
-      width: '405px',
-      data : { isEdit: isEdit}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog sent: ${result}`);
-      if (result) {
-        
-      }
-    })
-  }
 
   openAppointDialog(isEdit: boolean, appointment: Appointment) {
     const dialogRef = this.dialog.open(AppointDialog, {
       width: '740px',
-      data : { isEdit: isEdit, appointment: appointment}
+      data : { isEdit: isEdit, appointment: appointment }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog sent: ${result}`);
-      if (result) {
-        this.updateCalendarEvents(result)
+    dialogRef.afterClosed().subscribe(appointment => {
+      console.log(`Dialog sent: ${appointment}`);
+      if (appointment) {
+        this.addAppointmentEvents(appointment)
+      }
+    })
+  }
+  
+  openTaskDialog(isEdit: boolean, task: NTask) {
+    const dialogRef = this.dialog.open(TaskDialog, {
+      width: '405px',
+      data : { isEdit: isEdit, task: task }
+    });
+
+    dialogRef.afterClosed().subscribe(task => {
+      console.log(`Dialog sent: ${task}`);
+      if (task) {
+        this.addTaskEvents(task)
       }
     })
   }
 
-  private updateCalendarEvents(appointment: Appointment) {
-    console.log('updateCalendarEvents:', appointment);
+  private addAppointmentEvents(appointment: Appointment) {
+    console.log('updateCalendarAppointmentEvents:', appointment);
     const calendarApi = this.calendarComponent.getApi()
     calendarApi.unselect();
 
@@ -95,6 +95,33 @@ export class CalendarComponent implements OnInit {
         extendedProps: {
           'type': 'appointment',
           'appointment': appointment 
+        }
+      })
+    }
+  }
+
+  private addTaskEvents(task: NTask) {
+    console.log('updateCalendarTaskEvents:', task);
+    const calendarApi = this.calendarComponent.getApi()
+    calendarApi.unselect();
+
+    if (task.id) {
+      const event = calendarApi.getEventById(task.id)
+      event.setProp('title', task.title)
+      event.setProp('date', task.due_date.format('YYYY-MM-DD'))
+      event.setExtendedProp('task', task)
+    }
+    else {
+      const eventId = createEventId()
+      task.id = eventId
+        
+      calendarApi.addEvent({
+        id: eventId,
+        title: task.title,
+        date: task.due_date.format('YYYY-MM-DD'),
+        extendedProps: {
+          'type': 'task',
+          'task': task 
         }
       })
     }
@@ -127,11 +154,12 @@ export class CalendarComponent implements OnInit {
       this.openAppointDialog(true, appointment)
     }
     else if (type == 'task') {
-      this.openTaskDialog(true)
+      const task = clickInfo.event.extendedProps['task'];
+      this.openTaskDialog(true, task)
     }
-    // if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-    //   clickInfo.event.remove();
-    // }
+    /*if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+       clickInfo.event.remove();
+    }*/
   }
 
   handleEvents(events: EventApi[]) {

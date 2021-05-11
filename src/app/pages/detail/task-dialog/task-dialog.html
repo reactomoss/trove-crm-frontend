@@ -4,19 +4,19 @@
     <span>Task Title *</span>
     <div>
       <mat-form-field appearance="outline" class="formControl noLabelForm">
-          <input matInput>
+          <input matInput [(ngModel)]="task.title">
       </mat-form-field>
   </div>
   </div>
     <span>Task Content *</span>
     <mat-form-field appearance="outline" class="formControl noLabelForm">
-        <textarea matInput ></textarea>
+        <textarea matInput [(ngModel)]="task.content"></textarea>
     </mat-form-field>
     <span>Due Date</span>
     <div class="dateDiv">
         <div>
             <mat-form-field appearance="outline" [style.width.px]=155 class="formControl noLabelForm datePicker iconColorPath">
-                <input matInput [matDatepicker]="dueDatePicker" readonly>
+                <input matInput [matDatepicker]="dueDatePicker" readonly [(ngModel)]="task.due_date">
                 <mat-datepicker-toggle matSuffix [for]="dueDatePicker"></mat-datepicker-toggle>
                 <mat-datepicker #dueDatePicker></mat-datepicker>
             </mat-form-field>
@@ -24,7 +24,7 @@
         <div>
           <mat-form-field appearance="outline" [style.width.px]=155 class="formControl timePickerBox iconColorPath">
             <div class="d-flex">
-              <input matInput [ngxTimepicker]="dueTimepicker" [disableClick]="true" readonly>
+              <input matInput [ngxTimepicker]="dueTimepicker" [disableClick]="true" readonly [(ngModel)]="task.due_time">
             <ngx-material-timepicker-toggle [for]="dueTimepicker"></ngx-material-timepicker-toggle>
             <ngx-material-timepicker #dueTimepicker></ngx-material-timepicker>
             </div>
@@ -36,7 +36,7 @@
     <div class="dateDiv">
       <div>
           <mat-form-field appearance="outline" [style.width.px]=155 class="formControl noLabelForm datePicker iconColorPath">
-              <input matInput [matDatepicker]="reminderDatePicker" readonly>
+              <input matInput [matDatepicker]="reminderDatePicker" readonly [(ngModel)]="task.remainder_date">
               <mat-datepicker-toggle matSuffix [for]="reminderDatePicker"></mat-datepicker-toggle>
               <mat-datepicker #reminderDatePicker></mat-datepicker>
           </mat-form-field>
@@ -44,7 +44,7 @@
       <div>
         <mat-form-field appearance="outline" [style.width.px]=155 class="formControl timePickerBox iconColorPath">
           <div class="d-flex">
-            <input matInput [ngxTimepicker]="reminderTimepicker" [disableClick]="true" readonly>
+            <input matInput [ngxTimepicker]="reminderTimepicker" [disableClick]="true" readonly [(ngModel)]="task.remainder_time">
           <ngx-material-timepicker-toggle [for]="reminderTimepicker"></ngx-material-timepicker-toggle>
           <ngx-material-timepicker #reminderTimepicker></ngx-material-timepicker>
           </div>
@@ -95,5 +95,5 @@
 </div>
 <div mat-dialog-actions>
     <button mat-button (click)="onNoClick()" class="cancelBtn">Cancel</button>
-    <button mat-button class="createBtn ml-3">{{isEdit ? 'Update' : 'Save'}}</button>
+    <button mat-button class="createBtn ml-3" (click)="onConfirm()">{{isEdit ? 'Update' : 'Save'}}</button>
 </div>
