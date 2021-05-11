@@ -35,7 +35,7 @@ export class CalendarComponent implements OnInit {
         right: 'scheduleTask',
     },
     initialView: 'dayGridMonth',
-    initialEvents: INITIAL_EVENTS,
+    //initialEvents: INITIAL_EVENTS,
     weekends: true,
     //editable: true,
     //selectable: true,
