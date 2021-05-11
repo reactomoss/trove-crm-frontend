@@ -3,7 +3,7 @@
 <mat-drawer-container hasBackdrop="true">
     <mat-drawer #drawer mode="Over" position="end" class="noScrollDrawer">
         <div class="drawerContainer">
-            <app-filter (closeDialog)="drawer.toggle()" (count)="filterCount=$event"></app-filter>
+            <app-filter (closeDialog)="drawer.toggle()"></app-filter>
         </div>
     </mat-drawer>
 
@@ -13,13 +13,13 @@
                 <div fxLayout="row" fxLayoutAlign="space-between" fxLayout.xs="column" >
                     <div class="topBarDiv">
                         <span class="title mr-3 fontObjektivMk mt-1">January 2021</span>
-                        <button mat-button class="scheduleAppointment" (click)="openAppointDialog(false)">Schedule an appointment</button>
+                        <button mat-button class="scheduleAppointment" (click)="openAppointDialog(false, null)">Schedule an appointment</button>
                     </div>
                 </div>
             </div>
 
             <div>
-                <full-calendar [options]="calendarOptions"></full-calendar>
+                <full-calendar #calendar [(options)]="calendarOptions"></full-calendar>
             </div>
         </div>
         <div class="col-md-2">

@@ -10,7 +10,8 @@ import {MaterialModule} from '../material/material.module';
 import { SettingsComponent } from './settings/settings.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { DetailComponent, StageDialog, EditDialog, ConfirmDialog, TaskDialog, AppointDialog, StageSnack } from './detail/detail.component';
+import { DetailComponent, StageDialog, EditDialog, ConfirmDialog, TaskDialog, StageSnack } from './detail/detail.component';
+import { AppointDialog } from './detail/appoint-dialog/appoint-dialog';
 import { EditorModule } from "@tinymce/tinymce-angular";
 import { TextEditorComponent } from './detail/text-editor/text-editor.component';
 import { WidgetComponent } from './detail/widget/widget.component';
@@ -41,8 +42,8 @@ import { CompanyDetailComponent } from './company-detail/company-detail.componen
 import { CompanyFilterComponent} from './company/filter/filter.component';
 import { NotesComponent } from './notes/notes.component';
 import { CalendarFilterComponent } from './calendar/filter/filter.component';
-import { CalendarComponent } from './calendar/calendar.component';
 import { FullCalendarModule } from '@fullcalendar/angular'; 
+import { CalendarComponent } from './calendar/calendar.component';
 import dayGridPlugin from '@fullcalendar/daygrid'; 
 import interactionPlugin from '@fullcalendar/interaction';
 
