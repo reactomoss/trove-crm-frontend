@@ -5,14 +5,8 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { EventInput } from '@fullcalendar/core';
 import { FullCalendarComponent, CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/angular';
 import { AppointDialog, Appointment } from '../detail/appoint-dialog/appoint-dialog';
-import { TaskDialog } from '../detail/detail.component';
+import { TaskDialog } from '../detail/task-dialog/task-dialog';
 import { INITIAL_EVENTS, createEventId } from './event-utils';
-
-export class Task {
-  constructor(public name: string, public icon: string , public color: string, public desc: string,  public selected?: boolean) {
-    if (selected === undefined) selected = false
-  } 
-}
 
 @Component({
   selector: 'app-calendar',
@@ -40,13 +34,6 @@ export class CalendarComponent implements OnInit {
     eventsSet: this.handleEvents.bind(this)
   }
   currentEvents: EventApi[] = [];
-
-  tasks: Task[] = [
-    new Task("Packet Monster Sales opportunity", "notification", "default", "Today at 9:00"),
-    new Task("Ux design meeting at 17:30hrs.", "calendar", "red", "Sat, 21 Apr, 2021"),
-    new Task("Landing page required for new CRM app", "notification", "default", "Sun, 22 Apr, 2021"),
-    new Task("Meeting required for new CRM app", "calendar", "default", "Mon, 23 Apr, 2021"),
-  ]
 
   constructor(
     public dialog: MatDialog, 
