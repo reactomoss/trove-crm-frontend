@@ -167,9 +167,19 @@ export class AppointDialog {
     this.dialogRef.close()
   }
 
+  onDelete(): void {
+    this.dialogRef.close({
+      action: 'delete',
+      appointment: this.appointment
+    })
+  }
+
   onConfirm() : void {
     console.log('appointment:', this.appointment)
-    this.dialogRef.close(this.appointment)
+    this.dialogRef.close({
+      action: 'update',
+      appointment: this.appointment
+    })
   }
 
   deleteSelected(e) {

@@ -13,6 +13,7 @@ import {
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { LeadDialog } from 'src/app/shared/header/header.component';
 import { AppointDialog } from './appoint-dialog/appoint-dialog';
+import { TaskDialog } from './task-dialog/task-dialog';
 
 @Component({
   selector: 'app-detail',

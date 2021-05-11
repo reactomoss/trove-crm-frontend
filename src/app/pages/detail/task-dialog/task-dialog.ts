@@ -163,9 +163,19 @@ export class TaskDialog {
     this.dialogRef.close();
   }
 
+  onDelete(): void {
+    this.dialogRef.close({
+      action: 'delete',
+      task: this.task
+    });
+  }
+
   onConfirm() : void {
     console.log('task:', this.task)
-    this.dialogRef.close(this.task)
+    this.dialogRef.close({
+      action: 'update',
+      task: this.task
+    })
   }
 
   deleteSelected(e) {

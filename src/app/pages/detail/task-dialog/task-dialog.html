@@ -94,6 +94,11 @@
 
 </div>
 <div mat-dialog-actions>
-    <button mat-button (click)="onNoClick()" class="cancelBtn">Cancel</button>
+    <div>
+        <button mat-button (click)="onDelete()" class="deleteBtn" disabled="{{!isEdit}}">Delete</button>
+    </div>
+    <div>
+        <button mat-button (click)="onNoClick()" class="cancelBtn">Cancel</button>
     <button mat-button class="createBtn ml-3" (click)="onConfirm()">{{isEdit ? 'Update' : 'Save'}}</button>
+    </div>
 </div>

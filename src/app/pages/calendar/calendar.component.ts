@@ -49,10 +49,15 @@ export class CalendarComponent implements OnInit {
       data : { isEdit: isEdit, appointment: appointment }
     });
 
-    dialogRef.afterClosed().subscribe(appointment => {
-      console.log(`Dialog sent: ${appointment}`);
-      if (appointment) {
-        this.addAppointmentEvents(appointment)
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog sent: ${result}`);
+      if (result) {
+        if (result.action == 'delete') {
+            this.deleteAppointment(result.appointment)
+        }
+        else {
+            this.addAppointmentEvent(result.appointment)
+        }
       }
     })
   }
@@ -63,16 +68,21 @@ export class CalendarComponent implements OnInit {
       data : { isEdit: isEdit, task: task }
     });
 
-    dialogRef.afterClosed().subscribe(task => {
-      console.log(`Dialog sent: ${task}`);
-      if (task) {
-        this.addTaskEvents(task)
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog sent: ${result}`);
+      if (result) {
+        if (result.action == 'delete') {
+            this.deleteTask(result.task)
+        }
+        else {
+            this.addTaskEvent(result.task)
+        }
       }
     })
   }
 
-  private addAppointmentEvents(appointment: Appointment) {
-    console.log('updateCalendarAppointmentEvents:', appointment);
+  private addAppointmentEvent(appointment: Appointment) {
+    console.log('addAppointmentEvent:', appointment);
     const calendarApi = this.calendarComponent.getApi()
     calendarApi.unselect();
 
@@ -100,8 +110,16 @@ export class CalendarComponent implements OnInit {
     }
   }
 
-  private addTaskEvents(task: NTask) {
-    console.log('updateCalendarTaskEvents:', task);
+  private deleteAppointment(appointment: Appointment) {
+    if (appointment.id) {
+      const calendarApi = this.calendarComponent.getApi()
+      const event = calendarApi.getEventById(appointment.id)
+      event.remove()
+    }
+  }
+
+  private addTaskEvent(task: NTask) {
+    console.log('addTaskEvent:', task);
     const calendarApi = this.calendarComponent.getApi()
     calendarApi.unselect();
 
@@ -124,6 +142,14 @@ export class CalendarComponent implements OnInit {
           'task': task 
         }
       })
+    }
+  }
+
+  private deleteTask(task: NTask) {
+    if (task.id) {
+      const calendarApi = this.calendarComponent.getApi()
+      const event = calendarApi.getEventById(task.id)
+      event.remove()
     }
   }
 
