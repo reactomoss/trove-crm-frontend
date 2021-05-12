@@ -1,6 +1,6 @@
 .topBar {
     background-color: white;
-    padding: 20px 40px;
+    padding: 20px 30px;
 }
 
 /*stage*/
@@ -18,6 +18,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 .stage-item:before,
 .stage-item:after {
@@ -30,8 +31,8 @@
 }
 .stage-item:after {
   border-left-color: inherit;
-  border-width: 21px;
-  margin-top: -21px;
+  border-width: 20px;
+  margin-top: -20px;
 }
 .stage-item:before {
   border-color: rgba(255, 255, 255, 0);
@@ -39,19 +40,24 @@
   border-width: 27px;
   margin-top: -27px;
 }
-.stage-item.stage-active {
+.stage-item.stage-first {
   color: #002868;
   font-weight: bold;
 }
 .stage-item span {
     margin-left: 30px;
 }
-.stage-item.stage-active span {
+.stage-item.stage-first span {
     margin-left: 0;
 }
-.stage-item.stage-active:after {
-  /* border-left-color: #002868; */
+.stage-item.stage-active {
+    background-color: #002868;
+    color: white;
 }
+.stage-item.stage-active:after {
+  border-left-color: #002868;
+}
+
 
 .top1 {
     display: flex;
@@ -86,17 +92,7 @@
 
 .mainPart {
     padding: 20px 30px 0;
-    max-height: calc(100vh - 190px);    
-    overflow: auto;
-}
-
-.mainPart {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-}
-
-.mainPart::-webkit-scrollbar {
-  display: none;
+    max-height: calc(100vh - 195px);
 }
 
 .leftPart {
@@ -114,10 +110,9 @@
     display: flex;
 }
 
-.leftItem1 mat-icon {
-    font-size: 20px;
-    width: 28px;
-    height: 28px;
+.leftItem1 .roundBusiness {
+    width: 32px;
+    height: 32px;
     border-radius: 7px;
     background: rgba(208, 217, 222, 0.2);
     border: 1px solid #D0D9DE;
@@ -140,13 +135,19 @@
 }
 
 .leftItem2 {
-    margin-top: 15px;
+    padding: 15px 0;
     border-bottom: 1px solid #E4E9EF;
+}
+
+.selectLabel {
+    font-size: 12px;
+    line-height: 14px;
+    color: #455B66;
 }
 
 .leftItem2 mat-form-field {
     width: 100px;
-    font-size: 14px;
+    font-size: 13px;
     margin-bottom: -1em;
 }
 
@@ -207,8 +208,7 @@
 }
 
 .leftItem4 {
-    padding: 15px 0;
-    border-bottom: 1px solid #E4E9EF;
+    padding: 15px 0 0;
 }
 
 .leftItem4 .pType1{
@@ -235,6 +235,7 @@
     color: #455B66;
 }
 
+/*
 .leftItem5 {
     padding: 15px 0;
 }
@@ -260,14 +261,14 @@
 .leftItem5 button mat-icon{
     font-size: 14px;
     padding-top: 5px;
-}
+} */
 
 .centerContent {
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
     background-color: white;
     border: 1px solid #D0D9DE;
-    padding: 10px
+    padding: 10px 15px;
 }
 
 .selectSpan {
@@ -284,7 +285,12 @@
     justify-content: space-between;
 }
 
-.centerContent .centerTitle .commentIcon{
+.infoDiv {
+    display: flex;
+    align-items: center;
+}
+
+.infoDiv .commentIcon{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -292,22 +298,20 @@
     border-radius: 3px;
     font-size: 18px;
     color: #455B66;
-    margin-right: 10px;
-}
-
-.infoDiv {
-    display: flex;
-    align-items: center;
+    margin-right: 6px;
+    background: rgba(208, 217, 222, 0.2);
+    width: 24px;
+    height: 24px;
 }
 
 .centerContent .centerItem {
-    padding: 10px 0 20px;
+    padding: 10px 0 15px;
     border-bottom: 1px solid #E4E9EF;
 }
 
 .centerContent .centerTitle .span1{
     color: #002868;
-    font-size: 13px;
+    font-size: 12.5px;
 }
 
 .centerContent .centerTitle .span2{
@@ -325,20 +329,54 @@
     display: flex;
     align-items: center;
     font-size: 16px;
+    opacity: .8;
 }
 
 .centerContent .centerTitle .span3{
     color: #455B66;
     font-size: 12px;
+    opacity: .8;
 }
 
 .centerContent .centerMsg {
-    margin-top: 5px;
+    margin-top: 12px;
+    margin-left: 40px;
+    font-weight: 500;
     font-size: 12px;
-    margin-left: 36px;
+    line-height: 17px;
+
+    color: #253238;
+}
+
+.centerContent .centerMsg1 {
+    margin-top: 12px;
+    margin-left: 40px;
+    color: #253238;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 17px;
+}
+
+.tx14 {
+    font-size: 14px;
+}
+
+.txItalic {
+    font-style: italic;
+}
+
+.txComment {
+    color: #002868;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.lineHeightMd {
+    line-height: 2;
 }
 
 .stage-new {
+    color: #002868;
     font-weight: bold;
     cursor: pointer;
 }
@@ -346,3 +384,35 @@
 .mat-dialog-title {
     color: red;
 }
+
+.centerPart {
+    position: relative;
+}
+
+
+
+.positionRelative {
+    position: relative;
+}
+
+.stageSpan {
+    position: absolute;
+    left: 25px;
+    top: 14px;
+    font-weight: normal;
+}
+
+.firstStagePan {
+    position: absolute;
+    left: 15px;
+    top: 14px;
+    font-weight: 600;
+    color: #002868;
+}
+
+.activeSpan {
+    color: white;
+}
+
+
+

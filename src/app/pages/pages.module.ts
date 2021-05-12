@@ -12,11 +12,9 @@ import { SettingsComponent } from './settings/settings.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { DetailComponent, StageDialog, EditDialog, ConfirmDialog, TaskDialog, AppointDialog, StageSnack } from './detail/detail.component';
-import { DemoMaterialModule } from '../material/material-module';
 import { EditorModule } from "@tinymce/tinymce-angular";
 import { TextEditorComponent } from './detail/text-editor/text-editor.component';
 import { WidgetComponent } from './detail/widget/widget.component';
-import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { FilterComponent } from './leads/filter/filter.component';
 import { ProfileComponent } from './settings/profile/profile.component';
 import { UsersrolesComponent } from './settings/usersroles/usersroles.component';
@@ -28,16 +26,48 @@ import { PipelinestagesComponent } from './settings/pipelinestages/pipelinestage
 import { TermsservicesComponent } from './settings/termsservices/termsservices.component';
 import { PrivacypolicyComponent } from './settings/privacypolicy/privacypolicy.component';
 import { PlanspricingComponent } from './settings/planspricing/planspricing.component';
+import { SimplebarAngularModule } from 'simplebar-angular';
+import { NgxSliderModule } from "@angular-slider/ngx-slider";
+import { ContactFilterComponent } from './contact/filter/filter.component';
+import { ContactComponent, MailDialog } from './contact/contact.component';
+import { ContactTableComponent } from './contact/contact-table/contact-table.component';
+import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
+import { ContactDetailComponent } from './contact-detail/contact-detail.component';
+import { TaskComponent } from './task/task.component';
+import { TaskFilterComponent } from './task/task-filter/task-filter.component';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { CompanyComponent, CompanyMailDialog } from './company/company.component';
+import { CompanyTableComponent } from './company/company-table/company-table.component';
+import { CompanyDetailComponent } from './company-detail/company-detail.component';
+import {CompanyFilterComponent} from './company/filter/filter.component';
+import { EditnoteComponent } from './editnote/editnote.component';
+import { AddnoteComponent } from './addnote/addnote.component';
+import { SourcechartComponent } from './sourcechart/sourcechart.component';
+import { SourceFilterComponent } from './sourcechart/source-filter/source-filter.component';
+import { SourceTableComponent } from './sourcechart/source-table/source-table.component';
+import { ActivitylogComponent } from './activitylog/activitylog.component';
+import { ActivitylistComponent } from './detail/activitylist/activitylist.component';
+import { ContactActivitylistComponent } from './contact-detail/contact-activitylist/contact-activitylist.component';
+import { CompanyActivitylistComponent } from './company-detail/company-activitylist/company-activitylist.component';
 import { RolesComponent } from './settings/usersroles/roles/roles.component';
+
 const routes: Routes = [
-  //{ path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: PagesComponent, canActivate:[AuthGuardService]},
-  //{ path: 'settings', loadChildren: () => import('./settings/settings.module') .then(m=>m.SettingsModule), canActivate:[AuthGuardService]},
-  { path: 'settings', component: SettingsComponent},
-  { path: 'leads', component: LeadsComponent , canActivate:[AuthGuardService]},
-  { path: 'detail', component: DetailComponent , canActivate:[AuthGuardService]},
-  {path: '**', component: LeadsComponent}
-];
+  // {path:'settings' , loadChildren: () => import('./settings/settings.module') .then(m=>m.SettingsModule)},
+  { path: 'settings', component: SettingsComponent },
+  { path: 'leads', component: LeadsComponent },
+  { path: 'lead_detail', component: DetailComponent },
+  { path: 'contact', component: ContactComponent },
+  { path: 'contact_detail', component: ContactDetailComponent },
+  { path: 'task', component: TaskComponent },
+  { path: 'company', component: CompanyComponent},
+  { path: 'company_detail', component: CompanyDetailComponent},
+  { path: 'addnote', component: AddnoteComponent},
+  { path: 'editnote', component: EditnoteComponent},
+  { path: 'sourcedetail' , component: SourcechartComponent},
+  { path: 'activities', component: ActivitylogComponent}
+]
 @NgModule({
   declarations: [
     PagesComponent,LeadsComponent,LeadTableComponent,SettingsComponent,
@@ -61,7 +91,28 @@ const routes: Routes = [
     PipelinestagesComponent,
     TermsservicesComponent,
     PrivacypolicyComponent,
-    PlanspricingComponent
+    PlanspricingComponent,
+    ContactFilterComponent,
+    ContactComponent,
+    ContactTableComponent,
+    MailDialog,
+    ContactDetailComponent,
+    TaskComponent,
+    TaskFilterComponent,
+    CompanyComponent,
+    CompanyTableComponent,
+    CompanyDetailComponent,
+    CompanyFilterComponent,
+    CompanyMailDialog,
+    EditnoteComponent,
+    AddnoteComponent,
+    SourcechartComponent,
+    SourceFilterComponent,
+    SourceTableComponent,
+    ActivitylogComponent,
+    ActivitylistComponent,
+    ContactActivitylistComponent,
+    CompanyActivitylistComponent
   ],
   imports: [
     CommonModule,
@@ -72,9 +123,12 @@ const routes: Routes = [
     ReactiveFormsModule,
     FormsModule,
     FlexLayoutModule,
-    DemoMaterialModule,
     EditorModule,
-    NgxSliderModule
+    SimplebarAngularModule,
+    NgxSliderModule,
+    FroalaEditorModule.forRoot(),
+    FroalaViewModule.forRoot(),
+    NgxMaterialTimepickerModule,
   ],
   exports: [RouterModule],
 })

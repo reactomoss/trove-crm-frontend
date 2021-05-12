@@ -3,165 +3,103 @@
     <div class="top1">
         <mat-icon (click)="goToList()">arrow_back</mat-icon>
         <span>Packet Monster Sales opportunity</span>
-        <button mat-button class="ml-5" (click)="openEditDialog()">
+        <button mat-button class="ml-5" (click)="editLead()">
             <mat-icon class="iconInButton">edit</mat-icon>
             Edit
         </button>
     </div>
     <div class="top2">
-        <div class="stage-wrapper">
-            <div *ngFor="let stage of stages; let i = index" class={{getStageClass(i)}}>
-                <span>{{stage}}</span>
-            </div>
-            <!-- <div class="stage-item stage-active">Sales Pipeline</div>
-            <div class="stage-item">Discovery</div>
-            <div class="stage-item">Qualified</div>
-            <div class="stage-item">Evolution</div>
-            <div class="stage-item">Negotiation</div>
-            <div class="stage-item">Closed</div> -->
-            <div class="stage-item stage-new" (click)="openStageDialog()">
-                <span>New Stage</span>
-            </div>
+        <div class="alignCenter">
+          <span class="position-relative mr-2">
+            <img src="../../../assets/images/stage/start-active-stage-lg.svg">
+            <span class="firstStagePan activeSpan">Sales Pipeline</span>
+          </span>
+
+            <ng-container *ngFor="let e of stages; let i = index" >
+                <div class="alignCenter positionRelative cursorPointer" [style.left.px]="getLeftOffset(i)"
+                    (click)="selectedStage = i">
+                    <img src="{{getStageSrc(i)}}">
+                    <span class="stageSpan"
+                            [class.activeSpan]="selectedStage == i">{{e}}</span>
+                </div>
+            </ng-container>
+            <!-- <div class="alignCenter positionRelative cursorPointer" [style.left.px]="getLeftOffset(stages.length)"
+                (click)="openStageDialog()">
+                <img src="../../../assets/images/stage/new-stage-lg.png">
+                <span class="stageSpan">New Stage</span>
+            </div> -->
         </div>
     </div>
 </div>
 
-<div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" class="mainPart">
-    <div class="leftPart" fxFlex="22" fxFill>
-        <div class="leftItem1">
-            <mat-icon>edit</mat-icon>
-            <div>
-                <span class="span1">Packet Monster</span><br/>
-                <span class="span2">Employee at Packet Monster, Inc</span>
-            </div>
-        </div>
-        <div class="leftItem2">
-            <mat-form-field>
-                <mat-label>Status</mat-label>
-                <mat-select>
-                    <mat-option value="Progress">
-                        Progress
-                    </mat-option>
-                    <mat-option value="Won">
-                        Won
-                    </mat-option>
-                    <mat-option value="Lost">
-                        Lost
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
-        <div class="leftItem3">
-            <div class="personInfo">
+<ngx-simplebar [options]="scrollOptions" class="mainPart lightBackground">
+    <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column">
+        <div class="leftPart" fxFlex="22" fxFill>
+            <div class="leftItem1">
+                <div class="roundBusiness">
+                    <img alt="Image" src="../../../assets/images/business.svg" width="14" height="14">
+                </div>
                 <div>
-                    <img alt="Image" src="../../../assets/images/user-sample.png">
-                </div>
-                <div class="ml-2">
-                    <span class="span1">Wes Studi</span><br>
-                    <span class="span2">Manager</span>
+                    <span class="span1">Packet Monster</span><br/>
+                    <span class="span2">Employee at Packet Monster, Inc</span>
                 </div>
             </div>
-            <div class="panel">
-                <mat-icon>phone</mat-icon> Work <span class="span3">869 673 5678</span>
+
+            <div class="leftItem2">
+                <span class="selectLabel">Status</span><br>
+                <mat-form-field class="statusSelect">
+                    <mat-select [(value)]="status">
+                        <mat-option value="Progress">
+                            Progress
+                        </mat-option>
+                        <mat-option value="Won">
+                            Won
+                        </mat-option>
+                        <mat-option value="Lost">
+                            Lost
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
-            <div class="panel">
-                <mat-icon>phone</mat-icon> Personal <span class="span3">869 673 5678</span>
+
+            <div class="leftItem3">
+                <div class="personInfo">
+                    <div>
+                        <img alt="Image" src="../../../assets/images/user-sample.png">
+                    </div>
+                    <div class="ml-2">
+                        <span class="span1">Wes Studi</span><br>
+                        <span class="span2">Manager</span>
+                    </div>
+                </div>
+                <div class="panel">
+                    <mat-icon>phone</mat-icon> Work <span class="span3">869 673 5678</span>
+                </div>
+                <div class="panel">
+                    <mat-icon>phone</mat-icon> Personal <span class="span3">869 673 5678</span>
+                </div>
+                <div class="panel">
+                    <mat-icon>email</mat-icon> Email <span class="span4">wesstudi@pocketmonster.com</span>
+                </div>
             </div>
-            <div class="panel">
-                <mat-icon>email</mat-icon> Email <span class="span4">wesstudi@pocketmonster.com</span>
+            <div class="leftItem4">
+                <p class="pType1">Estimated cloding date</p>
+                <p class="pType2">16/1/2021</p>
+                <p class="pType1">Added on</p>
+                <p class="pType2">1/1/2021</p>
+                <p class="pType1">Lead source</p>
+                <p class="pType2">LinkedIn</p>
+                <p class="pType1">Description</p>
+                <p class="pType3">Enter a fixed salary, assign Recurring Schedule.</p>
             </div>
         </div>
-        <div class="leftItem4">
-            <p class="pType1">Estimated cloding date</p>
-            <p class="pType2">16/1/2021</p>
-            <p class="pType1">Added on</p>
-            <p class="pType2">1/1/2021</p>
-            <p class="pType1">Lead source</p>
-            <p class="pType2">LinkedIn</p>
-            <p class="pType1">Description</p>
-            <p class="pType3">Enter a fixed salary, assign Recurring Schedule.</p>
+
+        <div class="centerPart" fxFlex="50">
+            <app-text-editor></app-text-editor>
+            <app-activitylist></app-activitylist>
         </div>
-        <div class="leftItem5">
-            <p class="pType1">Tags</p>
-            <button mat-button>
-                James
-                <mat-icon class="iconInButton">close</mat-icon>
-            </button>
+        <div fxFlex="28">
+            <app-widget (addTaskClicked) = "openTaskDialog($event)" (addAppointClicked) = "openAppointDialog($event)"></app-widget>
         </div>
     </div>
-    <div class="centerPart" fxFlex="50">
-        <app-text-editor></app-text-editor>
-        <div>
-            <span class="selectSpan">Displaying</span>
-            <mat-form-field style="width: 90px">
-                <mat-select>
-                    <mat-option value="0">
-                        All activity
-                    </mat-option>
-                    <mat-option value="1">
-                        Notes
-                    </mat-option>
-                    <mat-option value="2">
-                        Email
-                    </mat-option>
-                    <mat-option value="3">
-                        Call
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
-        <div class="centerContent">
-            <div class="centerItem">
-                <div class="centerTitle">
-                    <div class="infoDiv">
-                        <mat-icon class="commentIcon">comment</mat-icon>
-                        <div>
-                            <span class="span1">
-                                Wes Studi
-                            </span>
-                            <span class="span2">
-                                wrote a note for Brian Markinson
-                            </span>
-                        </div>
-                    </div>
-                    <div class="actionDiv">
-                        <mat-icon>edit</mat-icon>
-                        <mat-icon>delete</mat-icon>
-                        <span class="span3">1/1/2021 7:30AM</span>
-                    </div>
-                </div>
-                <div class="centerMsg">
-                    Helllo Markinson!<br>
-                    Hope your team will implement many new exciting features in the upcoming versions.
-                </div>
-            </div>
-            <div class="centerItem">
-                <div class="centerTitle">
-                    <div class="infoDiv">
-                        <mat-icon class="commentIcon">comment</mat-icon>
-                        <div>
-                            <span class="span1">
-                                Wes Studi
-                            </span>
-                            <span class="span2">
-                                wrote a note for Brian Markinson
-                            </span>
-                        </div>
-                    </div>
-                    <div class="actionDiv">
-                        <mat-icon>edit</mat-icon>
-                        <mat-icon>delete</mat-icon>
-                        <span class="span3">1/1/2021 7:30AM</span>
-                    </div>
-                </div>
-                <div class="centerMsg">
-                    Helllo Markinson!<br>
-                    Hope your team will implement many new exciting features in the upcoming versions.
-                </div>
-            </div>
-        </div>
-    </div>
-    <div fxFlex="28">
-        <app-widget (addTaskClicked) = "openTaskDialog()" (addAppointClicked) = "openAppointDialog()"></app-widget>
-    </div>
-</div>
+</ngx-simplebar>

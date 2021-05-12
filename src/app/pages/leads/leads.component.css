@@ -12,9 +12,16 @@
     color: #253238;
 }
 
-.main-content {
+.mainContent {
     background: #EFF2F7;
-    padding: 0 20px;
+}
+
+.cardWrapper {
+    height: calc(100vh - 239px);
+}
+
+.cardWrapper mat-card-title {
+    margin-bottom: 0;
 }
 
 .footer {
@@ -84,7 +91,7 @@
     background: #E9EDF2;
     padding: 0 10px;
     margin: 0 5px;
-    min-width: 160px;
+    min-width: 270px;
 }
 
 .list-title {
@@ -93,12 +100,13 @@
     font-size: 14px;
     line-height: 20px;
     color: #202D3F;
-    margin: 15px;
+    margin: 10px 15px 0;
 }
 
 mat-card {
     border-radius: 6px;
     margin: 10px 0;
+    cursor: pointer;
 }
 
 .iconInButton {
@@ -124,7 +132,7 @@ mat-card {
 .card-sub-title2 {
     font-style: normal;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 20px;
     color: #253238;
 }
@@ -132,10 +140,11 @@ mat-card {
 .card-sub-title3 {
     font-style: normal;
     font-weight: normal;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 17px;
 
     color: #253238;
+    margin-bottom: 0;
 }
 
 .card-sub-title4 {
@@ -201,8 +210,7 @@ mat-card {
 
 .rightPart {
     border-left: solid 1px #ddd;
-    max-width: 330px;
-    min-width: 324px;
+    min-width: 360px;
 }
 
 .topInRightPart {
@@ -210,7 +218,7 @@ mat-card {
     padding: 18px 12px;
     display: flex;
     align-items: center;
-    border-bottom: 1px solid #ddd;
+    /* border-bottom: 1px solid #ddd; */
 }
 
 .topInRightPart span {
@@ -225,7 +233,8 @@ mat-card {
 }
 
 .drawerContainer {
-    width: 324px;
+    /* width: 324px; */
+    width:360px;
 }
 
 .drawerContainerTop {
@@ -235,12 +244,10 @@ mat-card {
 }
 
 .closeButton {
-    width: 24px;
-    height: 24px;
     padding: 0;
     border: 1px solid #E6EAF0;
     line-height: normal;
-    min-width: 0;
+    min-width: 24px;
 }
 
 .clearAllButton {
@@ -248,6 +255,7 @@ mat-card {
     border: 1px solid #D0D9DE;
     font-size: 12px;
     line-height: 30px;
+    margin-left: auto;
 }
 
 .drawerContainerTop span {
@@ -255,23 +263,7 @@ mat-card {
     font-weight: bold;
 }
 
-.scrollContainer {
-    max-height: calc(100vh - 210px);
-    overflow-y: scroll;
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-}
-
-.scrollContainer::-webkit-scrollbar {
-  display: none;
-}
-
-.tableContainer {
-    padding: 20px;
-}
-
 .searchForm {
-    margin-bottom: -1.25em;
     width: 220px;
 }
 
@@ -294,7 +286,7 @@ mat-card {
     align-items: center;
 }
 
-.optionDiv img { 
+.optionDiv img {
     border-radius: 6px;
 }
 
@@ -312,6 +304,38 @@ mat-card {
     margin-bottom: 0;
 }
 
-.searchForm mat-icon {
-    color: gray;
+.tableContainer {
+    max-height: calc(100vh - 140px);
+    padding: 20px;
 }
+
+.filterContainer1 {
+    max-height: calc(100vh - 200px);
+}
+
+.filterContainer2 {
+    max-height: calc(100vh - 130px);
+}
+
+p {
+    font-family: objektiv-mk3, sans-serif;
+}
+
+.moneyIcon {
+    width: 35px;
+    height: 35px;
+    background: #F3F5F9;
+    font-size: 25px;
+    display: flex;
+    color: #455B66;
+    align-items: center;
+    justify-content: center;
+    border-radius: 7.2px;
+}
+
+.smallIcon {
+    font-size: 20px;
+    margin-top: 6px;
+}
+
+

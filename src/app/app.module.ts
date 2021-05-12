@@ -26,7 +26,7 @@ import { AuthTwitterService } from './services/auth-twitter.service';
 import { MaterialModule } from './material/material.module';
 import { SpinnerOverlayComponent } from './core/spinner-overlay/spinner-overlay.component';
 import {SettingsApiService} from './services/settings-api.service';
-
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 const routes: Routes = [
   { path: '', redirectTo: 'user', pathMatch: 'full' },
   {
@@ -95,7 +95,8 @@ const config: ExtraOptions = {
         ]
       } as SocialAuthServiceConfig,
     },
-    AuthTwitterService
+    AuthTwitterService,
+    NgbModule,
   ],
   exports: [RouterModule],
   bootstrap: [AppComponent],

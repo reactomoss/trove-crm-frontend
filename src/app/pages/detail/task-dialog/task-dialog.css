@@ -27,7 +27,18 @@
     border-radius: 3px;
     font-weight: bold;
     font-size: 16px;
-    width: 119px;
+    width: auto;
+}
+
+.deleteBtn {
+  background: #EFF2F7;
+  border: 1px solid #D0D9DE;
+  border-radius: 3px;
+  font-weight: bold;
+  font-size: 16px;
+  width: auto;
+  height: 40px;
+  color: #FF0000;
 }
 
 .createBtn {
@@ -37,7 +48,7 @@
     font-weight: bold;
     font-size: 16px;
     color: #FFFFFF;
-    width: 119px;
+    width: auto;
 }
 
 span {
@@ -46,11 +57,6 @@ span {
     line-height: 17px;
 
     color: #253238;
-}
-
-.formControl {
-    margin-bottom: -0.5em;
-    width: 100%;
 }
 
 .dateDiv, .reminderDiv {
@@ -64,7 +70,7 @@ span {
     align-items: center;
 }
 
-.optionDiv img { 
+.optionDiv img {
     border-radius: 6px;
 }
 

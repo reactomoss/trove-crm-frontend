@@ -3,6 +3,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-leads',
@@ -10,12 +11,13 @@ import { map, startWith } from 'rxjs/operators';
   styleUrls: ['./leads.component.css']
 })
 
-  
 export class LeadsComponent implements OnInit {
+  scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
+  showFilter: boolean = false
   listShow: boolean = false
   stages: string[] = ['Discovery', 'Qualified', 'Evolution', 'Negotiation', 'Closed']
 
-  discovery: number[] = [1, 2, 3, 4, 5]
+  discovery: number[] = [100, 2, 3, 4, 5]
   qualified: number[] = [1, 2]
   evolution: number[] = [1]
   negotiation: number[] = [1]
@@ -26,21 +28,24 @@ export class LeadsComponent implements OnInit {
   filteredOptions: Observable<string[]>;
   active: number = 1
 
-  constructor() { }
+  filterCount: number = 0
+  viewLeads = "pipe1"
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value))
     )
+
   }
-  
+
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
     return this.options.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
   }
-  
+
   public activeClass(num) {
     if (num == this.active)
       return 'activeBtn'
@@ -74,23 +79,35 @@ export class LeadsComponent implements OnInit {
 
   showCards() {
     this.listShow = false
+    this.showFilter = false
   }
-  
+
   dropped(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,
         event.previousIndex,
         event.currentIndex
-      );
+      )
     } else {
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex
-      );
+      )
    }
   }
 
+  clickCard() {
+    this.router.navigate(['/pages/lead_detail']);
+  }
+
+  filterCountChangedHandler(e) {
+    this.filterCount = e
+  }
+
+  clickFilter(){
+    this.showFilter = true
+  }
 }
