@@ -51,78 +51,15 @@ export interface USER {
   styleUrls: ['./usersroles.component.css'],
 })
 export class UsersrolesComponent implements OnInit, AfterViewInit {
-  /*For Role Table*/
-  //displayedRoleColumns: string[] = ['role', 'accessLevel', 'status', 'action'];
-  /*For Role Table*/
-  /*For User Table*/
-  /*displayedUserColumns: string[] = [
-    'user',
-    'role',
-    'accessLevel',
-    'status',
-    'action',
-  ];*/
-  /*For User Table*/
-  //dataSourceRole: MatTableDataSource<ROLE>; /*For Role Table*/
-  //dataSourceUser: MatTableDataSource<USER>; /*For User Table*/
-  /*For Role Table*/
-  /*@ViewChild('ROLESPAGINATOR', { static: true }) rolesPaginator: MatPaginator;
-  @ViewChild('ROLESSORT', { static: true }) rolesSort: MatSort;
-  @ViewChild('USERSPAGINATOR', { static: true }) usersPaginator: MatPaginator;
-  @ViewChild('USERSSORT', { static: true }) usersSort: MatSort;*/
-  ngAfterViewInit() {
-    /*this.dataSourceRole.paginator = this.rolesPaginator;
-    this.dataSourceRole.sort = this.rolesSort;
-    this.dataSourceUser.paginator = this.usersPaginator;
-    this.dataSourceUser.sort = this.usersSort;*/
-    this.listUsers();
-
-  }
-  /*rolesFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSourceRole.filter = filterValue.trim().toLowerCase();
-    if (this.dataSourceRole.paginator) {
-      this.dataSourceRole.paginator.firstPage();
-    }
-  }*/
-  /*usersFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSourceUser.filter = filterValue.trim().toLowerCase();
-    if (this.dataSourceUser.paginator) {
-      this.dataSourceUser.paginator.firstPage();
-    }
-  }*/
-  /*For Role Table*/
-  //roles: ROLE[]; /*For Role Table*/
-  //users: USER[]; /*For user Table*/
-  /*Modal dialog*/
   closeResult = '';
-  /*Modal dialog*/
   /*Browse File*/
   addPersonImage: File = null;
   addPersonImageUrl: string | ArrayBuffer =
     '../../../assets/images/settingsProfile.png';
-  /*Browse File*/
-  addPersonRoles: ADDPERSONROLE[] = [
-    {
-      value: '1',
-      viewValue: 'Operations manager',
-    },
-    {
-      value: '2',
-      viewValue: 'Office manager',
-    },
-    {
-      value: '3',
-      viewValue: 'Admin',
-    },
-  ];
   /*Add Person Mandatory checkbox*/
   isAddPersonMand: boolean;
   /*Add Person Mandatory checkbox*/
   addPersonForm: FormGroup;
-
-  addPersonRoleControl = new FormControl(this.addPersonRoles[2].value);
 
   constructor(
     private modalService: NgbModal,
@@ -131,7 +68,6 @@ export class UsersrolesComponent implements OnInit, AfterViewInit {
     private settingsApiService: SettingsApiService,
     private cdref: ChangeDetectorRef
   ) {
-
     //this.initaddPersonForm();
   }
   /*Browse file*/
@@ -165,160 +101,12 @@ export class UsersrolesComponent implements OnInit, AfterViewInit {
       return `with: ${reason}`;
     }
   }
-  /*Modal dialog*/
-
-  /*Create New Role Modal Settings All Modules checkbox
-  selectAllSettings() {
-    this.settingsPermission.map((r) => {
-      r.isSelected = this.isSelectAllSettings;
-    });
-  }
-
-  unSelectAllSettings(isSelected) {
-    if (!isSelected) {
-      this.isSelectAllSettings = false;
-    } else if (
-      this.settingsPermission.length ===
-      this.settingsPermission.filter((r) => {
-        return r.isSelected === true;
-      }).length
-    ) {
-      this.isSelectAllSettings = true;
-    }
-  }*/
-  /*Create New Role Modal Settings All Modules checkbox*/
-
-  /*Create New Role Modal Settings View checkbox
-  selectAllSettingsView() {
-    this.settingsPermission.map((r) => {
-      r.isSelectedView = this.isSelectAllSettingsView;
-    });
-  }
-
-  unSelectAllSettingsView(isSelected) {
-    if (!isSelected) {
-      this.isSelectAllSettingsView = false;
-    } else if (
-      this.settingsPermission.length ===
-      this.settingsPermission.filter((r) => {
-        return r.isSelectedView === true;
-      }).length
-    ) {
-      this.isSelectAllSettingsView = true;
-    }
-  }*/
-  /*Create New Role Modal Settings View checkbox*/
-
-  /*Create New Role Modal Settings Create checkbox
-  selectAllSettingsCreate() {
-    this.settingsPermission.map((r) => {
-      r.isSelectedCreate = this.isSelectAllSettingsCreate;
-    });
-  }
-
-  unSelectAllSettingsCreate(isSelected) {
-    if (!isSelected) {
-      this.isSelectAllSettingsCreate = false;
-    } else if (
-      this.settingsPermission.length ===
-      this.settingsPermission.filter((r) => {
-        return r.isSelectedCreate === true;
-      }).length
-    ) {
-      this.isSelectAllSettingsCreate = true;
-    }
-  }*/
-  /*Create New Role Modal Settings Create checkbox*/
-
-  /*Create New Role Modal Settings Create checkbox
-  selectAllSettingsEdit() {
-    this.settingsPermission.map((r) => {
-      r.isSelectedEdit = this.isSelectAllSettingsEdit;
-    });
-  }
-
-  unSelectAllSettingsEdit(isSelected) {
-    if (!isSelected) {
-      this.isSelectAllSettingsEdit = false;
-    } else if (
-      this.settingsPermission.length ===
-      this.settingsPermission.filter((r) => {
-        return r.isSelectedEdit === true;
-      }).length
-    ) {
-      this.isSelectAllSettingsEdit = true;
-    }
-  }*/
-  /*Create New Role Modal Settings Edit checkbox*/
 
   /** Users Code */
 
-  ngOnInit(): void {
-    /*For Role Table*/
-    /*this.roles = [
-      {
-        role: 'Operations manager',
-        accessLevel: 'Full access',
-      },
-      {
-        role: 'Office manager',
-        accessLevel: 'Limited access',
-      },
-      {
-        role: 'Office manager',
-        accessLevel: 'View only',
-      },
-      {
-        role: 'Office manager',
-        accessLevel: 'Limited access',
-      },
-      {
-        role: 'Office manager',
-        accessLevel: 'Edit only',
-      },
-      {
-        role: 'Office manager',
-        accessLevel: 'Full access',
-      },
-      {
-        role: 'Office manager',
-        accessLevel: 'Limited access',
-      },
-      {
-        role: 'Office manager',
-        accessLevel: 'Limited access',
-      },
-      {
-        role: 'Office manager',
-        accessLevel: 'Edit only',
-      },
-      {
-        role: 'Office manager',
-        accessLevel: 'Limited access',
-      },
-      {
-        role: 'Office manager',
-        accessLevel: 'Full access',
-      },
-    ];*/
-
-    /*For User Table*/
-    /*this.users = [
-      {
-        profile: 'http://localhost:4200/assets/images/welcomemail-image.jpg',
-        user: 'Allen',
-        role: 'Operations manager',
-        accessLevel: 'Full access',
-      },
-      {
-        profile: 'http://localhost:4200/assets/images/user-sample.png',
-        user: 'Peterson',
-        role: 'Operations manager',
-        accessLevel: 'Full access',
-      },
-    ];*/
-    //this.dataSourceRole = new MatTableDataSource(this.roles); /*For Role Table*/
-    //this.dataSourceUser = new MatTableDataSource(this.users); /*For User Table*/
+  ngOnInit(): void {}
+  ngAfterViewInit() {
+    this.listUsers();
   }
   /**=============================================================================================================== */
   // 1 - Initialize a form status object for the component
@@ -411,8 +199,6 @@ export class UsersrolesComponent implements OnInit, AfterViewInit {
   open(content, id="") {
     this.settingsApiService.initUserForm(id).subscribe(
       (res: any) => {
-        console.log('initUserForm');
-        console.log(res);
         if (res.success) {
           if (res.data.menu_previlages.create == 1) {
             this.userData = res.data.user;
@@ -425,6 +211,7 @@ export class UsersrolesComponent implements OnInit, AfterViewInit {
                   this.closeResult = `Closed with: ${result}`;
                 },
                 (reason) => {
+                  this.closeModal();
                   this.closeResult = `Dismissed ${this.getDismissReason(
                     reason
                   )}`;
@@ -438,34 +225,18 @@ export class UsersrolesComponent implements OnInit, AfterViewInit {
         }
       },
       (errorResponse: HttpErrorResponse) => {
-        //console.log(errorResponse);
         const messages = extractErrorMessagesFromErrorResponse(errorResponse);
-        console.log(messages);
         this.triggerSnackBar(messages.toString(), 'Close');
       }
     );
-    /*this.modalService
-      .open(content, { ariaLabelledBy: 'dialog001' })
-      .result.then(
-        (result) => {
-          this.closeResult = `Closed with: ${result}`;
-        },
-        (reason) => {
-          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        }
-      );*/
   }
   onSubmit() {
     if (!this.addPersonForm.valid) {
-      //console.log(this.registrationForm.controls.first_name.errors);
       return false;
     } else {
       // 2 - Call onFormSubmitting to handle setting the form as submitted and
       //     clearing the error and success messages array
       this.formStatus.onFormSubmitting();
-      console.log("submit");
-      console.log(this.addPersonForm.value);
-      console.log(this.addPersonImage);
       var formData: any = new FormData();
       if(this.addPersonImage){
         formData.append("profile_pic", this.addPersonImage, this.addPersonImage.name);
@@ -492,11 +263,9 @@ export class UsersrolesComponent implements OnInit, AfterViewInit {
             this.listUsers();
           },
           (errorResponse: HttpErrorResponse) => {
-            //console.log(errorResponse);
             const messages = extractErrorMessagesFromErrorResponse(
               errorResponse
             );
-            console.log(messages);
             this.triggerSnackBar(messages.toString(), 'Close');
           }
         );
@@ -511,11 +280,9 @@ export class UsersrolesComponent implements OnInit, AfterViewInit {
             this.listUsers();
           },
           (errorResponse: HttpErrorResponse) => {
-            //console.log(errorResponse);
             const messages = extractErrorMessagesFromErrorResponse(
               errorResponse
             );
-            console.log(messages);
             this.triggerSnackBar(messages.toString(), 'Close');
           }
         );
@@ -526,18 +293,12 @@ export class UsersrolesComponent implements OnInit, AfterViewInit {
   }
 
   listUsers(){
-    console.log("list user");
     this.UsersList = merge(this.sort.sortChange, this.paginator.page)
       .pipe(
         // startWith([undefined, ]),
         startWith({}),
         switchMap(() => {
           this.isLoadingResults = true;
-          console.log("sort");
-          console.log(this.sort.sortChange);
-          console.log(this.sort.active);
-          console.log(this.sort.direction);
-          //console.log(this.paginator.pageIndex);
           return this.settingsApiService.listUser(
             this.sort.active, this.sort.direction, this.paginator.pageIndex, this.paginator.pageSize, this.filterValue);
         }),
@@ -569,7 +330,6 @@ export class UsersrolesComponent implements OnInit, AfterViewInit {
   }
 
   filterUsers(){
-    console.log("keyup");
     this.resetPaging();
     this.listUsers();
   }
@@ -586,11 +346,9 @@ export class UsersrolesComponent implements OnInit, AfterViewInit {
             this.triggerSnackBar(res.message, 'Close');
           },
           (errorResponse: HttpErrorResponse) => {
-            //console.log(errorResponse);
             const messages = extractErrorMessagesFromErrorResponse(
               errorResponse
             );
-            console.log(messages);
             this.triggerSnackBar(messages.toString(), 'Close');
           }
         );
@@ -606,6 +364,7 @@ export class UsersrolesComponent implements OnInit, AfterViewInit {
         this.closeResult = `Closed with: ${result}`;
       },
       (reason) => {
+        this.closeModal();
         this.closeResult = `Dismissed ${this.getDismissReason(
           reason
         )}`;
@@ -615,8 +374,6 @@ export class UsersrolesComponent implements OnInit, AfterViewInit {
   deleteUser(id){
     this.settingsApiService.deleteUser(id).subscribe(
       (res: any) => {
-        console.log('initUserForm');
-        console.log(res);
         if (res.success) {
           this.triggerSnackBar(res.message, 'Close');
           this.modalService.dismissAll();
@@ -628,9 +385,7 @@ export class UsersrolesComponent implements OnInit, AfterViewInit {
         }
       },
       (errorResponse: HttpErrorResponse) => {
-        //console.log(errorResponse);
         const messages = extractErrorMessagesFromErrorResponse(errorResponse);
-        console.log(messages);
         this.triggerSnackBar(messages.toString(), 'Close');
       }
     );
@@ -645,7 +400,6 @@ export class UsersrolesComponent implements OnInit, AfterViewInit {
   }
 
   ngOnDestroy() {
-    console.log(this.subscriptions);
     this.subscriptions.forEach((sub) => {
       sub.unsubscribe();
     });
@@ -661,9 +415,6 @@ export class UsersrolesComponent implements OnInit, AfterViewInit {
     return this.tabLoadTimes[index];
   }
   compareFunction(o1: any, o2: any) {
-    console.log("compare");
-    console.log(o1);
-    console.log(o2);
     return (o1 == o2);
    }
 }

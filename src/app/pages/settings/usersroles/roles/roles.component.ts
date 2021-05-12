@@ -62,8 +62,8 @@ export class RolesComponent implements OnInit {
   formStatus = new FormStatus();
   private subscriptions: Subscription[] = [];
   filterValue = '';
-  updateRoleId = "";
-  deleteRoleId = "";
+  updateRoleId = '';
+  deleteRoleId = '';
   roleConfirmationForDelete = false;
 
   resultsLengthRole = 0;
@@ -74,7 +74,7 @@ export class RolesComponent implements OnInit {
   @ViewChild(MatSort) sortRoleList: MatSort;
 
   initaddRoleForm(data: any = []) {
-    if(data){
+    if (data) {
       this.updateRoleId = data.id;
       this.newRoleForm = this.fb.group({
         role_name: [data.name, Validators.required],
@@ -93,8 +93,6 @@ export class RolesComponent implements OnInit {
     var self = this;
     var formControlKey = -1;
     this.Permissions.forEach(function (value, key) {
-      console.log('Key:' + key);
-      //console.log(value);
       var temparr = [];
       formControlKey++;
       var obj = {
@@ -133,8 +131,6 @@ export class RolesComponent implements OnInit {
         });
       }
       self.LoopingVar[key] = temparr;
-      //self.newRoleForm.controls.menus.push(temparr);
-      //this.push(key + ': ' + value);
     });
     //this.Permissions.forEach((menu) => this.newRoleForm.controls.menus.push(this.addMenuFormGroup(menu)));
   }
@@ -159,16 +155,11 @@ export class RolesComponent implements OnInit {
   openNewRole(content, id = '') {
     this.settingsApiService.initRoleForm(id).subscribe(
       (res: any) => {
-        console.log('initRoleForm');
-        console.log(res);
         if (res.success) {
           if (res.data.menu_previlages.create == 1) {
             this.Permissions = res.data.menus;
             this.initaddRoleForm(res.data.role);
             this.addmenu();
-            console.log(this.newRoleForm.controls.menus);
-            console.log('Looping');
-            console.log(this.LoopingVar);
             this.modalService
               .open(content, { ariaLabelledBy: 'dialog001', size: 'xl' })
               .result.then(
@@ -176,6 +167,7 @@ export class RolesComponent implements OnInit {
                   this.closeResult = `Closed with: ${result}`;
                 },
                 (reason) => {
+                  this.closeModal();
                   this.closeResult = `Dismissed ${this.getDismissReason(
                     reason
                   )}`;
@@ -189,92 +181,75 @@ export class RolesComponent implements OnInit {
         }
       },
       (errorResponse: HttpErrorResponse) => {
-        //console.log(errorResponse);
         const messages = extractErrorMessagesFromErrorResponse(errorResponse);
-        console.log(messages);
         this.triggerSnackBar(messages.toString(), 'Close');
       }
     );
   }
   onSubmitRoleForm() {
     if (!this.newRoleForm.valid) {
-      //console.log(this.registrationForm.controls.first_name.errors);
       return false;
     } else {
       // 2 - Call onFormSubmitting to handle setting the form as submitted and
       //     clearing the error and success messages array
       this.formStatus.onFormSubmitting();
-      console.log(this.newRoleForm.value);
-      if(this.updateRoleId){
+      if (this.updateRoleId) {
         const subs_query_param = this.settingsApiService
-        .updateRole(this.newRoleForm.value, this.updateRoleId)
-        .subscribe(
-          (res: any) => {
-            this.updateRoleId = "";
-            this.triggerSnackBar(res.message, 'Close');
-            this.modalService.dismissAll();
-            this.listRoles();
-          },
-          (errorResponse: HttpErrorResponse) => {
-            //console.log(errorResponse);
-            const messages = extractErrorMessagesFromErrorResponse(
-              errorResponse
-            );
-            console.log(messages);
-            this.triggerSnackBar(messages.toString(), 'Close');
-          }
-        );
+          .updateRole(this.newRoleForm.value, this.updateRoleId)
+          .subscribe(
+            (res: any) => {
+              this.updateRoleId = '';
+              this.triggerSnackBar(res.message, 'Close');
+              this.modalService.dismissAll();
+              this.listRoles();
+            },
+            (errorResponse: HttpErrorResponse) => {
+              const messages =
+                extractErrorMessagesFromErrorResponse(errorResponse);
+              this.triggerSnackBar(messages.toString(), 'Close');
+            }
+          );
         this.subscriptions.push(subs_query_param);
       } else {
         const subs_query_param = this.settingsApiService
-        .addRole(this.newRoleForm.value)
-        .subscribe(
-          (res: any) => {
-            this.triggerSnackBar(res.message, 'Close');
-            this.modalService.dismissAll();
-            this.listRoles();
-          },
-          (errorResponse: HttpErrorResponse) => {
-            //console.log(errorResponse);
-            const messages = extractErrorMessagesFromErrorResponse(
-              errorResponse
-            );
-            console.log(messages);
-            this.triggerSnackBar(messages.toString(), 'Close');
-          }
-        );
+          .addRole(this.newRoleForm.value)
+          .subscribe(
+            (res: any) => {
+              this.triggerSnackBar(res.message, 'Close');
+              this.modalService.dismissAll();
+              this.listRoles();
+            },
+            (errorResponse: HttpErrorResponse) => {
+              const messages =
+                extractErrorMessagesFromErrorResponse(errorResponse);
+              this.triggerSnackBar(messages.toString(), 'Close');
+            }
+          );
         this.subscriptions.push(subs_query_param);
       }
-
-
     }
   }
 
-  changeRoleStatus(enable: boolean, id){
-    var status = 2
-    if(enable){
+  changeRoleStatus(enable: boolean, id) {
+    var status = 2;
+    if (enable) {
       status = 1;
     }
     const subs_query_changeuser = this.settingsApiService
-        .changeRoleStatus(status, id)
-        .subscribe(
-          (res: any) => {
-            this.triggerSnackBar(res.message, 'Close');
-          },
-          (errorResponse: HttpErrorResponse) => {
-            //console.log(errorResponse);
-            const messages = extractErrorMessagesFromErrorResponse(
-              errorResponse
-            );
-            console.log(messages);
-            this.triggerSnackBar(messages.toString(), 'Close');
-          }
-        );
-      this.subscriptions.push(subs_query_changeuser);
+      .changeRoleStatus(status, id)
+      .subscribe(
+        (res: any) => {
+          this.triggerSnackBar(res.message, 'Close');
+        },
+        (errorResponse: HttpErrorResponse) => {
+          const messages = extractErrorMessagesFromErrorResponse(errorResponse);
+          this.triggerSnackBar(messages.toString(), 'Close');
+        }
+      );
+    this.subscriptions.push(subs_query_changeuser);
   }
 
   listRoles() {
-    console.log('list roles');
     this.RolesList = merge(
       this.sortRoleList.sortChange,
       this.paginatorRoleList.page
@@ -283,16 +258,12 @@ export class RolesComponent implements OnInit {
       startWith({}),
       switchMap(() => {
         this.isLoadingResults = true;
-        console.log('sort list role');
-        console.log(this.sortRoleList.sortChange);
-        console.log(this.sortRoleList.active);
-        console.log(this.sortRoleList.direction);
-        //console.log(this.paginator.pageIndex);
         return this.settingsApiService.listRoles(
           this.sortRoleList.active,
           this.sortRoleList.direction,
           this.paginatorRoleList.pageIndex,
-          this.paginatorRoleList.pageSize
+          this.paginatorRoleList.pageSize,
+          this.filterValue
         );
       }),
       map((data) => {
@@ -312,45 +283,42 @@ export class RolesComponent implements OnInit {
     );
   }
 
-  deleteModal(content, id){
+  deleteModal(content, id) {
     this.deleteRoleId = id;
     this.modalService
-    .open(content, { ariaLabelledBy: 'dialog001' })
-    .result.then(
-      (result) => {
-        this.closeResult = `Closed with: ${result}`;
-      },
-      (reason) => {
-        this.closeResult = `Dismissed ${this.getDismissReason(
-          reason
-        )}`;
-      }
-    );
+      .open(content, { ariaLabelledBy: 'dialog001' })
+      .result.then(
+        (result) => {
+          this.closeResult = `Closed with: ${result}`;
+        },
+        (reason) => {
+          this.closeModal();
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        }
+      );
   }
-  deleteRole(id){
+  deleteRole(id) {
     this.settingsApiService.deleteRole(id).subscribe(
       (res: any) => {
         if (res.success) {
           this.triggerSnackBar(res.message, 'Close');
           this.modalService.dismissAll();
           this.listRoles();
-          this.deleteRoleId = "";
+          this.deleteRoleId = '';
           this.roleConfirmationForDelete = false;
         } else {
           this.triggerSnackBar(res.message, 'Close');
         }
       },
       (errorResponse: HttpErrorResponse) => {
-        //console.log(errorResponse);
         const messages = extractErrorMessagesFromErrorResponse(errorResponse);
-        console.log(messages);
         this.triggerSnackBar(messages.toString(), 'Close');
       }
     );
   }
-  closeModal(){
-    this.updateRoleId = "";
-    this.deleteRoleId = "";
+  closeModal() {
+    this.updateRoleId = '';
+    this.deleteRoleId = '';
     this.modalService.dismissAll();
   }
 
@@ -359,7 +327,6 @@ export class RolesComponent implements OnInit {
   }
 
   filterRoles() {
-    console.log('keyup');
     this.resetPagingRole();
     this.listRoles();
   }
@@ -373,7 +340,6 @@ export class RolesComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    console.log(this.subscriptions);
     this.subscriptions.forEach((sub) => {
       sub.unsubscribe();
     });
@@ -388,18 +354,12 @@ export class RolesComponent implements OnInit {
     }
   }
   selectAllMenus(index, obj) {
-    console.log('obj: ' + index);
-    console.log(obj);
     var stat = 0;
     if (obj.user_has_menu) {
       stat = 1;
     }
     this.LoopingVar[index].map((r) => {
       r.user_has_menu = obj.user_has_menu;
-      //r.email_notification = stat;
-      //r.push_notification = stat;
-      console.log('r.user_has_menu');
-      console.log(r);
     });
   }
   SelectMenu(parent, child, obj) {
@@ -411,8 +371,6 @@ export class RolesComponent implements OnInit {
     } else if (
       this.LoopingVar[parent].length - 1 ===
       this.LoopingVar[parent].filter((r) => {
-        console.log('child');
-        console.log(r);
         return r.user_has_menu === true;
       }).length
     ) {
@@ -420,47 +378,28 @@ export class RolesComponent implements OnInit {
     }
   }
   selectAllPermission(permission, index, obj) {
-    console.log('obj: ' + index);
-    //console.log(obj);
     var stat = 0;
     if (obj[permission]) {
       stat = 1;
     }
     this.LoopingVar[index].map((r) => {
       r[permission] = stat;
-      //r.email_notification = stat;
-      //r.push_notification = stat;
-      console.log('r.user_has_menu');
-      console.log(r);
     });
   }
   SelectPermission(permission, parent, child, obj) {
-    console.log('====');
-    console.log(this.LoopingVar[parent]);
-    console.log('====');
     if (!obj[permission]) {
-      console.log('not slected');
       this.LoopingVar[parent][0][permission] = 0;
       obj[permission] = 0;
-      /*this.LoopingVar[parent][child].permission_view = 0;
-      this.LoopingVar[parent][child].permission_create = 0;
-      this.LoopingVar[parent][child].permission_edit = 0;*/
     } else {
-      console.log('checked');
       obj[permission] = 1;
       if (
         this.LoopingVar[parent].length - 1 ===
         this.LoopingVar[parent].filter((r) => {
-          console.log('child');
-          console.log(r);
           return r[permission] === 1;
         }).length
       ) {
-        console.log('Length matched');
+        //length matched
         this.LoopingVar[parent][0][permission] = 1;
-        console.log('====');
-        console.log(this.LoopingVar[parent]);
-        console.log('====');
       }
     }
   }

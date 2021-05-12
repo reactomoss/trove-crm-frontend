@@ -54,7 +54,7 @@ export class AccountComponent implements OnInit, AfterViewInit {
     this.sb.openSnackBarBottomCenter(message, action);
   }
   ngOnInit(): void {
-    console.log('  ChildComponent==>ngOnInit');
+    //console.log('  ChildComponent==>ngOnInit');
     // Using Basic Interval
     this.intervalId = setInterval(() => {
       this.time = new Date();
@@ -62,7 +62,6 @@ export class AccountComponent implements OnInit, AfterViewInit {
 
     const subs_query_param_get = this.settingsApiService.preferenceMe().subscribe(
       (res: any) => {
-        console.log(res);
         this.timeZonesData = res.data.timezones;
         this.timeFormatsData = res.data.timeformats;
         this.dateFormatsData = res.data.deteformats;
@@ -77,47 +76,35 @@ export class AccountComponent implements OnInit, AfterViewInit {
         });
       },
       (errorResponse: HttpErrorResponse) => {
-        //console.log(errorResponse);
         const messages = extractErrorMessagesFromErrorResponse(errorResponse);
-        console.log(messages);
         this.triggerSnackBar(messages.toString(), 'Close');
       }
     );
     this.subscriptions.push(subs_query_param_get);
   }
   ngAfterViewInit() {
-    console.log('ChildComponent==>AfterViewInit');
+    //console.log('ChildComponent==>AfterViewInit');
   }
   ngAfterContentInit() {
-    console.log('  ChildComponent==>ngAfterContentInit');
-
+    //console.log('  ChildComponent==>ngAfterContentInit');
   }
-  /*createPreferenceForm(){
-
-
-  }*/
 
   updatePreference() {
     const data = this.accountForm.value;
-    console.log(data);
     const subs_query_param = this.settingsApiService
       .updatePreference(data)
       .subscribe((res: any) => {
         this.triggerSnackBar(res.message, 'Close');
       },
       (errorResponse: HttpErrorResponse) => {
-        //console.log(errorResponse);
         const messages = extractErrorMessagesFromErrorResponse(errorResponse);
-        console.log(messages);
         this.triggerSnackBar(messages.toString(), 'Close');
       });
     this.subscriptions.push(subs_query_param);
   }
 
   ngOnDestroy() {
-    console.log("ngOnDestroy");
     clearInterval(this.intervalId);
-    console.log(this.subscriptions);
     this.subscriptions.forEach((sub) => {
       sub.unsubscribe();
     });

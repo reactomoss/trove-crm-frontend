@@ -87,9 +87,6 @@ export class AccountApiService {
       // Server-side errors
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
-    //window.alert(errorMessage);
-    console.log("response", error);
-    console.log(errorMessage);
     return throwError(errorMessage);
   }
 }

@@ -100,7 +100,6 @@ export class NewPasswordComponent implements OnInit, OnDestroy {
       this.form.password_confirmation = this.ResetPasswordForm.get(
         'password_confirmation'
       ).value;
-      //console.log(this.form);
 
       this.account.resetPassword(this.form).subscribe(
         (response) => {
@@ -124,7 +123,6 @@ export class NewPasswordComponent implements OnInit, OnDestroy {
     }
   }
   ngOnDestroy() {
-    //console.log('ngOnDestroy');
     this.subscriptions.forEach((sub) => {
       sub.unsubscribe();
     });

@@ -60,7 +60,8 @@ AuthLogin(provider) {
   .then((result) => {
       console.log('You have been successfully logged in!')
   }).catch((error) => {
-    window.alert(error);
+    //window.alert(error);
+    console.log(error);
   })
 }
 

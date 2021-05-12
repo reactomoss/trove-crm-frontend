@@ -23,7 +23,6 @@ export class ResetEmailComponent implements OnInit {
     private router: Router
   ) {
     const subs_value_change = this.resetPasswordForm.valueChanges.subscribe((data) => {
-      //console.log("value change");
       this.apiResponse = false;
     });
     this.subscriptions.push(subs_value_change);
@@ -45,7 +44,6 @@ export class ResetEmailComponent implements OnInit {
   }
   onTimerFinished(e:Event){
     if (e["action"] == "done"){
-       //your code here
        this.formDisplay = 'formShow';
        this.timerFinished = true;
      }
@@ -82,7 +80,6 @@ export class ResetEmailComponent implements OnInit {
     }
   }
   ngOnDestroy() {
-    //console.log("ngOnDestroy")
     this.subscriptions.forEach((sub) => {
       sub.unsubscribe();
     });

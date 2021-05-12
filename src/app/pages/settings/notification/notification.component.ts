@@ -87,9 +87,6 @@ export class NotificationComponent implements OnInit {
 
   /*Notification System checkbox*/
   selectAllNotification(index, obj) {
-    alert("sd");
-    console.log("obj: "+index);
-    console.log(this.LoopingVar[index][0]);
     var stat = 0;
     if(obj.user_notification) {
       stat = 1;
@@ -98,12 +95,7 @@ export class NotificationComponent implements OnInit {
     this.LoopingVar[index][0].push_notification = stat;
     this.LoopingVar[index].map((r) => {
       r.user_notification = obj.user_notification;
-      //r.email_notification = stat;
-      //r.push_notification = stat;
-      //console.log("r.user_notification");
-      //console.log(r);
     });
-    console.log(this.LoopingVar[index][0]);
   }
   SelectNotificationSetting(parent, child, obj) {
     if (!obj.user_notification) {
@@ -114,8 +106,6 @@ export class NotificationComponent implements OnInit {
     } else if (
       (this.LoopingVar[parent].length -1) ===
       this.LoopingVar[parent].filter((r) => {
-        console.log("child");
-        console.log(r);
         return r.user_notification === true;
       }).length
     ) {
@@ -134,15 +124,10 @@ export class NotificationComponent implements OnInit {
   ngOnInit(): void {
     this.settingsApiService.getNotificationSettings().subscribe(
       (res: any) => {
-        console.log('notificationForm');
-        console.log(res);
         if (res.success) {
           if (res.data.menu_previlages.create == 1) {
             this.notificationSettings = res.data.notifications;
             this.addnotification();
-            console.log(this.notificationForm.controls.notifications);
-            console.log('Looping');
-            console.log(this.LoopingVar);
           } else {
             this.triggerSnackBar(res.message, 'Close');
           }
@@ -151,9 +136,7 @@ export class NotificationComponent implements OnInit {
         }
       },
       (errorResponse: HttpErrorResponse) => {
-        //console.log(errorResponse);
         const messages = extractErrorMessagesFromErrorResponse(errorResponse);
-        console.log(messages);
         this.triggerSnackBar(messages.toString(), 'Close');
       }
     );
@@ -167,8 +150,6 @@ export class NotificationComponent implements OnInit {
     var self = this;
     var formControlKey = -1;
     this.notificationSettings.forEach(function (value, key) {
-      console.log('Key:' + key);
-      //console.log(value);
       var temparr = [];
       formControlKey++;
       var obj = {
@@ -223,8 +204,6 @@ export class NotificationComponent implements OnInit {
       return false;
     } else {
       this.formStatus.onFormSubmitting();
-      console.log("Form Submitting");
-      console.log(this.notificationForm.value);
       var postNotifications = [];
       this.notificationForm.value.notifications.forEach(function (value, key) {
         postNotifications.push({
@@ -240,11 +219,9 @@ export class NotificationComponent implements OnInit {
             this.triggerSnackBar(res.message, 'Close');
           },
           (errorResponse: HttpErrorResponse) => {
-            //console.log(errorResponse);
             const messages = extractErrorMessagesFromErrorResponse(
               errorResponse
             );
-            console.log(messages);
             this.triggerSnackBar(messages.toString(), 'Close');
           }
         );
@@ -261,7 +238,6 @@ export class NotificationComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    console.log(this.subscriptions);
     this.subscriptions.forEach((sub) => {
       sub.unsubscribe();
     });

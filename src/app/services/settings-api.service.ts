@@ -102,11 +102,7 @@ export class SettingsApiService {
       start: page * pageSize,
       length: pageSize,
     };
-    console.log('API req');
-    console.log(sort);
-    console.log(order);
     if (typeof sort != 'undefined' && typeof order != 'undefined') {
-      console.log('if');
       data['order'] = [{ column: sort, dir: order }];
     }
     return this.httpClient.post(
@@ -151,11 +147,7 @@ export class SettingsApiService {
       start: page * pageSize,
       length: pageSize,
     };
-    console.log('API req list roles');
-    console.log(sort);
-    console.log(order);
     if (typeof sort != 'undefined' && typeof order != 'undefined') {
-      console.log('if');
       data['order'] = [{ column: sort, dir: order }];
     }
     return this.httpClient.post(
@@ -167,14 +159,57 @@ export class SettingsApiService {
     return this.httpClient.delete(`${this.baseURL + environment.roles + "/" + id}`);
   }
 
-  getNotificationSettings() {
+  getNotificationSettings(): Observable<any> {
     return this.httpClient.get(`${this.baseURL + environment.notifications}`);
   }
 
-  saveNotificationSettings(data: any) {
+  saveNotificationSettings(data: any): Observable<any> {
     return this.httpClient.post(
       `${this.baseURL + environment.notifications}`,
       data
     );
+  }
+
+  addPipeline(data): Observable<any> {
+    return this.httpClient.post(
+      `${this.baseURL + environment.pipelines}`,
+      data
+    );
+  }
+
+  getPipelineById(id): Observable<any>{
+    return this.httpClient.get(`${this.baseURL + environment.pipelines + "/" + id}`);
+  }
+
+  listPipelines(
+    sort: string,
+    order: string,
+    page: number,
+    pageSize: number,
+    search: string = ''
+  ): Observable<any> {
+    var start, length;
+    var items_per_page = 10;
+
+    var data = {
+      search: search,
+      start: page * pageSize,
+      length: pageSize,
+    };
+    if (typeof sort != 'undefined' && typeof order != 'undefined') {
+      data['order'] = [{ column: sort, dir: order }];
+    }
+    return this.httpClient.post(
+      `${this.baseURL + environment.pipelines + "/list"}`,
+      data
+    );
+  }
+
+  updatePipeline(data:any, id): Observable<any>{
+    return this.httpClient.put(`${this.baseURL + environment.pipelines + "/" + id}`, data);
+  }
+
+  deletePipeline(id): Observable<any>{
+    return this.httpClient.delete(`${this.baseURL + environment.pipelines + "/" + id}`);
   }
 }

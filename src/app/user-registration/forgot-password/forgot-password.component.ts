@@ -23,7 +23,6 @@ export class ForgotPasswordComponent implements OnInit {
     private router: Router
   ) {
     const subs_value_change = this.forgotPasswordForm.valueChanges.subscribe((data) => {
-      //console.log("value change");
       this.apiResponse = false;
     });
     this.subscriptions.push(subs_value_change);
@@ -72,19 +71,8 @@ export class ForgotPasswordComponent implements OnInit {
     }
   }
   ngOnDestroy() {
-    //console.log("ngOnDestroy")
     this.subscriptions.forEach((sub) => {
       sub.unsubscribe();
     });
   }
-  /*email = new FormControl('', [Validators.required, Validators.email]);
-
-  getErrorMessage() {
-    if (this.email.hasError('required')) {
-      return 'You must enter the email address';
-    }
-
-    return this.email.hasError('email') ? 'Please enter a valid email address' : '';
-  }*/
-
 }

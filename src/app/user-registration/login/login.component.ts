@@ -59,7 +59,6 @@ export class LoginComponent implements OnInit, OnDestroy {
       router.navigate(['pages/dashboard']);
     }
     const subs_valuechange = this.loginForm.valueChanges.subscribe((data) => {
-      //console.log("value change");
       this.apiResponse = false;
     });
 
@@ -86,51 +85,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    /*const sub_social_auth = this.socialAuthService.authState.subscribe((user) => {
-      this.socialUser = user;
-      this.isLoggedin = user != null;
-      //console.log(this.isLoggedin);
-      this.formStatus.onFormSubmitting();
-      if ( this.socialUser && typeof this.socialUser.email !== 'undefined') {
-        let postData = {
-          email: this.socialUser.email,
-          platform: 'web',
-          type: this.socialUser.provider,
-          social_user_id: this.socialUser.id,
-        };
-        //console.log(postData);
-        const sub_social = this.account.login(postData).subscribe(
-          (response) => {
-            this.apiResponse = response;
-            this.token.handle(response.data.token);
-            this.formStatus.onFormSubmitResponse({
-              success: true,
-              messages: [],
-            });
-            this.logOut();
-            this.router.navigate(['pages/dashboard']);
-          },
-          (errorResponse: HttpErrorResponse) => {
-            const messages = extractErrorMessagesFromErrorResponse(
-              errorResponse
-            );
-            this.formStatus.onFormSubmitResponse({
-              success: false,
-              messages: messages,
-            });
-            this.logOut();
-          }
-        );
-        this.subscriptions.push(sub_social);
-      } else {
-        this.logOut();
-        this.formStatus.onFormSubmitResponse({
-          success: false,
-          messages: ['Your social media doesn\'t have email, so kindly signup with email.']
-        });
-      }
-    });
-    this.subscriptions.push(sub_social_auth);*/
+
   }
 
   /*##################### Google Auth #####################*/
@@ -147,7 +102,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           type: this.socialUser.provider,
           social_user_id: this.socialUser.id,
         };
-        //console.log(postData);
+
         const sub_social = this.account.login(postData).subscribe(
           (response) => {
             this.apiResponse = response;
@@ -180,14 +135,14 @@ export class LoginComponent implements OnInit, OnDestroy {
       }
     })
     .catch((error) => {
-      window.alert(error);
+      //window.alert(error);
+      console.log(error)
     });
   }
   loginWithFacebook(): void {
     this.socialAuthService.signIn(FacebookLoginProvider.PROVIDER_ID).then((user) => {
       this.socialUser = user;
       this.isLoggedin = user != null;
-      //console.log(this.isLoggedin);
       this.formStatus.onFormSubmitting();
       if ( this.socialUser && typeof this.socialUser.email !== 'undefined') {
         let postData = {
@@ -196,7 +151,6 @@ export class LoginComponent implements OnInit, OnDestroy {
           type: this.socialUser.provider,
           social_user_id: this.socialUser.id,
         };
-        //console.log(postData);
         const sub_social = this.account.login(postData).subscribe(
           (response) => {
             this.apiResponse = response;
@@ -229,7 +183,8 @@ export class LoginComponent implements OnInit, OnDestroy {
       }
     })
     .catch((error) => {
-      window.alert(error);
+      //window.alert(error);
+      console.log(error);
     });
   }
 
@@ -242,7 +197,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   AuthTwitter(provider) {
     this.afAuth.auth
       .signInWithPopup(provider).then((result: any) => {
-        console.log('You have been successfully logged in!');
         let user = result.additionalUserInfo.profile;
         this.isLoggedin = user != null;
 
@@ -262,14 +216,11 @@ export class LoginComponent implements OnInit, OnDestroy {
                 success: true,
                 messages: [],
               });
-              //this.TwitterSignOut();
-              //alert("navigate");
               this.ngZone.run(() => {
                 this.router.navigate(['pages/dashboard']);
               });
             },
             (errorResponse: HttpErrorResponse) => {
-              //console.log(errorResponse);
               const messages = extractErrorMessagesFromErrorResponse(
                 errorResponse
               );
@@ -277,12 +228,9 @@ export class LoginComponent implements OnInit, OnDestroy {
                 success: false,
                 messages: messages,
               });
-              //this.TwitterSignOut();
-              //console.log('Messages', messages);
             }
           );
           this.subscriptions.push(sub_social);
-          console.log(postData);
         } else {
           this.formStatus.onFormSubmitResponse({
             success: false,
@@ -290,11 +238,11 @@ export class LoginComponent implements OnInit, OnDestroy {
               "Your social media doesn't have email, so kindly signup with email.",
             ],
           });
-          //this.TwitterSignOut();
         }
       })
       .catch((error) => {
-        window.alert(error);
+        //window.alert(error);
+        console.log(error);
       });
   }
 

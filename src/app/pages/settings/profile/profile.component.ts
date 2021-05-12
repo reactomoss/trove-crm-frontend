@@ -93,16 +93,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.imageUrl = '../../../assets/images/settingsProfile.png';
       },
       (errorResponse: HttpErrorResponse) => {
-        //console.log(errorResponse);
         const messages = extractErrorMessagesFromErrorResponse(errorResponse);
-        console.log(messages);
         this.triggerSnackBar(messages.toString(), 'Close');
       }
     );
   }
   onChangeProfile(profile: File) {
-    console.log("profile: "+profile);
-    //alert("Check Console");
     if (profile) {
       this.profile = profile;
       const reader = new FileReader();
@@ -116,11 +112,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
           this.imageUrl = res.data.profile_image_url;
         },
         (errorResponse: HttpErrorResponse) => {
-          //console.log(errorResponse);
           this.profile = null;
           this.imageUrl = '../../../assets/images/settingsProfile.png';
           const messages = extractErrorMessagesFromErrorResponse(errorResponse);
-          console.log(messages);
           this.triggerSnackBar(messages.toString(), 'Close');
         }
       );
@@ -128,11 +122,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log("profile ngOnInit");
     const subs_query_param_get = this.settingsApiService
       .accountMe()
       .subscribe((res: any) => {
-        console.log(res);
         this.userData = res.data;
         this.account_id = res.data.account_id;
         if(res.success){
@@ -164,7 +156,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       .updateProfile(data)
       .subscribe((res: any) => {
         this.triggerSnackBar(res.message, 'Close');
-        // this.userData = res.data;
         this.userData.first_name = data.first_name;
         this.userData.last_name = data.last_name;
         this.modalService.dismissAll();
@@ -181,9 +172,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.logout();
       },
       (errorResponse: HttpErrorResponse) => {
-        //console.log(errorResponse);
         const messages = extractErrorMessagesFromErrorResponse(errorResponse);
-        console.log(messages);
         this.triggerSnackBar(messages.toString(), 'Close');
       }
     );
@@ -191,7 +180,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
   logout() {
     this.account.logout().subscribe(
       (response) => {
-        console.log(response);
         this.token.remove();
         //this.router.navigate(['login']);
         let objToSend: NavigationExtras = {
@@ -206,7 +194,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
         //this.router.navigate(['login'], {queryParams: { logout: 'true' } });
       },
       (err) => {
-        console.log(err);
         if (err.error.code == 113) {
           this.token.remove();
           let objToSend: NavigationExtras = {
