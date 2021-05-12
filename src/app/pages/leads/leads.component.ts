@@ -29,7 +29,7 @@ export class LeadsComponent implements OnInit {
   active: number = 1
 
   filterCount: number = 0
-
+  viewLeads = "pipe1"
   constructor(private router: Router) { }
 
   ngOnInit(): void {

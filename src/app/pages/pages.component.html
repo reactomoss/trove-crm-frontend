@@ -48,7 +48,7 @@
               </span>
 
             </div>
-            <app-echarts [chartOption]="barChartOption"></app-echarts>
+            <app-echarts [chartOption]="sourceChart"></app-echarts>
           </div>
         </div>
         <div class="col-sm-6 col-md-6 col-lg-6 col-xl-3 mb-3">
@@ -57,7 +57,7 @@
               <span class="f-16-700 mr-2">Pipeline</span>
               <mat-icon class="fs-20 align-middle">keyboard_arrow_right</mat-icon>
             </div>
-            <app-echarts [chartOption]="pieChartOption"></app-echarts>
+            <app-echarts [chartOption]="pipelineChart"></app-echarts>
           </div>
         </div>
         <div class="col-sm-6 col-md-6 col-lg-6 col-xl-3 mb-3">
@@ -66,7 +66,7 @@
               <span class="f-16-700 mr-2">Monthly</span>
               <mat-icon class="fs-20 align-middle">keyboard_arrow_right</mat-icon>
             </div>
-            <app-echarts [chartOption]="barChartOption2"></app-echarts>
+            <app-echarts [chartOption]="monthlyChart"></app-echarts>
           </div>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-3">

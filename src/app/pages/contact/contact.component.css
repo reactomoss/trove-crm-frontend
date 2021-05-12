@@ -112,6 +112,7 @@
 
 mat-card {
     border-radius: 6px;
+    cursor: pointer;
 }
 
 .cardText1 {

@@ -9,7 +9,8 @@ export class SourcechartComponent implements OnInit {
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
   filterCount: number = 0
   showFilter: boolean = false
-  barChartOption: echarts.EChartsOption = {
+  colorsourceChart = ['#7184b8']
+  sourceChart: echarts.EChartsOption = {
     tooltip: {
       trigger: 'axis',
       axisPointer: {
@@ -43,7 +44,8 @@ export class SourcechartComponent implements OnInit {
             barWidth: '10%',
             data: [10, 52, 100, 200]
         }
-    ]
+    ],
+    color: this.colorsourceChart,
   };
   constructor() { }
 

@@ -24,6 +24,7 @@ export class PagesComponent implements OnInit {
     new Task("Ux design meeting at 17:30hrs."),
     new Task("Landing page required for new CRM app"),
     new Task("Meeting required for new CRM app"),
+
   ]
   appointments: Appointment[] = [
     new Appointment("Packet Monster Sales opportunity", "notification", "default", "Today at 11:00"),
@@ -31,8 +32,8 @@ export class PagesComponent implements OnInit {
     new Appointment("Landing page required for new CRM app", "notification", "default", "Sun, 24 Apr, 2021"),
     new Appointment("Meeting required for new CRM app", "calendar", "default", "Mon, 25 Apr, 2021"),
   ]
-
-  barChartOption: echarts.EChartsOption = {
+  colorsourceChart = ['#7184b8']
+  sourceChart: echarts.EChartsOption = {
     tooltip: {
       trigger: 'axis',
       axisPointer: {
@@ -66,10 +67,11 @@ export class PagesComponent implements OnInit {
             barWidth: '60%',
             data: [10, 52, 100, 200]
         }
-    ]
+    ],
+    color: this.colorsourceChart,
   };
-
-  barChartOption2: echarts.EChartsOption = {
+  colormonthlyChart = ['#c6a887']
+  monthlyChart: echarts.EChartsOption = {
     tooltip: {
       trigger: 'axis',
       axisPointer: {
@@ -103,10 +105,12 @@ export class PagesComponent implements OnInit {
             barWidth: '60%',
             data: [10, 52, 200, 170, 250]
         }
-    ]
+    ],
+    color: this.colormonthlyChart,
   };
 
-  pieChartOption: echarts.EChartsOption = {
+  colorpipelineChart = ['#595393', '#ffa33e', '#c6a887', '#7184b8']
+  pipelineChart: echarts.EChartsOption = {
 
     tooltip: {
       trigger: 'item'
@@ -143,7 +147,8 @@ export class PagesComponent implements OnInit {
                 {value: 484, name: 'Pipeline 4'}
             ]
         }
-    ]
+    ],
+    color: this.colorpipelineChart,
   };
 
   constructor(public dialog: MatDialog) { }

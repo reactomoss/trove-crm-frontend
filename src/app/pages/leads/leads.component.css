@@ -106,6 +106,7 @@
 mat-card {
     border-radius: 6px;
     margin: 10px 0;
+    cursor: pointer;
 }
 
 .iconInButton {
@@ -336,4 +337,5 @@ p {
     font-size: 20px;
     margin-top: 6px;
 }
+
 
