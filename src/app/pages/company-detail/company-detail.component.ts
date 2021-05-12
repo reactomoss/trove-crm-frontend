@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
-import { AppointDialog, TaskDialog } from '../detail/detail.component';
 import { CompanyDialog } from 'src/app/shared/header/header.component';
-import {SnackBarService} from 'src/app/shared/snack-bar.service'
+import { TaskDialog } from '../detail/task-dialog/task-dialog';
+import { AppointDialog } from '../detail/appoint-dialog/appoint-dialog';
 
 @Component({
   selector: 'app-company-detail',
