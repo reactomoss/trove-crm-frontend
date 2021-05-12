@@ -27,7 +27,7 @@ export interface selectedData {
 export class ContactComponent implements OnInit {
   filterCount: number = 0
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
-
+  showFilter: boolean = false
   hoveredItem
   //detect for click card, check
   detect: number
@@ -134,6 +134,7 @@ export class ContactComponent implements OnInit {
 
   ngOnInit(): void {
     this.items = this.allItems
+
   }
 
   showList() {
@@ -224,6 +225,10 @@ export class ContactComponent implements OnInit {
   }
   filterCountChangedHandler(e) {
     this.filterCount = e
+  }
+
+  clickFilter(){
+    this.showFilter = true
   }
 
 }

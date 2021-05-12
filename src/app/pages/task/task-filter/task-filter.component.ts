@@ -1,9 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, Inject } from '@angular/core';
 import { DateService } from '../../../service/date.service'
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { map, startWith, take, tap } from 'rxjs/operators';
+import { MatTabChangeEvent } from '@angular/material/tabs';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
+export class Type {
+  constructor(public name: string, public selected?: boolean) {
+    if (selected === undefined) selected = false;
+  }
+}
+export interface createContact {
+  name: string;
+  isChecked?: boolean;
+}
+export interface createCompany {
+  name: string;
+  isChecked?: boolean;
+}
 // multi autocomplete
 export class Contact {
   constructor(public name: string, public selected?: boolean) {
@@ -17,10 +32,35 @@ export class Contact {
   styleUrls: ['./task-filter.component.css']
 })
 export class TaskFilterComponent implements OnInit {
-
+  @Output() closeDialog = new EventEmitter();
+  @Output() count = new EventEmitter<any>();
+  contactCtrl = new FormControl();
+  companyCtrl = new FormControl();
+  filteredCont: Observable<createContact[]>;
+  filteredComp: Observable<createCompany[]>;
+  selectedCreatedBy: createContact[] = [];
+  selectedCompany: createCompany[] = [];
   status: string
   statusTypes: string[] = ['All', 'Active', 'Inactive']
-  
+  filterCount: number = 0
+  scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
+  createdBySelection(contact: createContact){
+    if(contact.isChecked) {
+      this.selectedCreatedBy = [...this.selectedCreatedBy, contact]
+    }else {
+      let index = this.selectedCreatedBy.findIndex(c => c.name === contact.name);
+      this.selectedCreatedBy.splice(index,1);
+    }
+  }
+  companySelection(contact: createCompany){
+    if(contact.isChecked) {
+      this.selectedCompany = [...this.selectedCompany, contact]
+    }else {
+      let index = this.selectedCompany.findIndex(c => c.name === contact.name);
+      this.selectedCompany.splice(index,1);
+    }
+  }
+
   dateTypes: number[] = [0, 1, 2, 3, 4, 5, 6]
   dateTypeString: string[] = ['Today', 'Yesterday', 'Last Week', 'This month', 'Last month', 'This Quarter', 'Custom']
   dateType: number
@@ -33,177 +73,91 @@ export class TaskFilterComponent implements OnInit {
   addStartDate: Date = null
   addEndDate: Date = null
 
+  dueDateTypes: number[] = [0, 1, 2, 3, 4]
+  dueDateTypeString: string[] = ['Today', 'Tomorrow', 'Next 7 days', 'Overdue', 'Custom']
+  dueDateType: number
+  dueStartDate: Date = null
+  dueEndDate: Date = null
+
   contactType: string = 'contact'
-  
-  // multi autocomplete
-  contactControl = new FormControl();
-  selectedContacts: Contact[] = new Array<Contact>();
-  filteredContacts: Observable<Contact[]>;
-  users = [
-    new Contact('Shemeka Wittner'),
-    new Contact('Sheila Sak'),
-    new Contact('Zola Rodas'),
-    new Contact('Dena Heilman'),
-    new Contact('Concepcion Pickrell'),
-    new Contact('Marylynn Berthiaume'),
-    new Contact('Howard Lipton'),
-    new Contact('Maxine Amon'),
-    new Contact('Iliana Steck'),
-    new Contact('Laverna Cessna'),
-    new Contact('Brittany Rosch'),
-    new Contact('Esteban Ohlinger'),
-    new Contact('Myron Cotner'),
-    new Contact('Geri Donner'),
-    new Contact('Minna Ryckman'),
-    new Contact('Yi Grieco'),
-    new Contact('Lloyd Sneed'),
-    new Contact('Marquis Willmon'),
-    new Contact('Lupita Mattern'),
-    new Contact('Fernande Shirk'),
-    new Contact('Eloise Mccaffrey'),
-    new Contact('Abram Hatter'),
-    new Contact('Karisa Milera'),
-    new Contact('Bailey Eno'),
-    new Contact('Juliane Sinclair'),
-    new Contact('Giselle Labuda'),
-    new Contact('Chelsie Hy'),
-    new Contact('Catina Wohlers'),
-    new Contact('Edris Liberto'),
-    new Contact('Harry Dossett'),
-    new Contact('Yasmin Bohl'),
-    new Contact('Cheyenne Ostlund'),
-    new Contact('Joannie Greenley'),
-    new Contact('Sherril Colin'),
-    new Contact('Mariann Frasca'),
-    new Contact('Sena Henningsen'),
-    new Contact('Cami Ringo'),
-  ]
-  companys = [
-    new Contact('Google'),
-    new Contact('Microsoft'),
-    new Contact('Apple'),
-    new Contact('Amazon'),
-    new Contact('Facebook'),
-    new Contact('hexagonitsolutions software pvt ltd')
+
+  contacts: createContact[] = [
+    {
+      name: 'Arkansas',
+    },
+    {
+      name: 'California'
+    },
+    {
+      name: 'Florida'
+    },
+    {
+      name: 'Texas'
+    }
+  ];
+
+  companys: createCompany[] = [
+    {
+      name: 'Company 1',
+    },
+    {
+      name: 'Company 2'
+    },
+    {
+      name: 'Company 3'
+    },
+    {
+      name: 'Company 4'
+    }
+  ];
+
+  types: Type[] = [
+    new Type('Added by user'),
+    new Type('Import from CSV'),
+    new Type('Google contacts'),
+    new Type('Twitter contacts'),
+    new Type('Outlook contacts')
   ]
 
-  constructor(private dateService: DateService) { }
+  // multi autocomplete
+
+  constructor(private dateService: DateService) {
+    this.filteredCont = this.contactCtrl.valueChanges
+      .pipe(
+        startWith(''),
+        map(state => state ? this._filterStates(state) : this.contacts.slice())
+      );
+      this.filteredComp = this.companyCtrl.valueChanges
+      .pipe(
+        startWith(''),
+        map(state => state ? this._filterStatesComp(state) : this.companys.slice())
+      );
+  }
+
 
   ngOnInit(): void {
-    // multi autocomplete
-    this.filteredContacts = this.contactControl.valueChanges.pipe(
-      startWith<string | Contact[]>(''),
-      map(value => typeof value === 'string' ? value : ''),
-      map(filter => this.filter(filter))
-    )
+
   }
 
-  // multi autocomplete
-  filter(filter: string): Contact[] {
-    if (filter) {
-      if (this.contactType == 'contact') {
-        return this.users.filter(option => {
-          return option.name.toLowerCase().indexOf(filter.toLowerCase()) >= 0
-        })
-      } else {
-        return this.companys.filter(option => {
-          return option.name.toLowerCase().indexOf(filter.toLowerCase()) >= 0
-        })
-      }
-    } else {
-      if (this.contactType == 'contact') {
-        return this.users.slice();
-      } else {
-        return this.companys.slice();
-      }
-    }
-  }
-  
-  // multi autocomplete
-  displayFn(value: Contact[] | string): string | undefined {
-    return ""
-    // let displayValue: string;
-    // if (Array.isArray(value)) {
-    //   value.forEach((user, index) => {
-    //     if (index === 0) {
-    //       displayValue = user.firstname + ' ' + user.lastname;
-    //     } else {
-    //       displayValue += ', ' + user.firstname + ' ' + user.lastname;
-    //     }
-    //   });
-    // } else {
-    //   displayValue = value;
-    // }
-    // return displayValue;
-  }
 
-  // multi autocomplete
-  optionClicked(event: Event, contact: Contact) {
-    // event.stopPropagation();
-    this.toggleSelection(contact)
-  }
-
-  // multi autocomplete
-  toggleSelection(user: Contact) {
-    // console.log(this.filterCount)
-    user.selected = !user.selected;
-    if (user.selected) {
-      this.selectedContacts.push(user);
-    } else {
-      const i = this.selectedContacts.findIndex(value => value.name === user.name);
-      this.selectedContacts.splice(i, 1);
-    }
-
-    this.contactControl.setValue(this.selectedContacts);
-
-    // this.filterCountChanged.emit(this.selectedContacts.length)
-  }
-
-  contactClearClick() {
-    // this.selectedContacts.forEach(contact => {
-    //   contact.selected = false
-    // })
-    // this.selectedContacts = []
-
-    // this.filterCountChanged.emit(this.selectedContacts.length)
-
-    this.clearContact()
-  }
-  
-  clickContact() {
-    this.contactType = 'contact'
-    this.clearContact()
-  }
-
-  clickCompany() {
-    this.contactType = 'company'
-    this.clearContact()
-  }
-
-  clearContact() {
-    this.selectedContacts.forEach(e => e.selected = false)
-    this.selectedContacts = []
-    this.filteredContacts = this.contactControl.valueChanges.pipe(
-      startWith<string | Contact[]>(''),
-      map(value => typeof value === 'string' ? value : ''),
-      map(filter => this.filter(filter))
-    )
-  }
-
-  public displaySelectedUser() {
-    let arr = []
-    this.selectedContacts.forEach(user => {
-      arr.push(user.name)
-    })
-    return this.displayArray(arr)
-  }
-  
   public displayArray(arr) {
     let ret = ''
     arr.length == 1 && (ret += arr[0])
     arr.length == 2 && (ret += arr[0] + ', ' + arr[1])
     arr.length > 2 && (ret += arr[0] + ', ' + arr[1] + ' +' + (arr.length - 2))
     return ret
+  }
+
+  clickType(e, type) {
+    type.selected = e.checked
+  }
+
+  displaySelectedTypes() {
+    let arr = []
+    this.types.forEach(e => {
+      e.selected && arr.push(e.name)
+    })
+    return this.displayArray(arr)
   }
 
   public getSelectedDate() {
@@ -233,10 +187,6 @@ export class TaskFilterComponent implements OnInit {
     }
   }
 
-  public clearDate() {
-    this.dateType = -1
-  }
-
   public getAddSelectedDate() {
     if (this.addDateType == -1) {
       return ''
@@ -264,7 +214,128 @@ export class TaskFilterComponent implements OnInit {
     }
   }
 
+  public getDueSelectedDate() {
+    if (this.dueDateType == -1) {
+      return ''
+    }
+    switch (this.dueDateType) {
+      case 0:
+        const today = this.dateService.getToday()
+        return today + ' ~ ' + today
+      case 1:
+        const tomorrow =  this.dateService.getTomorrow();
+        return tomorrow + ' ~ ' + tomorrow
+      case 2:
+          return this.dateService.getNext7Days()
+      case 3:
+        const yesterday = this.dateService.getYesterday()
+        return yesterday
+      case 4:
+        let firstDay = '', lastDay = ''
+        this.dueStartDate && (firstDay = this.dateService.dateToString(this.dueStartDate))
+        this.dueEndDate && (lastDay = this.dateService.dateToString(this.dueEndDate))
+        return firstDay + ' ~ ' + lastDay
+    }
+  }
+
+  calculateFilterCount(): number {
+    this.filterCount = 0;
+    if(this.status) {
+      this.filterCount += 1;
+    }
+    if(this.selectedCreatedBy.length > 0) {
+      this.filterCount += 1;
+    }
+    if(this.selectedCompany.length > 0) {
+      this.filterCount += 1;
+    }
+    if(this.dateType != -1 && (this.dateType || this.dateType == 0)) {
+      this.filterCount += 1;
+    }
+    if(this.addDateType != -1 && (this.addDateType || this.addDateType == 0)) {
+      this.filterCount += 1;
+    }
+    if(this.dueDateType != -1 && (this.dueDateType || this.dueDateType == 0)) {
+      this.filterCount += 1;
+    }
+    if(this.displaySelectedTypes() != '') {
+      this.filterCount += 1;
+    }
+    this.count.emit(this.filterCount);
+    return this.filterCount;
+  }
+
+  clearAll() {
+    this.clearType();
+    this.clearStatus();
+    this.clearCreatedBy();
+    this.clearCompany();
+    this.clearDate();
+    this.clearAddDate();
+    this.clearDueDate();
+  }
+
+  clearType() {
+    this.types.forEach(e => {
+      e.selected = false;
+    })
+  }
+
+  public clearStatus() {
+    this.status = undefined;
+  }
+
+  public clearCreatedBy() {
+    this.selectedCreatedBy = [];
+    this.filteredCont.pipe(
+      tap(data => {
+        data.forEach(c => {
+          c.isChecked = false;
+        })
+      }),
+      take(1)
+    ).subscribe();
+  }
+
+  public clearCompany() {
+    this.selectedCompany = [];
+    this.filteredComp.pipe(
+      tap(data => {
+        data.forEach(c => {
+          c.isChecked = false;
+        })
+      }),
+      take(1)
+    ).subscribe();
+  }
+
+  public clearDate() {
+    this.dateType = -1
+  }
+
   public clearAddDate() {
     this.addDateType = -1
+  }
+
+  public clearDueDate() {
+    this.dueDateType = -1
+  }
+
+
+
+  private _filterStates(value: string): createContact[] {
+    const filterValue = value.toLowerCase();
+
+    return this.contacts.filter(state => state.name.toLowerCase().indexOf(filterValue) === 0);
+  }
+
+  private _filterStatesComp(value: string): createContact[] {
+    const filterValue = value.toLowerCase();
+
+    return this.companys.filter(state => state.name.toLowerCase().indexOf(filterValue) === 0);
+  }
+
+  filterCountChangedHandler(e) {
+    this.filterCount = e
   }
 }

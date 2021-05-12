@@ -21,11 +21,12 @@ import { ContactDialog } from 'src/app/shared/header/header.component';
 export class ContactDetailComponent implements OnInit {
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
   status = "active"
-  selectedDisplay = "all"
+  // selectedDisplay = "all"
 
   constructor(private router: Router , public dialog: MatDialog) { }
 
   ngOnInit(): void {
+
   }
 
   goToList() {

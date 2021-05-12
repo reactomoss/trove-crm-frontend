@@ -30,6 +30,17 @@
     width: 119px;
 }
 
+.deleteBtn {
+  background: #EFF2F7;
+  border: 1px solid #D0D9DE;
+  border-radius: 3px;
+  font-weight: bold;
+  font-size: 16px;
+  width: auto;
+  height: 40px;
+  color: #FF0000;
+}
+
 .createBtn {
     background: #002868;
     border-radius: 3px;
@@ -60,7 +71,7 @@ span {
     align-items: center;
 }
 
-.optionDiv img { 
+.optionDiv img {
     border-radius: 6px;
 }
 

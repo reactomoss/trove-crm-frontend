@@ -41,6 +41,13 @@ import { CompanyDetailComponent } from './company-detail/company-detail.componen
 import {CompanyFilterComponent} from './company/filter/filter.component';
 import { EditnoteComponent } from './editnote/editnote.component';
 import { AddnoteComponent } from './addnote/addnote.component';
+import { SourcechartComponent } from './sourcechart/sourcechart.component';
+import { SourceFilterComponent } from './sourcechart/source-filter/source-filter.component';
+import { SourceTableComponent } from './sourcechart/source-table/source-table.component';
+import { ActivitylogComponent } from './activitylog/activitylog.component';
+import { ActivitylistComponent } from './detail/activitylist/activitylist.component';
+import { ContactActivitylistComponent } from './contact-detail/contact-activitylist/contact-activitylist.component';
+import { CompanyActivitylistComponent } from './company-detail/company-activitylist/company-activitylist.component';
 
 
 const routes: Routes = [
@@ -56,7 +63,9 @@ const routes: Routes = [
   { path: 'company', component: CompanyComponent},
   { path: 'company_detail', component: CompanyDetailComponent},
   { path: 'addnote', component: AddnoteComponent},
-  { path: 'editnote', component: EditnoteComponent}
+  { path: 'editnote', component: EditnoteComponent},
+  { path: 'sourcedetail' , component: SourcechartComponent},
+  { path: 'activities', component: ActivitylogComponent}
 ]
 @NgModule({
   declarations: [
@@ -94,7 +103,14 @@ const routes: Routes = [
     CompanyFilterComponent,
     CompanyMailDialog,
     EditnoteComponent,
-    AddnoteComponent
+    AddnoteComponent,
+    SourcechartComponent,
+    SourceFilterComponent,
+    SourceTableComponent,
+    ActivitylogComponent,
+    ActivitylistComponent,
+    ContactActivitylistComponent,
+    CompanyActivitylistComponent
   ],
   imports: [
     CommonModule, RouterModule.forChild(routes), SharedModule, NgbModule,MaterialModule,
@@ -106,7 +122,7 @@ const routes: Routes = [
     NgxSliderModule,
     FroalaEditorModule.forRoot(),
     FroalaViewModule.forRoot(),
-    NgxMaterialTimepickerModule
+    NgxMaterialTimepickerModule,
   ],
   exports:[RouterModule],
 })

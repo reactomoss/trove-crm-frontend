@@ -30,7 +30,6 @@ export class Contact {
 })
 export class CompanyFilterComponent implements OnInit {
 
-
   @Output() closeDialog = new EventEmitter();
   @Output() count = new EventEmitter<any>();
   contactCtrl = new FormControl();

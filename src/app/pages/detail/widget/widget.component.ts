@@ -6,6 +6,12 @@ export class Task {
   }
 }
 
+export class Appointment {
+  constructor(public name: string, public icon: string , public color: string, public desc: string,  public selected?: boolean) {
+    if (selected === undefined) selected = false
+  }
+}
+
 export class File {
   constructor(public name: string, public type: string, public description: string) {
   }
@@ -24,6 +30,13 @@ export class WidgetComponent implements OnInit {
     new Task("Ux design meeting at 17:30hrs.", "calendar", "red", "Sat, 21 Apr, 2021"),
     new Task("Landing page required for new CRM app", "notification", "default", "Sun, 22 Apr, 2021"),
     new Task("Meeting required for new CRM app", "calendar", "default", "Mon, 23 Apr, 2021"),
+  ]
+
+  appointments: Appointment[] = [
+    new Appointment("Packet Monster Sales opportunity", "notification", "default", "Today at 9:00"),
+    new Appointment("Appointment meeting at 17:30hrs.", "calendar", "red", "Sat, 21 Apr, 2021"),
+    new Appointment("Landing page required for new CRM app", "notification", "default", "Sun, 22 Apr, 2021"),
+    new Appointment("UX required for new CRM app", "calendar", "default", "Mon, 23 Apr, 2021"),
   ]
 
   files: File[] = [

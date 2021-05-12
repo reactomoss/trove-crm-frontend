@@ -13,7 +13,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 export class LeadsComponent implements OnInit {
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
-
+  showFilter: boolean = false
   listShow: boolean = false
   stages: string[] = ['Discovery', 'Qualified', 'Evolution', 'Negotiation', 'Closed']
 
@@ -37,14 +37,15 @@ export class LeadsComponent implements OnInit {
       startWith(''),
       map(value => this._filter(value))
     )
+
   }
-  
+
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
     return this.options.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
   }
-  
+
   public activeClass(num) {
     if (num == this.active)
       return 'activeBtn'
@@ -78,8 +79,9 @@ export class LeadsComponent implements OnInit {
 
   showCards() {
     this.listShow = false
+    this.showFilter = false
   }
-  
+
   dropped(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(
@@ -103,5 +105,9 @@ export class LeadsComponent implements OnInit {
 
   filterCountChangedHandler(e) {
     this.filterCount = e
+  }
+
+  clickFilter(){
+    this.showFilter = true
   }
 }

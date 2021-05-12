@@ -20,6 +20,12 @@ export class DateService {
     return this.dateToString(new Date())
   }
 
+  getTomorrow() {
+    let date = new Date();
+    date.setDate(date.getDate() + 1);
+    return this.dateToString(date)
+  }
+
   getYesterday() {
     let date = new Date();
     date.setDate(date.getDate() - 1);
@@ -33,7 +39,18 @@ export class DateService {
 
     let firstDay = this.dateToString(new Date(curr.setDate(first)))
     let lastDay = this.dateToString(new Date(curr.setDate(last)))
-    
+
+    return firstDay + ' ~ ' + lastDay
+  }
+
+  getNext7Days() {
+    let curr = new Date; // get current date
+    let first = curr.getDate() - curr.getDay() + 7 // First day is the day of the month - the day of the week
+    let last = first + 6; // last day is the first day + 6
+
+    let firstDay = this.dateToString(new Date(curr.setDate(first)))
+    let lastDay = this.dateToString(new Date(curr.setDate(last)))
+
     return firstDay + ' ~ ' + lastDay
   }
 

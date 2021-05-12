@@ -127,3 +127,15 @@
     line-height: 14px;
     color: #253238;
 }
+.flatIconTextButton {
+  background: rgba(208, 217, 222, 0.2);
+  border: 1px solid #D0D9DE;
+  box-sizing: border-box;
+  border-radius: 3px;
+  padding: 0 7px 0 0;
+  font-size: 12px;
+  line-height: 30px;
+}
+.drawerContainer {
+  width: 360px;
+}

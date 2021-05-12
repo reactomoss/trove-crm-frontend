@@ -2,7 +2,8 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-
+import {SnackBarService} from '../../shared/snack-bar.service'
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 export interface item {
   id: number;
   name: string;
@@ -25,10 +26,9 @@ export interface selectedData {
   styleUrls: ['./company.component.css']
 })
 export class CompanyComponent implements OnInit {
-
+  showFilter:boolean = false
   filterCount: number = 0
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
-
   hoveredItem
   //detect for click card, check
   detect: number
@@ -84,9 +84,35 @@ export class CompanyComponent implements OnInit {
 
   listShow: boolean = false
   typeString: string = 'Companies'
-
-  constructor(public dialog: MatDialog, private router: Router) {
+  /*Modal dialog*/
+  closeResult = '';
+/*Modal dialog*/
+  constructor(private modalService: NgbModal , public dialog: MatDialog, private router: Router , private sb: SnackBarService) {
   }
+
+  triggerSnackBar(message:string, action:string) {
+    this.sb.openSnackBarBottomCenter(message, action);
+    }
+
+    /*Modal dialog*/
+    open(content) {
+      this.modalService.open(content, {ariaLabelledBy: 'dialog001'}).result.then((result) => {
+        this.closeResult = `Closed with: ${result}`;
+      }, (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      });
+    }
+
+private getDismissReason(reason: any): string {
+  if (reason === ModalDismissReasons.ESC) {
+    return 'by pressing ESC';
+  } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+    return 'by clicking on a backdrop';
+  } else {
+    return `with: ${reason}`;
+  }
+}
+/*Modal dialog*/
 
   ngOnInit(): void {
     this.items = this.allItems
@@ -179,6 +205,10 @@ export class CompanyComponent implements OnInit {
   }
   filterCountChangedHandler(e) {
     this.filterCount = e
+  }
+
+  clickFilter(){
+    this.showFilter = true
   }
 
 }

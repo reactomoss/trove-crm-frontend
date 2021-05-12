@@ -18,7 +18,7 @@
                         [filterCount]="filterCount"
                         (filterCountChanged)="filterCountChangedHandler($event)"></app-filter>
                 </ngx-simplebar> -->
-                <app-filter (closeDialog)="drawer.toggle()" (count)="filterCount=$event"></app-filter>
+                <app-filter *ngIf="showFilter" (closeDialog)="drawer.toggle()" (count)="filterCount=$event"></app-filter>
             </div>
         </mat-drawer>
 
@@ -28,7 +28,7 @@
                     <span class="title mr-3 fontObjektivMk mt-1">All Leads</span>
 
                     <mat-form-field class="searchForm noLabelForm noSpaceForm" appearance="outline">
-                        <input type="text" matInput placeholder="Search by contact name">
+                        <input type="text" matInput placeholder="Search...">
                         <mat-icon matSuffix>search</mat-icon>
                     </mat-form-field>
 
@@ -49,7 +49,7 @@
                     <button mat-button class="flatIconDarkButton" (click)="showCards()">
                         <mat-icon class="smallIcon">dashboard</mat-icon>
                     </button>
-                    <button mat-button class="flatIconTextButton ml-3" (click)="drawer.toggle()">
+                    <button mat-button class="flatIconTextButton ml-3" (click)="drawer.toggle() ; clickFilter()">
                         <mat-icon class="iconInButton">filter_alt</mat-icon>
                         Filter({{filterCount}})
                     </button>
@@ -214,7 +214,7 @@
                         <span class="title mr-3 fontObjektivMk mt-1">Leads</span>
 
                         <mat-form-field class="searchForm noLabelForm noSpaceForm" appearance="outline">
-                            <input type="text" aria-label="Number" matInput placeholder="Search by contact name">
+                            <input type="text" aria-label="Number" matInput placeholder="Search...">
                             <mat-icon matSuffix>search</mat-icon>
                         </mat-form-field>
                     </div>

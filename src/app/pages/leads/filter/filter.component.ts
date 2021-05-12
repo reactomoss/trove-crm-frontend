@@ -71,7 +71,7 @@ export class FilterComponent implements OnInit {
   public endDate: Date = null
 
   scrollOptions = { autoHide: true, scrollbarMinSize: 30 }
-
+  selectedDisplay = "pipe1"
   // multi autocomplete
 
   sources = [
@@ -188,6 +188,7 @@ export class FilterComponent implements OnInit {
     this.sources.forEach(e => {
       e.selected = false;
     })
+    this.sourceAll= false
   }
   public clearDate() {
     this.dateType = -1

@@ -49,11 +49,11 @@ export class HeaderComponent implements OnInit {
       },
       {
         icon:'menu004.png',
-        link:'/pages/calendar'
+        link:'/pages/task'
       },
       {
         icon:'menu005.png',
-        link:'/pages/pipeline'
+        link:'/pages/appointment'
       }
     ]
     this.filteredOptions = this.myControl.valueChanges.pipe(

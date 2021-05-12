@@ -1,17 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {FormControl} from '@angular/forms';
-import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
-import {
-  MAT_MOMENT_DATE_FORMATS,
-  MomentDateAdapter,
-  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
-} from '@angular/material-moment-adapter';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { Router } from '@angular/router';
+import {MatDialog} from '@angular/material/dialog';
 import { AppointDialog, TaskDialog } from '../detail/detail.component';
 import { CompanyDialog } from 'src/app/shared/header/header.component';
+import {SnackBarService} from 'src/app/shared/snack-bar.service'
 
 @Component({
   selector: 'app-company-detail',
@@ -22,12 +14,13 @@ export class CompanyDetailComponent implements OnInit {
 
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
   status = "active"
-  selectedDisplay = "all"
+  // selectedDisplay = "all"
 
   constructor(private router: Router , public dialog: MatDialog) { }
 
   ngOnInit(): void {
   }
+
 
   goToList() {
     this.router.navigate(['/pages/company']);

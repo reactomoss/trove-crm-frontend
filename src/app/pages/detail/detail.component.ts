@@ -25,12 +25,13 @@ export class DetailComponent implements OnInit {
 
   selectedStage: number
 
-  selectedDisplay = "all"
+  // selectedDisplay = "all"
 
   constructor(private router: Router, public dialog: MatDialog, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.stages = ["Discovery", "Qualified", "Evolution", "Negotiation", "Closed"]
+
   }
 
   goToList() {

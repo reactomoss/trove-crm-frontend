@@ -21,7 +21,7 @@
         </mat-expansion-panel-header>
         <div class="panel-content">
             <div class="trapezoid1">
-                <div class="text">
+                <!-- <div class="text">
                     <button mat-button [matMenuTriggerFor]="salesPipeMenu">
                         Sales Pipleline
                         <mat-icon>arrow_drop_down</mat-icon>
@@ -31,7 +31,24 @@
                         <button mat-menu-item>pipe2</button>
                         <button mat-menu-item>pipe3</button>
                     </mat-menu>
+                </div> -->
+                <div class="text">
+                  <mat-form-field class="statusSelect text-center">
+                    <mat-select [(value)]="selectedDisplay">
+                        <mat-option value="pipe1">
+                            Pipe 1
+                        </mat-option>
+                        <mat-option value="pipe2">
+                          Pipe 2
+                        </mat-option>
+                        <mat-option value="pipe3">
+                          Pipe 3
+                        </mat-option>
+
+                    </mat-select>
+                </mat-form-field>
                 </div>
+
             </div>
             <div class="trapezoid2" [class.activePipe]="checkPipe('discovery')">
                 <div class="text" (click)="clickDiscovery('discovery')">Discovery</div>
@@ -115,7 +132,7 @@
         <mat-expansion-panel-header [@.disabled]="true">
             <mat-panel-title>
                 <div>
-                    Contact
+                    Associate With
                 </div>
             </mat-panel-title>
         </mat-expansion-panel-header>
@@ -123,11 +140,11 @@
           <div class="px-4">
             <div>
               <mat-tab-group animationDuration="0ms" class="horizontalTab tab001 activeTabBlue">
-                <mat-tab label="User">
+                <mat-tab label="Owner">
                     <div>
                       <mat-form-field appearance="outline" class="serachForm noLabelForm whiteBackground">
 
-                        <input class="typo" matInput placeholder="Search by name" aria-label="Search by name" [matAutocomplete]="autoCreatedBy"
+                        <input class="typo" matInput placeholder="Search by owner" aria-label="Search by owner" [matAutocomplete]="autoCreatedBy"
                           [formControl]="contactCtrl">
                         <mat-autocomplete #autoCreatedBy="matAutocomplete" class="matAutoComplete001">
                           <mat-option class="h-auto" *ngFor="let state of filteredCont | async" [value]="state.name">
@@ -238,7 +255,7 @@
         </mat-expansion-panel-header>
         <div class="panel-content">
             <ngx-simplebar [options]="scrollOptions" style="height: 120px; margin-bottom: 16px;">
-                <mat-checkbox class="mb-2" [checked]="sourceAll" color="primary" (change)="allSourceSelect($event)" class="mx-4 customCheckBox">All</mat-checkbox>
+                <mat-checkbox class="mb-2" [(ngModel)]="sourceAll" color="primary" (change)="allSourceSelect($event)" class="mx-4 customCheckBox">All</mat-checkbox>
                 <div *ngFor="let e of sources" class="mt-2">
                     <mat-checkbox class="mx-4 customCheckBox" color="primary"
                                     [checked]="e.selected" (change)="sourceSelect(e)">{{e.name}}</mat-checkbox>
@@ -280,7 +297,7 @@
         <mat-expansion-panel-header [@.disabled]="true">
             <mat-panel-title>
                 <div>
-                    Date Modified<br>
+                    Last Activity<br>
                     <span>{{getSelectedDate()}}</span>
                 </div>
             </mat-panel-title>

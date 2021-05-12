@@ -22,7 +22,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
   { avatar: '../../../assets/images/user-sample.png', name: 'Edward James Olmos', description: "description6", stage: 'Evolution', value: 10000, day: 1, owner: '' },
   { avatar: '../../../assets/images/user-sample.png', name: 'Edward James Olmos', description: "description7", stage: 'Evolution', value: 200, day: 1, owner: '' },
   { avatar: '../../../assets/images/user-sample.png', name: 'Edward James Olmos', description: "description8", stage: 'Evolution', value: 60, day: 3, owner: 'Me' },
-] 
+]
 
 
 @Component({
@@ -30,7 +30,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
   templateUrl: './lead-table.component.html',
   styleUrls: ['./lead-table.component.css']
 })
-  
+
 export class LeadTableComponent implements AfterViewInit  {
   displayedColumns: string[] = ['name', 'stage', 'value', 'day', 'owner'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
@@ -42,6 +42,7 @@ export class LeadTableComponent implements AfterViewInit  {
 
   ngAfterViewInit (): void {
     this.dataSource.sort = this.sort;
+
   }
 
   clickRow(row) {

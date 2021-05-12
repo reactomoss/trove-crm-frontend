@@ -11,7 +11,7 @@
 </div>
 <ngx-simplebar [options]="scrollOptions" class="filterContainer1">
   <mat-accordion class="grayAccordion customAccordion">
-    <mat-expansion-panel class="mat-elevation-z0 topPanel">
+    <mat-expansion-panel class="mat-elevation-z0 topPanel" [expanded]="true">
       <mat-expansion-panel-header>
         <mat-panel-title>
           <div>
@@ -39,17 +39,17 @@
       <mat-expansion-panel-header>
         <mat-panel-title>
           <div>
-            Contact
+            Owner
           </div>
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="panel-content">
         <div class="px-4">
                   <div class="">
-                    <div class="f-12-500">Created by:</div>
+
                     <mat-form-field appearance="outline" class="serachForm noLabelForm whiteBackground">
 
-                      <input class="typo" matInput placeholder="Search by name" aria-label="Search by name" [matAutocomplete]="autoCreatedBy"
+                      <input class="typo" matInput placeholder="Search by owner" aria-label="Search by owner" [matAutocomplete]="autoCreatedBy"
                         [formControl]="contactCtrl">
                       <mat-autocomplete #autoCreatedBy="matAutocomplete" class="matAutoComplete001">
                         <mat-option class="h-auto" *ngFor="let state of filteredCont | async" [value]="state.name">
@@ -101,7 +101,7 @@
       <mat-expansion-panel-header>
         <mat-panel-title>
           <div>
-            Date Modified<br>
+            Last Activity<br>
             <span class="subTitle">{{getSelectedDate()}}</span>
           </div>
         </mat-panel-title>

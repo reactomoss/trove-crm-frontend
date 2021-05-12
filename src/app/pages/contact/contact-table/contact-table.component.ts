@@ -39,6 +39,7 @@ export class ContactTableComponent implements AfterViewInit {
     this.dataSource = new MatTableDataSource(this.propItems)
     this.dataSource.sort = this.sort
     this.dataSource.paginator = this.paginator
+
   }
 
   ngOnChanges() {

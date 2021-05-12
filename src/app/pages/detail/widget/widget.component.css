@@ -30,12 +30,12 @@ mat-expansion-panel-header {
     border-bottom: 1px solid #D0D9DE;
 }
 
-.rightPart mat-expansion-panel:nth-child(5) {
+/* .rightPart mat-expansion-panel:nth-child(5) {
 
-}
+} */
 
 .rightPart .panel-content1 {
-    display: flex;
+    /* display: flex; */
     justify-content: space-between;
 }
 
@@ -44,7 +44,7 @@ mat-expansion-panel-header {
     line-height: 14px;
     color: #455B66;
 }
-
+.rightPart .panel-content1 div span.fs-16 {font-size: 16px;}
 .rightPart .panel-content1 .priceSpan {
     font-weight: 500;
     font-size: 25px;
@@ -184,5 +184,4 @@ mat-expansion-panel-header {
   background-color: #eff2f7;
   border-radius: 3px;
 }
-
 
