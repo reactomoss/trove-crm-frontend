@@ -51,12 +51,13 @@ import { ContactActivitylistComponent } from './contact-detail/contact-activityl
 import { CompanyActivitylistComponent } from './company-detail/company-activitylist/company-activitylist.component';
 import { RolesComponent } from './settings/usersroles/roles/roles.component';
 
+//canActivate:[AuthGuardService]
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: PagesComponent, canActivate:[AuthGuardService]},
   // {path:'settings' , loadChildren: () => import('./settings/settings.module') .then(m=>m.SettingsModule)},
-  { path: 'settings', component: SettingsComponent },
-  { path: 'leads', component: LeadsComponent },
+  { path: 'settings', component: SettingsComponent, canActivate:[AuthGuardService]},
+  { path: 'leads', component: LeadsComponent, canActivate:[AuthGuardService]},
   { path: 'lead_detail', component: DetailComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'contact_detail', component: ContactDetailComponent },
