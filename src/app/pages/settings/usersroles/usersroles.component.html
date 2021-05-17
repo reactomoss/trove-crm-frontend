@@ -13,14 +13,16 @@
                             <div class="input-group mb-3 inputSearch001">
                                 <input class="form-control" matInput placeholder="Search..." [(ngModel)]="filterValue" (keyup)="filterUsers()">
                                 <div class="input-group-append">
-                                    <span class="material-icons input-group-text">search</span>
+                                    <i class="material-icons input-group-text">search</i>
                                 </div>
                             </div>
                         </div>
                         <div class="col text-right mb-10-xs">
-                            <button (click)="open(modalNewUser)" class="btnColor1 f-16-500" mat-flat-button>New user<span class="material-icons fs-16 ml-1">
-                add
-                </span></button>
+                            <button (click)="open(modalNewUser)" class="btnColor1 f-16-500" mat-flat-button>New user
+                              <mat-icon class="material-icons fs-16 ml-1 align-text-top">
+                                  add
+                                  </mat-icon>
+                            </button>
                         </div>
                     </div>
                     <!-- *ngIf="(filteredAndPagedIssues | async) as dataLoaded" -->
@@ -50,7 +52,7 @@
                                 <th class="w-220px" mat-header-cell *matHeaderCellDef> Action </th>
                                 <td mat-cell *matCellDef="let row">
                                     <a (click)="open(modalNewUser, row.id)" mat-flat-button class="btnEdit1 f-14-400">
-                                        <span class="material-icons mr-1 fs-14">create</span> Edit
+                                        <mat-icon class="material-icons mr-1 fs-14 align-text-top">create</mat-icon> Edit
                                     </a>
                                     <a (click)="deleteModal(modalDelete, row.id)" mat-flat-button class="btnDelete1 f-14-400 ml-2">Delete</a>
                                 </td>
@@ -105,7 +107,7 @@
                 <div class="input-group inputSearch001">
                     <input type="text" matInput class="form-control" placeholder="Search field">
                     <div class="input-group-append">
-                        <span class="input-group-text material-icons">search</span>
+                        <i class="input-group-text material-icons">search</i>
                     </div>
                 </div>
             </div>
@@ -126,7 +128,7 @@
                             <div class="addPersonImg position-relative">
                                 <img (click)="triggerAddPerson.click()" [src]="addPersonImageUrl">
                                 <input #triggerAddPerson class="d-none" type="file" name="user_profile" (change)="onChangeAddPerson($event.target.files[0])">
-                                <span class="material-icons delAddPerImg" (click)="removeAddPersonImage()">delete</span>
+                                <mat-icon class="material-icons delAddPerImg" (click)="removeAddPersonImage()">delete</mat-icon>
                             </div>
                         </div>
                         <div class="col-sm-5 mb-3">
@@ -158,9 +160,9 @@
                     <div class="row">
                         <div class="col-sm-2 mb-3">
                             <div class="addPerIconWrap">
-                                <span class="material-icons fs-20 color-455B66">
-              call
-            </span>
+                                <i class="material-icons fs-20 color-455B66">
+                                  call
+                                </i>
                             </div>
                         </div>
                         <div class="col-sm-5 mb-3">
@@ -194,9 +196,9 @@
                     <div class="row">
                         <div class="col-sm-2 mb-3">
                             <div class="addPerIconWrap">
-                                <span class="material-icons fs-20 color-455B66">
+                                <i class="material-icons fs-20 color-455B66">
               email
-            </span>
+            </i>
                             </div>
                         </div>
                         <div class="col-sm-10 mb-3">

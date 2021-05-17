@@ -1275,6 +1275,10 @@ button.iconSmall {
   border-top: 0;
 }
 
+.hgt200 {
+  height: 200px;
+}
+
 @media(min-width: 1050px) {
   .froalaMob .fr-toolbar .fr-btn-grp {
     padding-left: 1.7em;
