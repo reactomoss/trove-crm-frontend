@@ -1274,6 +1274,9 @@ button.iconSmall {
   padding: 7px;
   border-top: 0;
 }
+.hgt200 {
+  height: 200px;
+}
 
 @media(min-width: 1050px) {
   .froalaMob .fr-toolbar .fr-btn-grp {

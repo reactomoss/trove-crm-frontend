@@ -79,7 +79,7 @@ const routes: Routes = [
   { path: 'sourcedetail' , component: SourcechartComponent},
   { path: 'activities', component: ActivitylogComponent},
   // { path: 'notes', component: NotesComponent},
-  { path: 'pipeline', component: CalendarComponent }
+  { path: 'appointments', component: CalendarComponent }
 ]
 @NgModule({
   declarations: [
