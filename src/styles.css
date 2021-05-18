@@ -1239,6 +1239,10 @@ input.mat-input-element.typo {
 }
 .froalaMob .fr-toolbar .fr-newline {margin-left: 0 ;margin-right: 0 ;}
 
+.cdk-overlay-container {
+    z-index: 500 !important;
+}
+
 @media(min-width: 1050px) {
   .froalaMob .fr-toolbar .fr-btn-grp {
     padding-left: 1.7em;
