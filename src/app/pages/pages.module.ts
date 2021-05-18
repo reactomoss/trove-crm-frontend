@@ -44,8 +44,6 @@ import {CompanyFilterComponent} from './company/filter/filter.component';
 import { EditnoteComponent } from './editnote/editnote.component';
 import { AddnoteComponent } from './addnote/addnote.component';
 import { SourcechartComponent } from './sourcechart/sourcechart.component';
-import { SourceFilterComponent } from './sourcechart/source-filter/source-filter.component';
-import { SourceTableComponent } from './sourcechart/source-table/source-table.component';
 import { ActivitylogComponent } from './activitylog/activitylog.component';
 import { ActivitylistComponent } from './detail/activitylist/activitylist.component';
 import { ContactActivitylistComponent } from './contact-detail/contact-activitylist/contact-activitylist.component';
@@ -56,7 +54,14 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarComponent } from './calendar/calendar.component';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-
+import { PipelinechartComponent} from './pipelinechart/pipelinechart.component';
+import { PipelinechartFilterComponent } from './pipelinechart/pipelinechart-filter/pipelinechart-filter.component';
+import { PipelinechartTableComponent } from './pipelinechart/pipelinechart-table/pipelinechart-table.component';
+import { MonthlychartComponent } from './monthlychart/monthlychart.component';
+import { MonthlychartFilterComponent } from './monthlychart/monthlychart-filter/monthlychart-filter.component';
+import { MonthlychartTableComponent } from './monthlychart/monthlychart-table/monthlychart-table.component';
+import { SourcechartFilterComponent } from './sourcechart/sourcechart-filter/sourcechart-filter.component';
+import { SourcechartTableComponent } from './sourcechart/sourcechart-table/sourcechart-table.component'
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
   interactionPlugin,
@@ -79,7 +84,9 @@ const routes: Routes = [
   { path: 'sourcedetail' , component: SourcechartComponent},
   { path: 'activities', component: ActivitylogComponent},
   // { path: 'notes', component: NotesComponent},
-  { path: 'appointments', component: CalendarComponent }
+  { path: 'appointments', component: CalendarComponent },
+  { path: 'pipelinedetail' , component: PipelinechartComponent},
+  { path: 'monthlydetail' , component: MonthlychartComponent},
 ]
 @NgModule({
   declarations: [
@@ -119,15 +126,21 @@ const routes: Routes = [
     EditnoteComponent,
     AddnoteComponent,
     SourcechartComponent,
-    SourceFilterComponent,
-    SourceTableComponent,
     ActivitylogComponent,
     ActivitylistComponent,
     ContactActivitylistComponent,
     CompanyActivitylistComponent,
     // NotesComponent,
     CalendarFilterComponent,
-    CalendarComponent
+    CalendarComponent,
+    PipelinechartComponent,
+    PipelinechartFilterComponent,
+    PipelinechartTableComponent,
+    MonthlychartComponent,
+    MonthlychartFilterComponent,
+    MonthlychartTableComponent,
+    SourcechartFilterComponent,
+    SourcechartTableComponent
   ],
   imports: [
     CommonModule, RouterModule.forChild(routes), SharedModule, NgbModule,MaterialModule,

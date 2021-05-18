@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import * as echarts from 'echarts';
 @Component({
-  selector: 'app-sourcechart',
-  templateUrl: './sourcechart.component.html',
-  styleUrls: ['./sourcechart.component.css']
+  selector: 'app-monthlychart',
+  templateUrl: './monthlychart.component.html',
+  styleUrls: ['./monthlychart.component.css']
 })
-export class SourcechartComponent implements OnInit {
+export class MonthlychartComponent implements OnInit {
+
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
   filterCount: number = 0
   showFilter: boolean = false
-  colorsourceChart = ['#7184b8']
-  sourceChart: echarts.EChartsOption = {
+  colormonthlyChart = ['#c6a887']
+  monthlyChart: echarts.EChartsOption = {
     tooltip: {
       trigger: 'axis',
       axisPointer: {
@@ -26,7 +27,7 @@ export class SourcechartComponent implements OnInit {
     xAxis: [
         {
             type: 'category',
-            data: ['SMS', 'Website', 'News', 'Task'],
+            data: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
             axisTick: {
                 alignWithLabel: true
             }
@@ -39,13 +40,13 @@ export class SourcechartComponent implements OnInit {
     ],
     series: [
         {
-            name: 'Source',
+            name: 'Monthly',
             type: 'bar',
             barWidth: '15%',
-            data: [10, 52, 100, 200]
+            data: [10, 52, 200, 170, 250]
         }
     ],
-    color: this.colorsourceChart,
+    color: this.colormonthlyChart,
   };
   constructor() { }
 

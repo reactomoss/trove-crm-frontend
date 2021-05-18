@@ -3,7 +3,7 @@
 
     <mat-drawer #drawer mode="Over" position="end" class="noScrollDrawer">
       <div class="drawerContainer">
-              <app-sourcechart-filter *ngIf="showFilter"  (closeDialog)="drawer.toggle()" (count)="filterCount=$event"></app-sourcechart-filter>
+              <app-pipelinechart-filter *ngIf="showFilter"  (closeDialog)="drawer.toggle()" (count)="filterCount=$event"></app-pipelinechart-filter>
       </div>
     </mat-drawer>
 
@@ -12,7 +12,7 @@
         <div class="topBar alignCenter">
           <span routerLink='/pages/dashboard' class="cursorPointer">
             <mat-icon class="align-top mr-1">arrow_back</mat-icon>
-            Source Overview
+            Pipeline Overview
           </span>
 
 
@@ -28,11 +28,10 @@
 
         </div>
         <ngx-simplebar [options]="scrollOptions" class="listContainer">
-          <div class="whiteBox">
-            <app-echarts class="chartHeight" [chartOption]="sourceChart"></app-echarts>
+          <div class="whiteBox pb-5">
+            <app-echarts class="chartHeight" [chartOption]="pipelineChart"></app-echarts>
           </div>
-
-           <app-sourcechart-table></app-sourcechart-table>
+           <app-pipelinechart-table></app-pipelinechart-table>
         </ngx-simplebar>
     </div>
 

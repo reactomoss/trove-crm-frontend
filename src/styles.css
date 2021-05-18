@@ -1277,6 +1277,9 @@ button.iconSmall {
 .hgt200 {
   height: 200px;
 }
+.chartHeight .eChart {
+  height: 400px !important;
+}
 
 @media(min-width: 1050px) {
   .froalaMob .fr-toolbar .fr-btn-grp {
