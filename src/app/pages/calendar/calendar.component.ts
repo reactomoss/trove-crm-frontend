@@ -32,7 +32,7 @@ export class CalendarComponent implements OnInit {
     headerToolbar: {
         left: 'title',
         center:'prev,next scheduleAppointment',
-        right: 'scheduleTask',
+        right: '',
     },
     initialView: 'dayGridMonth',
     //initialEvents: INITIAL_EVENTS,

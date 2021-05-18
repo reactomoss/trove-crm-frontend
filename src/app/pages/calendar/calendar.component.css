@@ -7,12 +7,21 @@
 .topBarDiv {
     display: flex;
     align-items: center;
+    margin: 20px 0 20px 0;
 }
 
 .topBarDiv button {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.calendarType {
+    margin: 20px 0 20px 0;
+}
+
+.calendarButtons {
+    text-align: center;
 }
 
 .title {
