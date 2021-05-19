@@ -48,6 +48,12 @@ export class CalendarComponent implements OnInit {
   }
   currentEvents: EventApi[] = [];
   title = ''
+  filters = {
+      all: true,
+      task: true,
+      appoint: true,
+      reminder: true
+  }
 
   constructor(
     public dialog: MatDialog, 
@@ -254,5 +260,15 @@ export class CalendarComponent implements OnInit {
     
     let arrayOfDomNodes = [ divEl ]
     return { domNodes: arrayOfDomNodes }
+  }
+
+  showAllEvents() {
+    if (this.filters.all) {
+      this.filters.task = this.filters.appoint = this.filters.reminder = true  
+    }
+  }
+
+  filterEvents() {
+    this.filters.all = (this.filters.task && this.filters.appoint && this.filters.reminder)
   }
 }
