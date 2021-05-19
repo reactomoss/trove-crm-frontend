@@ -33,7 +33,7 @@ export class CalendarComponent implements OnInit {
         right: '',
     },
     initialView: 'dayGridMonth',
-    //initialEvents: INITIAL_EVENTS,
+    initialEvents: INITIAL_EVENTS,
     weekends: true,
     //editable: true,
     //selectable: true,

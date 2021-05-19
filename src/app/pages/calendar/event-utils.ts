@@ -1,25 +1,69 @@
 import { EventInput } from '@fullcalendar/angular';
+import * as moment from 'moment';
 
-let eventGuid = 1;
+let eventGuid = 100;
 const TODAY_STR = new Date().toISOString().replace(/T.*$/, ''); // YYYY-MM-DD of today
 
 export const INITIAL_EVENTS: EventInput[] = [
   {
-    id: createEventId(),
+    id: '1',
     title: 'Packet Monster Sales opportunity',
-    start: '2021-05-05', 
-    end: '2021-05-10',
+    date: '2021-05-03', 
     extendedProps: {
-        "type": "appointment",
+        isTask: true,
+        task: {
+            id: '1',
+            title: 'Packet Monster Sales opportunity',
+            due_date: moment('2021-05-03'),
+            due_time: '05:00',
+        }
     }
   },
   {
-    id: createEventId(),
-    title: 'Ux design meeting at 17:30hrs.', 
-    date: '2021-05-08', 
+    id: '2',
+    title: 'Ux design meeting', 
+    date: '2021-05-12', 
     extendedProps: {
-        "type": "task",
+        isTask: true,
+        task: {
+            id: '2',
+            title: 'Ux design meeting', 
+            due_date: moment('2021-05-12'),
+            due_time: '15:00',
+        }
     }
+  },
+  {
+    id: '3',
+    title: 'Family', 
+    date: '2021-05-23', 
+    extendedProps: {
+        isTask: true,
+        task: {
+            id: '3',
+            title: 'Family', 
+            due_date: moment('2021-05-23'),
+            due_time: '18:00',
+        }
+    },
+    color: '#f9e8ec',
+    textColor: '#d5617a'
+  },
+  {
+    id: '4',
+    title: 'Presentation', 
+    date: '2021-05-28', 
+    extendedProps: {
+        isTask: true,
+        task: {
+            id: '4',
+            title: 'Presentation', 
+            due_date: moment('2021-05-28'),
+            due_time: '18:00',
+        }
+    },
+    color: '#f9e8ec',
+    textColor: '#d5617a'
   }
 ];
 
