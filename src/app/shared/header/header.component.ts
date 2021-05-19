@@ -61,41 +61,29 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.menus = [
       {
-        icon: 'menu001.png',
-        link: '/pages/dashboard',
+        icon:'menu001.png',
+        link:'/pages/dashboard'
       },
       {
-        icon: 'menu006.png',
-        link: '/pages/leads',
+        icon:'menu006.png',
+        link:'/pages/leads'
       },
       {
-        icon: 'menu002.png',
-        link: '/pages/contact',
+        icon:'menu002.png',
+        link:'/pages/contact'
       },
       {
-        icon: 'menu003.png',
-        link: '/pages/email',
+        icon:'menu003.png',
+        link:'/pages/company'
       },
       {
-        icon: 'menu004.png',
-        link: '/pages/calendar',
+        icon:'menu004.png',
+        link:'/pages/task'
       },
       {
-        icon: 'menu005.png',
-        link: '/pages/pipeline',
-      },
-      {
-        icon: 'menu003.png',
-        link: '/pages/company',
-      },
-      {
-        icon: 'menu004.png',
-        link: '/pages/task',
-      },
-      {
-        icon: 'menu005.png',
-        link: '/pages/appointment',
-      },
+        icon:'menu005.png',
+        link:'/pages/appointments'
+      }
     ];
   }
   showNotification() {

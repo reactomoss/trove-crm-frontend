@@ -4,15 +4,16 @@
             <div class="input-group mb-3 inputSearch001">
                 <input class="form-control" matInput placeholder="Search..." [(ngModel)]="filterValue" (keyup)="filterRoles()">
                 <div class="input-group-append">
-                    <span class="material-icons input-group-text">search</span>
+                    <i class="material-icons input-group-text">search</i>
                 </div>
             </div>
 
         </div>
         <div class="col text-right mb-10-xs">
-            <button (click)="openNewRole(modalNewRole)" class="btnColor1 f-16-500" mat-flat-button>New Role<span class="material-icons fs-16 ml-1">
+            <button (click)="openNewRole(modalNewRole)" class="btnColor1 f-16-500" mat-flat-button>New Role
+              <mat-icon class="material-icons fs-16 ml-1 align-text-top">
 add
-</span></button>
+</mat-icon></button>
         </div>
     </div>
     <div class="color-253238 table-responsive table001">
@@ -39,7 +40,7 @@ add
                 <th class="w-220px" mat-header-cell *matHeaderCellDef> Action </th>
                 <td mat-cell *matCellDef="let row">
                     <a (click)="openNewRole(modalNewRole, row.id)" mat-flat-button class="btnEdit1 f-14-400">
-                        <span class="material-icons mr-1 fs-14">create</span> Edit
+                        <mat-icon class="material-icons mr-1 fs-14 align-text-top">create</mat-icon> Edit
                     </a>
                     <a (click)="deleteModal(modalDelete, row.id)" mat-flat-button class="btnDelete1 f-14-400 ml-2">Delete</a>
                 </td>
@@ -97,7 +98,8 @@ add
                         <mat-tab-group animationDuration="0ms" class="horizontalTab tab001" formArrayName="menus">
                             <ng-template [ngIf]="Permissions">
                                 <mat-tab *ngFor="let menu of Permissions ; let i=index" label="{{menu.name}}">
-                                    <div class="table-responsive">
+                                  <div class="hgt200 customVerScroll">
+                                  <div class="table-responsive">
                                         <table class="table table-borderless checkbox001 customTB001">
                                             <tbody class="">
                                                 <tr *ngFor="let child_menu of LoopingVar[i] ; let j=index" formGroupName="{{child_menu.formControlKey}}">
@@ -158,6 +160,7 @@ add
                                                 </tr>
                                             </tbody>
                                         </table>
+                                    </div>
                                     </div>
                                 </mat-tab>
                             </ng-template>
