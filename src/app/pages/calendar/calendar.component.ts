@@ -5,7 +5,7 @@ import { FullCalendarComponent, CalendarOptions, DateSelectArg, EventClickArg, E
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { AppointDialog, Appointment } from '../detail/appoint-dialog/appoint-dialog';
 import { TaskDialog, NTask } from '../detail/task-dialog/task-dialog';
-import { INITIAL_EVENTS, createEventId } from './event-utils';
+import { INITIAL_TASKS, createEventId } from './event-utils';
 import * as moment from 'moment';
 
 @Component({
@@ -33,19 +33,19 @@ export class CalendarComponent implements OnInit {
         right: '',
     },
     initialView: 'dayGridMonth',
-    initialEvents: INITIAL_EVENTS,
+    //initialEvents: INITIAL_EVENTS,
     weekends: true,
+    dayMaxEvents: 2,
     //editable: true,
     //selectable: true,
     //selectMirror: true,
-    dayMaxEvents: true,
     firstDay: 1,
     //select: this.handleDateSelect.bind(this),
     eventClick: this.handleEventClick.bind(this),
     eventsSet: this.handleEvents.bind(this),
     eventContent: this.handleEventContent.bind(this),
-    viewDidMount: this.updateTitle.bind(this),
   }
+  events = []
   currentEvents: EventApi[] = [];
   title = ''
   filters = {
@@ -60,7 +60,16 @@ export class CalendarComponent implements OnInit {
     private router: Router) {
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
+  }
+
+  ngAfterViewInit(): void {
+    const calendarApi = this.calendarComponent.getApi();
+    INITIAL_TASKS.forEach(task => {
+        console.log(task)
+        this.addTaskEvent(task)
+    })
+    this.updateTitle()
   }
 
   updateTitle() {
@@ -121,7 +130,7 @@ export class CalendarComponent implements OnInit {
     else {
       const eventId = createEventId()
       appointment.id = eventId
-        
+      
       calendarApi.addEvent({
         id: eventId,
         title: appointment.title,
@@ -181,6 +190,14 @@ export class CalendarComponent implements OnInit {
     }
   }
 
+  private deleteTask(task: NTask) {
+    if (task.id) {
+      const calendarApi = this.calendarComponent.getApi()
+      const event = calendarApi.getEventById(task.id)
+      event.remove()
+    }
+  }
+
   prev() {
     const calendarApi = this.calendarComponent.getApi();
     calendarApi.prev();
@@ -201,14 +218,6 @@ export class CalendarComponent implements OnInit {
   monthView() {
     const calendarApi = this.calendarComponent.getApi();
     calendarApi.changeView('dayGridMonth');
-  }
-
-  private deleteTask(task: NTask) {
-    if (task.id) {
-      const calendarApi = this.calendarComponent.getApi()
-      const event = calendarApi.getEventById(task.id)
-      event.remove()
-    }
   }
 
   handleDateSelect(selectInfo: DateSelectArg) {
@@ -243,14 +252,14 @@ export class CalendarComponent implements OnInit {
 
   handleEvents(events: EventApi[]) {
     this.currentEvents = events;
-    console.log('currentEvents', this.currentEvents)
+    //console.log('currentEvents', this.currentEvents)
   }
 
   handleEventContent(arg) {
     let divEl = document.createElement('div')
     divEl.className = 'checkbox-inline'
 
-    console.log('handleEventContent', arg.event.extendedProps)
+    //console.log('handleEventContent', arg.event.extendedProps)
     if (arg.event.extendedProps.isTask) {
         const task = arg.event.extendedProps.task
         divEl.innerHTML = `<input type='checkbox' class='event-checkbox'>${task.due_time??''} ${arg.event.title}`
@@ -266,9 +275,22 @@ export class CalendarComponent implements OnInit {
     if (this.filters.all) {
       this.filters.task = this.filters.appoint = this.filters.reminder = true  
     }
+    this.filterEvents()
   }
 
-  filterEvents() {
+  updateFilter() {
     this.filters.all = (this.filters.task && this.filters.appoint && this.filters.reminder)
+    this.filterEvents()
+  }
+
+  private filterEvents() {
+    this.currentEvents.forEach(event => {
+      if (event.extendedProps.isTask) {
+        event.setProp('display', (this.filters.all || this.filters.task) ? 'auto' : 'none')
+      }
+      else {
+        event.setProp('display', (this.filters.all || this.filters.appoint) ? 'auto' : 'none')
+      }
+    })
   }
 }
