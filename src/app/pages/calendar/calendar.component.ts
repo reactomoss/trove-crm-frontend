@@ -1,14 +1,11 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatTabChangeEvent } from '@angular/material/tabs';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { EventInput } from '@fullcalendar/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { FullCalendarComponent, CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/angular';
+import timeGridPlugin from '@fullcalendar/timegrid';
 import { AppointDialog, Appointment } from '../detail/appoint-dialog/appoint-dialog';
 import { TaskDialog, NTask } from '../detail/task-dialog/task-dialog';
 import { INITIAL_EVENTS, createEventId } from './event-utils';
-import { EmbeddedViewRef } from '@angular/core';
-import { TemplateRef } from '@angular/core';
 import * as moment from 'moment';
 
 @Component({
@@ -19,6 +16,7 @@ import * as moment from 'moment';
 export class CalendarComponent implements OnInit {
   @ViewChild('calendar') calendarComponent: FullCalendarComponent;
   calendarOptions: CalendarOptions = {
+    plugins: [ timeGridPlugin ],
     customButtons: {
       scheduleAppointment: {
         text: 'Schedule an appointment',
@@ -30,12 +28,12 @@ export class CalendarComponent implements OnInit {
       }
     },
     headerToolbar: {
-        left: 'title',
-        center:'prev,next scheduleAppointment',
-        right: 'scheduleTask',
+        left: '',
+        center:'',
+        right: '',
     },
     initialView: 'dayGridMonth',
-    //initialEvents: INITIAL_EVENTS,
+    initialEvents: INITIAL_EVENTS,
     weekends: true,
     //editable: true,
     //selectable: true,
@@ -46,8 +44,16 @@ export class CalendarComponent implements OnInit {
     eventClick: this.handleEventClick.bind(this),
     eventsSet: this.handleEvents.bind(this),
     eventContent: this.handleEventContent.bind(this),
+    viewDidMount: this.updateTitle.bind(this),
   }
   currentEvents: EventApi[] = [];
+  title = ''
+  filters = {
+      all: true,
+      task: true,
+      appoint: true,
+      reminder: true
+  }
 
   constructor(
     public dialog: MatDialog, 
@@ -55,6 +61,11 @@ export class CalendarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  updateTitle() {
+    let calendarApi = this.calendarComponent.getApi();
+    this.title = calendarApi.getCurrentData().viewTitle
   }
 
   openAppointDialog(isEdit: boolean, appointment: Appointment) {
@@ -170,6 +181,28 @@ export class CalendarComponent implements OnInit {
     }
   }
 
+  prev() {
+    const calendarApi = this.calendarComponent.getApi();
+    calendarApi.prev();
+    this.updateTitle();
+  }
+
+  next() {
+    const calendarApi = this.calendarComponent.getApi();
+    calendarApi.next();
+    this.updateTitle();
+  }
+
+  weekView() {
+    const calendarApi = this.calendarComponent.getApi();
+    calendarApi.changeView('timeGridWeek');
+  }
+
+  monthView() {
+    const calendarApi = this.calendarComponent.getApi();
+    calendarApi.changeView('dayGridMonth');
+  }
+
   private deleteTask(task: NTask) {
     if (task.id) {
       const calendarApi = this.calendarComponent.getApi()
@@ -227,5 +260,15 @@ export class CalendarComponent implements OnInit {
     
     let arrayOfDomNodes = [ divEl ]
     return { domNodes: arrayOfDomNodes }
+  }
+
+  showAllEvents() {
+    if (this.filters.all) {
+      this.filters.task = this.filters.appoint = this.filters.reminder = true  
+    }
+  }
+
+  filterEvents() {
+    this.filters.all = (this.filters.task && this.filters.appoint && this.filters.reminder)
   }
 }

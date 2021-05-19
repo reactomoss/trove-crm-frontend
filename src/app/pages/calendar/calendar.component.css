@@ -6,13 +6,25 @@
 
 .topBarDiv {
     display: flex;
-    align-items: center;
+    align-items: center;    
 }
 
 .topBarDiv button {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.calendarTitle {
+    min-width: 190px;
+}
+
+.calendarType {
+    margin: 20px 0 20px 0;
+}
+
+.calendarButtons {
+    text-align: center;
 }
 
 .title {
@@ -34,7 +46,15 @@
     line-height: 30px;
 }
 
-.showListButton {
+.calendarTypeButton {
+    border: 1px solid #D0D9DE;
+    box-sizing: border-box;
+    border-radius: 3px;
+    font-size: 12px;
+    line-height: 30px;
+}
+
+.arrowButton {
     background: #FFFFFF;
     border: 1px solid #D0D9DE;
     box-sizing: border-box;
@@ -44,14 +64,20 @@
     line-height: 30px;
 }
 
-.showDashboardButton {
-    background: #FFFFFF;
-    border: 1px solid #D0D9DE;
-    box-sizing: border-box;
-    padding: 0;
-    border-radius: 0px 3px 3px 0px;
-    min-width: 40px;
-    line-height: 30px;
+.calendarContainer {
+    background-color: rgba(235,238,242,1);
+}
+
+.scheduleButton {
+    background: #002868!important;
+    border-radius: 9px 9px 9px 0px;
+    margin-left: 26px;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 21px;
+    text-align: center;
+    color: #FFFFFF;
+    padding: 8px 15px;
 }
 
 ::ng-deep .fc-scheduleAppointment-button {
@@ -65,19 +91,6 @@
     color: #FFFFFF!important;
     padding: 8px 15px!important;
 }
-
-.scheduleAppointment {
-    background: #002868!important;
-    border-radius: 9px 9px 9px 0px;
-
-    font-weight: normal;
-    font-size: 16px;
-    line-height: 21px;
-    text-align: center;
-    color: #FFFFFF;
-    padding: 8px 15px;
-}
-
 .activeBtn {
     background: #F6F7F8;
 }
@@ -114,41 +127,6 @@
 .notificationPanelWrap .alignText .material-icons {color: #ff0000; font-size: 16px;width: auto;
   height: 20px;}
 
-.mainContainer {
-    background: #EFF2F7;
-    /* max-height: calc(100vh - 137px); */
-    padding: 10px 20px;
-}
-
-/* .mainContainer .avatar {
-    border-radius: 99px;
-    width: 48px;
-    height: 48px;
-} */
-
-mat-card {
-    border-radius: 6px;
-}
-
-.checkDiv {
-    display: flex;
-    align-items: center;
-}
-
-.checkDiv span {
-    font-weight: normal;
-    font-size: 12.5px;
-    line-height: 17px;
-    color: #455B66;
-}
-
-.checkDiv mat-checkbox span {
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    color: #202D3F;
-}
-
 .drawerContainer {
     width: 360px;
 }
@@ -168,12 +146,6 @@ mat-card {
     line-height: 24px;
 }
 
-.cardCheckBox {
-    position: absolute;
-    right: 0;
-    top: 3px;
-}
-
 .deleteBtn {
     border: 1px solid #D0D9DE;
     border-radius: 6px;
@@ -188,6 +160,7 @@ mat-card {
 
 .fullcalendar {
     margin: 10px 50px 0px 50px;
+    background-color: white;
 }
 
 ::ng-deep .checkbox-inline {
