@@ -1,5 +1,5 @@
 import { TokenService } from './../../services/token.service';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import { AccountApiService } from '../../services/account-api.service';
 import {
@@ -7,8 +7,14 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { FormGroup,
+  FormControl,
+  FormBuilder,
+  Validators,
+  FormArray,
+  FormGroupDirective
+ } from '@angular/forms';
+import { Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import {
   MAT_MOMENT_DATE_FORMATS,
@@ -20,6 +26,12 @@ import {
   MAT_DATE_FORMATS,
   MAT_DATE_LOCALE,
 } from '@angular/material/core';
+
+import { SnackBarService } from '../../shared/snack-bar.service';
+import { extractErrorMessagesFromErrorResponse } from '../../services/extract-error-messages-from-error-response';
+import { FormStatus } from '../../services/form-status';
+import { LeadApiService } from '../../services/lead-api.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 interface HTMLInputEvent extends Event {
   target: HTMLInputElement & EventTarget;
@@ -42,7 +54,8 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     private account: AccountApiService,
     private token: TokenService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private sb: SnackBarService,
   ) {}
 
   ngOnInit(): void {
@@ -178,6 +191,18 @@ export class HeaderComponent implements OnInit {
   }
 }
 
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'MM/DD/YYYY',
+  },
+  display: {
+    dateInput: 'MM/DD/YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+};
+
 @Component({
   selector: 'lead-dialog',
   templateUrl: 'lead-dialog/lead-dialog.html',
@@ -195,7 +220,7 @@ export class HeaderComponent implements OnInit {
       useClass: MomentDateAdapter,
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
-    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }, //MAT_MOMENT_DATE_FORMATS
   ],
 })
 export class LeadDialog {
@@ -219,23 +244,68 @@ export class LeadDialog {
   showMandatory: boolean = false;
   search: string = '';
 
-  stages: string[] = [
-    'Discovery',
-    'Qualified',
-    'Evolution',
-    'Negotiation',
-    'Closed',
-  ];
+  stages: any[] = [];
   selectedStage = 0;
   isEdit: boolean = false;
+
+  @Input() addLeadForm: FormGroup;
+  formStatus = new FormStatus();
+
+  pipelines: any[] = [];
+  currency: any[] = [];
+  organizations: any[] = [];
+  sources: any[] = [];
+  contacts: any[] = [];
+  owners: any[] = [];
+  formLoaded = false;
+  selectedContacts: any[];
+  userProfile = JSON.parse(localStorage.getItem('me'));
+  private subscriptions: Subscription[] = [];
+
   constructor(
     public dialogRef: MatDialogRef<LeadDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private sb: SnackBarService,
+    private LeadApiService: LeadApiService,
+    private fb: FormBuilder,
   ) {
     this.isEdit = this.data?.isEdit;
     this.filteredOptions = this.searchControl.valueChanges.pipe(
       startWith(''),
       map((value) => this._filter(value))
+    );
+
+    //this.sb.openSnackBarBottomCenter("Test", '');
+  }
+  ngOnInit() {
+    this.LeadApiService.initLeadForm().subscribe(
+      (res: any) => {
+        console.log("Lead Init form");
+        console.log(res);
+        if (res.success) {
+          this.formLoaded = true;
+          this.pipelines = res.data.pipelines;
+          this.currency = res.data.currency;
+          this.organizations = res.data.organizations;
+          this.sources = res.data.sources;
+          this.contacts = res.data.contacts;
+          this.owners = res.data.owner;
+          //this.currencypostvalue.id = res.data.currency.id;
+          if(res.data.lead){
+            this.initaddLeadForm(res.data.lead);
+          } else {
+            this.initaddLeadForm();
+          }
+          this.addLeadForm.get('currency.id').patchValue(res.data.currency.id);
+          this.sb.openSnackBarBottomCenter(res.message, 'Close');
+        } else {
+          this.sb.openSnackBarBottomCenter(res.message, 'Close');
+        }
+      },
+      (errorResponse: HttpErrorResponse) => {
+        const messages = extractErrorMessagesFromErrorResponse(errorResponse);
+        this.sb.openSnackBarBottomCenter(messages.toString(), 'Close');
+      }
     );
   }
 
@@ -278,6 +348,149 @@ export class LeadDialog {
       return '../../../../assets/images/stage/active-stage-md.svg';
     }
     return '../../../../assets/images/stage/mid-stage-md.svg';
+  }
+
+  initaddLeadForm(data: any = []) {
+    //alert("Form Init");
+    if (data.length > 0) {
+      this.addLeadForm = this.fb.group({
+        name: [
+          data.name,
+          [
+            Validators.required,
+            Validators.minLength(1),
+            Validators.maxLength(100),
+          ],
+        ],
+        organization_id: [data.organization_id, [Validators.required]],
+        owner_id: [
+          data.owner_id,
+          [Validators.required],
+        ],
+        pipeline_id: [data.pipeline_id, []],
+        stage_id: [data.stage_id, []],
+        currency: this.fb.group({
+            id: ['', [Validators.required]],
+            value: ['', [Validators.required]]
+        }),
+        source_id: [data.source_id, []],
+        added_on: [data.added_on, [Validators.required]],
+        closed_on: [data.closed_on, [Validators.required]],
+        description: [data.description, []],
+        contacts: [null, [Validators.required]],
+      });
+      let assignedContacts = [];
+      console.log("if");
+      console.log(data);
+      data.contacts.forEach((contact) => {
+        assignedContacts.push(contact.id);
+      });
+      this.addLeadForm.controls.contacts.setValue(assignedContacts);
+    } else {
+      this.addLeadForm = this.fb.group({
+        name: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(1),
+            Validators.maxLength(100),
+          ],
+        ],
+        organization_id: ['', [Validators.required]],
+        owner_id: [
+          this.userProfile.id,
+          [Validators.required],
+        ],
+        pipeline_id: ['', []],
+        stage_id: ['', []],
+        currency: this.fb.group({
+          id: ['', [Validators.required]],
+          value: ['', [Validators.required]]
+        }),
+        source_id: ['', []],
+        added_on: ['', [Validators.required]],
+        closed_on: ['', [Validators.required]],
+        description: ['', Validators.maxLength(100),],
+        contacts: [null, [Validators.required]]
+      });
+    }
+  }
+  saveLead(){
+    if (!this.addLeadForm.valid) {
+      return false;
+    } else {
+      // 2 - Call onFormSubmitting to handle setting the form as submitted and
+      //     clearing the error and success messages array
+      this.formStatus.onFormSubmitting();
+      //console.log(this.selectedContacts.value);
+      this.addLeadForm.patchValue({
+        //contacts: this.selectedContacts.value,
+        stage_id: this.selectedStage,
+        // formControlName2: myValue2
+      });
+      console.log("submitting");
+      //console.log(this.selectedContacts.value);
+      //console.log(this.selectedStage);
+      console.log(this.addLeadForm.value);
+      const subs_form = this.LeadApiService
+        .addLead(this.addLeadForm.value)
+        .subscribe(
+          (response) => {
+            this.dialogRef.close();
+            this.sb.openSnackBarBottomCenter(response.message, 'Close');
+          },
+          (errorResponse: HttpErrorResponse) => {
+            if (errorResponse.error.code === 252) {
+            const validationErrors = {};
+            Object.keys(validationErrors).forEach((prop) => {
+              const formControl = this.addLeadForm.get(prop);
+              if (formControl) {
+                formControl.setErrors({
+                  serverError: validationErrors[prop],
+                });
+              }
+            });
+          } else {
+            const messages = extractErrorMessagesFromErrorResponse(
+              errorResponse
+            );
+            // call onFormSubmitResponse with the submission success status (false) and the array of messages
+            this.formStatus.onFormSubmitResponse({
+              success: false,
+              messages: messages,
+            });
+            this.sb.openSnackBarBottomCenter(messages.toString(), 'Close');
+          }
+          }
+        );
+      this.subscriptions.push(subs_form);
+    }
+  }
+
+  onPipelineChange(ob){
+    let selectedPipeline = ob.value;
+    console.log(selectedPipeline);
+    var result = this.pipelines.find(obj => {
+      return obj.id === selectedPipeline
+    });
+    this.stages = result.stages;
+    this.selectedStage = result.stages[0].id;
+  }
+
+  onContactChange(selected){
+    this.selectedContacts = selected;
+    this.addLeadForm.controls.contacts.setValue(this.selectedContacts);
+  }
+
+  compareFunction(o1: any, o2: any) {
+    return (o1 == o2);
+  }
+
+   ngOnDestroy() {
+    this.subscriptions.forEach((sub) => {
+      sub.unsubscribe();
+    });
+    //this.sub_social_auth.unsubscribe();
   }
 }
 

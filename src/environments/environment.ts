@@ -34,7 +34,9 @@ export const environment = {
   roles: 'settings/roles',
   listroles: 'settings/roles/index',
   notifications: 'settings/notifications',
-  pipelines: 'settings/pipeline'
+  pipelines: 'settings/pipeline',
+
+  leads: 'leads',
 };
 
 /*
