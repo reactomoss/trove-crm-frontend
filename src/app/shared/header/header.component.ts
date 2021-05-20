@@ -2,6 +2,7 @@ import { TokenService } from './../../services/token.service';
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import { AccountApiService } from '../../services/account-api.service';
+import { CompanyApiService } from '../../services/company-api.service';
 import {
   MatDialog,
   MatDialogRef,
@@ -53,6 +54,7 @@ export class HeaderComponent implements OnInit {
   constructor(
     private router: Router,
     private account: AccountApiService,
+    private companyApiService: CompanyApiService,
     private token: TokenService,
     public dialog: MatDialog,
     private sb: SnackBarService,
@@ -171,11 +173,32 @@ export class HeaderComponent implements OnInit {
   }
 
   clickCompany() {
-    const dialogRef = this.dialog.open(CompanyDialog, {
-      width: '560px',
-      autoFocus: false,
-    });
-    dialogRef.afterClosed().subscribe((result) => {});
+    this.companyApiService
+      .getCompanyCreateForm()
+      .subscribe((res: any) => {
+        if (!res.success) {
+          this.sb.openSnackBarBottomCenter("Sorry. Try again later", 'Close')
+          return
+        }
+        if (res.data.menu_previlages.create !== 1) {
+          this.sb.openSnackBarBottomCenter("You don't have permission", 'Close')
+          return
+        }
+        const dialogRef = this.dialog.open(CompanyDialog, {
+          width: '560px',
+          autoFocus: false,
+          data : { 
+            countries: res.data.countries,
+            emailOwners: res.data.owners,
+            dialCodes: res.data.countries.filter(x => x.dial_code).map(x => x.dial_code)
+          }
+        })
+        dialogRef.afterClosed().subscribe((result) => {
+          if (result) {
+            this.sb.openSnackBarBottomCenter(result, 'Close')
+          }
+        })
+      })
   }
 }
 
@@ -616,15 +639,36 @@ export class CompanyDialog {
   showMandatory: boolean = false;
   search: string = '';
 
-  mobileCode = 'USA';
-
   addressSelect = false;
   isEdit: boolean = false;
+  countries = [];
+  emailOwners = [];
+  dialCodes = []
+
+  companyName = '';
+  mobileNumber = '';
+  mobileCode = '';
+  workNumber = '';
+  userAddress = '';
+  cityName = '';
+  postCode = '';
+  stateRegion = '';
+  country = '';
+  emailAddress = '';
+  emailOwner = {};
+  skypeId = '';
+  description = '';
+
   constructor(
+    private companyApiService: CompanyApiService,
+    private sb: SnackBarService,
     public dialogRef: MatDialogRef<CompanyDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.isEdit = this.data?.isEdit;
+    this.countries = this.data?.countries
+    this.emailOwners = this.data?.emailOwners
+    this.dialCodes = this.data?.dialCodes
     this.filteredOptions = this.searchControl.valueChanges.pipe(
       startWith(''),
       map((value) => this._filter(value))
@@ -641,6 +685,38 @@ export class CompanyDialog {
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  confirmClick(): void {
+    const data = {
+      organization_name: this.companyName,
+      mobile: {
+        code: this.mobileCode,
+        number: this.mobileNumber
+      },
+      work_phone: this.workNumber,
+      email: this.emailAddress,
+      address: this.userAddress,
+      city: this.cityName,
+      state: this.stateRegion,
+      postal_code: this.postCode,
+      country: this.country,
+      skype_id: this.skypeId,
+      owner_id: this.emailOwner,
+      description: this.description,
+    }
+    console.log('post company', data)
+    this.companyApiService
+      .createCompany(data)
+      .subscribe((res: any) => {
+        console.log(res)
+        if (res.success) {
+          this.dialogRef.close('Success');
+        }
+        else {
+          this.sb.openSnackBarBottomCenter("Failed to create company", 'Close')
+        }
+      })
   }
 
   checkMandatory(e) {

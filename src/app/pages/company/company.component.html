@@ -84,8 +84,8 @@
         </div>
 
         <div *ngIf="!listShow" class="row">
-            <div class="fullWidth text-right dateDiv">January, 2021</div>
-            <ng-container  *ngFor="let item of items; let i = index">
+            <ng-container  *ngFor="let item of items">
+                <div *ngIf="item.category"class="fullWidth text-right dateDiv">{{item.category}}</div>
                 <div class="col-lg-2 col-md-3 col-sm-4">
                     <mat-card class="mat-elevation-z0 p-3 mb-4" style="position: relative"
                             (click)="clickCard(item)" (mouseover)="setHoveredItem(item)">
@@ -96,15 +96,15 @@
                             <div mat-card-avatar class="iconContainer">
                                 <img *ngIf="!item.company; else elseBlock" alt="Image" src="../../../assets/images/face.svg" class="avatar">
                                 <ng-template #elseBlock>
-                                    <!-- <mat-icon class="roundIcon">business</mat-icon> -->
+                                    <!-- <mat-icon class="roundIcon">business</mat-icon>-->
                                     <img alt="Image" src="../../../assets/images/business19.svg">
                                 </ng-template>
                             </div>
                         </mat-card-header><br>
                         <mat-card-content *ngIf="item.company; else companyContent">
                             <span class="cardText1">{{item.name}}</span>
-                            <span class="cardText2">Owner: {{item.owner}}</span><br>
-                            <span class="cardText2">{{item.contactCount}} Contacts</span>
+                            <span class="cardText2">Owner: {{item.owner.full_name}}</span><br>
+                            <span class="cardText2">{{item.contacts_count}} Contacts</span>
                         </mat-card-content>
                         <ng-template #companyContent>
                             <span class="cardText1">{{item.name}}</span>
@@ -114,11 +114,11 @@
                     </mat-card>
                 </div>
 
-                <ng-container *ngIf="i == 6 || i == 0">
+                <!-- <ng-container *ngIf="i == 6 || i == 0">
                     <div class="fullWidth"></div>
                     <div class="fullWidth text-right dateDiv" *ngIf="i == 0">December, 2020</div>
                     <div class="fullWidth text-right dateDiv" *ngIf="i == 6">November, 2020</div>
-                </ng-container>
+                </ng-container> -->
             </ng-container>
         </div>
 
