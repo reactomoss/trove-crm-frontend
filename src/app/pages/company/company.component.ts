@@ -4,6 +4,9 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import {SnackBarService} from '../../shared/snack-bar.service'
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { CompanyApiService } from '../../services/company-api.service';
+import response_companies from './company.sample'
+
 export interface item {
   id: number;
   name: string;
@@ -32,94 +35,141 @@ export class CompanyComponent implements OnInit {
   hoveredItem
   //detect for click card, check
   detect: number
+  
+  totalCompanies = 0
+  allItems = []
 
-  allItems: item[] = [
-    {
-      id: 1,
-      name: 'Alphabet Inc.',
-      owner: 'Henessy',
-      contactCount: 9,
-      company: true,
-      companyName: '',
-      email: '',
-      last: new Date("2021-1-1"),
-      city: 'boston'
-    },
-    {
-      id: 6,
-      name: 'Packet Monster',
-      owner: 'Wes studi',
-      contactCount: 37,
-      company: true,
-      companyName: '',
-      email: '',
-      last: new Date("2020-11-30"),
-      city: 'London'
-    },
-    {
-      id: 9,
-      name: 'Packet Monster3',
-      owner: 'Wes studi',
-      contactCount: 3,
-      company: true,
-      companyName: '',
-      email: '',
-      last: new Date("2020-11-5"),
-      city: 'Barcelona'
-    },
-    {
-      id: 11,
-      name: 'Packet Monster1',
-      owner: 'Wes studi',
-      contactCount: 2,
-      company: true,
-      companyName: '',
-      email: '',
-      last: new Date("2020-11-3"),
-      city: 'Utah'
-    },
-  ]
-  items: item[] = []
+//   allItems: item[] = [
+//     {
+//       id: 1,
+//       name: 'Alphabet Inc.',
+//       owner: 'Henessy',
+//       contactCount: 9,
+//       company: true,
+//       companyName: '',
+//       email: '',
+//       last: new Date("2021-1-1"),
+//       city: 'boston'
+//     },
+//     {
+//       id: 6,
+//       name: 'Packet Monster',
+//       owner: 'Wes studi',
+//       contactCount: 37,
+//       company: true,
+//       companyName: '',
+//       email: '',
+//       last: new Date("2020-11-30"),
+//       city: 'London'
+//     },
+//     {
+//       id: 9,
+//       name: 'Packet Monster3',
+//       owner: 'Wes studi',
+//       contactCount: 3,
+//       company: true,
+//       companyName: '',
+//       email: '',
+//       last: new Date("2020-11-5"),
+//       city: 'Barcelona'
+//     },
+//     {
+//       id: 11,
+//       name: 'Packet Monster1',
+//       owner: 'Wes studi',
+//       contactCount: 2,
+//       company: true,
+//       companyName: '',
+//       email: '',
+//       last: new Date("2020-11-3"),
+//       city: 'Utah'
+//     },
+//   ]
+  items = [] //items: item[] = []
   selectedItems: item[] = []
 
   listShow: boolean = false
   typeString: string = 'Companies'
   /*Modal dialog*/
   closeResult = '';
-/*Modal dialog*/
-  constructor(private modalService: NgbModal , public dialog: MatDialog, private router: Router , private sb: SnackBarService) {
+  /*Modal dialog*/
+
+  constructor(
+    private modalService: NgbModal,
+    private companyApiService: CompanyApiService,
+    public dialog: MatDialog, 
+    private router: Router, 
+    private sb: SnackBarService) {
   }
 
   triggerSnackBar(message:string, action:string) {
     this.sb.openSnackBarBottomCenter(message, action);
-    }
-
-    /*Modal dialog*/
-    open(content) {
-      this.modalService.open(content, {ariaLabelledBy: 'dialog001'}).result.then((result) => {
-        this.closeResult = `Closed with: ${result}`;
-      }, (reason) => {
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      });
-    }
-
-private getDismissReason(reason: any): string {
-  if (reason === ModalDismissReasons.ESC) {
-    return 'by pressing ESC';
-  } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-    return 'by clicking on a backdrop';
-  } else {
-    return `with: ${reason}`;
   }
-}
-/*Modal dialog*/
+
+  /*Modal dialog*/
+  open(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'dialog001'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+    return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }  
+  /*Modal dialog*/
 
   ngOnInit(): void {
-    this.items = this.allItems
-  }
+    /*const res = response_companies
+    if (res.success) {
+      const data = res.data.id
+      for (const activity in data) {
+        const companies: any[] = data[activity]
+        companies.map((company, index) => {
+          const temp = (index > 0)? company : {...company, category: activity}
+          this.items.push({...temp, company: true, last_activity: activity})
+          return temp
+        })
+      }
+      this.allItems = this.items
+      console.log(this.items)
+    }*/
 
+    const query = {
+      view_type: 'grid',
+      draw: 0,
+      start: 0,
+      length: 10,
+    }
+    this.companyApiService
+      .getCompanyList(query)
+      .subscribe((res: any) => {
+        console.log('companies', res)
+        if (res.success) {
+          const data = res.data.id
+          for (const activity in data) {
+              const companies: any[] = data[activity]
+              companies.map((company, index) => {
+              const temp = (index > 0)? company : {...company, category: activity}
+              this.items.push({...temp, company: true, last_activity: activity})
+              return temp
+            })
+          }
+          this.allItems = this.items 
+          console.log(this.items)
+        }
+      })
+  } 
+  
   showList() {
-    this.listShow = true
+     this.listShow = true
     this.selectedItems = []
   }
 
@@ -134,11 +184,11 @@ private getDismissReason(reason: any): string {
   //   this.selectedItems = []
   // }
 
-  selectCompany() {
-    this.items = this.allItems.filter(e => e.company)
-    this.typeString = 'Companies'
-    this.selectedItems = []
-  }
+  // selectCompany() {
+  //   this.items = this.allItems.filter(e => e.company)
+  //   this.typeString = 'Companies'
+  //   this.selectedItems = []
+  // }
 
   clickCard(item) {
     this.router.navigate(['/pages/company_detail'])
@@ -179,10 +229,7 @@ private getDismissReason(reason: any): string {
   }
 
   clickEmptyCheck() {
-    this.selectedItems = this.items.reduce((acc, item) => {
-      acc.push(item)
-      return acc
-    }, [])
+    this.selectedItems = [...this.items]
   }
 
   clickIndeterminate() {

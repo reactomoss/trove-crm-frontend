@@ -36,6 +36,7 @@ export const environment = {
   notifications: 'settings/notifications',
   pipelines: 'settings/pipeline',
   company: 'organizations',
+  company_index: 'organizations/index',
   leads: 'leads',
 };
 

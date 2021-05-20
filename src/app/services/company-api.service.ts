@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { database } from 'firebase';
 
 @Injectable({
   providedIn: 'root',
@@ -18,12 +19,17 @@ export class CompanyApiService {
   constructor(private httpClient: HttpClient) {}
 
   getCompanyCreateForm(): Observable<any> {
-    let API_URL = `${this.baseURL + environment.company}`;
+    const API_URL = `${this.baseURL + environment.company}`;
     return this.httpClient.get(API_URL);
   }
 
   createCompany(data: any): Observable<any> {
     return this.httpClient.post(`${this.baseURL + environment.company}`, data);
+  }
+
+  getCompanyList(data): Observable<any> {
+    const API_URL = `${this.baseURL + environment.company_index}`;
+    return this.httpClient.post(API_URL, data);
   }
 
   // Handle Errors
