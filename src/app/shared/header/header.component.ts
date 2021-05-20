@@ -177,7 +177,7 @@ export class HeaderComponent implements OnInit {
       .getCompanyCreateForm()
       .subscribe((res: any) => {
         if (!res.success) {
-          this.sb.openSnackBarBottomCenter("Sorry. Try again later", 'Close')
+          this.sb.openSnackBarBottomCenter(res.message, 'Close')
           return
         }
         if (res.data.menu_previlages.create !== 1) {
@@ -626,6 +626,7 @@ export class CompanyDialog {
   ];
   filteredOptions: Observable<string[]>;
 
+  form: FormGroup;
   showMandatory: boolean = false;
   search: string = '';
 
@@ -634,24 +635,12 @@ export class CompanyDialog {
   countries = [];
   emailOwners = [];
   dialCodes = []
-
-  companyName = '';
-  mobileNumber = '';
-  mobileCode = '';
-  workNumber = '';
-  userAddress = '';
-  cityName = '';
-  postCode = '';
-  stateRegion = '';
-  country = '';
-  emailAddress = '';
-  emailOwner = {};
-  skypeId = '';
-  description = '';
+  errors = null
 
   constructor(
     private companyApiService: CompanyApiService,
     private sb: SnackBarService,
+    public fb: FormBuilder,
     public dialogRef: MatDialogRef<CompanyDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -663,6 +652,25 @@ export class CompanyDialog {
       startWith(''),
       map((value) => this._filter(value))
     );
+    this.reactiveForm()
+  }
+
+  reactiveForm() {
+    this.form = this.fb.group({
+      organization_name: ['', [Validators.required]],
+      mobile_code: ['', [Validators.required]],
+      mobile_number: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern("^[0-9]*$")]],
+      work_phone: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern("^[0-9]*$")]],
+      email: ['', [Validators.required, Validators.email]],
+      address: [''],
+      city: [''],
+      postal_code: [''],
+      state: [''],
+      country: [''],
+      owner_id: [0],
+      skype_id: [''],
+      description: [''],
+    })
   }
 
   private _filter(value: string): string[] {
@@ -677,35 +685,32 @@ export class CompanyDialog {
     this.dialogRef.close();
   }
 
-  confirmClick(): void {
-    const data = {
-      organization_name: this.companyName,
-      mobile: {
-        code: this.mobileCode,
-        number: this.mobileNumber
-      },
-      work_phone: this.workNumber,
-      email: this.emailAddress,
-      address: this.userAddress,
-      city: this.cityName,
-      state: this.stateRegion,
-      postal_code: this.postCode,
-      country: this.country,
-      skype_id: this.skypeId,
-      owner_id: this.emailOwner,
-      description: this.description,
+  submitForm(): void {
+    console.log(this.form.value)
+    if (!this.form.valid) {
+      return
     }
-    console.log('post company', data)
+
+    const post_data = {
+      ...this.form.value,
+      mobile: {
+        code: this.form.value.mobile_code,
+        number: this.form.value.mobile_number,
+      }
+    }
     this.companyApiService
-      .createCompany(data)
+      .createCompany(post_data)
       .subscribe((res: any) => {
-        console.log(res)
         if (res.success) {
-          this.dialogRef.close('Success');
+          this.dialogRef.close(res.message);
         }
         else {
-          this.sb.openSnackBarBottomCenter("Failed to create company", 'Close')
+          this.sb.openSnackBarBottomCenter(res.message, 'Close')
         }
+      },
+      err => {
+        this.errors = err.error.data.values
+        this.sb.openSnackBarBottomCenter(err.error.message, 'Close')
       })
   }
 
