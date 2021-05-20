@@ -19,14 +19,14 @@
         <div *ngIf="checkShow('Company Name')">
             <span>Company Name</span><br>
             <mat-form-field appearance="outline" class="formControl noLabelForm">
-                <input matInput>
+                <input matInput [(ngModel)]="company_name">
             </mat-form-field>
         </div>
         <div class="twoDiv">
             <div *ngIf="checkShow('Mobile Number')">
                 <span>Mobile Number</span><br>
                 <mat-form-field appearance="outline" class="formControl noLabelForm inputSelectForm" [style.width.px]="232">
-                    <input matInput class="inputWithSelect">
+                    <input matInput class="inputWithSelect" [(ngModel)]="mobile_number">
                     <mat-select class="selectWithInput" [(value)]="mobileCode">
                         <mat-option value="USA">USA +1</mat-option>
                         <mat-option value="UK">UK +2</mat-option>
@@ -36,14 +36,14 @@
             <div *ngIf="checkShow('Work Number')">
                 <span>Work Number</span><br>
                 <mat-form-field appearance="outline" class="formControl noLabelForm" [style.width.px]="232">
-                    <input matInput>
+                    <input matInput [(ngModel)]="work_number">
                 </mat-form-field>
             </div>
         </div>
         <div *ngIf="checkShow('Address') && !showMandatory">
             <span>Address</span><br>
             <mat-form-field appearance="outline" class="formControl noLabelForm" (click)="addressSelect = true">
-                <input matInput>
+                <input matInput [(ngModel)]="user_address">
             </mat-form-field>
         </div>
 
@@ -51,13 +51,13 @@
             <div *ngIf="checkShow('City')">
                 <span>City</span><br>
                 <mat-form-field appearance="outline" class="formControl noLabelForm" [style.width.px]="232">
-                    <input matInput>
+                    <input matInput [(ngModel)]="city_name">
                 </mat-form-field>
             </div>
             <div *ngIf="checkShow('Post Code')">
                 <span>Post Code</span><br>
                 <mat-form-field appearance="outline" class="formControl noLabelForm" [style.width.px]="232">
-                    <input matInput>
+                    <input matInput [(ngModel)]="post_code">
                 </mat-form-field>
             </div>
         </div>
@@ -65,13 +65,13 @@
             <div *ngIf="checkShow('State/Region')">
                 <span>State/Region</span><br>
                 <mat-form-field appearance="outline" class="formControl noLabelForm" [style.width.px]="232">
-                    <input matInput>
+                    <input matInput [(ngModel)]="state_region">
                 </mat-form-field>
             </div>
             <div *ngIf="checkShow('Country')">
                 <span>Country</span><br>
                 <mat-form-field appearance="outline" class="formControl noLabelForm grayBackground" [style.width.px]="232">
-                    <mat-select>
+                    <mat-select [(ngModel)]="country">
                         <mat-option value="1">Country1</mat-option>
                         <mat-option value="2">Country2</mat-option>
                     </mat-select>
@@ -83,13 +83,13 @@
             <div *ngIf="checkShow('Email Address')">
                 <span>Email Address</span><br>
                 <mat-form-field appearance="outline" class="formControl noLabelForm" [style.width.px]="232">
-                    <input matInput>
+                    <input matInput [(ngModel)]="email_address">
                 </mat-form-field>
             </div>
             <div *ngIf="checkShow('Owner')">
                 <span>Owner</span><br>
                 <mat-form-field appearance="outline" class="formControl noLabelForm grayBackground" [style.width.px]="232">
-                    <mat-select>
+                    <mat-select [(ngModel)]="email_owner">
                         <mat-option value="1">Owner1</mat-option>
                         <mat-option value="2">Owner2</mat-option>
                     </mat-select>
@@ -99,13 +99,13 @@
         <div *ngIf="checkShow('Skype ID') && !showMandatory">
             <span>Skype ID</span><br>
             <mat-form-field appearance="outline" class="formControl noLabelForm">
-                <input matInput>
+                <input matInput [(ngModel)]="skype_id">
             </mat-form-field>
         </div>
         <div *ngIf="checkShow('Description') && !showMandatory">
             <span>Description</span><br>
             <mat-form-field appearance="outline" class="formControl noLabelForm">
-                <textarea matInput></textarea>
+                <textarea matInput [(ngModel)]="description"></textarea>
             </mat-form-field>
         </div>
     </div>

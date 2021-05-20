@@ -610,6 +610,20 @@ export class CompanyDialog {
 
   addressSelect = false;
   isEdit: boolean = false;
+
+  company_name = '';
+  mobile_number = '';
+  work_number = '';
+  user_address = '';
+  city_name = '';
+  post_code = '';
+  state_region = '';
+  country = '';
+  email_address = '';
+  email_owner = '';
+  skype_id = '';
+  description = '';
+
   constructor(
     public dialogRef: MatDialogRef<CompanyDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any
