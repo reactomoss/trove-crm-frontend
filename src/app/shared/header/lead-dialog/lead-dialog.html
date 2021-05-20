@@ -42,9 +42,9 @@
                     </mat-form-field>
                 </div>
                 <div *ngIf="checkShow('Value')">
-                    <span>Value</span><br>
+                    <span>Value*</span><br>
                     <mat-form-field formGroupName="currency" appearance="outline" class="formControl noLabelForm" [style.width.px]="232">
-                        <span class="currencySpan">USD</span>
+                        <span class="currencySpan">{{currencyCode}}</span>
                         <input matInput style="padding-left: 98px" formControlName="value">
                         <mat-error *ngIf="addLeadForm.controls.currency.value.errors?.required">This field is required.</mat-error>
                         <mat-error *ngIf="addLeadForm.controls.currency.value.errors?.serverError">{{ addLeadForm.controls.currency.value.errors?.serverError }}</mat-error>
@@ -52,7 +52,7 @@
                 </div>
             </div>
             <div *ngIf="checkShow('Company')">
-                <span>Company</span><br>
+                <span>Company*</span><br>
                 <mat-form-field appearance="outline" class="grayBackground formControl noLabelForm">
                     <mat-select [compareWith]="compareFunction" class="fw-500" formControlName="organization_id">
                         <mat-option *ngFor="let organization of organizations" [value]="organization.id">{{organization.name}}</mat-option>
@@ -64,7 +64,7 @@
             </div>
             <div class="ownerDiv">
                 <div *ngIf="checkShow('Owner')">
-                    <span>Owner</span><br>
+                    <span>Owner*</span><br>
                     <mat-form-field appearance="outline" class="grayBackground formControl noLabelForm" [style.width.px]="232">
                         <mat-select [compareWith]="compareFunction" class="fw-500" formControlName="owner_id">
                             <mat-option *ngFor="let owner of owners" [value]="owner.id">{{owner.full_name}}</mat-option>
@@ -97,7 +97,7 @@
                 </mat-form-field>
             </div> -->
                 <div *ngIf="checkShow('Added On')">
-                    <span>Added On</span><br>
+                    <span>Added On*</span><br>
                     <mat-form-field appearance="outline" class="formControl noLabelForm datePicker" [style.width.px]="232">
                         <input matInput [matDatepicker]="picker" formControlName="added_on">
                         <mat-datepicker-toggle style="height: 10px" matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -107,7 +107,7 @@
                     </mat-form-field>
                 </div>
                 <div class="" *ngIf="checkShow('Estimate Close Date')">
-                    <span>Estimate Close Date</span><br>
+                    <span>Estimate Close Date*</span><br>
                     <mat-form-field appearance="outline" class="formControl noLabelForm" [style.width.px]="232">
                         <input matInput [matDatepicker]="picker" formControlName="closed_on">
                         <mat-datepicker-toggle style="height: 10px" matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -119,7 +119,7 @@
             </div>
 
             <div class="halfDiv" *ngIf="!showMandatory && checkShow('Pipeline Category')">
-                <span>Pipeline Category</span><br>
+                <span>Pipeline Category*</span><br>
                 <mat-form-field appearance="outline" class="grayBackground formControl noLabelForm" [style.width.px]="232">
                     <mat-select class="fw-500" formControlName="pipeline_id" (selectionChange)="onPipelineChange($event)">
                         <mat-option *ngFor="let pipeline of pipelines" [value]="pipeline.id">{{pipeline.name}}</mat-option>
@@ -129,13 +129,13 @@
                 </mat-form-field>
             </div>
             <div *ngIf="!showMandatory  && checkShow('Stage')" class="mb-2">
-                <span>Stage</span><br>
+                <span>Stage*</span><br>
                 <div class="alignCenter">
                     <ng-container *ngFor="let e of stages; let i = index">
-                        <div class="alignCenter positionRelative cursorPointer" [style.left.px]="getLeftOffset(i)" (click)="selectedStage = e.id">
+                        <div class="alignCenter positionRelative cursorPointer" [style.left.px]="getLeftOffset(i)" (click)="selectedStage = i; selectedStageId = e.id;">
                             <img src="{{getStageSrc(i)}}">
-                            <span [class.stageSpan]="i > 0" [class.firstStagePan]="i == 0" [class.activeSpan]="selectedStage == e.id">{{e.name}}</span>
-                            <input type="hidden" formControlName="stage_id" [(ngModel)]="selectedStage" />
+                            <span [class.stageSpan]="i > 0" [class.firstStagePan]="i == 0" [class.activeSpan]="selectedStage == i">{{e.name}}</span>
+                            <input type="hidden" formControlName="stage_id" [(ngModel)]="selectedStageId" />
                             <mat-error *ngIf="addLeadForm.controls.stage_id.errors?.serverError">{{ addLeadForm.controls.stage_id.errors?.serverError }}</mat-error>
                         </div>
                     </ng-container>

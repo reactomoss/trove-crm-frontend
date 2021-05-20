@@ -234,6 +234,8 @@ export class LeadDialog {
 
   stages: any[] = [];
   selectedStage = 0;
+  selectedStageId = "";
+  currencyCode = "";
   isEdit: boolean = false;
 
   @Input() addLeadForm: FormGroup;
@@ -283,8 +285,13 @@ export class LeadDialog {
             this.initaddLeadForm(res.data.lead);
           } else {
             this.initaddLeadForm();
+            this.stages = res.data.pipelines[0].stages;
+            this.addLeadForm.get('pipeline_id').patchValue(res.data.pipelines[0].id);
+            this.addLeadForm.get('stage_id').patchValue(res.data.pipelines[0].stages[0].id);
+            this.selectedStageId = res.data.pipelines[0].stages[0].id;
           }
           this.addLeadForm.get('currency.id').patchValue(res.data.currency.id);
+          this.currencyCode = res.data.currency.code;
           this.sb.openSnackBarBottomCenter(res.message, 'Close');
         } else {
           this.sb.openSnackBarBottomCenter(res.message, 'Close');
@@ -355,8 +362,8 @@ export class LeadDialog {
           data.owner_id,
           [Validators.required],
         ],
-        pipeline_id: [data.pipeline_id, []],
-        stage_id: [data.stage_id, []],
+        pipeline_id: [data.pipeline_id, [Validators.required]],
+        stage_id: [data.stage_id, [Validators.required]],
         currency: this.fb.group({
             id: ['', [Validators.required]],
             value: ['', [Validators.required]]
@@ -389,8 +396,8 @@ export class LeadDialog {
           this.userProfile.id,
           [Validators.required],
         ],
-        pipeline_id: ['', []],
-        stage_id: ['', []],
+        pipeline_id: ['', [Validators.required]],
+        stage_id: ['', [Validators.required]],
         currency: this.fb.group({
           id: ['', [Validators.required]],
           value: ['', [Validators.required]]
@@ -413,7 +420,7 @@ export class LeadDialog {
       //console.log(this.selectedContacts.value);
       this.addLeadForm.patchValue({
         //contacts: this.selectedContacts.value,
-        stage_id: this.selectedStage,
+        stage_id: this.selectedStageId,
         // formControlName2: myValue2
       });
       console.log("submitting");
@@ -429,7 +436,7 @@ export class LeadDialog {
           },
           (errorResponse: HttpErrorResponse) => {
             if (errorResponse.error.code === 252) {
-            const validationErrors = {};
+            const validationErrors = errorResponse.error.data; //{name: "", organization_id: "", owner_id: "", pipeline_id: "", stage_id: "", currency: "", source_id: "", added_on: "", closed_on: "", description: "", contacts: ""};
             Object.keys(validationErrors).forEach((prop) => {
               const formControl = this.addLeadForm.get(prop);
               if (formControl) {
@@ -438,6 +445,8 @@ export class LeadDialog {
                 });
               }
             });
+            console.log("vaidation errors");
+            console.log(validationErrors);
           } else {
             const messages = extractErrorMessagesFromErrorResponse(
               errorResponse
@@ -456,13 +465,14 @@ export class LeadDialog {
   }
 
   onPipelineChange(ob){
+    this.selectedStage = 0;
     let selectedPipeline = ob.value;
     console.log(selectedPipeline);
     var result = this.pipelines.find(obj => {
       return obj.id === selectedPipeline
     });
     this.stages = result.stages;
-    this.selectedStage = result.stages[0].id;
+    this.selectedStageId = result.stages[0].id;
   }
 
   onContactChange(selected){

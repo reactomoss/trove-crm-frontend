@@ -33,6 +33,7 @@ export class LeadsComponent implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit(): void {
+    alert("oninit");
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value))
