@@ -36,56 +36,8 @@ export class CompanyComponent implements OnInit {
   //detect for click card, check
   detect: number
   
-  totalCompanies = 0
   allItems = []
-
-//   allItems: item[] = [
-//     {
-//       id: 1,
-//       name: 'Alphabet Inc.',
-//       owner: 'Henessy',
-//       contactCount: 9,
-//       company: true,
-//       companyName: '',
-//       email: '',
-//       last: new Date("2021-1-1"),
-//       city: 'boston'
-//     },
-//     {
-//       id: 6,
-//       name: 'Packet Monster',
-//       owner: 'Wes studi',
-//       contactCount: 37,
-//       company: true,
-//       companyName: '',
-//       email: '',
-//       last: new Date("2020-11-30"),
-//       city: 'London'
-//     },
-//     {
-//       id: 9,
-//       name: 'Packet Monster3',
-//       owner: 'Wes studi',
-//       contactCount: 3,
-//       company: true,
-//       companyName: '',
-//       email: '',
-//       last: new Date("2020-11-5"),
-//       city: 'Barcelona'
-//     },
-//     {
-//       id: 11,
-//       name: 'Packet Monster1',
-//       owner: 'Wes studi',
-//       contactCount: 2,
-//       company: true,
-//       companyName: '',
-//       email: '',
-//       last: new Date("2020-11-3"),
-//       city: 'Utah'
-//     },
-//   ]
-  items = [] //items: item[] = []
+  items = []
   selectedItems: item[] = []
 
   listShow: boolean = false
@@ -142,17 +94,24 @@ export class CompanyComponent implements OnInit {
       console.log(this.items)
     }*/
 
+    this.companyApiService.obs.subscribe(() => this.fetchCompanies());
+    this.fetchCompanies()
+  }
+
+  fetchCompanies() {
+    console.log('fetchCompanies')
     const query = {
       view_type: 'grid',
       draw: 0,
       start: 0,
       length: 10,
-    }
+    }    
     this.companyApiService
       .getCompanyList(query)
       .subscribe((res: any) => {
-        console.log('companies', res)
+        //console.log('companies', res)
         if (res.success) {
+          this.items = []
           const data = res.data.id
           for (const activity in data) {
               const companies: any[] = data[activity]
@@ -165,8 +124,14 @@ export class CompanyComponent implements OnInit {
           this.allItems = this.items 
           console.log(this.items)
         }
+        else {
+          this.triggerSnackBar(res.message, 'Close')
+        }
+      },
+      err => {
+        this.triggerSnackBar(err.error.message, 'Close')
       })
-  } 
+  }
   
   showList() {
      this.listShow = true

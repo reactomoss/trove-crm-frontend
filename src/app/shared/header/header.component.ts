@@ -701,8 +701,10 @@ export class CompanyDialog {
     this.companyApiService
       .createCompany(post_data)
       .subscribe((res: any) => {
+        console.log('company created', res)
         if (res.success) {
           this.dialogRef.close(res.message);
+          this.companyApiService.notify()
         }
         else {
           this.sb.openSnackBarBottomCenter(res.message, 'Close')

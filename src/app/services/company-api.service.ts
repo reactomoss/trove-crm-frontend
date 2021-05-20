@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, ReplaySubject, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http';
@@ -31,6 +31,13 @@ export class CompanyApiService {
     const API_URL = `${this.baseURL + environment.company_index}`;
     return this.httpClient.post(API_URL, data);
   }
+  
+  subject: ReplaySubject<any> = new ReplaySubject();
+  obs: Observable<any> = this.subject.asObservable();
+
+  notify() {
+    this.subject.next()
+  }
 
   // Handle Errors
   handleError(error: HttpErrorResponse) {
@@ -43,5 +50,9 @@ export class CompanyApiService {
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
     return throwError(errorMessage);
+  }
+
+  ngOnDestroy() {
+    
   }
 }
