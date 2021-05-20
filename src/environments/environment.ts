@@ -35,7 +35,7 @@ export const environment = {
   listroles: 'settings/roles/index',
   notifications: 'settings/notifications',
   pipelines: 'settings/pipeline',
-
+  company: 'organizations',
   leads: 'leads',
 };
 
