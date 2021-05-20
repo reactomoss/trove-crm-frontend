@@ -691,13 +691,14 @@ export class CompanyDialog {
       return
     }
 
-    const post_data = {
-      ...this.form.value,
-      mobile: {
-        code: this.form.value.mobile_code,
-        number: this.form.value.mobile_number,
-      }
-    }
+    const post_data = {}
+    // const post_data = {
+    //   ...this.form.value,
+    //   mobile: {
+    //     code: this.form.value.mobile_code,
+    //     number: this.form.value.mobile_number,
+    //   }
+    // }
     this.companyApiService
       .createCompany(post_data)
       .subscribe((res: any) => {
@@ -709,8 +710,9 @@ export class CompanyDialog {
         }
       },
       err => {
-        this.errors = err.error.data.values
-        this.sb.openSnackBarBottomCenter(err.error.message, 'Close')
+        this.errors = err.error.data
+        const messages = Object.values(this.errors).join('\n')
+        this.sb.openSnackBarTopCenterAsDuration(messages, 'Close', 4000)
       })
   }
 

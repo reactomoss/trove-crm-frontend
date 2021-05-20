@@ -25,9 +25,17 @@ export class SnackBarService {
     });
   }
 
-  openSnackBarTopCenter(message: string, action: string) {
+  openSnackBarTopCenter(message: string, action: string, duration: number) {
     this.snackBar.open(message, action, {
        duration: 2000,
+       horizontalPosition: this.horizontalPositionCenter,
+       verticalPosition: this.verticalPositionTop,
+    });
+  }
+
+  openSnackBarTopCenterAsDuration(message: string, action: string, duration: number) {
+    this.snackBar.open(message, action, {
+       duration: duration,
        horizontalPosition: this.horizontalPositionCenter,
        verticalPosition: this.verticalPositionTop,
     });
