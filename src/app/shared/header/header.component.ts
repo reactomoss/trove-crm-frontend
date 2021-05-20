@@ -691,14 +691,13 @@ export class CompanyDialog {
       return
     }
 
-    const post_data = {}
-    // const post_data = {
-    //   ...this.form.value,
-    //   mobile: {
-    //     code: this.form.value.mobile_code,
-    //     number: this.form.value.mobile_number,
-    //   }
-    // }
+    const post_data = {
+      ...this.form.value,
+      mobile: {
+        code: this.form.value.mobile_code,
+        number: this.form.value.mobile_number,
+      }
+    }
     this.companyApiService
       .createCompany(post_data)
       .subscribe((res: any) => {
@@ -710,8 +709,15 @@ export class CompanyDialog {
         }
       },
       err => {
-        this.errors = err.error.data
-        const messages = Object.values(this.errors).join('\n')
+        this.errors = {}
+        const data = err.error.data
+        for (const key in data) {
+          if (Array.isArray(data[key])) this.errors[key] = data[key][0]
+          else this.errors[key] = data[key]
+        }
+        console.log('this.errors', this.errors)
+        const messages = Object.values(this.errors).join('\r\n')
+        console.log(messages)
         this.sb.openSnackBarTopCenterAsDuration(messages, 'Close', 4000)
       })
   }

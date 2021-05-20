@@ -24,7 +24,7 @@
             <span class="required">Company Name</span><br>
             <mat-form-field appearance="outline" class="formControl noLabelForm">
                 <input matInput formControlName="organization_name" required>
-                <mat-error *ngIf="errors?.organization_name">{{errors.organization_name}}</mat-error>
+                <mat-hint class="mat-error" *ngIf="errors?.organization_name">{{errors.organization_name}}</mat-hint>
             </mat-form-field>
         </div>
         <div class="twoDiv">
@@ -32,18 +32,18 @@
                 <span class="required">Mobile Number</span><br>
                 <mat-form-field appearance="outline" class="formControl noLabelForm inputSelectForm" [style.width.px]="232">
                     <input matInput class="inputWithSelect" formControlName="mobile_number" required ng-minlength=10 ng-maxlength=10>
-                    <mat-error *ngIf="errors && errors['mobile.number']">{{errors['mobile.number']}}</mat-error>
+                    <mat-hint class="mat-error" *ngIf="errors && errors['mobile.number']">{{errors['mobile.number']}}</mat-hint>
                     <mat-select class="selectWithInput" formControlName="mobile_code" required>
                         <mat-option *ngFor="let code of dialCodes" [value]="code">{{code}}</mat-option>
                     </mat-select>
-                    <mat-error *ngIf="errors && errors['mobile.code']">{{errors['mobile.code']}}</mat-error>
+                    <mat-hint class="mat-error" *ngIf="errors && errors['mobile.code']">{{errors['mobile.code']}}</mat-hint>
                 </mat-form-field>
             </div>
             <div *ngIf="checkShow('Work Number')">
                 <span class="required">Work Number</span><br>
                 <mat-form-field appearance="outline" class="formControl noLabelForm" [style.width.px]="232">
                     <input matInput formControlName="work_phone" required>
-                    <mat-error *ngIf="errors?.work_phone">{{errors.work_phone}}</mat-error>
+                    <mat-hint class="mat-error" *ngIf="errors?.work_phone">{{errors.work_phone}}</mat-hint>
                 </mat-form-field>
             </div>
         </div>
@@ -90,7 +90,7 @@
                 <span class="required">Email Address</span><br>
                 <mat-form-field appearance="outline" class="formControl noLabelForm" [style.width.px]="232">
                     <input matInput email formControlName="email" required>
-                    <mat-error *ngIf="errors?.email">{{errors.email}}</mat-error>
+                    <mat-hint class="mat-error" *ngIf="errors?.email">{{errors.email}}</mat-hint>
                 </mat-form-field>
             </div>
             <div *ngIf="checkShow('Owner')">
@@ -99,7 +99,7 @@
                     <mat-select formControlName="owner_id" required>
                         <mat-option *ngFor="let owner of emailOwners" [value]="owner.id">{{owner.full_name}}</mat-option>
                     </mat-select>
-                    <mat-error *ngIf="errors?.owner_id">{{errors.owner_id}}</mat-error>
+                    <mat-hint class="mat-error" *ngIf="errors?.owner_id">{{errors.owner_id}}</mat-hint>
                 </mat-form-field>
             </div>
         </div>
