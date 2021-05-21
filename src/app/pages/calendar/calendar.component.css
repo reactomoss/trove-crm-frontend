@@ -6,25 +6,13 @@
 
 .topBarDiv {
     display: flex;
-    align-items: center;    
+    align-items: center;
 }
 
 .topBarDiv button {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.calendarTitle {
-    min-width: 190px;
-}
-
-.calendarType {
-    margin: 20px 0 20px 0;
-}
-
-.calendarButtons {
-    text-align: center;
 }
 
 .title {
@@ -35,23 +23,29 @@
     color: #253238;
 }
 
-.flatIconTextButton {
-    background: rgba(208, 217, 222, 0.2);
-    border: 1px solid #D0D9DE;
-    box-sizing: border-box;
-    border-radius: 3px;
-    padding: 0 7px 0 0;
-    font-size: 12px;
-    /* height: 32px; */
-    line-height: 30px;
+.title-small {
+    font-style: normal;
+    font-size: 18px;
+    line-height: 29px;
+    color: #253238;
 }
 
-.calendarTypeButton {
+.calendarTitle {
+    min-width: 190px;
+}
+
+.viewModeBtn {
     border: 1px solid #D0D9DE;
     box-sizing: border-box;
     border-radius: 3px;
     font-size: 12px;
     line-height: 30px;
+    width: 100px;
+}
+
+.eventFilters {
+    display: inline-flex;
+    justify-content: center;
 }
 
 .arrowButton {
@@ -64,11 +58,17 @@
     line-height: 30px;
 }
 
-.calendarContainer {
-    background-color: rgba(235,238,242,1);
+.topMenu {
+    background-color: rgba(235, 238, 242, 1);
+    padding-right: 2px;
 }
 
-.scheduleButton {
+.rightMenu {
+    background-color: white;
+    padding: 0;
+}
+
+.scheduleBtn {
     background: #002868!important;
     border-radius: 9px 9px 9px 0px;
     margin-left: 26px;
@@ -80,10 +80,13 @@
     padding: 8px 15px;
 }
 
+::ng-deep .mat-button-toggle-label-content {
+    line-height: inherit!important;
+}
+
 ::ng-deep .fc-scheduleAppointment-button {
     background: #002868!important;
     border-radius: 9px 9px 9px 0px!important;
-
     font-weight: normal!important;
     font-size: 16px!important;
     line-height: 21px!important;
@@ -91,41 +94,66 @@
     color: #FFFFFF!important;
     padding: 8px 15px!important;
 }
-.activeBtn {
-    background: #F6F7F8;
+
+.notificationPanelWrap ul,
+.settingsPanelUL,
+.addPanelUL {
+    padding: 0;
+    margin: 0;
+    list-style: none;
 }
 
-.iconInButton {
-    font-size: 21px;
+.notificationPanelWrap ul li,
+.settingsPanelUL li,
+.addPanelUL li {
+    padding-top: 10px;
+    height: auto;
+    padding-bottom: 10px;
+    line-height: normal;
+    border-bottom: 1px solid #E6EAF0;
 }
 
-.notificationPanelWrap ul , .settingsPanelUL , .addPanelUL {padding: 0; margin: 0; list-style: none;}
-.notificationPanelWrap ul li , .settingsPanelUL li , .addPanelUL li{
-  padding-top: 10px;
-  height: auto;
-  padding-bottom: 10px;
-  line-height: normal;
-  border-bottom: 1px solid #E6EAF0;
-}
-.settingsPanelUL .mat-menu-item:hover ,
+.settingsPanelUL .mat-menu-item:hover,
 .notificationPanelWrap .mat-menu-item:hover,
-.addPanelUL .mat-menu-item:hover
-{background-color: #F3F5F9;}
-.notificationPanelWrap ul li:last-child , ul.addPanelUL li {
-  border-bottom: 0;
+.addPanelUL .mat-menu-item:hover {
+    background-color: #F3F5F9;
 }
-.settingsPanelUL li:not(:first-child){
-  border-bottom: 0;
+
+.notificationPanelWrap ul li:last-child,
+ul.addPanelUL li {
+    border-bottom: 0;
 }
+
+.settingsPanelUL li:not(:first-child) {
+    border-bottom: 0;
+}
+
 .settingsPanelUL li:first-child {
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.06);
-  border-bottom-color: #E4E9EF;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.06);
+    border-bottom-color: #E4E9EF;
 }
-.settingsPanelUL li a:hover , .addPanelUL li a:hover {color: #253238;}
-.notificationPanelWrap .alignText {line-height: 25px; white-space: initial;}
-.notificationPanelWrap .material-icons {color: #253238; font-size: 22px;}
-.notificationPanelWrap .alignText .material-icons {color: #ff0000; font-size: 16px;width: auto;
-  height: 20px;}
+
+.settingsPanelUL li a:hover,
+.addPanelUL li a:hover {
+    color: #253238;
+}
+
+.notificationPanelWrap .alignText {
+    line-height: 25px;
+    white-space: initial;
+}
+
+.notificationPanelWrap .material-icons {
+    color: #253238;
+    font-size: 22px;
+}
+
+.notificationPanelWrap .alignText .material-icons {
+    color: #ff0000;
+    font-size: 16px;
+    width: auto;
+    height: 20px;
+}
 
 .drawerContainer {
     width: 360px;
@@ -137,88 +165,109 @@
     align-items: center;
 }
 
-.closeIconButton {
-    background: #FFFFFF;
-    border: 1.14286px solid #E6EAF0;
-    border-radius: 3.42857px;
-    padding: 0;
-    min-width: 24px;
-    line-height: 24px;
-}
-
-.deleteBtn {
-    border: 1px solid #D0D9DE;
-    border-radius: 6px;
-    line-height: 27px;
-    color: red;
-    background: white;
-}
-
-.fullWidth {
-    width: 100% !important;
-}
-
 .fullcalendar {
     margin: 10px 50px 0px 50px;
     background-color: white;
 }
 
-::ng-deep .checkbox-inline {
-    vertical-align: middle;
+::ng-deep .event-content {
+    /* 
     padding: 2px;
     display: flex;
+    overflow: hidden; */
+    vertical-align: middle;
     align-items: center;
+    display: inline-flex;
+    cursor: pointer;
+    position: relative;
+    margin-bottom: 0!important;
+    line-height: 8px;
 }
 
-::ng-deep .event-checkbox {
-    margin-right: 4px;
-    margin-top: -4px
+::ng-deep .event-content>span {
+    /*color: #34495E;*/
+    padding: 0.5rem 0.25rem;
 }
 
-::ng-deep .event-label {
-    margin: 3px 0px 0px 0px;
-    font-weight: bold;
+::ng-deep .event-content>input {
+    height: 16px;
+    width: 16px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    border: 1px solid rgb(230, 74, 0);
+    border-radius: 4px;
+    outline: none;
+    transition-duration: 0.3s;
+    /*background-color: #41B883;*/
+    cursor: pointer;
+}
+
+ ::ng-deep .event-content>input:checked {
+    border: 1px solid rgb(230, 74, 0);
+    /*background-color: #34495E;*/
+}
+
+::ng-deep .event-content>input:checked+span::before {
+    content: '\2713';
+    display: block;
+    text-align: center;
+    /*color: #41B883;*/
+    position: absolute;
+    left: 0.25rem;
+    top: 0.55rem;
+}
+
+
+/* ::ng-deep .event-content>input:active {
+    border: 2px solid #34495E;
+} */
+
+::ng-deep .fc-event-main {
+    overflow: hidden;
 }
 
 ::ng-deep .fc-col-header-cell {
-  text-align: right!important;
+    text-align: right!important;
 }
 
 ::ng-deep .fc-col-header-cell-cushion {
-  color: rgba(0, 0, 0, 0.8);
+    color: rgba(0, 0, 0, 0.8);
 }
 
 ::ng-deep .fc-daygrid-day-number {
-  color: rgba(0, 0, 0, 0.8);   
+    color: rgba(0, 0, 0, 0.8);
 }
 
 ::ng-deep .fc .fc-daygrid-day.fc-day-today {
-  background-color: rgba(0, 0, 0, 0.0)!important;
+    background-color: rgba(0, 0, 0, 0.0)!important;
 }
 
 ::ng-deep .fc-day-today .fc-daygrid-day-number {
-  background-color: #002868 !important;
-  border-radius: 5px;
-  width: 25px;
-  height: 25px;
-  color: white;
-  text-align: center;
-} 
+    background-color: #002868 !important;
+    border-radius: 5px;
+    width: 25px;
+    height: 25px;
+    color: white;
+    text-align: center;
+}
 
 ::ng-deep .fc .fc-toolbar {
-  justify-content: left!important;
+    justify-content: left!important;
 }
 
 ::ng-deep h2.fc-toolbar-title {
-  font-style: normal;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 29px;
-  color: #253238;  
-  width: 200px!important;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 29px;
+    color: #253238;
+    width: 200px!important;
 }
 
-::ng-deep.fc-prev-button, ::ng-deep.fc-next-button {
-  background-color: white!important;
-  color: rgba(0, 0, 0, 0.8)!important;
+::ng-deep.fc-prev-button,
+ ::ng-deep.fc-next-button {
+    background-color: white!important;
+    color: rgba(0, 0, 0, 0.8)!important;
 }

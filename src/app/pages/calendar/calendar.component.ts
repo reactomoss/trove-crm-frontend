@@ -54,6 +54,7 @@ export class CalendarComponent implements OnInit {
       appoint: true,
       reminder: true
   }
+  dialogOpened = false;
 
   constructor(
     public dialog: MatDialog, 
@@ -85,6 +86,7 @@ export class CalendarComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog sent: ${result}`);
+      this.dialogOpened = false
       if (result) {
         if (result.action == 'delete') {
             this.deleteAppointment(result.appointment)
@@ -104,6 +106,7 @@ export class CalendarComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog sent: ${result}`);
+      this.dialogOpened = false
       if (result) {
         if (result.action == 'delete') {
             this.deleteTask(result.task)
@@ -239,6 +242,8 @@ export class CalendarComponent implements OnInit {
 
   handleEventClick(clickInfo: EventClickArg) {
     console.log(clickInfo.event, clickInfo.event.extendedProps)
+    if (this.dialogOpened) return
+    this.dialogOpened = true
     
     if (clickInfo.event.extendedProps.isTask) {
       const task = clickInfo.event.extendedProps['task'];
@@ -256,13 +261,13 @@ export class CalendarComponent implements OnInit {
   }
 
   handleEventContent(arg) {
-    let divEl = document.createElement('div')
-    divEl.className = 'checkbox-inline'
+    let divEl = document.createElement('label')
+    divEl.className = 'event-content'
 
     //console.log('handleEventContent', arg.event.extendedProps)
     if (arg.event.extendedProps.isTask) {
         const task = arg.event.extendedProps.task
-        divEl.innerHTML = `<input type='checkbox' class='event-checkbox'>${task.due_time??''} ${arg.event.title}`
+        divEl.innerHTML = `<input type='checkbox'><span class='event-checkmark'>${task.due_time??''} ${arg.event.title}</span>`
     } else {
         divEl.innerHTML = arg.event.title
     }
