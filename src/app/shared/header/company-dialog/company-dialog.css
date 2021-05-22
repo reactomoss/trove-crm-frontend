@@ -42,6 +42,11 @@ span {
     font-weight: bold;
 }
 
+.required:after {
+  content:" *";
+  color: red;
+}
+
 .priceDiv {
     display: flex;
     align-items: center;

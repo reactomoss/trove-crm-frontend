@@ -14,35 +14,43 @@
 
     <mat-checkbox color="primary" class="mandatoryCheck customCheckBox" (change)="checkMandatory($event)" >Only show mandatory fields</mat-checkbox>
 </div>
+<form [formGroup]="form" (ngSubmit)="submitForm()" novalidate>
+<!-- <div *ngIf="errors" class="alert">
+  <div *ngFor="let msg of errors">{{msg}}</div>
+</div> -->
 <div mat-dialog-content>
     <div class="mainContent">
         <div *ngIf="checkShow('Company Name')">
-            <span>Company Name</span><br>
+            <span class="required">Company Name</span><br>
             <mat-form-field appearance="outline" class="formControl noLabelForm">
-                <input matInput [(ngModel)]="companyName">
+                <input matInput formControlName="organization_name" required>
+                <mat-hint class="mat-error" *ngIf="errors?.organization_name">{{errors.organization_name}}</mat-hint>
             </mat-form-field>
         </div>
         <div class="twoDiv">
             <div *ngIf="checkShow('Mobile Number')">
-                <span>Mobile Number</span><br>
+                <span class="required">Mobile Number</span><br>
                 <mat-form-field appearance="outline" class="formControl noLabelForm inputSelectForm" [style.width.px]="232">
-                    <input matInput class="inputWithSelect" [(ngModel)]="mobileNumber">
-                    <mat-select class="selectWithInput" [(ngModel)]="mobileCode">
+                    <input matInput class="inputWithSelect" formControlName="mobile_number" required ng-minlength=10 ng-maxlength=10>
+                    <mat-hint class="mat-error" *ngIf="errors && errors['mobile.number']">{{errors['mobile.number']}}</mat-hint>
+                    <mat-select class="selectWithInput" formControlName="mobile_code" required>
                         <mat-option *ngFor="let code of dialCodes" [value]="code">{{code}}</mat-option>
                     </mat-select>
+                    <mat-hint class="mat-error" *ngIf="errors && errors['mobile.code']">{{errors['mobile.code']}}</mat-hint>
                 </mat-form-field>
             </div>
             <div *ngIf="checkShow('Work Number')">
-                <span>Work Number</span><br>
+                <span class="required">Work Number</span><br>
                 <mat-form-field appearance="outline" class="formControl noLabelForm" [style.width.px]="232">
-                    <input matInput [(ngModel)]="workNumber">
+                    <input matInput formControlName="work_phone" required>
+                    <mat-hint class="mat-error" *ngIf="errors?.work_phone">{{errors.work_phone}}</mat-hint>
                 </mat-form-field>
             </div>
         </div>
         <div *ngIf="checkShow('Address') && !showMandatory">
             <span>Address</span><br>
             <mat-form-field appearance="outline" class="formControl noLabelForm" (click)="addressSelect = true">
-                <input matInput [(ngModel)]="userAddress">
+                <input matInput formControlName="address">
             </mat-form-field>
         </div>
 
@@ -50,13 +58,13 @@
             <div *ngIf="checkShow('City')">
                 <span>City</span><br>
                 <mat-form-field appearance="outline" class="formControl noLabelForm" [style.width.px]="232">
-                    <input matInput [(ngModel)]="cityName">
+                    <input matInput formControlName="city">
                 </mat-form-field>
             </div>
             <div *ngIf="checkShow('Post Code')">
                 <span>Post Code</span><br>
                 <mat-form-field appearance="outline" class="formControl noLabelForm" [style.width.px]="232">
-                    <input matInput [(ngModel)]="postCode">
+                    <input matInput formControlName="postal_code">
                 </mat-form-field>
             </div>
         </div>
@@ -64,45 +72,47 @@
             <div *ngIf="checkShow('State/Region')">
                 <span>State/Region</span><br>
                 <mat-form-field appearance="outline" class="formControl noLabelForm" [style.width.px]="232">
-                    <input matInput [(ngModel)]="stateRegion">
+                    <input matInput formControlName="state">
                 </mat-form-field>
             </div>
             <div *ngIf="checkShow('Country')">
                 <span>Country</span><br>
                 <mat-form-field appearance="outline" class="formControl noLabelForm grayBackground" [style.width.px]="232">
-                    <mat-select [(ngModel)]="country">
+                    <mat-select formControlName="country">
                         <mat-option *ngFor="let country of countries" [value]="country.id">{{country.name}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
         </div>
 
-        <div class="twoDiv" *ngIf="!showMandatory">
+        <div class="twoDiv">
             <div *ngIf="checkShow('Email Address')">
-                <span>Email Address</span><br>
+                <span class="required">Email Address</span><br>
                 <mat-form-field appearance="outline" class="formControl noLabelForm" [style.width.px]="232">
-                    <input matInput [(ngModel)]="emailAddress">
+                    <input matInput email formControlName="email" required>
+                    <mat-hint class="mat-error" *ngIf="errors?.email">{{errors.email}}</mat-hint>
                 </mat-form-field>
             </div>
             <div *ngIf="checkShow('Owner')">
-                <span>Owner</span><br>
+                <span class="required">Owner</span><br>
                 <mat-form-field appearance="outline" class="formControl noLabelForm grayBackground" [style.width.px]="232">
-                    <mat-select [(ngModel)]="emailOwner">
+                    <mat-select formControlName="owner_id" required>
                         <mat-option *ngFor="let owner of emailOwners" [value]="owner.id">{{owner.full_name}}</mat-option>
                     </mat-select>
+                    <mat-hint class="mat-error" *ngIf="errors?.owner_id">{{errors.owner_id}}</mat-hint>
                 </mat-form-field>
             </div>
         </div>
         <div *ngIf="checkShow('Skype ID') && !showMandatory">
             <span>Skype ID</span><br>
             <mat-form-field appearance="outline" class="formControl noLabelForm">
-                <input matInput [(ngModel)]="skypeId">
+                <input matInput formControlName="skype_id">
             </mat-form-field>
         </div>
         <div *ngIf="checkShow('Description') && !showMandatory">
             <span>Description</span><br>
             <mat-form-field appearance="outline" class="formControl noLabelForm">
-                <textarea matInput [(ngModel)]="description"></textarea>
+                <textarea matInput formControlName="description"></textarea>
             </mat-form-field>
         </div>
     </div>
@@ -110,5 +120,6 @@
 <div mat-dialog-actions class="justify-content-start">
   <button *ngIf="isEdit" mat-button class="deleteBtn">Delete</button>
     <button mat-button (click)="onNoClick()" class="cancelBtn ml-auto">Cancel</button>
-    <button mat-button (click)="confirmClick()" class="btnColor2 ml-3 px-4">{{isEdit ? 'Update' : 'Save'}}</button>
+    <button mat-button type="submit" class="btnColor2 ml-3 px-4">{{isEdit ? 'Update' : 'Save'}}</button>
 </div>
+</form>
