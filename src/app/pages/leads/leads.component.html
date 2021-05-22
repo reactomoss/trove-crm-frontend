@@ -23,7 +23,7 @@
         </mat-drawer>
 
         <div class="topBar">
-            <div fxLayout="row" fxLayoutAlign="space-between" fxLayout.xs="column" >
+            <div fxLayout="row" fxLayoutAlign="space-between" fxLayout.xs="column">
                 <div class="topBarDiv input001">
                     <span class="title mr-3 fontObjektivMk mt-1">All Leads</span>
 
@@ -42,17 +42,10 @@
                         <button mat-menu-item>pipe3</button>
                     </mat-menu> -->
                     <mat-form-field appearance="fill" class="bg-F7F8FA leadSelect">
-                      <mat-select [(value)]="viewLeads">
-                          <mat-option value="pipe1">
-                              Pipe 1
-                          </mat-option>
-                          <mat-option value="pipe2">
-                            Pipe 2
-                          </mat-option>
-                          <mat-option value="pipe3">
-                            Pipe 3
-                          </mat-option> </mat-select>
-                  </mat-form-field>
+                        <mat-select [(value)]="currentSelectedPipeline" (selectionChange)="onPipelineChange($event.value)">
+                            <mat-option *ngFor="let pipeline of pipelineMaster" [value]="pipeline.id">{{pipeline.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
                 <div class="topBarDiv">
                     <button mat-button class="flatIconLightButton" (click)="showList()">
@@ -61,7 +54,7 @@
                     <button mat-button class="flatIconDarkButton" (click)="showCards()">
                         <mat-icon class="smallIcon">dashboard</mat-icon>
                     </button>
-                    <button mat-button class="flatIconTextButton ml-3" (click)="drawer.toggle() ; clickFilter()">
+                    <button *ngIf="canShow" mat-button class="flatIconTextButton ml-3" (click)="drawer.toggle() ; clickFilter()">
                         <mat-icon class="iconInButton">filter_alt</mat-icon>
                         Filter({{filterCount}})
                     </button>
@@ -69,14 +62,13 @@
             </div>
         </div>
 
-        <ngx-simplebar [options]="scrollOptions" class="mainContent">
+        <ngx-simplebar [options]="scrollOptions" class="mainContent" *ngIf="canShow">
             <div style="display: flex">
                 <div style="min-width: 20px">
                     <span></span>
                 </div>
 
-                <div class="card-container" cdkDropList [cdkDropListData]="discovery" #discoveryList="cdkDropList"
-                    [cdkDropListConnectedTo]="[qualifiedList, evolutionList, negotiationList, closedList]" (cdkDropListDropped)="dropped($event)">
+                <div class="card-container" cdkDropList [cdkDropListData]="discovery" #discoveryList="cdkDropList" [cdkDropListConnectedTo]="[qualifiedList, evolutionList, negotiationList, closedList]" (cdkDropListDropped)="dropped($event)">
                     <p class="list-title">Discovery {{discovery.length}}</p>
                     <ngx-simplebar [options]="scrollOptions" class="cardWrapper">
                         <mat-card class="mat-elevation-z0 p-2" cdkDrag *ngFor="let i of discovery" (click)="clickCard()">
@@ -96,8 +88,7 @@
                     </ngx-simplebar>
                 </div>
 
-                <div class="card-container" cdkDropList [cdkDropListData]="qualified" #qualifiedList="cdkDropList"
-                    [cdkDropListConnectedTo]="[discoveryList, evolutionList, negotiationList, closedList]" (cdkDropListDropped)="dropped($event)">
+                <div class="card-container" cdkDropList [cdkDropListData]="qualified" #qualifiedList="cdkDropList" [cdkDropListConnectedTo]="[discoveryList, evolutionList, negotiationList, closedList]" (cdkDropListDropped)="dropped($event)">
                     <p class="list-title fontObjektivMk">Qualified {{qualified.length}}</p>
                     <ngx-simplebar [options]="scrollOptions" class="cardWrapper">
                         <mat-card class="mat-elevation-z0 p-2" cdkDrag *ngFor="let i of qualified" (click)="clickCard()">
@@ -117,8 +108,7 @@
                     </ngx-simplebar>
                 </div>
 
-                <div class="card-container" cdkDropList [cdkDropListData]="evolution" #evolutionList="cdkDropList"
-                    [cdkDropListConnectedTo]="[qualifiedList, negotiationList, discoveryList, closedList]" (cdkDropListDropped)="dropped($event)">
+                <div class="card-container" cdkDropList [cdkDropListData]="evolution" #evolutionList="cdkDropList" [cdkDropListConnectedTo]="[qualifiedList, negotiationList, discoveryList, closedList]" (cdkDropListDropped)="dropped($event)">
                     <p class="list-title fontObjektivMk">Evolution {{evolution.length}}</p>
                     <ngx-simplebar [options]="scrollOptions" class="cardWrapper">
                         <mat-card class="mat-elevation-z0 p-2" cdkDrag *ngFor="let i of evolution" (click)="clickCard()">
@@ -138,8 +128,7 @@
                     </ngx-simplebar>
                 </div>
 
-                <div class="card-container" cdkDropList [cdkDropListData]="negotiation" #negotiationList="cdkDropList"
-                    [cdkDropListConnectedTo]="[evolutionList, closedList, discoveryList, qualifiedList]" (cdkDropListDropped)="dropped($event)">
+                <div class="card-container" cdkDropList [cdkDropListData]="negotiation" #negotiationList="cdkDropList" [cdkDropListConnectedTo]="[evolutionList, closedList, discoveryList, qualifiedList]" (cdkDropListDropped)="dropped($event)">
                     <p class="list-title fontObjektivMk">Negotiation {{negotiation.length}}</p>
                     <ngx-simplebar [options]="scrollOptions" class="cardWrapper">
                         <mat-card class="mat-elevation-z0 p-2" cdkDrag *ngFor="let i of negotiation" (click)="clickCard()">
@@ -159,8 +148,7 @@
                     </ngx-simplebar>
                 </div>
 
-                <div class="card-container" cdkDropList #closedList="cdkDropList" [cdkDropListData]="closed"
-                    [cdkDropListConnectedTo]="[negotiationList, evolutionList, qualifiedList, discoveryList]" (cdkDropListDropped)="dropped($event)">
+                <div class="card-container" cdkDropList #closedList="cdkDropList" [cdkDropListData]="closed" [cdkDropListConnectedTo]="[negotiationList, evolutionList, qualifiedList, discoveryList]" (cdkDropListDropped)="dropped($event)">
                     <p class="list-title fontObjektivMk">Closed {{closed.length}}</p>
                     <ngx-simplebar [options]="scrollOptions" class="cardWrapper">
                         <mat-card class="mat-elevation-z0 p-2" cdkDrag *ngFor="let i of closed" (click)="clickCard()">
@@ -208,11 +196,11 @@
             </div>
         </ngx-simplebar>
 
-        <div class="footer">
+        <div class="footer" *ngIf="canShow">
             <span class="footText1 mr-5">Summary</span>
-            <span class="footText2 mr-2">Total Deals</span> <span class="footText1 mr-5">2</span>
-            <span class="footText2 mr-2">Total Value</span> <span class="footText1 mr-5">$25030</span>
-            <span class="footText2 mr-2">Average Value</span> <span class="footText1">$9809</span>
+            <span class="footText2 mr-2">Total Deals</span> <span class="footText1 mr-5">{{totalLead}}</span>
+            <span class="footText2 mr-2">Total Value</span> <span class="footText1 mr-5">{{totalValue}}</span>
+            <span class="footText2 mr-2">Average Value</span> <span class="footText1">{{avgValue}}</span>
         </div>
     </mat-drawer-container>
 </div>
@@ -258,10 +246,7 @@
                     (filterCountChanged)="filterCountChangedHandler($event)"
                     [listShow]="listShow"
                 ></app-filter> -->
-                <app-filter
-                (closeDialog)="drawer.toggle()" (count)="filterCount=$event"
-                [listShow]="listShow"
-            ></app-filter>
+                <app-filter (closeDialog)="drawer.toggle()" (count)="filterCount=$event" [listShow]="listShow"></app-filter>
             </ngx-simplebar>
         </div>
     </div>
