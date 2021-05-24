@@ -667,7 +667,7 @@ export class CompanyDialog {
       postal_code: [''],
       state: [''],
       country: [''],
-      owner_id: [0],
+      owner_id: ['', [Validators.required]],
       skype_id: [''],
       description: [''],
     })
