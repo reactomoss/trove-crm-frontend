@@ -84,14 +84,17 @@
         </div>
 
         <div *ngIf="!listShow" class="row">
-            <ng-container  *ngFor="let item of items">
-                <div *ngIf="item.category"class="fullWidth text-right dateDiv">{{item.category}}</div>
+            <ng-container *ngFor="let item of items">
+                <div *ngIf="checkCategory(item)" class="fullWidth text-right dateDiv">{{item.category}}</div>
                 <div class="col-lg-2 col-md-3 col-sm-4">
                     <mat-card class="mat-elevation-z0 p-3 mb-4" style="position: relative"
                             (click)="clickCard(item)" (mouseover)="setHoveredItem(item)">
-                        <mat-checkbox class="cardCheckBox customCheckBox" [checked]='setCheckStatus(item)'
-                                    (click)="clickCheck($event, item);$event.stopPropagation();" *ngIf="showCardCheckBox(item)"
-                                    color="primary"></mat-checkbox>
+                        <mat-checkbox *ngIf="showCardCheckBox(item)"
+                            class="cardCheckBox customCheckBox" 
+                            [checked]='setCheckStatus(item)'
+                            (click)="clickCheck($event, item);$event.stopPropagation();" 
+                            color="primary">
+                        </mat-checkbox>
                         <mat-card-header>
                             <div mat-card-avatar class="iconContainer">
                                 <img *ngIf="!item.company; else elseBlock" alt="Image" src="../../../assets/images/face.svg" class="avatar">
@@ -120,6 +123,7 @@
                     <div class="fullWidth text-right dateDiv" *ngIf="i == 6">November, 2020</div>
                 </ng-container> -->
             </ng-container>
+            <div *ngIf="checkCategory(null)"></div>
         </div>
 
         <div *ngIf="listShow">

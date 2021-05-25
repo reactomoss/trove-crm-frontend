@@ -1,11 +1,13 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import {SnackBarService} from '../../shared/snack-bar.service'
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
+import { SnackBarService} from '../../shared/snack-bar.service'
+import { NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { CompanyApiService } from '../../services/company-api.service';
 import { CompanyFilters } from './filter/filter.component';
+import { DateService } from '../../service/date.service'
+import * as moment from 'moment';
 import response_companies from './company.sample'
 
 export interface item {
@@ -43,6 +45,7 @@ export class CompanyComponent implements OnInit {
   items = []
   owners = []
   selectedItems: item[] = []
+  currentCategory = null
 
   listShow: boolean = false
   typeString: string = 'Companies'
@@ -55,6 +58,7 @@ export class CompanyComponent implements OnInit {
     private companyApiService: CompanyApiService,
     public dialog: MatDialog, 
     private router: Router, 
+    private dateService: DateService,
     private sb: SnackBarService) {
   }
 
@@ -89,14 +93,12 @@ export class CompanyComponent implements OnInit {
       for (const activity in data) {
         const companies: any[] = data[activity]
         companies.map((company, index) => {
-          const temp = (index > 0)? company : {...company, category: activity}
-          this.items.push({...temp, company: true, last_activity: activity})
+          this.items.push({...company, category: activity, company: true, last_activity: company.updated_at})
           !this.owners.find(x => x.id == company.owner.id) && this.owners.push(company.owner)
-          return temp
         })
       }
       this.allItems = this.items
-      console.log(this.owners)
+      console.log(this.items)
     }
 
     //this.companyApiService.obs.subscribe(() => this.fetchCompanies());
@@ -119,11 +121,9 @@ export class CompanyComponent implements OnInit {
           this.items = []
           const data = res.data.id
           for (const activity in data) {
-              const companies: any[] = data[activity]
-              companies.map((company, index) => {
-              const temp = (index > 0)? company : {...company, category: activity}
-              this.items.push({...temp, company: true, last_activity: activity})
-              return temp
+            const companies: any[] = data[activity]
+            companies.map((company, index) => {
+              this.items.push({...company, category: activity, company: true, last_activity: activity})
             })
           }
           this.allItems = this.items 
@@ -148,21 +148,10 @@ export class CompanyComponent implements OnInit {
     this.selectedItems = []
   }
 
-  // selectContact() {
-  //   this.items = this.allItems.filter(e => !e.company)
-  //   this.typeString = 'Contact'
-  //   this.selectedItems = []
-  // }
-
-  // selectCompany() {
-  //   this.items = this.allItems.filter(e => e.company)
-  //   this.typeString = 'Companies'
-  //   this.selectedItems = []
-  // }
-
   clickCard(item) {
     this.router.navigate(['/pages/company_detail'])
   }
+
   clickContactPage() {
     this.router.navigate(['/pages/contact'])
   }
@@ -221,19 +210,73 @@ export class CompanyComponent implements OnInit {
     })
   }
 
-  filtersChangedHandler(e) {
-    this.filters = {...e}
+  filtersChangedHandler(filters: CompanyFilters) {
+    this.filters = filters
     console.log('filtersChangedHandler', this.filters)
-  }
+    
+    this.items = this.allItems
+    if (filters.status && filters.status !== 'All') {
+      this.items = this.items.filter(item => item.status == filters.status)
+    }
 
-  closeFilterDrawer(e) {
-    this.filters = {...e}
-    console.log('closeFilterDrawer', this.filters)
+    if (filters.owners.length > 0) {
+      this.items = this.items.filter(item => filters.owners.find(owner => owner == item.owner.id))
+    }
+
+    if (filters.activity >= 0) {
+      let startDate = null, lastDate = null
+      if (filters.activity == 6) {
+        startDate = moment(this.filters.activityStartDate)
+        lastDate = moment(this.filters.activityEndDate)
+      }
+      else {
+        const dateRange = this.dateService.getDateRange(this.filters.activity)
+        startDate = dateRange.startDate
+        lastDate = dateRange.lastDate
+      }
+      this.items = this.items.filter(item => {
+        const updatedAt = moment(item.updated_at)
+        if (startDate && startDate > updatedAt) return false
+        if (lastDate && lastDate < updatedAt) return false
+        return true
+      })
+    }
+
+    if (filters.addedon >= 0) {
+      let startDate = null, lastDate = null
+      if (filters.activity == 6) {
+        startDate = moment(this.filters.addedonStartDate)
+        lastDate = moment(this.filters.addedonEndDate)
+      }
+      else {
+        const dateRange = this.dateService.getDateRange(this.filters.addedon)
+        startDate = dateRange.startDate
+        lastDate = dateRange.lastDate
+      }
+      this.items = this.items.filter(item => {
+        const createdAt = moment(item.created_at)
+        if (startDate && startDate > createdAt) return false
+        if (lastDate && lastDate < createdAt) return false
+        return true
+      })
+    }
   }
 
   clickFilter() {
     this.drawer.toggle()
     this.showFilter = true
+  }
+
+  checkCategory(item) {
+    if (item == null) {
+      this.currentCategory = null
+      return false
+    }
+    if (item.category && item.category != this.currentCategory) {
+      this.currentCategory = item.category
+      return true
+    }
+    return false
   }
 }
 
@@ -312,7 +355,6 @@ export class CompanyMailDialog {
   }
 
   public deleteSelected(item) {
-    // console.log('selected', item, this.items.items)
     const index = this.items.items.indexOf(item)
     this.items.items.splice(index, 1)
   }

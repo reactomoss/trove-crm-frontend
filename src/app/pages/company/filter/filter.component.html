@@ -16,13 +16,13 @@
                 <mat-panel-title>
                     <div>
                         Status<br>
-                        <span class="subTitle">{{filters.state}}</span>
+                        <span class="subTitle">{{filters.status}}</span>
                     </div>
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="panel-content">
                 <mat-radio-group aria-labelledby="example-radio-group-label" class="statusRadio customRadio"
-                    [(ngModel)]="filters.state" (change)="stateFilterChanged($event)">
+                    [(ngModel)]="filters.status" (change)="stateFilterChanged($event)">
                     <mat-radio-button color="primary" class="example-radio-button" *ngFor="let type of statusTypes"
                         [value]="type">
                         {{type}}

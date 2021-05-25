@@ -2,11 +2,11 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DateService } from '../../../service/date.service'
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { map, startWith, take, tap } from 'rxjs/operators';
+import { filter, map, startWith, take, tap } from 'rxjs/operators';
 
 export interface CompanyFilters {
   count: number
-  state: string
+  status: string
   activity: number
   activityStartDate: Date
   activityEndDate: Date
@@ -50,7 +50,7 @@ export class CompanyFilterComponent implements OnInit {
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
   filters: CompanyFilters = {
     count: 0, 
-    state: '', 
+    status: null, 
     activity: -1,
     activityStartDate: null,
     activityEndDate: null,
@@ -59,6 +59,7 @@ export class CompanyFilterComponent implements OnInit {
     addedonEndDate: null,
     owners: [],
   }
+  dateFormat = 'DD/MM/YYYY'
 
   createdBySelection(contact: createContact){
     console.log('createdBySelection', contact)
@@ -131,26 +132,18 @@ export class CompanyFilterComponent implements OnInit {
     if (this.filters.activity == -1) {
       return ''
     }
-    switch (this.filters.activity) {
-      case 0:
-        const today = this.dateService.getToday()
-        return today + ' ~ ' + today
-      case 1:
-        const yesterday = this.dateService.getYesterday()
-        return yesterday + ' ~ ' + yesterday
-      case 2:
-        return this.dateService.getLastWeek()
-      case 3:
-        return this.dateService.getThisMonth()
-      case 4:
-        return this.dateService.getLastMonth()
-      case 5:
-        return this.dateService.getThisQuarter()
-      case 6:
-        let firstDay = '', lastDay = ''
-        this.filters.activityStartDate && (firstDay = this.dateService.dateToString(this.filters.activityStartDate))
-        this.filters.activityEndDate && (lastDay = this.dateService.dateToString(this.filters.activityEndDate))
-        return firstDay + ' ~ ' + lastDay
+    if (this.filters.activity == 6) {
+      let firstDay = '', lastDay = ''
+      this.filters.activityStartDate && (firstDay = this.dateService.dateToString(this.filters.activityStartDate))
+      this.filters.activityEndDate && (lastDay = this.dateService.dateToString(this.filters.activityEndDate))
+      return firstDay + ' ~ ' + lastDay   
+    }
+    const {startDate, lastDate} = this.dateService.getDateRange(this.filters.activity)
+    if (startDate && lastDate) {
+      return startDate.format(this.dateFormat) + '~' + lastDate.format(this.dateFormat)
+    }
+    if (startDate) {
+      return startDate.format(this.dateFormat) + ' ~ ' + startDate.format(this.dateFormat)
     }
   }
 
@@ -158,32 +151,24 @@ export class CompanyFilterComponent implements OnInit {
     if (this.filters.addedon == -1) {
       return ''
     }
-    switch (this.filters.addedon) {
-      case 0:
-        const today = this.dateService.getToday()
-        return today + ' ~ ' + today
-      case 1:
-        const yesterday = this.dateService.getYesterday()
-        return yesterday + ' ~ ' + yesterday
-      case 2:
-        return this.dateService.getLastWeek()
-      case 3:
-        return this.dateService.getThisMonth()
-      case 4:
-        return this.dateService.getLastMonth()
-      case 5:
-        return this.dateService.getThisQuarter()
-      case 6:
-        let firstDay = '', lastDay = ''
-        this.filters.addedonStartDate && (firstDay = this.dateService.dateToString(this.filters.addedonStartDate))
-        this.filters.addedonEndDate && (lastDay = this.dateService.dateToString(this.filters.addedonEndDate))
-        return firstDay + ' ~ ' + lastDay
+    if (this.filters.activity == 6) {
+      let firstDay = '', lastDay = ''
+      this.filters.addedonStartDate && (firstDay = this.dateService.dateToString(this.filters.addedonStartDate))
+      this.filters.addedonEndDate && (lastDay = this.dateService.dateToString(this.filters.addedonEndDate))
+      return firstDay + ' ~ ' + lastDay   
+    }
+    const {startDate, lastDate} = this.dateService.getDateRange(this.filters.addedon)
+    if (startDate && lastDate) {
+      return startDate.format(this.dateFormat) + '~' + lastDate.format(this.dateFormat)
+    }
+    if (startDate) {
+      return startDate.format(this.dateFormat) + ' ~ ' + startDate.format(this.dateFormat)
     }
   }
 
   calculateFilterCount(): number {
     let filterCount = 0;
-    if (this.filters.state) {
+    if (this.filters.status) {
       filterCount += 1;
     }
     if (this.selectedCreatedBy.length > 0) {
@@ -216,7 +201,7 @@ export class CompanyFilterComponent implements OnInit {
   }
 
   public clearStatus() {
-    this.filters.state = '';
+    this.filters.status = null;
     this.notify()
   }
 
@@ -244,7 +229,7 @@ export class CompanyFilterComponent implements OnInit {
 
   public stateFilterChanged(e) {
     console.log('stateFilterChanged', e)
-    this.filters.state = e.value
+    this.filters.status = e.value
     this.notify()
   }
 
