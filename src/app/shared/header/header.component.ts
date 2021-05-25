@@ -173,6 +173,20 @@ export class HeaderComponent implements OnInit {
   }
 
   clickCompany() {
+    /*const dialogRef = this.dialog.open(CompanyDialog, {
+        width: '560px',
+        autoFocus: false,
+        data : { 
+          countries: [],
+          emailOwners: [],
+          dialCodes: []
+        }
+      })
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          this.sb.openSnackBarBottomCenter(result, 'Close')
+        }
+      })*/
     this.companyApiService
       .getCompanyCreateForm()
       .subscribe((res: any) => {
@@ -677,10 +691,26 @@ export class CompanyDialog {
       postal_code: [''],
       state: [''],
       country: [''],
-      owner_id: [0],
+      owner_id: ['', [Validators.required]],
       skype_id: [''],
       description: [''],
     })
+  }
+
+  hasValidationError(key) {
+    return this.form.controls[key].invalid && this.form.controls[key].errors
+  }
+
+  getValidationMessage(key) {
+    const control = this.form.controls[key]
+    if (control.hasError('required')) return 'This field is required'
+    if (control.hasError('email')) return 'Please enter a valid email address'
+    if (control.hasError('pattern')) {
+      if (control.errors.pattern.requiredPattern == '^[0-9]*$') return 'Please input numbers only'
+    }
+    if (control.hasError('minlength')) return `The minimum length is ${control.errors.minlength.requiredLength}.`
+    if (control.hasError('maxlength')) return `The minimum length is ${control.errors.maxlength.requiredLength}.`
+    return ''
   }
 
   private _filter(value: string): string[] {
