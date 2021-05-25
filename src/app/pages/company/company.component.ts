@@ -32,7 +32,7 @@ export interface selectedData {
   styleUrls: ['./company.component.css']
 })
 export class CompanyComponent implements OnInit {
-  @ViewChild('drawer') drawer;
+  @ViewChild('drawer') drawer
 
   showFilter:boolean = false
   filters: CompanyFilters = null
@@ -88,7 +88,7 @@ export class CompanyComponent implements OnInit {
   /*Modal dialog*/
 
   ngOnInit(): void {
-    const res = response_companies
+    /*const res = response_companies
     if (res.success) {
       const data = res.data.id
       for (const activity in data) {
@@ -100,10 +100,10 @@ export class CompanyComponent implements OnInit {
       }
       this.allItems = this.items
       console.log(this.items)
-    }
+    }*/
 
-    //this.companyApiService.obs.subscribe(() => this.fetchCompanies());
-    //this.fetchCompanies()
+    this.companyApiService.obs.subscribe(() => this.fetchCompanies());
+    this.fetchCompanies()
   }
 
   fetchCompanies() {
@@ -158,8 +158,8 @@ export class CompanyComponent implements OnInit {
   }
 
   clickCheck(e, item) {
-    this.detect = 1
     e.preventDefault()
+    this.detect = 1
     const index = this.selectedItems.indexOf(item, 0)
     if (index > -1) {
       this.selectedItems.splice(index, 1)
@@ -291,6 +291,20 @@ export class CompanyComponent implements OnInit {
       return true
     }
     return false
+  }
+
+  deleteCompany(e) {
+    console.log('deleteCompnay', this.selectedItems)
+    const companyIds = this.selectedItems.map(item => item.id)
+    this.companyApiService
+      .deleteCompanyList(companyIds)
+      .subscribe((res: any) => {
+        console.log('deleteCompany', res)
+        //this.triggerSnackBar('Record has been deleted', 'Close')
+      },
+      err => {
+        this.triggerSnackBar(err.error.message, 'Close')
+      })
   }
 }
 

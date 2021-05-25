@@ -31,6 +31,13 @@ export class CompanyApiService {
     const API_URL = `${this.baseURL + environment.company_index}`;
     return this.httpClient.post(API_URL, data);
   }
+
+  deleteCompanyList(companyIds): Observable<any> {
+    const data = {ids: companyIds}
+    const id = companyIds[0]
+    const API_URL = `${this.baseURL + environment.company}/${id}`;
+    return this.httpClient.delete(API_URL);
+  }
   
   subject: ReplaySubject<any> = new ReplaySubject();
   obs: Observable<any> = this.subject.asObservable();
