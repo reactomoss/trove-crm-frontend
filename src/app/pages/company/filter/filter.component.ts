@@ -20,16 +20,14 @@ export interface createContact {
   name: string;
   isChecked?: boolean;
 }
-export interface createCompany {
-  name: string;
-  isChecked?: boolean;
-}
+
 // multi autocomplete
 export class Contact {
   constructor(public name: string, public selected?: boolean) {
     if (selected === undefined) selected = false;
   }
 }
+
 @Component({
   selector: 'company-filter',
   templateUrl: './filter.component.html',
@@ -42,9 +40,7 @@ export class CompanyFilterComponent implements OnInit {
   contactCtrl = new FormControl();
   companyCtrl = new FormControl();
   filteredCont: Observable<createContact[]>;
-  filteredComp: Observable<createCompany[]>;
   selectedCreatedBy: createContact[] = [];
-  selectedCompany: createCompany[] = [];
   statusTypes: string[] = ['All', 'Active', 'Inactive']
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
   filters: CompanyFilters = {
@@ -55,20 +51,13 @@ export class CompanyFilterComponent implements OnInit {
   }
 
   createdBySelection(contact: createContact){
+    console.log('createdBySelection', contact)
     if (contact.isChecked) {
       this.selectedCreatedBy = [...this.selectedCreatedBy, contact]
-    } else {
+    }
+    else {
       let index = this.selectedCreatedBy.findIndex(c => c.name === contact.name);
       this.selectedCreatedBy.splice(index,1);
-    }
-  }
-
-  companySelection(contact: createCompany){
-    if(contact.isChecked) {
-      this.selectedCompany = [...this.selectedCompany, contact]
-    } else {
-      let index = this.selectedCompany.findIndex(c => c.name === contact.name);
-      this.selectedCompany.splice(index,1);
     }
   }
 
@@ -100,21 +89,6 @@ export class CompanyFilterComponent implements OnInit {
     }
   ];
 
-  companys: createCompany[] = [
-    {
-      name: 'Company 1',
-    },
-    {
-      name: 'Company 2'
-    },
-    {
-      name: 'Company 3'
-    },
-    {
-      name: 'Company 4'
-    }
-  ];
-
   types: Type[] = [
     new Type('Added by user'),
     new Type('Import from CSV'),
@@ -130,11 +104,6 @@ export class CompanyFilterComponent implements OnInit {
       .pipe(
         startWith(''),
         map(state => state ? this._filterStates(state) : this.contacts.slice())
-      );
-      this.filteredComp = this.companyCtrl.valueChanges
-      .pipe(
-        startWith(''),
-        map(state => state ? this._filterStatesComp(state) : this.companys.slice())
       );
   }
 
@@ -224,9 +193,6 @@ export class CompanyFilterComponent implements OnInit {
     if (this.selectedCreatedBy.length > 0) {
       filterCount += 1;
     }
-    if (this.selectedCompany.length > 0) {
-      filterCount += 1;
-    }
     if (this.filters.activity != -1 && (this.filters.activity || this.filters.activity == 0)) {
       filterCount += 1;
     }
@@ -243,7 +209,6 @@ export class CompanyFilterComponent implements OnInit {
     this.clearType();
     this.clearStatus();
     this.clearCreatedBy();
-    this.clearCompany();
     this.clearDate();
     this.clearAddDate();
   }
@@ -262,18 +227,6 @@ export class CompanyFilterComponent implements OnInit {
   public clearCreatedBy() {
     this.selectedCreatedBy = [];
     this.filteredCont.pipe(
-      tap(data => {
-        data.forEach(c => {
-          c.isChecked = false;
-        })
-      }),
-      take(1)
-    ).subscribe();
-  }
-
-  public clearCompany() {
-    this.selectedCompany = [];
-    this.filteredComp.pipe(
       tap(data => {
         data.forEach(c => {
           c.isChecked = false;
@@ -319,10 +272,5 @@ export class CompanyFilterComponent implements OnInit {
   private _filterStates(value: string): createContact[] {
     const filterValue = value.toLowerCase();
     return this.contacts.filter(state => state.name.toLowerCase().indexOf(filterValue) === 0);
-  }
-
-  private _filterStatesComp(value: string): createContact[] {
-    const filterValue = value.toLowerCase();
-    return this.companys.filter(state => state.name.toLowerCase().indexOf(filterValue) === 0);
   }
 }
