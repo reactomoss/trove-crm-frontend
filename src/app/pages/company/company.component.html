@@ -38,7 +38,7 @@
                 </mat-menu>
 
                 <mat-form-field class="searchForm noLabelForm noSpaceForm" appearance="outline" >
-                    <input type="text" matInput placeholder="Search...">
+                    <input type="text" matInput placeholder="Search..." [(ngModel)]="searchText" (ngModelChange)="searchTextChanged($event)">
                     <mat-icon matSuffix>search</mat-icon>
                 </mat-form-field>
             </div>

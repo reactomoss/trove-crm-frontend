@@ -46,6 +46,7 @@ export class CompanyComponent implements OnInit {
   owners = []
   selectedItems: item[] = []
   currentCategory = null
+  searchText = null
 
   listShow: boolean = false
   typeString: string = 'Companies'
@@ -210,11 +211,24 @@ export class CompanyComponent implements OnInit {
     })
   }
 
+  searchTextChanged(e) {
+    console.log('searchTextChanged', e)
+    this.filtersChangedHandler(this.filters)
+  }
+
   filtersChangedHandler(filters: CompanyFilters) {
     this.filters = filters
     console.log('filtersChangedHandler', this.filters)
     
     this.items = this.allItems
+    if (this.searchText) {
+      this.items = this.items.filter(item => item.name.includes(this.searchText))
+    }
+
+    if (!filters) {
+      return
+    }
+
     if (filters.status && filters.status !== 'All') {
       this.items = this.items.filter(item => item.status == filters.status)
     }
