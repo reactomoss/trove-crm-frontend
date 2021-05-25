@@ -31,7 +31,7 @@ export class Contact {
 export class CompanyFilterComponent implements OnInit {
 
   @Output() closeDialog = new EventEmitter();
-  @Output() count = new EventEmitter<any>();
+  @Output() notifyFilters = new EventEmitter<any>(true);
   contactCtrl = new FormControl();
   companyCtrl = new FormControl();
   filteredCont: Observable<createContact[]>;
@@ -208,27 +208,33 @@ export class CompanyFilterComponent implements OnInit {
   }
 
   calculateFilterCount(): number {
-    this.filterCount = 0;
+    let filterCount = 0;
     if(this.status) {
-      this.filterCount += 1;
+      filterCount += 1;
     }
     if(this.selectedCreatedBy.length > 0) {
-      this.filterCount += 1;
+      filterCount += 1;
     }
     if(this.selectedCompany.length > 0) {
-      this.filterCount += 1;
+      filterCount += 1;
     }
     if(this.dateType != -1 && (this.dateType || this.dateType == 0)) {
-      this.filterCount += 1;
+      filterCount += 1;
     }
     if(this.addDateType != -1 && (this.addDateType || this.addDateType == 0)) {
-      this.filterCount += 1;
+      filterCount += 1;
     }
     if(this.displaySelectedTypes() != '') {
-      this.filterCount += 1;
+      filterCount += 1;
     }
-    this.count.emit(this.filterCount);
-    return this.filterCount;
+    if (this.filterCount != filterCount) {
+        console.log('emit filter counts')
+      this.filterCount = filterCount
+      this.notifyFilters.emit({
+          filterCount: filterCount
+      });
+    }
+    return filterCount;
   }
 
   clearAll() {

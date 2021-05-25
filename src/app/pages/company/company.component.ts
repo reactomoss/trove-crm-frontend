@@ -30,7 +30,9 @@ export interface selectedData {
 })
 export class CompanyComponent implements OnInit {
   showFilter:boolean = false
-  filterCount: number = 0
+  filters: any = {
+    filterCount: 0
+  }
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
   hoveredItem
   //detect for click card, check
@@ -79,7 +81,7 @@ export class CompanyComponent implements OnInit {
   /*Modal dialog*/
 
   ngOnInit(): void {
-    /*const res = response_companies
+    const res = response_companies
     if (res.success) {
       const data = res.data.id
       for (const activity in data) {
@@ -92,10 +94,10 @@ export class CompanyComponent implements OnInit {
       }
       this.allItems = this.items
       console.log(this.items)
-    }*/
+    }
 
-    this.companyApiService.obs.subscribe(() => this.fetchCompanies());
-    this.fetchCompanies()
+    //this.companyApiService.obs.subscribe(() => this.fetchCompanies());
+    //this.fetchCompanies()
   }
 
   fetchCompanies() {
@@ -215,8 +217,9 @@ export class CompanyComponent implements OnInit {
       // }
     })
   }
-  filterCountChangedHandler(e) {
-    this.filterCount = e
+  filtersChangedHandler(e) {
+    console.log('filtersChangedHandler', e)
+    this.filters = e
   }
 
   clickFilter(){

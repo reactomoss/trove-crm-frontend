@@ -101,7 +101,7 @@ const response_companies = {
                     "skype_id": "ether@hotmail.com",
                     "owner_id": 3,
                     "description": "ether",
-                    "status": "Active",
+                    "status": "Inactive",
                     "created_at": "May 20, 2021",
                     "updated_at": "May 20, 2021",
                     "created_by": "satham hussain",
