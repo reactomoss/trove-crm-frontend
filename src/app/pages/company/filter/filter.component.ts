@@ -4,6 +4,13 @@ import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith, take, tap } from 'rxjs/operators';
 
+export interface CompanyFilters {
+  count: number;
+  state: string;
+  activity: number;
+  addedon: number
+}
+
 export class Type {
   constructor(public name: string, public selected?: boolean) {
     if (selected === undefined) selected = false;
@@ -31,30 +38,35 @@ export class Contact {
 export class CompanyFilterComponent implements OnInit {
 
   @Output() closeDialog = new EventEmitter();
-  @Output() notifyFilters = new EventEmitter<any>(true);
+  @Output() notifyFilters = new EventEmitter<CompanyFilters>();
   contactCtrl = new FormControl();
   companyCtrl = new FormControl();
   filteredCont: Observable<createContact[]>;
   filteredComp: Observable<createCompany[]>;
   selectedCreatedBy: createContact[] = [];
   selectedCompany: createCompany[] = [];
-  status: string
   statusTypes: string[] = ['All', 'Active', 'Inactive']
-  filterCount: number = 0
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
+  filters: CompanyFilters = {
+    count: 0, 
+    state: '', 
+    activity: -1,
+    addedon: -1,
+  }
 
   createdBySelection(contact: createContact){
-    if(contact.isChecked) {
+    if (contact.isChecked) {
       this.selectedCreatedBy = [...this.selectedCreatedBy, contact]
-    }else {
+    } else {
       let index = this.selectedCreatedBy.findIndex(c => c.name === contact.name);
       this.selectedCreatedBy.splice(index,1);
     }
   }
+
   companySelection(contact: createCompany){
     if(contact.isChecked) {
       this.selectedCompany = [...this.selectedCompany, contact]
-    }else {
+    } else {
       let index = this.selectedCompany.findIndex(c => c.name === contact.name);
       this.selectedCompany.splice(index,1);
     }
@@ -68,7 +80,6 @@ export class CompanyFilterComponent implements OnInit {
 
   addDateTypes: number[] = [0, 1, 2, 3, 4, 5, 6]
   addDateTypeString: string[] = ['Today', 'Yesterday', 'Last Week', 'This month', 'Last month', 'This Quarter', 'Custom']
-  addDateType: number
   addStartDate: Date = null
   addEndDate: Date = null
 
@@ -127,11 +138,9 @@ export class CompanyFilterComponent implements OnInit {
       );
   }
 
-
   ngOnInit(): void {
 
   }
-
 
   public displayArray(arr) {
     let ret = ''
@@ -154,10 +163,10 @@ export class CompanyFilterComponent implements OnInit {
   }
 
   public getSelectedDate() {
-    if (this.dateType == -1) {
+    if (this.filters.activity == -1) {
       return ''
     }
-    switch (this.dateType) {
+    switch (this.filters.activity) {
       case 0:
         const today = this.dateService.getToday()
         return today + ' ~ ' + today
@@ -181,10 +190,10 @@ export class CompanyFilterComponent implements OnInit {
   }
 
   public getAddSelectedDate() {
-    if (this.addDateType == -1) {
+    if (this.filters.addedon == -1) {
       return ''
     }
-    switch (this.addDateType) {
+    switch (this.filters.addedon) {
       case 0:
         const today = this.dateService.getToday()
         return today + ' ~ ' + today
@@ -209,30 +218,23 @@ export class CompanyFilterComponent implements OnInit {
 
   calculateFilterCount(): number {
     let filterCount = 0;
-    if(this.status) {
+    if (this.filters.state) {
       filterCount += 1;
     }
-    if(this.selectedCreatedBy.length > 0) {
+    if (this.selectedCreatedBy.length > 0) {
       filterCount += 1;
     }
-    if(this.selectedCompany.length > 0) {
+    if (this.selectedCompany.length > 0) {
       filterCount += 1;
     }
-    if(this.dateType != -1 && (this.dateType || this.dateType == 0)) {
+    if (this.filters.activity != -1 && (this.filters.activity || this.filters.activity == 0)) {
       filterCount += 1;
     }
-    if(this.addDateType != -1 && (this.addDateType || this.addDateType == 0)) {
+    if (this.filters.addedon != -1 && (this.filters.addedon || this.filters.addedon == 0)) {
       filterCount += 1;
     }
-    if(this.displaySelectedTypes() != '') {
+    if (this.displaySelectedTypes() != '') {
       filterCount += 1;
-    }
-    if (this.filterCount != filterCount) {
-        console.log('emit filter counts')
-      this.filterCount = filterCount
-      this.notifyFilters.emit({
-          filterCount: filterCount
-      });
     }
     return filterCount;
   }
@@ -253,7 +255,8 @@ export class CompanyFilterComponent implements OnInit {
   }
 
   public clearStatus() {
-    this.status = undefined;
+    this.filters.state = '';
+    this.notify()
   }
 
   public clearCreatedBy() {
@@ -281,25 +284,45 @@ export class CompanyFilterComponent implements OnInit {
   }
 
   public clearDate() {
-    this.dateType = -1
+    this.filters.activity = -1
+    this.notify()
   }
 
   public clearAddDate() {
-    this.addDateType = -1
+    this.filters.addedon = -1
+    this.notify()
   }
 
+  public stateFilterChanged(e) {
+    console.log('stateFilterChanged', e)
+    this.filters.state = e.value
+    this.notify()
+  }
 
+  public activityFilterChanged(e) {
+    console.log('activityFilterChanged', e)
+    this.filters.activity = e.value
+    this.notify()
+  }
+
+  public addedonFilterChanged(e) {
+    console.log('addedonFilterChanged', e)
+    this.filters.addedon = e.value
+    this.notify()
+  }
+
+  private notify() {
+    this.filters.count = this.calculateFilterCount()
+    this.notifyFilters.emit(this.filters);
+  }
 
   private _filterStates(value: string): createContact[] {
     const filterValue = value.toLowerCase();
-
     return this.contacts.filter(state => state.name.toLowerCase().indexOf(filterValue) === 0);
   }
 
   private _filterStatesComp(value: string): createContact[] {
     const filterValue = value.toLowerCase();
-
     return this.companys.filter(state => state.name.toLowerCase().indexOf(filterValue) === 0);
   }
-
 }

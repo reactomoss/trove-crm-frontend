@@ -1,10 +1,11 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import {SnackBarService} from '../../shared/snack-bar.service'
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { CompanyApiService } from '../../services/company-api.service';
+import { CompanyFilters } from './filter/filter.component';
 import response_companies from './company.sample'
 
 export interface item {
@@ -29,9 +30,14 @@ export interface selectedData {
   styleUrls: ['./company.component.css']
 })
 export class CompanyComponent implements OnInit {
+  @ViewChild('drawer') drawer;
+
   showFilter:boolean = false
-  filters: any = {
-    filterCount: 0
+  _filters: CompanyFilters = {
+    count: 0, 
+    state: '', 
+    activity: -1,
+    addedon: -1,
   }
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
   hoveredItem
@@ -217,17 +223,22 @@ export class CompanyComponent implements OnInit {
       // }
     })
   }
+
   filtersChangedHandler(e) {
-    console.log('filtersChangedHandler', e)
-    this.filters = e
+    this._filters = {...e}
+    console.log('filtersChangedHandler', this._filters)
   }
 
-  clickFilter(){
+  closeFilterDrawer(e) {
+    this._filters = {...e}
+    console.log('closeFilterDrawer', this._filters)
+  }
+
+  clickFilter() {
+    this.drawer.toggle()
     this.showFilter = true
   }
-
 }
-
 
 @Component({
   selector: 'mail-dialog',
@@ -308,5 +319,4 @@ export class CompanyMailDialog {
     const index = this.items.items.indexOf(item)
     this.items.items.splice(index, 1)
   }
-
 }
