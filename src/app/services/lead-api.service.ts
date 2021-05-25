@@ -32,22 +32,7 @@ export class LeadApiService {
     return this.httpClient.post(`${this.baseURL + environment.leads}`, data);
   }
 
-  listLeadGridView(
-    pipeline_id: string,
-    sort: string = "",
-    order: string = "",
-    search: string = ""
-  ): Observable<any> {
-    var start, length;
-    var items_per_page = 10;
-
-    var data = {
-      pipeline_id: pipeline_id,
-      search: search,
-    };
-    if ((typeof sort != 'undefined' && sort != "") && (typeof order != 'undefined' && sort != "")) {
-      data['order'] = [{ column: sort, dir: order }];
-    }
+  listLeadGridView(data): Observable<any> {
     return this.httpClient.post(
       `${this.baseURL + environment.leads + "/grid"}`,
       data
@@ -57,6 +42,9 @@ export class LeadApiService {
 
   getPipelines(): Observable<any>{
     return this.httpClient.get(`${this.baseURL + environment.pipelineMaster}`);
+  }
+  getFilterValues(): Observable<any>{
+    return this.httpClient.get(`${this.baseURL + environment.leads + "/filter"}`);
   }
 
 

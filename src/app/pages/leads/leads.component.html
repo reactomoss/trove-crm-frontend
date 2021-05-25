@@ -18,7 +18,7 @@
                         [filterCount]="filterCount"
                         (filterCountChanged)="filterCountChangedHandler($event)"></app-filter>
                 </ngx-simplebar> -->
-                <app-filter *ngIf="showFilter" (closeDialog)="drawer.toggle()" (count)="filterCount=$event"></app-filter>
+                <app-filter *ngIf="showFilter" [canShow]="canShow" (messageEvent)="receiveMessage($event)" (closeDialog)="drawer.toggle()" (count)="filterCount=$event"></app-filter>
             </div>
         </mat-drawer>
 
@@ -28,7 +28,7 @@
                     <span class="title mr-3 fontObjektivMk mt-1">All Leads</span>
 
                     <mat-form-field class="searchForm noLabelForm noSpaceForm" appearance="outline">
-                        <input type="text" matInput placeholder="Search...">
+                        <input type="text" matInput placeholder="Search..." [(ngModel)]="searchValue" (keyup)="listLeadGridView()">
                         <mat-icon matSuffix>search</mat-icon>
                     </mat-form-field>
 
@@ -48,13 +48,13 @@
                     </mat-form-field>
                 </div>
                 <div class="topBarDiv">
-                    <button mat-button class="flatIconLightButton" (click)="showList()">
+                    <button mat-button class="flatIconLightButton" (click)="showList()"> <!--(click)="showList()"-->
                         <mat-icon class="smallIcon">list</mat-icon>
                     </button>
                     <button mat-button class="flatIconDarkButton" (click)="showCards()">
                         <mat-icon class="smallIcon">dashboard</mat-icon>
                     </button>
-                    <button *ngIf="canShow" mat-button class="flatIconTextButton ml-3" (click)="drawer.toggle() ; clickFilter()">
+                    <button mat-button class="flatIconTextButton ml-3" (click)="drawer.toggle() ; clickFilter()">
                         <mat-icon class="iconInButton">filter_alt</mat-icon>
                         Filter({{filterCount}})
                     </button>
@@ -62,33 +62,33 @@
             </div>
         </div>
 
-        <ngx-simplebar [options]="scrollOptions" class="mainContent" *ngIf="canShow">
+        <ngx-simplebar [options]="scrollOptions" class="mainContent" *ngIf="canShow; else elseBlock">
             <div style="display: flex">
                 <div style="min-width: 20px">
                     <span></span>
                 </div>
 
-                <div class="card-container" cdkDropList [cdkDropListData]="discovery" #discoveryList="cdkDropList" [cdkDropListConnectedTo]="[qualifiedList, evolutionList, negotiationList, closedList]" (cdkDropListDropped)="dropped($event)">
-                    <p class="list-title">Discovery {{discovery.length}}</p>
+                <div *ngFor="let stage of Leads ; let i=index" class="card-container" cdkDropList [cdkDropListData]="stage.leads" #{{lead.name}}="cdkDropList" [cdkDropListConnectedTo]="[qualifiedList, evolutionList, negotiationList, closedList]" (cdkDropListDropped)="dropped($event)">
+                    <p class="list-title">{{stage.name}} {{stage.leads.length}}</p>
                     <ngx-simplebar [options]="scrollOptions" class="cardWrapper">
-                        <mat-card class="mat-elevation-z0 p-2" cdkDrag *ngFor="let i of discovery" (click)="clickCard()">
+                        <mat-card class="mat-elevation-z0 p-2" cdkDrag *ngFor="let lead of stage.leads ; let j=index" (click)="clickCard()">
                             <mat-card-header>
                                 <div mat-card-avatar class="example-header-image">
-                                    <mat-icon *ngIf="i==100" class="moneyIcon">attach_money</mat-icon>
-                                    <img *ngIf="i!=100" alt="Image" src="../../../assets/images/user-sample.png" class="avatar">
+                                    <mat-icon class="moneyIcon">attach_money</mat-icon>
+                                    <!--<img *ngIf="i!=100" alt="Image" src="../../../assets/images/user-sample.png" class="avatar">-->
                                 </div>
                                 <mat-card-title>
-                                    <p class="card-title">Packet Monster Sales Opportunity</p>
-                                    <p class="card-sub-title1">Packet Monster, Inc.</p>
-                                    <p class="card-sub-title2">$0.00</p>
-                                    <p class="card-sub-title3">Tammy Gillis, <span class="card-sub-title4">14/12/2020</span></p>
+                                    <p class="card-title">{{lead.name}}</p>
+                                    <p class="card-sub-title1">{{lead.organizations.name}}</p>
+                                    <p class="card-sub-title2">{{lead.currency.symbol}}{{lead.currency_value}}</p>
+                                    <p class="card-sub-title3">{{lead.owner.full_name}}, <span class="card-sub-title4">{{lead.created_at}}</span></p>
                                 </mat-card-title>
                             </mat-card-header>
                         </mat-card>
                     </ngx-simplebar>
                 </div>
 
-                <div class="card-container" cdkDropList [cdkDropListData]="qualified" #qualifiedList="cdkDropList" [cdkDropListConnectedTo]="[discoveryList, evolutionList, negotiationList, closedList]" (cdkDropListDropped)="dropped($event)">
+                <!--<div class="card-container" cdkDropList [cdkDropListData]="qualified" #qualifiedList="cdkDropList" [cdkDropListConnectedTo]="[discoveryList, evolutionList, negotiationList, closedList]" (cdkDropListDropped)="dropped($event)">
                     <p class="list-title fontObjektivMk">Qualified {{qualified.length}}</p>
                     <ngx-simplebar [options]="scrollOptions" class="cardWrapper">
                         <mat-card class="mat-elevation-z0 p-2" cdkDrag *ngFor="let i of qualified" (click)="clickCard()">
@@ -166,7 +166,7 @@
                             </mat-card-header>
                         </mat-card>
                     </ngx-simplebar>
-                </div>
+                </div>-->
 
                 <!-- <div class="card-container" cdkDropList #closedList="cdkDropList" [cdkDropListData]="closed"
                     [cdkDropListConnectedTo]="[negotiationList, evolutionList, qualifiedList, discoveryList]"
@@ -190,6 +190,16 @@
                     </ngx-simplebar>
                 </div> -->
 
+                <div style="min-width: 20px">
+                    <span></span>
+                </div>
+            </div>
+        </ngx-simplebar>
+        <ngx-simplebar>
+            <div style="display: flex">
+                <div style="min-width: 20px">
+                    <span>No Records Found</span>
+                </div>
                 <div style="min-width: 20px">
                     <span></span>
                 </div>
@@ -246,7 +256,7 @@
                     (filterCountChanged)="filterCountChangedHandler($event)"
                     [listShow]="listShow"
                 ></app-filter> -->
-                <app-filter (closeDialog)="drawer.toggle()" (count)="filterCount=$event" [listShow]="listShow"></app-filter>
+                <app-filter (closeDialog)="drawer.toggle()" (count)="filterCount=$event" [listShow]="listShow" (messageEvent)="receiveMessage($event)"></app-filter>
             </ngx-simplebar>
         </div>
     </div>

@@ -38,7 +38,8 @@ export const environment = {
   company: 'organizations',
   company_index: 'organizations/index',
   leads: 'leads',
-  pipelineMaster: 'pipelines'
+  pipelineMaster: 'pipelines',
+  leadFilter: 'leads/filter',
 };
 
 /*

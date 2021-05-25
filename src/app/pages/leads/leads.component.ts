@@ -1,11 +1,11 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import {
   CdkDragDrop,
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { FormControl } from '@angular/forms';
-import { map, startWith } from 'rxjs/operators';
+import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { LeadApiService } from 'src/app/services/lead-api.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -19,13 +19,17 @@ import {
 } from 'rxjs';
 import { SnackBarService } from '../../shared/snack-bar.service';
 import { extractErrorMessagesFromErrorResponse } from 'src/app/services/extract-error-messages-from-error-response';
+import { FilterComponent } from './filter/filter.component';
 
 @Component({
   selector: 'app-leads',
   templateUrl: './leads.component.html',
   styleUrls: ['./leads.component.css'],
 })
-export class LeadsComponent implements OnInit {
+export class LeadsComponent implements OnInit, AfterViewInit {
+
+  @ViewChild(FilterComponent) child: FilterComponent;
+
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 };
   showFilter: boolean = false;
   listShow: boolean = false;
@@ -63,8 +67,23 @@ export class LeadsComponent implements OnInit {
   totalValue = 0;
   avgValue = 0
 
-  Leads = [];
+  Leads: Observable<any[]>;
   canShow = false;
+  filterObj$ = {};
+  //filterObj$ = new BehaviorSubject<any>({});
+  searchValue = "";
+
+  resultsLength = 0;
+  isLoadingResults = true;
+  isRateLimitReached = false;
+
+  ngOnChanges(){
+    console.log("changed");
+    console.log(this.child.minValue);
+  }
+  ngAfterViewInit(){
+    console.log("ngAfterViewInit");
+  }
 
   ngOnInit(): void {
     this.triggerSnackBar("ngOninit", "Close");
@@ -79,7 +98,7 @@ export class LeadsComponent implements OnInit {
           console.log(res);
           this.pipelineMaster = res.data.pipelines;
           this.currentSelectedPipeline = this.pipelineMaster[0].id;
-          this.listLeadGridView(this.currentSelectedPipeline);
+          this.listLeadGridView();
           this.triggerSnackBar(res.message, 'Close');
         } else {
           this.triggerSnackBar(res.message, 'Close');
@@ -91,6 +110,13 @@ export class LeadsComponent implements OnInit {
       }
     );
 
+  }
+  receiveMessage($event){
+    console.log("anyParentMehtod");
+    console.log($event);
+    this.filterObj$ = $event;
+    //this.filterObj$.next($event);
+    this.listLeadGridView();
   }
 
   private _filter(value: string): string[] {
@@ -157,20 +183,65 @@ export class LeadsComponent implements OnInit {
   }
 
   filterCountChangedHandler(e) {
+    alert("filterCountChangedHandler");
     this.filterCount = e;
+    alert(this.child.minValue);
   }
 
   clickFilter() {
     this.showFilter = true;
   }
 
-  onPipelineChange(pipeline_id){
-    this.listLeadGridView(pipeline_id);
+  onPipelineChange(){
+    this.listLeadGridView();
   }
 
-  listLeadGridView(pipeline_id){
-    alert(pipeline_id);
-    this.LeadApiService.listLeadGridView(pipeline_id).subscribe(
+  listLeadGridView(){
+    alert(this.currentSelectedPipeline);
+    console.log(this.filterObj$);
+    /*this.Leads = combineLatest(this.filterObj$)
+      .pipe(
+        // startWith([undefined, ]),
+        startWith({}),
+        switchMap(() => {
+          this.isLoadingResults = true;
+          alert("Yen call agala?");
+          return this.LeadApiService.listLeadGridView(this.filterObj$);
+        }),
+        map(data => {
+          // Flip flag to show that loading has finished.
+          this.isLoadingResults = false;
+          this.isRateLimitReached = false;
+          this.resultsLength = data.data.recordsTotal;
+          this.triggerSnackBar(data.message, 'Close');
+          if(data.data.data.length > 0){
+            this.canShow = true;
+            console.log("listLeadGridView");
+            console.log(data);
+            console.log(this.Leads);
+            this.totalLead = data.data.summary.total_leads;
+            this.totalValue = data.data.summary.total_value;
+            this.avgValue = data.data.summary.lead_average;
+          } else {
+            this.canShow = false;
+            this.triggerSnackBar('No Records found', 'Close');
+          }
+
+          return data.data.data;
+        }),
+        catchError((err) => {
+          this.isLoadingResults = false;
+          // Catch if the GitHub API has reached its rate limit. Return empty data.
+          this.isRateLimitReached = true;
+          console.log(err);
+          return observableOf([]);
+        })
+      );*/
+
+    this.filterObj$['pipeline_id'] = this.currentSelectedPipeline;
+    this.filterObj$['search'] = this.searchValue;
+    //this.filterObj$.next(this.filterObj$);
+    this.LeadApiService.listLeadGridView(this.filterObj$).subscribe(
       (res: any) => {
         if (res.success) {
           this.triggerSnackBar(res.message, 'Close');
@@ -183,6 +254,9 @@ export class LeadsComponent implements OnInit {
             this.totalLead = res.data.summary.total_leads;
             this.totalValue = res.data.summary.total_value;
             this.avgValue = res.data.summary.lead_average;
+          } else {
+            this.canShow = false;
+            this.triggerSnackBar('No Records found', 'Close');
           }
         } else {
           this.triggerSnackBar(res.message, 'Close');
