@@ -125,10 +125,11 @@ export class CompanyComponent implements OnInit {
             const companies: any[] = data[activity]
             companies.map((company, index) => {
               this.items.push({...company, category: activity, company: true, last_activity: activity})
+              !this.owners.find(x => x.id == company.owner.id) && this.owners.push(company.owner)
             })
           }
           this.allItems = this.items 
-          console.log(this.items)
+          //console.log(this.items)
         }
         else {
           this.triggerSnackBar(res.message, 'Close')
