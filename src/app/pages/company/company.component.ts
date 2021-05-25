@@ -33,12 +33,7 @@ export class CompanyComponent implements OnInit {
   @ViewChild('drawer') drawer;
 
   showFilter:boolean = false
-  _filters: CompanyFilters = {
-    count: 0, 
-    state: '', 
-    activity: -1,
-    addedon: -1,
-  }
+  filters: CompanyFilters = null
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
   hoveredItem
   //detect for click card, check
@@ -46,6 +41,7 @@ export class CompanyComponent implements OnInit {
   
   allItems = []
   items = []
+  owners = []
   selectedItems: item[] = []
 
   listShow: boolean = false
@@ -95,11 +91,12 @@ export class CompanyComponent implements OnInit {
         companies.map((company, index) => {
           const temp = (index > 0)? company : {...company, category: activity}
           this.items.push({...temp, company: true, last_activity: activity})
+          !this.owners.find(x => x.id == company.owner.id) && this.owners.push(company.owner)
           return temp
         })
       }
       this.allItems = this.items
-      console.log(this.items)
+      console.log(this.owners)
     }
 
     //this.companyApiService.obs.subscribe(() => this.fetchCompanies());
@@ -225,13 +222,13 @@ export class CompanyComponent implements OnInit {
   }
 
   filtersChangedHandler(e) {
-    this._filters = {...e}
-    console.log('filtersChangedHandler', this._filters)
+    this.filters = {...e}
+    console.log('filtersChangedHandler', this.filters)
   }
 
   closeFilterDrawer(e) {
-    this._filters = {...e}
-    console.log('closeFilterDrawer', this._filters)
+    this.filters = {...e}
+    console.log('closeFilterDrawer', this.filters)
   }
 
   clickFilter() {

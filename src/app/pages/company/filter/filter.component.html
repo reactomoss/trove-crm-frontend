@@ -119,14 +119,14 @@
                 <div class="customDateDiv mt-2 px-4" *ngIf="filters.activity == 6">
                     <span>From</span>
                     <mat-form-field appearance="outline" class="noLabelForm noSpaceField">
-                        <input matInput [matDatepicker]="picker" [(ngModel)]="startDate">
+                        <input matInput [matDatepicker]="picker" [(ngModel)]="filters.activityStartDate" (dateChange)="notify()">
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
 
                     <span>To</span>
                     <mat-form-field appearance="outline" class="noLabelForm noSpaceField">
-                        <input matInput [matDatepicker]="picker1" [(ngModel)]="endDate">
+                        <input matInput [matDatepicker]="picker1" [(ngModel)]="filters.activityEndDate" (dateChange)="notify()">
                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                         <mat-datepicker #picker1></mat-datepicker>
                     </mat-form-field>
@@ -159,14 +159,14 @@
                 <div class="customDateDiv mt-2 px-4" *ngIf="filters.addedon == 6">
                     <span>From</span>
                     <mat-form-field appearance="outline" class="noLabelForm noSpaceField">
-                        <input matInput [matDatepicker]="picker" [(ngModel)]="addStartDate">
+                        <input matInput [matDatepicker]="picker" [(ngModel)]="filters.addonStartDate" (dateChange)="notify()">
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
 
                     <span>To</span>
                     <mat-form-field appearance="outline" class="noLabelForm noSpaceField">
-                        <input matInput [matDatepicker]="picker1" [(ngModel)]="addEndDate">
+                        <input matInput [matDatepicker]="picker1" [(ngModel)]="filters.addonEndDate" (dateChange)="notify()">
                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                         <mat-datepicker #picker1></mat-datepicker>
                     </mat-form-field>

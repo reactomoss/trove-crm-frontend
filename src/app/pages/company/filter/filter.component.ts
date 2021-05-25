@@ -5,10 +5,15 @@ import { Observable } from 'rxjs';
 import { map, startWith, take, tap } from 'rxjs/operators';
 
 export interface CompanyFilters {
-  count: number;
-  state: string;
-  activity: number;
+  count: number
+  state: string
+  activity: number
+  activityStartDate: Date
+  activityEndDate: Date
   addedon: number
+  addedonStartDate: Date
+  addedonEndDate: Date
+  owners: number[]
 }
 
 export class Type {
@@ -17,6 +22,7 @@ export class Type {
   }
 }
 export interface createContact {
+  id: number;
   name: string;
   isChecked?: boolean;
 }
@@ -34,11 +40,10 @@ export class Contact {
   styleUrls: ['./filter.component.css']
 })
 export class CompanyFilterComponent implements OnInit {
-
+  @Input() owners = null;
   @Output() closeDialog = new EventEmitter();
   @Output() notifyFilters = new EventEmitter<CompanyFilters>();
   contactCtrl = new FormControl();
-  companyCtrl = new FormControl();
   filteredCont: Observable<createContact[]>;
   selectedCreatedBy: createContact[] = [];
   statusTypes: string[] = ['All', 'Active', 'Inactive']
@@ -47,7 +52,12 @@ export class CompanyFilterComponent implements OnInit {
     count: 0, 
     state: '', 
     activity: -1,
+    activityStartDate: null,
+    activityEndDate: null,
     addedon: -1,
+    addedonStartDate: null,
+    addedonEndDate: null,
+    owners: [],
   }
 
   createdBySelection(contact: createContact){
@@ -59,35 +69,19 @@ export class CompanyFilterComponent implements OnInit {
       let index = this.selectedCreatedBy.findIndex(c => c.name === contact.name);
       this.selectedCreatedBy.splice(index,1);
     }
+    this.filters.owners = this.selectedCreatedBy.map(item => item.id)
+    this.notify()
   }
 
   dateTypes: number[] = [0, 1, 2, 3, 4, 5, 6]
   dateTypeString: string[] = ['Today', 'Yesterday', 'Last Week', 'This month', 'Last month', 'This Quarter', 'Custom']
   dateType: number
-  startDate: Date = null
-  endDate: Date = null
 
   addDateTypes: number[] = [0, 1, 2, 3, 4, 5, 6]
   addDateTypeString: string[] = ['Today', 'Yesterday', 'Last Week', 'This month', 'Last month', 'This Quarter', 'Custom']
-  addStartDate: Date = null
-  addEndDate: Date = null
 
   contactType: string = 'contact'
-
-  contacts: createContact[] = [
-    {
-      name: 'Arkansas',
-    },
-    {
-      name: 'California'
-    },
-    {
-      name: 'Florida'
-    },
-    {
-      name: 'Texas'
-    }
-  ];
+  contacts: createContact[] = [];
 
   types: Type[] = [
     new Type('Added by user'),
@@ -108,7 +102,9 @@ export class CompanyFilterComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.contacts = this.owners.map(owner => {
+      return { id: owner.id, name: owner.full_name }
+    })
   }
 
   public displayArray(arr) {
@@ -152,8 +148,8 @@ export class CompanyFilterComponent implements OnInit {
         return this.dateService.getThisQuarter()
       case 6:
         let firstDay = '', lastDay = ''
-        this.startDate && (firstDay = this.dateService.dateToString(this.startDate))
-        this.endDate && (lastDay = this.dateService.dateToString(this.endDate))
+        this.filters.activityStartDate && (firstDay = this.dateService.dateToString(this.filters.activityStartDate))
+        this.filters.activityEndDate && (lastDay = this.dateService.dateToString(this.filters.activityEndDate))
         return firstDay + ' ~ ' + lastDay
     }
   }
@@ -179,8 +175,8 @@ export class CompanyFilterComponent implements OnInit {
         return this.dateService.getThisQuarter()
       case 6:
         let firstDay = '', lastDay = ''
-        this.addStartDate && (firstDay = this.dateService.dateToString(this.addStartDate))
-        this.addEndDate && (lastDay = this.dateService.dateToString(this.addEndDate))
+        this.filters.addedonStartDate && (firstDay = this.dateService.dateToString(this.filters.addedonStartDate))
+        this.filters.addedonEndDate && (lastDay = this.dateService.dateToString(this.filters.addedonEndDate))
         return firstDay + ' ~ ' + lastDay
     }
   }
@@ -264,7 +260,7 @@ export class CompanyFilterComponent implements OnInit {
     this.notify()
   }
 
-  private notify() {
+  public notify() {
     this.filters.count = this.calculateFilterCount()
     this.notifyFilters.emit(this.filters);
   }
