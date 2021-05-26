@@ -37,6 +37,8 @@ export const environment = {
   pipelines: 'settings/pipeline',
   company: 'organizations',
   company_index: 'organizations/index',
+  company_delete: 'organizations',
+  company_delete_multiple: 'organizations?_method=DELETE',
   leads: 'leads',
 };
 

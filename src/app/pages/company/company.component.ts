@@ -298,14 +298,27 @@ export class CompanyComponent implements OnInit {
     console.log('deleteCompnay', this.selectedItems)
     const companyIds = this.selectedItems.map(item => item.id)
     this.companyApiService
-      .deleteCompanyList(companyIds)
+      .deleteCompany(companyIds)
       .subscribe((res: any) => {
         console.log('deleteCompany', res)
-        //this.triggerSnackBar('Record has been deleted', 'Close')
+        if (res.success) {
+          this.deleteSelectedItems()
+          this.triggerSnackBar(res.message, 'Close')
+        }
       },
       err => {
         this.triggerSnackBar(err.error.message, 'Close')
       })
+  }
+
+  deleteSelectedItems() {
+    console.log('deleteSelectedItems', this.selectedItems)
+    this.selectedItems.forEach(item => {
+      const index = this.allItems.indexOf(item)
+      index >= 0 && this.allItems.splice(index, 1)
+    })
+    this.items = this.allItems
+    this.selectedItems = []
   }
 }
 
