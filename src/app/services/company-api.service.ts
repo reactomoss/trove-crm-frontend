@@ -20,7 +20,7 @@ export class CompanyApiService {
 
   getCompanyCreateForm(): Observable<any> {
     const API_URL = `${this.baseURL + environment.company}`;
-    return this.httpClient.get(API_URL);
+    return this.httpClient.get(API_URL)
   }
 
   createCompany(data: any): Observable<any> {
@@ -30,6 +30,19 @@ export class CompanyApiService {
   getCompanyList(data): Observable<any> {
     const API_URL = `${this.baseURL + environment.company_index}`;
     return this.httpClient.post(API_URL, data);
+  }
+
+  deleteCompany(companyIds: any[]): Observable<any> {
+    if (companyIds.length > 1) {
+      const data = {ids: companyIds}
+      const API_URL = `${this.baseURL + environment.company_delete_multiple}`;
+      return this.httpClient.post(API_URL, data);
+    }
+    else {
+      const companyId = companyIds[0]
+      const API_URL = `${this.baseURL + environment.company_delete}/${companyId}`;
+      return this.httpClient.delete(API_URL);
+    }
   }
   
   subject: ReplaySubject<any> = new ReplaySubject();

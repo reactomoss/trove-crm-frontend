@@ -51,6 +51,8 @@ export class HeaderComponent implements OnInit {
   filteredOptions: Observable<string[]>;
   active: number = 1;
   selectedStage: number = 3;
+  companyData = null;
+
   constructor(
     private router: Router,
     private account: AccountApiService,
@@ -187,32 +189,43 @@ export class HeaderComponent implements OnInit {
           this.sb.openSnackBarBottomCenter(result, 'Close')
         }
       })*/
+
+    if (this.companyData) {
+      this.openCreateDialog()
+      return
+    }
+
     this.companyApiService
       .getCompanyCreateForm()
       .subscribe((res: any) => {
         if (!res.success) {
-          this.sb.openSnackBarBottomCenter(res.message, 'Close')
-          return
+        this.sb.openSnackBarBottomCenter(res.message, 'Close')
+        return
         }
         if (res.data.menu_previlages.create !== 1) {
-          this.sb.openSnackBarBottomCenter("You don't have permission", 'Close')
-          return
+        this.sb.openSnackBarBottomCenter("You don't have permission", 'Close')
+        return
         }
-        const dialogRef = this.dialog.open(CompanyDialog, {
-          width: '560px',
-          autoFocus: false,
-          data : { 
-            countries: res.data.countries,
-            emailOwners: res.data.owners,
-            dialCodes: res.data.countries.filter(x => x.dial_code).map(x => x.dial_code)
-          }
-        })
-        dialogRef.afterClosed().subscribe((result) => {
-          if (result) {
-            this.sb.openSnackBarBottomCenter(result, 'Close')
-          }
-        })
-      })
+        this.companyData = res.data
+        this.openCreateDialog()
+    })
+  }
+
+  openCreateDialog() {
+    const dialogRef = this.dialog.open(CompanyDialog, {
+      width: '560px',
+      autoFocus: false,
+      data : { 
+        countries: this.companyData.countries,
+        emailOwners: this.companyData.owners,
+        dialCodes: this.companyData.countries.filter(x => x.dial_code).map(x => x.dial_code)
+      }
+    })
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.sb.openSnackBarBottomCenter(result, 'Close')
+      }
+    })
   }
 }
 

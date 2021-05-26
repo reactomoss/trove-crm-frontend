@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -77,5 +78,34 @@ export class DateService {
     let firstDay = this.dateToString(firstDate)
     let lastDay = this.dateToString(endDate)
     return firstDay + ' ~ ' + lastDay
+  }
+
+  getDateRange(index): { startDate: moment.Moment, lastDate: moment.Moment} {
+    let startDate = null, lastDate = null
+    switch (index) {
+      case 0://Today
+          startDate = moment()
+          break
+      case 1://Yesterday
+          startDate = moment().subtract(1, 'days')
+          break
+      case 2://Last Week
+          startDate = moment().subtract(1, 'weeks').startOf('week')
+          lastDate = moment().subtract(1, 'weeks').endOf('week')
+          break
+      case 3://This Month
+          startDate = moment().clone().startOf('month')
+          lastDate = moment().clone().endOf('month')
+          break
+      case 4://Last Month
+          startDate = moment().subtract(1, 'months').startOf('month')
+          lastDate = moment().subtract(1, 'months').endOf('month')
+          break
+      case 5://This Quarter
+          startDate = moment().quarter(moment().quarter()).startOf('quarter');
+          lastDate = moment().quarter(moment().quarter()).endOf('quarter');
+          break
+    }
+    return {startDate, lastDate}
   }
 }
