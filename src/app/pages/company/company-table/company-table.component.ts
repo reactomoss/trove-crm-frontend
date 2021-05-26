@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterViewInit, ViewChild, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, ViewChild, EventEmitter, Output } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -23,6 +23,7 @@ export class CompanyTableComponent implements AfterViewInit {
 
   @Input() propItems
   @Input() selectedItems
+  @Output() pagination = new EventEmitter();
 
   displayedColumns: string[] = ['contact', 'last', 'since', 'city', 'added', 'type', 'status', 'phone'];
   dataSource
@@ -78,5 +79,9 @@ export class CompanyTableComponent implements AfterViewInit {
   clickItem(item) {
     this.router.navigate(['/pages/company_detail'])
   }
-
+  
+  pageChanged(e) {
+    console.log('pageChanged', e)
+    this.pagination.emit(e)
+  }
 }

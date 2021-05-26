@@ -102,52 +102,76 @@ export class CompanyComponent implements OnInit {
       console.log(this.items)
     }*/
 
-    this.companyApiService.obs.subscribe(() => this.fetchCompanies());
-    this.fetchCompanies()
+    this.companyApiService.obs.subscribe(() => this.update());
+    this.showGrid()
   }
 
-  fetchCompanies() {
-    console.log('fetchCompanies')
-    const query = {
-      view_type: 'grid',
-      draw: 0,
-      start: 0,
-      length: 10,
-    }    
+  update() {
+    this.listShow ? this.showList() : this.showGrid() 
+  }
+  
+  showList() {
+    this.listShow = true
+    this.selectedItems = []
+    
+    const query = { view_type: 'list', draw: 0, start: 0, length: 10 }    
     this.companyApiService
       .getCompanyList(query)
       .subscribe((res: any) => {
-        //console.log('companies', res)
-        if (res.success) {
-          this.items = []
-          const data = res.data.id
-          for (const activity in data) {
-            const companies: any[] = data[activity]
-            companies.map((company, index) => {
-              this.items.push({...company, category: activity, company: true, last_activity: activity})
-              !this.owners.find(x => x.id == company.owner.id) && this.owners.push(company.owner)
-            })
-          }
-          this.allItems = this.items 
-          //console.log(this.items)
-        }
-        else {
+        console.log('companies', res)
+        if (!res.success) {
           this.triggerSnackBar(res.message, 'Close')
+          return
         }
+        this.items = res.data.data.map(item => {
+          return {...item, company: true}
+        })
+        this.allItems = this.items
+        this.updateOwners()
+        console.log('Company List', this.items)
       },
       err => {
         this.triggerSnackBar(err.error.message, 'Close')
       })
   }
-  
-  showList() {
-     this.listShow = true
-    this.selectedItems = []
-  }
 
   showGrid() {
     this.listShow = false
     this.selectedItems = []
+
+    const query = { view_type: 'grid', draw: 0, start: 0, length: 10 }    
+    this.companyApiService
+      .getCompanyList(query)
+      .subscribe((res: any) => {
+        console.log('companies', res)
+        if (!res.success) {
+          this.triggerSnackBar(res.message, 'Close')
+          return
+        }
+        this.items = []
+        const data = res.data.id
+        for (const activity in data) {
+          const companies: any[] = data[activity]
+          companies.map((company, index) => {
+            this.items.push({...company, category: activity, company: true})
+          })
+        }
+        this.allItems = this.items
+        this.updateOwners()
+      },
+      err => {
+        this.triggerSnackBar(err.error.message, 'Close')
+      })
+  }
+
+  private updateOwners() {
+    this.owners = this.items.map(item => item.owner.id)
+    this.owners = [...new Set(this.owners)];
+    console.log('updateOwners', this.owners)
+  }
+
+  pageChanged(e) {
+    console.log('pageChanged, company', e)
   }
 
   clickCard(item) {

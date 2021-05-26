@@ -130,6 +130,7 @@
             <app-company-table
                 [propItems] = "items"
                 [selectedItems] = "selectedItems"
+                (pagination) = "pageChanged($event)"
             ></app-company-table>
         </div>
     </ngx-simplebar>
