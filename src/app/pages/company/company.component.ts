@@ -54,6 +54,8 @@ export class CompanyComponent implements OnInit {
   closeResult = '';
   /*Modal dialog*/
 
+  pageIndex = 0
+
   constructor(
     private modalService: NgbModal,
     private companyApiService: CompanyApiService,
@@ -114,11 +116,22 @@ export class CompanyComponent implements OnInit {
     this.listShow = true
     this.selectedItems = []
     
-    const query = { view_type: 'list', draw: 0, start: 0, length: 10 }    
+    const query = { view_type: 'list', draw: 0, start: 0, length: 5 }    
+    this.updateCompanyListView(query)
+  }
+
+  showGrid() {
+    this.listShow = false
+    this.selectedItems = []
+
+    const query = { view_type: 'grid', draw: 0, start: 0, length: 10 }    
+    this.updateCompanyGridView(query)
+  }
+
+  private updateCompanyListView(query) {
     this.companyApiService
       .getCompanyList(query)
       .subscribe((res: any) => {
-        console.log('companies', res)
         if (!res.success) {
           this.triggerSnackBar(res.message, 'Close')
           return
@@ -128,22 +141,16 @@ export class CompanyComponent implements OnInit {
         })
         this.allItems = this.items
         this.updateOwners()
-        console.log('Company List', this.items)
       },
       err => {
         this.triggerSnackBar(err.error.message, 'Close')
       })
   }
 
-  showGrid() {
-    this.listShow = false
-    this.selectedItems = []
-
-    const query = { view_type: 'grid', draw: 0, start: 0, length: 10 }    
+  private updateCompanyGridView(query) {
     this.companyApiService
       .getCompanyList(query)
       .subscribe((res: any) => {
-        console.log('companies', res)
         if (!res.success) {
           this.triggerSnackBar(res.message, 'Close')
           return
@@ -165,13 +172,20 @@ export class CompanyComponent implements OnInit {
   }
 
   private updateOwners() {
-    this.owners = this.items.map(item => item.owner.id)
-    this.owners = [...new Set(this.owners)];
+    this.owners = []
+    this.items.forEach(item => {
+      !this.owners.find(x => x.id == item.owner.id) && this.owners.push(item.owner)
+    })
     console.log('updateOwners', this.owners)
   }
 
   pageChanged(e) {
     console.log('pageChanged, company', e)
+    if (this.allItems.length >= e.length) {
+      return
+    }
+    const query = { view_type: 'list', draw: 0, start: 0, length: 5 }    
+    this.updateCompanyListView(query)
   }
 
   clickCard(item) {
@@ -236,30 +250,38 @@ export class CompanyComponent implements OnInit {
     })
   }
 
-  searchTextChanged(e) {
-    console.log('searchTextChanged', e)
-    this.filtersChangedHandler(this.filters)
+  filterClosedStart() {
+    setTimeout(() => this.applyFilter(), 10)
   }
 
-  filtersChangedHandler(filters: CompanyFilters) {
+  setFilter(filters: CompanyFilters) {
     this.filters = filters
-    console.log('filtersChangedHandler', this.filters)
-    
-    this.items = this.allItems
+  }
+
+  applyFilter() {
+    const filters = this.filters
+    console.log('applyFilter', filters)
+    if (!filters) return
+
+    let query = { view_type: this.listShow? 'list' : 'grid' }
     if (this.searchText) {
-      this.items = this.items.filter(item => item.name.includes(this.searchText))
+      query['search'] = this.searchText
     }
-
-    if (!filters) {
-      return
-    }
-
-    if (filters.status && filters.status !== 'All') {
-      this.items = this.items.filter(item => item.status == filters.status)
-    }
-
     if (filters.owners.length > 0) {
-      this.items = this.items.filter(item => filters.owners.find(owner => owner == item.owner.id))
+      query['created_user'] = filters.owners
+    }
+    if (filters.addedon >= 0) {
+      let startDate = null, lastDate = null
+      if (filters.activity == 6) {
+        startDate = moment(this.filters.addedonStartDate)
+        lastDate = moment(this.filters.addedonEndDate)
+      }
+      else {
+        const dateRange = this.dateService.getDateRange(this.filters.addedon)
+        startDate = dateRange.startDate?.format('DD/MM/YYYY')
+        lastDate = dateRange.lastDate?.format('DD/MM/YYYY')
+      }
+      query['added'] = {from: startDate, to: lastDate}
     }
 
     if (filters.activity >= 0) {
@@ -270,35 +292,18 @@ export class CompanyComponent implements OnInit {
       }
       else {
         const dateRange = this.dateService.getDateRange(this.filters.activity)
-        startDate = dateRange.startDate
-        lastDate = dateRange.lastDate
+        startDate = dateRange.startDate?.format('DD/MM/YYYY')
+        lastDate = dateRange.lastDate?.format('DD/MM/YYYY')
       }
-      this.items = this.items.filter(item => {
-        const updatedAt = moment(item.updated_at)
-        if (startDate && startDate > updatedAt) return false
-        if (lastDate && lastDate < updatedAt) return false
-        return true
-      })
+      query['modified'] = {from: startDate, to: lastDate}
     }
+    if (filters.status && filters.status !== 'All') {
+      query['status'] = filters.status == 'Active' ? 1 : 2
+    }
+    console.log('applyFilter, query=', query)
 
-    if (filters.addedon >= 0) {
-      let startDate = null, lastDate = null
-      if (filters.activity == 6) {
-        startDate = moment(this.filters.addedonStartDate)
-        lastDate = moment(this.filters.addedonEndDate)
-      }
-      else {
-        const dateRange = this.dateService.getDateRange(this.filters.addedon)
-        startDate = dateRange.startDate
-        lastDate = dateRange.lastDate
-      }
-      this.items = this.items.filter(item => {
-        const createdAt = moment(item.created_at)
-        if (startDate && startDate > createdAt) return false
-        if (lastDate && lastDate < createdAt) return false
-        return true
-      })
-    }
+    if (this.listShow) this.updateCompanyListView(query)
+    else this.updateCompanyGridView(query)
   }
 
   clickFilter() {

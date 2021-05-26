@@ -1,6 +1,6 @@
 <app-header></app-header>
 <mat-drawer-container hasBackdrop="true">
-    <mat-drawer #drawer mode="Over" position="end" class="noScrollDrawer">
+    <mat-drawer #drawer mode="Over" position="end" class="noScrollDrawer" (closedStart)="filterClosedStart()">
         <div class="drawerContainer">
             <!-- <div class="drawerContainerTop">
                 <button mat-button class="closeIconButton mr-4" (click)="drawer.toggle()">
@@ -13,7 +13,7 @@
                     </button>
             </div> -->
             <!-- <ngx-simplebar [options]="scrollOptions" class="filterContainer1"> -->
-                <company-filter *ngIf="showFilter" [owners]="owners" (closeDialog)="drawer.toggle()" (notifyFilters)="filtersChangedHandler($event)"></company-filter>
+                <company-filter *ngIf="showFilter" [owners]="owners" (closeDialog)="drawer.toggle()" (notifyFilters)="setFilter($event)"></company-filter>
             <!-- </ngx-simplebar> -->
             <!-- <contact-filter></contact-filter> -->
         </div>
@@ -38,7 +38,7 @@
                 </mat-menu>
 
                 <mat-form-field class="searchForm noLabelForm noSpaceForm" appearance="outline" >
-                    <input type="text" matInput placeholder="Search..." [(ngModel)]="searchText" (ngModelChange)="searchTextChanged($event)">
+                    <input type="text" matInput placeholder="Search..." [(ngModel)]="searchText" (keydown.enter)="applyFilter()">
                     <mat-icon matSuffix>search</mat-icon>
                 </mat-form-field>
             </div>

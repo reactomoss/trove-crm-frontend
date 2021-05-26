@@ -79,5 +79,5 @@
 </table>
 
 <div class="footer">
-  <mat-paginator class="customPaginator" [pageSizeOptions]="[5]" showFirstLastButtons (page)="pageChanged($event)"></mat-paginator>
+  <mat-paginator class="customPaginator" [pageSizeOptions]="[5,10,20]" [length]="100" showFirstLastButtons (page)="pageChanged($event)"></mat-paginator>
 </div>
