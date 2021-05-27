@@ -84,10 +84,10 @@ export class DateService {
     let startDate = null, lastDate = null
     switch (index) {
       case 0://Today
-          startDate = moment()
+          startDate = lastDate = moment()
           break
       case 1://Yesterday
-          startDate = moment().subtract(1, 'days')
+          startDate = lastDate = moment().subtract(1, 'days')
           break
       case 2://Last Week
           startDate = moment().subtract(1, 'weeks').startOf('week')

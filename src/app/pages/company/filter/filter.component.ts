@@ -139,12 +139,7 @@ export class CompanyFilterComponent implements OnInit {
       return firstDay + ' ~ ' + lastDay   
     }
     const {startDate, lastDate} = this.dateService.getDateRange(this.filters.activity)
-    if (startDate && lastDate) {
-      return startDate.format(this.dateFormat) + '~' + lastDate.format(this.dateFormat)
-    }
-    if (startDate) {
-      return startDate.format(this.dateFormat) + ' ~ ' + startDate.format(this.dateFormat)
-    }
+    return startDate.format(this.dateFormat) + '~' + lastDate.format(this.dateFormat)
   }
 
   public getAddSelectedDate() {
@@ -158,12 +153,7 @@ export class CompanyFilterComponent implements OnInit {
       return firstDay + ' ~ ' + lastDay   
     }
     const {startDate, lastDate} = this.dateService.getDateRange(this.filters.addedon)
-    if (startDate && lastDate) {
-      return startDate.format(this.dateFormat) + '~' + lastDate.format(this.dateFormat)
-    }
-    if (startDate) {
-      return startDate.format(this.dateFormat) + ' ~ ' + startDate.format(this.dateFormat)
-    }
+    return startDate.format(this.dateFormat) + '~' + lastDate.format(this.dateFormat)
   }
 
   calculateFilterCount(): number {
@@ -248,6 +238,10 @@ export class CompanyFilterComponent implements OnInit {
   public notify() {
     this.filters.count = this.calculateFilterCount()
     this.notifyFilters.emit(this.filters);
+  }
+
+  public closeFilterDilaog() {
+    this.closeDialog.emit(this.filters)
   }
 
   private _filterStates(value: string): createContact[] {

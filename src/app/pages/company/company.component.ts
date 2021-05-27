@@ -41,6 +41,8 @@ export class CompanyComponent implements OnInit {
   //detect for click card, check
   detect: number
   
+  pageSize = 10
+  recordsTotal = 0
   allItems = []
   items = []
   owners = []
@@ -102,52 +104,94 @@ export class CompanyComponent implements OnInit {
       console.log(this.items)
     }*/
 
-    this.companyApiService.obs.subscribe(() => this.fetchCompanies());
-    this.fetchCompanies()
+    this.companyApiService.obs.subscribe(() => this.update());
+    this.showGrid()
   }
 
-  fetchCompanies() {
-    console.log('fetchCompanies')
-    const query = {
-      view_type: 'grid',
-      draw: 0,
-      start: 0,
-      length: 10,
-    }    
-    this.companyApiService
-      .getCompanyList(query)
-      .subscribe((res: any) => {
-        //console.log('companies', res)
-        if (res.success) {
-          this.items = []
-          const data = res.data.id
-          for (const activity in data) {
-            const companies: any[] = data[activity]
-            companies.map((company, index) => {
-              this.items.push({...company, category: activity, company: true, last_activity: activity})
-              !this.owners.find(x => x.id == company.owner.id) && this.owners.push(company.owner)
-            })
-          }
-          this.allItems = this.items 
-          //console.log(this.items)
-        }
-        else {
-          this.triggerSnackBar(res.message, 'Close')
-        }
-      },
-      err => {
-        this.triggerSnackBar(err.error.message, 'Close')
-      })
+  update() {
+    this.listShow ? this.showList() : this.showGrid() 
   }
   
   showList() {
-     this.listShow = true
+    this.listShow = true
     this.selectedItems = []
+    this.items = this.allItems = []
+    
+    const query = { view_type: 'list', draw: 0, start: 0, length: this.pageSize }    
+    this.fetchCompanyListView(query)
   }
 
   showGrid() {
     this.listShow = false
     this.selectedItems = []
+
+    const query = { view_type: 'grid', draw: 0, start: 0, length: 20 }    
+    this.fetchCompanyGridView(query)
+  }
+
+  private fetchCompanyListView(query) {
+    this.companyApiService
+      .getCompanyList(query)
+      .subscribe((res: any) => {
+        console.log('fetchCompanyListView', res)
+        if (!res.success) {
+          this.triggerSnackBar(res.message, 'Close')
+          return
+        }
+        this.recordsTotal = res.data.recordsTotal
+        const items = res.data.data.map(item => {
+          return {...item, company: true}
+        })
+        this.items = this.items.concat(items)
+        this.allItems = this.items
+        this.updateOwners()
+      },
+      err => {
+        this.triggerSnackBar(err.error.message, 'Close')
+      })
+  }
+
+  private fetchCompanyGridView(query) {
+    this.companyApiService
+      .getCompanyList(query)
+      .subscribe((res: any) => {
+        console.log('fetchCompanyGridView', res)
+        if (!res.success) {
+          this.triggerSnackBar(res.message, 'Close')
+          return
+        }
+        this.items = []
+        const data = res.data.id
+        for (const activity in data) {
+          const companies: any[] = data[activity]
+          companies.map((company, index) => {
+            this.items.push({...company, category: activity, company: true})
+          })
+        }
+        this.allItems = this.items
+        this.updateOwners()
+      },
+      err => {
+        this.triggerSnackBar(err.error.message, 'Close')
+      })
+  }
+
+  private updateOwners() {
+    this.owners = []
+    this.items.forEach(item => {
+      !this.owners.find(x => x.id == item.owner.id) && this.owners.push(item.owner)
+    })
+    console.log('updateOwners', this.owners)
+  }
+
+  pageChanged(e) {
+    console.log('pageChanged', e)
+    if (this.allItems.length >= e.length) {
+      return
+    }
+    const start = e.pageIndex * e.pageSize
+    const query = { view_type: 'list', draw: 0, start: start, length: e.pageSize }    
+    this.fetchCompanyListView(query)
   }
 
   clickCard(item) {
@@ -212,30 +256,38 @@ export class CompanyComponent implements OnInit {
     })
   }
 
-  searchTextChanged(e) {
-    console.log('searchTextChanged', e)
-    this.filtersChangedHandler(this.filters)
+  filterClosedStart() {
+    setTimeout(() => this.applyFilter(), 10)
   }
 
-  filtersChangedHandler(filters: CompanyFilters) {
+  setFilter(filters: CompanyFilters) {
     this.filters = filters
-    console.log('filtersChangedHandler', this.filters)
-    
-    this.items = this.allItems
+  }
+
+  applyFilter() {
+    const filters = this.filters
+    console.log('applyFilter', filters)
+    if (!filters) return
+
+    let query = { view_type: this.listShow? 'list' : 'grid' }
     if (this.searchText) {
-      this.items = this.items.filter(item => item.name.includes(this.searchText))
+      query['search'] = this.searchText
     }
-
-    if (!filters) {
-      return
-    }
-
-    if (filters.status && filters.status !== 'All') {
-      this.items = this.items.filter(item => item.status == filters.status)
-    }
-
     if (filters.owners.length > 0) {
-      this.items = this.items.filter(item => filters.owners.find(owner => owner == item.owner.id))
+      query['created_user'] = filters.owners
+    }
+    if (filters.addedon >= 0) {
+      let startDate = null, lastDate = null
+      if (filters.activity == 6) {
+        startDate = moment(this.filters.addedonStartDate)
+        lastDate = moment(this.filters.addedonEndDate)
+      }
+      else {
+        const dateRange = this.dateService.getDateRange(this.filters.addedon)
+        startDate = dateRange.startDate?.format('DD/MM/YYYY')
+        lastDate = dateRange.lastDate?.format('DD/MM/YYYY')
+      }
+      query['added'] = {from: startDate, to: lastDate}
     }
 
     if (filters.activity >= 0) {
@@ -246,35 +298,18 @@ export class CompanyComponent implements OnInit {
       }
       else {
         const dateRange = this.dateService.getDateRange(this.filters.activity)
-        startDate = dateRange.startDate
-        lastDate = dateRange.lastDate
+        startDate = dateRange.startDate?.format('DD/MM/YYYY')
+        lastDate = dateRange.lastDate?.format('DD/MM/YYYY')
       }
-      this.items = this.items.filter(item => {
-        const updatedAt = moment(item.updated_at)
-        if (startDate && startDate > updatedAt) return false
-        if (lastDate && lastDate < updatedAt) return false
-        return true
-      })
+      query['modified'] = {from: startDate, to: lastDate}
     }
+    if (filters.status && filters.status !== 'All') {
+      query['status'] = filters.status == 'Active' ? 1 : 2
+    }
+    console.log('applyFilter, query=', query)
 
-    if (filters.addedon >= 0) {
-      let startDate = null, lastDate = null
-      if (filters.activity == 6) {
-        startDate = moment(this.filters.addedonStartDate)
-        lastDate = moment(this.filters.addedonEndDate)
-      }
-      else {
-        const dateRange = this.dateService.getDateRange(this.filters.addedon)
-        startDate = dateRange.startDate
-        lastDate = dateRange.lastDate
-      }
-      this.items = this.items.filter(item => {
-        const createdAt = moment(item.created_at)
-        if (startDate && startDate > createdAt) return false
-        if (lastDate && lastDate < createdAt) return false
-        return true
-      })
-    }
+    if (this.listShow) this.fetchCompanyListView(query)
+    else this.fetchCompanyGridView(query)
   }
 
   clickFilter() {
