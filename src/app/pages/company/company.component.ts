@@ -41,6 +41,8 @@ export class CompanyComponent implements OnInit {
   //detect for click card, check
   detect: number
   
+  pageSize = 10
+  recordsTotal = 0
   allItems = []
   items = []
   owners = []
@@ -53,8 +55,6 @@ export class CompanyComponent implements OnInit {
   /*Modal dialog*/
   closeResult = '';
   /*Modal dialog*/
-
-  pageIndex = 0
 
   constructor(
     private modalService: NgbModal,
@@ -115,30 +115,34 @@ export class CompanyComponent implements OnInit {
   showList() {
     this.listShow = true
     this.selectedItems = []
+    this.items = this.allItems = []
     
-    const query = { view_type: 'list', draw: 0, start: 0, length: 5 }    
-    this.updateCompanyListView(query)
+    const query = { view_type: 'list', draw: 0, start: 0, length: this.pageSize }    
+    this.fetchCompanyListView(query)
   }
 
   showGrid() {
     this.listShow = false
     this.selectedItems = []
 
-    const query = { view_type: 'grid', draw: 0, start: 0, length: 10 }    
-    this.updateCompanyGridView(query)
+    const query = { view_type: 'grid', draw: 0, start: 0, length: 20 }    
+    this.fetchCompanyGridView(query)
   }
 
-  private updateCompanyListView(query) {
+  private fetchCompanyListView(query) {
     this.companyApiService
       .getCompanyList(query)
       .subscribe((res: any) => {
+        console.log('fetchCompanyListView', res)
         if (!res.success) {
           this.triggerSnackBar(res.message, 'Close')
           return
         }
-        this.items = res.data.data.map(item => {
+        this.recordsTotal = res.data.recordsTotal
+        const items = res.data.data.map(item => {
           return {...item, company: true}
         })
+        this.items = this.items.concat(items)
         this.allItems = this.items
         this.updateOwners()
       },
@@ -147,10 +151,11 @@ export class CompanyComponent implements OnInit {
       })
   }
 
-  private updateCompanyGridView(query) {
+  private fetchCompanyGridView(query) {
     this.companyApiService
       .getCompanyList(query)
       .subscribe((res: any) => {
+        console.log('fetchCompanyGridView', res)
         if (!res.success) {
           this.triggerSnackBar(res.message, 'Close')
           return
@@ -180,12 +185,13 @@ export class CompanyComponent implements OnInit {
   }
 
   pageChanged(e) {
-    console.log('pageChanged, company', e)
+    console.log('pageChanged', e)
     if (this.allItems.length >= e.length) {
       return
     }
-    const query = { view_type: 'list', draw: 0, start: 0, length: 5 }    
-    this.updateCompanyListView(query)
+    const start = e.pageIndex * e.pageSize
+    const query = { view_type: 'list', draw: 0, start: start, length: e.pageSize }    
+    this.fetchCompanyListView(query)
   }
 
   clickCard(item) {
@@ -302,8 +308,8 @@ export class CompanyComponent implements OnInit {
     }
     console.log('applyFilter, query=', query)
 
-    if (this.listShow) this.updateCompanyListView(query)
-    else this.updateCompanyGridView(query)
+    if (this.listShow) this.fetchCompanyListView(query)
+    else this.fetchCompanyGridView(query)
   }
 
   clickFilter() {

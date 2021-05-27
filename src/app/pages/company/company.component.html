@@ -128,6 +128,8 @@
 
         <div *ngIf="listShow">
             <app-company-table
+                [length] = "recordsTotal"
+                [pageSize] = "pageSize"
                 [propItems] = "items"
                 [selectedItems] = "selectedItems"
                 (pagination) = "pageChanged($event)"
