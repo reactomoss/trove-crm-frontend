@@ -28,7 +28,7 @@
                     <span class="title mr-3 fontObjektivMk mt-1">All Leads</span>
 
                     <mat-form-field class="searchForm noLabelForm noSpaceForm" appearance="outline">
-                        <input type="text" matInput placeholder="Search..." [(ngModel)]="searchValue" (keyup)="listLeadGridView()">
+                        <input type="text" matInput placeholder="Search..." (keyup)="search($event.target.value)">
                         <mat-icon matSuffix>search</mat-icon>
                     </mat-form-field>
 
@@ -68,10 +68,10 @@
                     <span></span>
                 </div>
 
-                <div *ngFor="let stage of Leads ; let i=index" class="card-container" cdkDropList [cdkDropListData]="stage.leads" #{{lead.name}}="cdkDropList" [cdkDropListConnectedTo]="[qualifiedList, evolutionList, negotiationList, closedList]" (cdkDropListDropped)="dropped($event)">
-                    <p class="list-title">{{stage.name}} {{stage.leads.length}}</p>
+                <div *ngFor="let stage of StagesForDrag ; let i=index" class="card-container" cdkDropList id="{{stage.idref}}" [cdkDropListData]="stage.lead_list" [cdkDropListConnectedTo]="connectedTo" (cdkDropListDropped)="dropped(stage.id, $event)">
+                    <p class="list-title">{{stage.name}} {{stage.lead_list.length}}</p>
                     <ngx-simplebar [options]="scrollOptions" class="cardWrapper">
-                        <mat-card class="mat-elevation-z0 p-2" cdkDrag *ngFor="let lead of stage.leads ; let j=index" (click)="clickCard()">
+                        <mat-card class="mat-elevation-z0 p-2" cdkDrag *ngFor="let lead of stage.lead_list ; let j=index" (click)="clickCard()">
                             <mat-card-header>
                                 <div mat-card-avatar class="example-header-image">
                                     <mat-icon class="moneyIcon">attach_money</mat-icon>
@@ -79,9 +79,9 @@
                                 </div>
                                 <mat-card-title>
                                     <p class="card-title">{{lead.name}}</p>
-                                    <p class="card-sub-title1">{{lead.organizations.name}}</p>
-                                    <p class="card-sub-title2">{{lead.currency.symbol}}{{lead.currency_value}}</p>
-                                    <p class="card-sub-title3">{{lead.owner.full_name}}, <span class="card-sub-title4">{{lead.created_at}}</span></p>
+                                    <p class="card-sub-title1">{{lead.organizations_name}}</p>
+                                    <p class="card-sub-title2">{{lead.currency_symbol}}{{lead.currency_value}}</p>
+                                    <p class="card-sub-title3">{{lead.owner_full_name}}, <span class="card-sub-title4">{{lead.created_at}}</span></p>
                                 </mat-card-title>
                             </mat-card-header>
                         </mat-card>
@@ -195,7 +195,7 @@
                 </div>
             </div>
         </ngx-simplebar>
-        <ngx-simplebar>
+        <!--<ngx-simplebar #elseBlock>
             <div style="display: flex">
                 <div style="min-width: 20px">
                     <span>No Records Found</span>
@@ -204,7 +204,7 @@
                     <span></span>
                 </div>
             </div>
-        </ngx-simplebar>
+        </ngx-simplebar>-->
 
         <div class="footer" *ngIf="canShow">
             <span class="footText1 mr-5">Summary</span>

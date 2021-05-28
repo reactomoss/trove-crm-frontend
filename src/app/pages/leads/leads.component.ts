@@ -5,7 +5,7 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { FormControl } from '@angular/forms';
-import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { catchError, debounceTime, distinctUntilChanged, map, startWith, switchMap } from 'rxjs/operators';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { LeadApiService } from 'src/app/services/lead-api.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -16,6 +16,7 @@ import {
   BehaviorSubject,
   combineLatest,
   merge,
+  Subject,
 } from 'rxjs';
 import { SnackBarService } from '../../shared/snack-bar.service';
 import { extractErrorMessagesFromErrorResponse } from 'src/app/services/extract-error-messages-from-error-response';
@@ -68,10 +69,13 @@ export class LeadsComponent implements OnInit, AfterViewInit {
   avgValue = 0
 
   Leads: Observable<any[]>;
-  canShow = false;
+  StagesForDrag = [];
+  connectedTo = [];
+  canShow = true;
   filterObj$ = {};
   //filterObj$ = new BehaviorSubject<any>({});
   searchValue = "";
+  private searchText$ = new Subject<string>();
 
   resultsLength = 0;
   isLoadingResults = true;
@@ -161,19 +165,41 @@ export class LeadsComponent implements OnInit, AfterViewInit {
     this.showFilter = false;
   }
 
-  dropped(event: CdkDragDrop<string[]>) {
+  dropped(id, event: CdkDragDrop<string[]>) {
+    //alert(id);
+    //console.log(event);
+    //console.log(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
     if (event.previousContainer === event.container) {
+      alert("if");
       moveItemInArray(
         event.container.data,
         event.previousIndex,
         event.currentIndex
       );
     } else {
+      console.log("else");
+      console.log(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+      console.log("Moved Data is", event.previousContainer.data[event.currentIndex]);
+      let lead_id = event.previousContainer.data[event.currentIndex]['id'];
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex
+      );
+      this.LeadApiService.changeLeadStage(lead_id, id).subscribe(
+        (res: any) => {
+          if (res.success) {
+            console.log(res);
+            this.triggerSnackBar(res.message, 'Close');
+          } else {
+            this.triggerSnackBar(res.message, 'Close');
+          }
+        },
+        (errorResponse: HttpErrorResponse) => {
+          const messages = extractErrorMessagesFromErrorResponse(errorResponse);
+          this.triggerSnackBar(messages.toString(), 'Close');
+        }
       );
     }
   }
@@ -196,8 +222,13 @@ export class LeadsComponent implements OnInit, AfterViewInit {
     this.listLeadGridView();
   }
 
+  search(searchvalue: string) {
+    this.searchText$.next(searchvalue);
+  }
+
   listLeadGridView(){
-    alert(this.currentSelectedPipeline);
+    //alert(this.currentSelectedPipeline);
+    this.StagesForDrag = [];
     console.log(this.filterObj$);
     /*this.Leads = combineLatest(this.filterObj$)
       .pipe(
@@ -247,13 +278,39 @@ export class LeadsComponent implements OnInit, AfterViewInit {
           this.triggerSnackBar(res.message, 'Close');
           if(res.data.data.length > 0){
             this.Leads = res.data.data;
-            this.canShow = true;
             console.log("listLeadGridView");
             console.log(res);
             console.log(this.Leads);
             this.totalLead = res.data.summary.total_leads;
             this.totalValue = res.data.summary.total_value;
             this.avgValue = res.data.summary.lead_average;
+            this.Leads.forEach((e) => {
+              let leadList = [];
+              e['leads'].forEach(element => {
+                //leadList.push(element.name);
+                leadList.push({
+                  id: element.id,
+                  name: element.name,
+                  organizations_name: element.organizations.name,
+                  currency_symbol: element.currency.symbol,
+                  currency_value: element.currency_value,
+                  owner_full_name: element.owner.full_name,
+                  created_at: element.created_at,
+                });
+              });
+              this.StagesForDrag.push({
+                id: e['id'],
+                idref: "Lead-"+e['id'],
+                name: e['name'],
+                lead_list: leadList,
+              });
+            });
+            for (let stage of this.StagesForDrag) {
+              this.connectedTo.push(stage.idref);
+            };
+            this.canShow = true;
+            console.log("stagesList");
+            console.log(this.StagesForDrag);
           } else {
             this.canShow = false;
             this.triggerSnackBar('No Records found', 'Close');

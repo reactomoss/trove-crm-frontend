@@ -40,7 +40,7 @@ export class CompanyComponent implements OnInit {
   hoveredItem
   //detect for click card, check
   detect: number
-  
+
   pageSize = 10
   recordsTotal = 0
   allItems = []
@@ -59,8 +59,8 @@ export class CompanyComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private companyApiService: CompanyApiService,
-    public dialog: MatDialog, 
-    private router: Router, 
+    public dialog: MatDialog,
+    private router: Router,
     private dateService: DateService,
     private sb: SnackBarService) {
   }
@@ -86,7 +86,7 @@ export class CompanyComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
-  }  
+  }
   /*Modal dialog*/
 
   ngOnInit(): void {
@@ -109,15 +109,15 @@ export class CompanyComponent implements OnInit {
   }
 
   update() {
-    this.listShow ? this.showList() : this.showGrid() 
+    this.listShow ? this.showList() : this.showGrid()
   }
-  
+
   showList() {
     this.listShow = true
     this.selectedItems = []
     this.items = this.allItems = []
-    
-    const query = { view_type: 'list', draw: 0, start: 0, length: this.pageSize }    
+
+    const query = { view_type: 'list', draw: 0, start: 0, length: this.pageSize }
     this.fetchCompanyListView(query)
   }
 
@@ -125,7 +125,7 @@ export class CompanyComponent implements OnInit {
     this.listShow = false
     this.selectedItems = []
 
-    const query = { view_type: 'grid', draw: 0, start: 0, length: 20 }    
+    const query = { view_type: 'grid', draw: 0, start: 0, length: 20 }
     this.fetchCompanyGridView(query)
   }
 
@@ -190,7 +190,7 @@ export class CompanyComponent implements OnInit {
       return
     }
     const start = e.pageIndex * e.pageSize
-    const query = { view_type: 'list', draw: 0, start: start, length: e.pageSize }    
+    const query = { view_type: 'list', draw: 0, start: start, length: e.pageSize }
     this.fetchCompanyListView(query)
   }
 

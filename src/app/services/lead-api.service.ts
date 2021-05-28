@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Observable, ReplaySubject, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import {
@@ -39,6 +39,13 @@ export class LeadApiService {
     );
   }
 
+  changeLeadStage(lead_id, stage_id){
+    return this.httpClient.put(
+      `${this.baseURL + environment.leads + "/stage/"+ lead_id}`,
+      {stage_id: stage_id}
+    );
+  }
+
 
   getPipelines(): Observable<any>{
     return this.httpClient.get(`${this.baseURL + environment.pipelineMaster}`);
@@ -48,4 +55,10 @@ export class LeadApiService {
   }
 
 
+  subject: ReplaySubject<any> = new ReplaySubject();
+  obs: Observable<any> = this.subject.asObservable();
+
+  notify() {
+    this.subject.next()
+  }
 }

@@ -212,4 +212,8 @@ export class SettingsApiService {
   deletePipeline(id): Observable<any>{
     return this.httpClient.delete(`${this.baseURL + environment.pipelines + "/" + id}`);
   }
+
+  deletePipelinee(data): Observable<any>{
+    return this.httpClient.delete(`${this.baseURL + environment.pipelines}`, data);
+  }
 }

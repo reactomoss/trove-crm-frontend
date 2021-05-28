@@ -178,7 +178,7 @@ export class HeaderComponent implements OnInit {
     /*const dialogRef = this.dialog.open(CompanyDialog, {
         width: '560px',
         autoFocus: false,
-        data : { 
+        data : {
           countries: [],
           emailOwners: [],
           dialCodes: []
@@ -215,7 +215,7 @@ export class HeaderComponent implements OnInit {
     const dialogRef = this.dialog.open(CompanyDialog, {
       width: '560px',
       autoFocus: false,
-      data : { 
+      data : {
         countries: this.companyData.countries,
         emailOwners: this.companyData.owners,
         dialCodes: this.companyData.countries.filter(x => x.dial_code).map(x => x.dial_code)
@@ -483,6 +483,7 @@ export class LeadDialog {
           (response) => {
             this.dialogRef.close();
             this.sb.openSnackBarBottomCenter(response.message, 'Close');
+            this.LeadApiService.notify()
           },
           (errorResponse: HttpErrorResponse) => {
             if (errorResponse.error.code === 252) {
