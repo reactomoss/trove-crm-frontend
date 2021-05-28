@@ -47,7 +47,7 @@ export class CompanyTableComponent implements AfterViewInit {
   ngOnChanges() {
     console.log('ngOnChanges', this.propItems)
     this.items = [...this.propItems]
-    if (this.items.length < this.length) {
+    if (this.items.length > 0 && this.items.length < this.length) {
       this.items.push({})
     }
     this.dataSource = new MatTableDataSource(this.items)
