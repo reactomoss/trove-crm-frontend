@@ -1,11 +1,24 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ViewChild,
+  AfterViewInit,
+} from '@angular/core';
 import {
   CdkDragDrop,
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { FormControl } from '@angular/forms';
-import { catchError, debounceTime, distinctUntilChanged, map, startWith, switchMap } from 'rxjs/operators';
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  startWith,
+  switchMap,
+} from 'rxjs/operators';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { LeadApiService } from 'src/app/services/lead-api.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -28,7 +41,6 @@ import { FilterComponent } from './filter/filter.component';
   styleUrls: ['./leads.component.css'],
 })
 export class LeadsComponent implements OnInit, AfterViewInit {
-
   @ViewChild(FilterComponent) child: FilterComponent;
 
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 };
@@ -62,11 +74,11 @@ export class LeadsComponent implements OnInit, AfterViewInit {
     private cdref: ChangeDetectorRef
   ) {}
 
-  currentSelectedPipeline = "";
+  currentSelectedPipeline = '';
   pipelineMaster = [];
   totalLead = 0;
   totalValue = 0;
-  avgValue = 0
+  avgValue = 0;
 
   Leads: Observable<any[]>;
   StagesForDrag = [];
@@ -74,23 +86,23 @@ export class LeadsComponent implements OnInit, AfterViewInit {
   canShow = true;
   filterObj$ = {};
   //filterObj$ = new BehaviorSubject<any>({});
-  searchValue = "";
+  searchValue = '';
   private searchText$ = new Subject<string>();
 
   resultsLength = 0;
   isLoadingResults = true;
   isRateLimitReached = false;
 
-  ngOnChanges(){
-    console.log("changed");
+  ngOnChanges() {
+    console.log('changed');
     console.log(this.child.minValue);
   }
-  ngAfterViewInit(){
-    console.log("ngAfterViewInit");
+  ngAfterViewInit() {
+    console.log('ngAfterViewInit');
   }
 
   ngOnInit(): void {
-    this.triggerSnackBar("ngOninit", "Close");
+    //this.triggerSnackBar('ngOninit', 'Close');
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map((value) => this._filter(value))
@@ -103,7 +115,7 @@ export class LeadsComponent implements OnInit, AfterViewInit {
           this.pipelineMaster = res.data.pipelines;
           this.currentSelectedPipeline = this.pipelineMaster[0].id;
           this.listLeadGridView();
-          this.triggerSnackBar(res.message, 'Close');
+          //this.triggerSnackBar(res.message, 'Close');
         } else {
           this.triggerSnackBar(res.message, 'Close');
         }
@@ -113,10 +125,9 @@ export class LeadsComponent implements OnInit, AfterViewInit {
         this.triggerSnackBar(messages.toString(), 'Close');
       }
     );
-
   }
-  receiveMessage($event){
-    console.log("anyParentMehtod");
+  receiveMessage($event) {
+    console.log('anyParentMehtod');
     console.log($event);
     this.filterObj$ = $event;
     //this.filterObj$.next($event);
@@ -158,9 +169,10 @@ export class LeadsComponent implements OnInit, AfterViewInit {
 
   showList() {
     this.listShow = true;
+    this.listLeadGridView();
   }
 
-  showCards() {
+  showGrid() {
     this.listShow = false;
     this.showFilter = false;
   }
@@ -170,16 +182,23 @@ export class LeadsComponent implements OnInit, AfterViewInit {
     //console.log(event);
     //console.log(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
     if (event.previousContainer === event.container) {
-      alert("if");
       moveItemInArray(
         event.container.data,
         event.previousIndex,
         event.currentIndex
       );
     } else {
-      console.log("else");
-      console.log(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
-      console.log("Moved Data is", event.previousContainer.data[event.currentIndex]);
+      console.log('else');
+      console.log(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+      console.log(
+        'Moved Data is',
+        event.previousContainer.data[event.currentIndex]
+      );
       let lead_id = event.previousContainer.data[event.currentIndex]['id'];
       transferArrayItem(
         event.previousContainer.data,
@@ -209,7 +228,7 @@ export class LeadsComponent implements OnInit, AfterViewInit {
   }
 
   filterCountChangedHandler(e) {
-    alert("filterCountChangedHandler");
+    alert('filterCountChangedHandler');
     this.filterCount = e;
     alert(this.child.minValue);
   }
@@ -218,7 +237,7 @@ export class LeadsComponent implements OnInit, AfterViewInit {
     this.showFilter = true;
   }
 
-  onPipelineChange(){
+  onPipelineChange() {
     this.listLeadGridView();
   }
 
@@ -226,8 +245,7 @@ export class LeadsComponent implements OnInit, AfterViewInit {
     this.searchText$.next(searchvalue);
   }
 
-  listLeadGridView(){
-    //alert(this.currentSelectedPipeline);
+  listLeadGridView() {
     this.StagesForDrag = [];
     console.log(this.filterObj$);
     /*this.Leads = combineLatest(this.filterObj$)
@@ -267,18 +285,16 @@ export class LeadsComponent implements OnInit, AfterViewInit {
           console.log(err);
           return observableOf([]);
         })
-      );*/
+    );*/
 
     this.filterObj$['pipeline_id'] = this.currentSelectedPipeline;
     this.filterObj$['search'] = this.searchValue;
-    //this.filterObj$.next(this.filterObj$);
     this.LeadApiService.listLeadGridView(this.filterObj$).subscribe(
       (res: any) => {
         if (res.success) {
-          this.triggerSnackBar(res.message, 'Close');
-          if(res.data.data.length > 0){
+          if (res.data.data.length > 0) {
             this.Leads = res.data.data;
-            console.log("listLeadGridView");
+            console.log('listLeadGridView');
             console.log(res);
             console.log(this.Leads);
             this.totalLead = res.data.summary.total_leads;
@@ -286,8 +302,7 @@ export class LeadsComponent implements OnInit, AfterViewInit {
             this.avgValue = res.data.summary.lead_average;
             this.Leads.forEach((e) => {
               let leadList = [];
-              e['leads'].forEach(element => {
-                //leadList.push(element.name);
+              e['leads'].forEach((element) => {
                 leadList.push({
                   id: element.id,
                   name: element.name,
@@ -300,16 +315,16 @@ export class LeadsComponent implements OnInit, AfterViewInit {
               });
               this.StagesForDrag.push({
                 id: e['id'],
-                idref: "Lead-"+e['id'],
+                idref: 'Lead-' + e['id'],
                 name: e['name'],
                 lead_list: leadList,
               });
             });
             for (let stage of this.StagesForDrag) {
               this.connectedTo.push(stage.idref);
-            };
+            }
             this.canShow = true;
-            console.log("stagesList");
+            console.log('stagesList');
             console.log(this.StagesForDrag);
           } else {
             this.canShow = false;
@@ -331,6 +346,6 @@ export class LeadsComponent implements OnInit, AfterViewInit {
   }
 
   compareFunction(o1: any, o2: any) {
-    return (o1 == o2);
-   }
+    return o1 == o2;
+  }
 }
