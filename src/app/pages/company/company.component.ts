@@ -161,7 +161,7 @@ export class CompanyComponent implements OnInit {
           return
         }
         this.items = []
-        const data = res.data.id
+        const data = res.data.data
         for (const activity in data) {
           const companies: any[] = data[activity]
           companies.map((company, index) => {
@@ -284,8 +284,8 @@ export class CompanyComponent implements OnInit {
       }
       else {
         const dateRange = this.dateService.getDateRange(this.filters.addedon)
-        startDate = dateRange.startDate?.format('DD/MM/YYYY')
-        lastDate = dateRange.lastDate?.format('DD/MM/YYYY')
+        startDate = dateRange.startDate?.format('DD-MM-YYYY')
+        lastDate = dateRange.lastDate?.format('DD-MM-YYYY')
       }
       query['added'] = {from: startDate, to: lastDate}
     }
@@ -298,8 +298,8 @@ export class CompanyComponent implements OnInit {
       }
       else {
         const dateRange = this.dateService.getDateRange(this.filters.activity)
-        startDate = dateRange.startDate?.format('DD/MM/YYYY')
-        lastDate = dateRange.lastDate?.format('DD/MM/YYYY')
+        startDate = dateRange.startDate?.format('DD-MM-YYYY')
+        lastDate = dateRange.lastDate?.format('DD-MM-YYYY')
       }
       query['modified'] = {from: startDate, to: lastDate}
     }
@@ -308,6 +308,7 @@ export class CompanyComponent implements OnInit {
     }
     console.log('applyFilter, query=', query)
 
+    this.items = this.allItems = []
     if (this.listShow) this.fetchCompanyListView(query)
     else this.fetchCompanyGridView(query)
   }
