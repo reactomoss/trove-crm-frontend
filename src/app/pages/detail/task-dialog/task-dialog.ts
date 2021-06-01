@@ -17,7 +17,7 @@ export interface NTask {
   content: string
   due_date: Moment,
   due_time: string,
-  remainder_date: string,
+  remainder_date: Moment,
   remainder_time: string,
   owner: string,
 }

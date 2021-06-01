@@ -214,19 +214,14 @@ ul.addPanelUL li {
     border-radius: 4px;
 }
 
- ::ng-deep .event-content>input:checked {
-    border: 1px solid rgb(230, 74, 0);
-    /*background-color: #34495E;*/
-}
-
 ::ng-deep .event-content>input:checked+span::before {
     content: '\2713';
     display: block;
     text-align: center;
     /*color: #41B883;*/
     position: absolute;
-    left: 0.25rem;
-    top: 0.55rem;
+    left: 0.5rem;
+    top: 0.65rem;
 }
 
 
@@ -282,4 +277,11 @@ ul.addPanelUL li {
  ::ng-deep.fc-next-button {
     background-color: white!important;
     color: rgba(0, 0, 0, 0.8)!important;
+}
+
+::ng-deep.reminder-icon {
+    font-size: 20px;
+    width: 18px!important;
+    height: 20px!important;
+    margin-left: 4px;
 }

@@ -21,7 +21,7 @@ export interface Appointment {
   end_date: Moment,
   end_time: string,
   contact: string,
-  remainder_date: string,
+  remainder_date: Moment,
   remainder_time: string,
 }
 

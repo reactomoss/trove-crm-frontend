@@ -8,6 +8,11 @@ import { TaskDialog, NTask } from '../detail/task-dialog/task-dialog';
 import { INITIAL_TASKS, createEventId } from './event-utils';
 import * as moment from 'moment';
 
+export interface Reminder {
+  count: number,
+  events: EventApi[]
+}
+
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
@@ -66,8 +71,7 @@ export class CalendarComponent implements OnInit {
 
   ngAfterViewInit(): void {
     INITIAL_TASKS.forEach(task => {
-        console.log(task)
-        this.addTaskEvent(task)
+      this.addTaskEvent(task)
     })
   }
 
@@ -138,13 +142,13 @@ export class CalendarComponent implements OnInit {
         start: appointment.start_date.format('YYYY-MM-DD'),
         end: appointment.end_date.format('YYYY-MM-DD'),
         extendedProps: {
-          'isTask': false,
           'appointment': appointment 
         },
         color: '#e9effb',
         textColor: '#315186'
       })
     }
+    this.updateReminders()
   }
 
   private deleteAppointment(appointment: Appointment) {
@@ -153,6 +157,7 @@ export class CalendarComponent implements OnInit {
       const event = calendarApi.getEventById(appointment.id)
       event.remove()
     }
+    this.updateReminders()
   }
 
   private addTaskEvent(task: NTask) {
@@ -182,13 +187,13 @@ export class CalendarComponent implements OnInit {
         title: task.title,
         date: task.due_date.format('YYYY-MM-DD'),
         extendedProps: {
-          'isTask': true,
           'task': task 
         },
         color: color,
         textColor: textColor
       })
     }
+    this.updateReminders()
   }
 
   private deleteTask(task: NTask) {
@@ -197,6 +202,7 @@ export class CalendarComponent implements OnInit {
       const event = calendarApi.getEventById(task.id)
       event.remove()
     }
+    this.updateReminders()
   }
 
   prev() {
@@ -238,18 +244,22 @@ export class CalendarComponent implements OnInit {
     }
   }
 
-  handleEventClick(clickInfo: EventClickArg) {
-    console.log(clickInfo.event, clickInfo.event.extendedProps)
-    if (this.dialogOpened) return
-    this.dialogOpened = true
-    
-    if (clickInfo.event.extendedProps.isTask) {
-      const task = clickInfo.event.extendedProps['task'];
+  handleEventClick(arg: EventClickArg) {
+    console.log(arg)
+    if (arg.event.extendedProps.task) {
+      if (this.dialogOpened) return
+      this.dialogOpened = true
+      const task = arg.event.extendedProps.task
       this.openTaskDialog(true, task)
     }
-    else {
-      const appointment = clickInfo.event.extendedProps['appointment'];
+    else if (arg.event.extendedProps.appointment) {
+      if (this.dialogOpened) return
+      this.dialogOpened = true
+      const appointment = arg.event.extendedProps.appointment
       this.openAppointDialog(true, appointment)
+    }
+    else if (arg.event.extendedProps.reminder) {
+      const reminder = arg.event.extendedProps.reminder
     }
   }
 
@@ -262,12 +272,16 @@ export class CalendarComponent implements OnInit {
     let divEl = document.createElement('label')
     divEl.className = 'event-content'
 
-    if (arg.event.extendedProps.isTask) {
-      const task = arg.event.extendedProps.task
+    if (arg.event.extendedProps.task) {
+      const task: NTask = arg.event.extendedProps.task
       const inputClass = task.due_date < moment() ? 'overdue' : 'upcoming'
       divEl.innerHTML = `<input type='checkbox' class='${inputClass}'><span class='event-checkmark'>${task.due_time??''} ${arg.event.title}</span>`
-    } 
-    else {
+    }
+    else if (arg.event.extendedProps.reminder) {
+      const reminder = arg.event.extendedProps.reminder
+      divEl.innerHTML = `<mat-icon role='img' class='mat-icon notranslate material-icons mat-icon-no-color reminder-icon' aria-hidden='true' data-mat-icon-type='font'>notifications</mat-icon><span class='event-checkmark'>${arg.event.title}</span>`
+    }
+    else if (arg.event.extendedProps.appointment) {
       divEl.innerHTML = `<span class='event-checkmark'>${arg.event.title}</span>`
     }
     
@@ -288,13 +302,72 @@ export class CalendarComponent implements OnInit {
   }
 
   private filterEvents() {
-    this.currentEvents.forEach(event => {
-      if (event.extendedProps.isTask) {
-        event.setProp('display', (this.filters.all || this.filters.task) ? 'auto' : 'none')
+    this.currentEvents.forEach(e => {
+      if (e.extendedProps.task) {
+        e.setProp('display', (this.filters.all || this.filters.task) ? 'auto' : 'none')
       }
-      else {
-        event.setProp('display', (this.filters.all || this.filters.appoint) ? 'auto' : 'none')
+      else if (e.extendedProps.appointment) {
+        e.setProp('display', (this.filters.all || this.filters.appoint) ? 'auto' : 'none')
+      }
+      else if (e.extendedProps.reminder) {
+        e.setProp('display', (this.filters.all || this.filters.reminder) ? 'auto' : 'none')
       }
     })
+  }
+
+  private updateReminders() {
+    const temp = [...this.currentEvents]
+    temp.forEach(e => {
+      if (e.extendedProps.reminder) {
+        e.remove()
+      }
+    })
+
+    const events: EventApi[] = this.currentEvents.filter(e => e.extendedProps.task || e.extendedProps.appointment)
+    const reminders = {}
+    const addReminder = function(date: moment.Moment, event: EventApi) {
+      const key = date.format('YYYY-MM-DD')
+      if (key in reminders) {
+        const reminder: Reminder = reminders[key]
+        reminder.count++
+        reminder.events.push(event)
+      }
+      else {
+        reminders[key] = {
+          count: 1, events: [event]
+        }
+      }
+    }
+    events.forEach(e => {
+      if (e.extendedProps.task) {
+        const task: NTask = e.extendedProps.task
+        task.remainder_date && addReminder(task.remainder_date, e)
+      }
+      if (e.extendedProps.appointment) {
+        const appoint: Appointment = e.extendedProps.appointment
+        appoint.remainder_date && addReminder(appoint.remainder_date, e)
+      }
+    })
+
+    // Add reminders
+    if (Object.keys(reminders).length > 0) {
+      const calendarApi = this.calendarComponent.getApi()
+      calendarApi.unselect();
+      for (const date in reminders) {
+        const reminder = reminders[date]
+        
+        const eventId = createEventId()
+        calendarApi.addEvent({
+          id: eventId,
+          title: `${reminder.count} Reminders`,
+          date: date,
+          extendedProps: {
+            'reminder': reminder 
+          },
+          color: '#e9effb',
+          textColor: '#315186'
+        })
+      }
+    }
   }
 }
