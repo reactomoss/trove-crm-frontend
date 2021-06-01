@@ -40,7 +40,7 @@
     border-radius: 3px;
     font-size: 12px;
     line-height: 30px;
-    width: 100px;
+    width: 90px;
 }
 
 .eventFilters {
@@ -167,41 +167,51 @@ ul.addPanelUL li {
 
 .fullcalendar {
     margin: 10px 50px 0px 50px;
-    background-color: white;
+    background-color: rgba(235, 238, 242, 1);
+}
+
+::ng-deep .fullcalendar table {
+    border-radius: 7px;
+    background: white;
 }
 
 ::ng-deep .event-content {
-    /* 
-    padding: 2px;
-    display: flex;
-    overflow: hidden; */
     vertical-align: middle;
     align-items: center;
     display: inline-flex;
     cursor: pointer;
     position: relative;
     margin-bottom: 0!important;
-    line-height: 8px;
+    line-height: 6px;
 }
 
 ::ng-deep .event-content>span {
     /*color: #34495E;*/
+    margin-top: 0.15rem;
     padding: 0.5rem 0.25rem;
 }
 
 ::ng-deep .event-content>input {
-    height: 16px;
-    width: 16px;
+    height: 14px;
+    width: 14px;
     -webkit-appearance: none;
     -moz-appearance: none;
     -o-appearance: none;
     appearance: none;
-    border: 1px solid rgb(230, 74, 0);
-    border-radius: 4px;
     outline: none;
     transition-duration: 0.3s;
-    /*background-color: #41B883;*/
     cursor: pointer;
+    margin-left: 6px;
+}
+
+::ng-deep .event-content>input.overdue {
+    border: 1px solid rgb(230, 74, 0);
+    border-radius: 4px;
+}
+
+::ng-deep .event-content>input.upcoming {
+    border: 1px solid rgb(100, 100, 100);
+    border-radius: 4px;
 }
 
  ::ng-deep .event-content>input:checked {
@@ -229,7 +239,9 @@ ul.addPanelUL li {
 }
 
 ::ng-deep .fc-col-header-cell {
+    height: 40px;
     text-align: right!important;
+    vertical-align: middle!important;
 }
 
 ::ng-deep .fc-col-header-cell-cushion {

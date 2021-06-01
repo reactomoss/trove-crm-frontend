@@ -108,6 +108,16 @@ export const INITIAL_TASKS: NTask[] = [
         remainder_date: '',
         remainder_time: '',
         owner: ''
+    },
+    {
+        id: null,
+        title: 'Holiday', 
+        content: '',
+        due_date: moment('2021-06-02'),
+        due_time: '18:00',
+        remainder_date: '',
+        remainder_time: '',
+        owner: ''
     }
 ];
 

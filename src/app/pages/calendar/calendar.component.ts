@@ -47,7 +47,7 @@ export class CalendarComponent implements OnInit {
   }
   events = []
   currentEvents: EventApi[] = [];
-  title = ''
+  title = moment().format('MMM YYYY')
   filters = {
       all: true,
       task: true,
@@ -65,12 +65,10 @@ export class CalendarComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    const calendarApi = this.calendarComponent.getApi();
     INITIAL_TASKS.forEach(task => {
         console.log(task)
         this.addTaskEvent(task)
     })
-    this.updateTitle()
   }
 
   updateTitle() {
@@ -172,11 +170,11 @@ export class CalendarComponent implements OnInit {
       const eventId = createEventId()
       task.id = eventId
 
-      let color = 'rgb(255, 214, 193)'
-      let textColor = 'rgb(230, 74, 0)'
+      let color = '#f9e8ec'
+      let textColor = '#d5617a'
       if (task.due_date > moment()) {
-        color = '#f9e8ec'
-        textColor = '#d5617a'
+        color = 'rgb(255,214,193)'
+        textColor = 'rgb(80,80,80)'
       }
 
       calendarApi.addEvent({
@@ -264,12 +262,13 @@ export class CalendarComponent implements OnInit {
     let divEl = document.createElement('label')
     divEl.className = 'event-content'
 
-    //console.log('handleEventContent', arg.event.extendedProps)
     if (arg.event.extendedProps.isTask) {
-        const task = arg.event.extendedProps.task
-        divEl.innerHTML = `<input type='checkbox'><span class='event-checkmark'>${task.due_time??''} ${arg.event.title}</span>`
-    } else {
-        divEl.innerHTML = arg.event.title
+      const task = arg.event.extendedProps.task
+      const inputClass = task.due_date < moment() ? 'overdue' : 'upcoming'
+      divEl.innerHTML = `<input type='checkbox' class='${inputClass}'><span class='event-checkmark'>${task.due_time??''} ${arg.event.title}</span>`
+    } 
+    else {
+      divEl.innerHTML = `<span class='event-checkmark'>${arg.event.title}</span>`
     }
     
     let arrayOfDomNodes = [ divEl ]
