@@ -29,7 +29,9 @@ import { SpinnerOverlayComponent } from './core/spinner-overlay/spinner-overlay.
 import {SettingsApiService} from './services/settings-api.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 const routes: Routes = [
-  { path: '', redirectTo: 'user', pathMatch: 'full' },
+  { path: '', redirectTo: 'pages/dashboard', pathMatch: 'full' },
+  { path: 'login', redirectTo: 'user/login', pathMatch: 'full' },
+  { path: 'signup', redirectTo: 'user/signup', pathMatch: 'full' },
   {
     path: 'user',
     loadChildren: () =>
@@ -62,7 +64,6 @@ const config: ExtraOptions = {
     BrowserAnimationsModule,
     SharedModule,
     HttpClientModule,
-    UserRegistrationModule,
     SocialLoginModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
