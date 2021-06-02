@@ -14,7 +14,6 @@ import { Options } from '@angular-slider/ngx-slider';
 import { FormControl } from '@angular/forms';
 import { map, startWith, take, tap } from 'rxjs/operators';
 import { DateService } from '../../../service/date.service';
-import { LeadApiService } from 'src/app/services/lead-api.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import {
   Subscription,
@@ -73,6 +72,8 @@ export class FilterComponent implements OnInit, OnChanges {
   myControl = new FormControl();
   searchOptions: string[] = ['One', 'Two', 'Three'];
   filteredOptions: Observable<string[]>;
+
+  @Input() filterData:any;
 
   dateFrom="";
   dateTo="";
@@ -149,7 +150,8 @@ export class FilterComponent implements OnInit, OnChanges {
   public endDate: Date = null;
 
   scrollOptions = { autoHide: true, scrollbarMinSize: 30 };
-  selectedDisplay = 'pipe1';
+  @Input() currentSelectedPipeline;
+  SelectedPipelineStages = [];
   // multi autocomplete
 
   sources = [];
@@ -220,62 +222,59 @@ export class FilterComponent implements OnInit, OnChanges {
 
   status: any[] =  [];
   leadValue: any[] = [];
+  pipelines: any[] = [];
 
   constructor(
     private dateService: DateService,
     private sb: SnackBarService,
-    private LeadApiService: LeadApiService
   ) {
     console.log("constrctor start");
     console.log(this.filteredCont);
   }
   ngOnChanges(){
-    console.log("ngOnchanges");
+    console.log("filter ngOnchanges", this.filterData);
+    this.contacts = [];
+    this.filterData.data.contacts.users.forEach(element => {
+      this.contacts.push({
+        id: element.id,
+        name: element.full_name,
+      });
+    });
+    this.companys = this.filterData.data.contacts.organizations;
+    this.minValue = this.filterData.data.lead_value.min;
+    this.highValue = this.filterData.data.lead_value.max;
+    this.sources = this.filterData.data.source;
+    this.status = this.filterData.data.status;
+    this.leadValue = this.filterData.data.lead_value;
+    this.pipelines = this.filterData.data.pipeline;
+
+    let stages = this.pipelines.find(obj => {
+      return obj.id === this.currentSelectedPipeline
+    });
+    this.SelectedPipelineStages = stages;
+    console.log("stages", this.SelectedPipelineStages);
+    //this.triggerSnackBar(res.message, 'Close');
+
+    this.filteredCont = this.contactCtrl.valueChanges.pipe(
+      startWith(''),
+      map((state) =>
+        state ? this._filterStates(state) : this.contacts.slice()
+      )
+    );
+
+    this.filteredComp = this.companyCtrl.valueChanges.pipe(
+      startWith(''),
+      map((state) =>
+        state ? this._filterStatesComp(state) : this.companys.slice()
+      )
+    );
   }
   ngOnInit(): void {
-    console.log("child_component");
-    this.LeadApiService.getFilterValues().subscribe(
-      (res: any) => {
-        if (res.success) {
-          console.log(res);
-          this.contacts = [];
-          res.data.contacts.users.forEach(element => {
-            this.contacts.push({
-              id: element.id,
-              name: element.full_name,
-            });
-          });
-          this.companys = res.data.contacts.organizations;
-          this.minValue = res.data.lead_value.min;
-          this.highValue = res.data.lead_value.max;
-          this.sources = res.data.source;
-          this.status = res.data.status;
-          this.leadValue = res.data.lead_value;
-          this.triggerSnackBar(res.message, 'Close');
-          console.log(this.contacts);
-          console.log(this.companys);
-          this.filteredCont = this.contactCtrl.valueChanges.pipe(
-            startWith(''),
-            map((state) =>
-              state ? this._filterStates(state) : this.contacts.slice()
-            )
-          );
-          console.log("after",this.filteredCont);
-          this.filteredComp = this.companyCtrl.valueChanges.pipe(
-            startWith(''),
-            map((state) =>
-              state ? this._filterStatesComp(state) : this.companys.slice()
-            )
-          );
-        } else {
-          this.triggerSnackBar(res.message, 'Close');
-        }
-      },
-      (errorResponse: HttpErrorResponse) => {
-        const messages = extractErrorMessagesFromErrorResponse(errorResponse);
-        this.triggerSnackBar(messages.toString(), 'Close');
-      }
-    );
+    console.log("child_component", this.filterData);
+  }
+
+  ngAfterViewInit() {
+    console.log('filter ngAfterViewInit');
   }
 
   calculateFilterCount(): number {
@@ -404,16 +403,16 @@ export class FilterComponent implements OnInit, OnChanges {
   }
 
   public clickDiscovery(item) {
-    const index = this.selectedPipe.indexOf(item, 0);
+    const index = this.selectedPipe.indexOf(item.name, 0);
     if (index > -1) {
       this.selectedPipe.splice(index, 1);
     } else {
-      this.selectedPipe.push(item);
+      this.selectedPipe.push(item.name);
     }
   }
 
   public checkPipe(item) {
-    const index = this.selectedPipe.indexOf(item, 0);
+    const index = this.selectedPipe.indexOf(item.name, 0);
     if (index > -1) {
       return true;
     } else {
@@ -546,5 +545,9 @@ export class FilterComponent implements OnInit, OnChanges {
   }
   triggerSnackBar(message: string, action: string) {
     this.sb.openSnackBarBottomCenter(message, action);
+  }
+
+  compareFunction(o1: any, o2: any) {
+    return o1 == o2;
   }
 }

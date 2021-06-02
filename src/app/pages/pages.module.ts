@@ -53,7 +53,7 @@ import { RolesComponent } from './settings/usersroles/roles/roles.component';
 
 //canActivate:[AuthGuardService]
 const routes: Routes = [
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  //{ path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: PagesComponent, canActivate:[AuthGuardService]},
   // {path:'settings' , loadChildren: () => import('./settings/settings.module') .then(m=>m.SettingsModule)},
   { path: 'settings', component: SettingsComponent, canActivate:[AuthGuardService]},

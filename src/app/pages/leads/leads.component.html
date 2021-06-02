@@ -14,11 +14,9 @@
                     </button>
                 </div> -->
                 <!-- <ngx-simplebar [options]="scrollOptions" class="filterContainer1">
-                    <app-filter
-                        [filterCount]="filterCount"
-                        (filterCountChanged)="filterCountChangedHandler($event)"></app-filter>
+
                 </ngx-simplebar> -->
-                <app-filter *ngIf="showFilter" [canShow]="canShow" (messageEvent)="receiveMessage($event)" (closeDialog)="drawer.toggle()" (count)="filterCount=$event"></app-filter>
+                <app-filter *ngIf="showFilter" [canShow]="canShow" (messageEvent)="receiveMessage($event)" (closeDialog)="drawer.toggle()" (count)="filterCount=$event" [filterData]="filterData" [currentSelectedPipeline]="currentSelectedPipeline"></app-filter>
             </div>
         </mat-drawer>
 
@@ -232,14 +230,14 @@
                         <button mat-button class="flatIconDarkButton1" (click)="showList()">
                             <mat-icon class="smallIcon">list</mat-icon>
                         </button>
-                        <button mat-button class="flatIconLightButton1" (click)="showCards()">
+                        <button mat-button class="flatIconLightButton1" (click)="showGrid()">
                             <mat-icon class="smallIcon">dashboard</mat-icon>
                         </button>
                     </div>
                 </div>
             </div>
-            <ngx-simplebar [options]="scrollOptions" class="tableContainer">
-                <app-lead-table></app-lead-table>
+            <ngx-simplebar [options]="scrollOptions" class="tableContainer" *ngIf="listShow">
+                <app-lead-table [length]="recordsTotal" [pageSize]="pageSize" [propItems]="items" (pagination)="pageChanged($event)"></app-lead-table>
             </ngx-simplebar>
         </div>
         <div class="rightPart" fxFlex="20" fxFill>
@@ -251,12 +249,7 @@
                 </button>
             </div> -->
             <ngx-simplebar [options]="scrollOptions" class="filterContainer2">
-                <!-- <app-filter
-                    [filterCount]="filterCount"
-                    (filterCountChanged)="filterCountChangedHandler($event)"
-                    [listShow]="listShow"
-                ></app-filter> -->
-                <app-filter (closeDialog)="drawer.toggle()" (count)="filterCount=$event" [listShow]="listShow" (messageEvent)="receiveMessage($event)"></app-filter>
+                <app-filter (closeDialog)="drawer.toggle()" (count)="filterCount=$event" [listShow]="listShow" (messageEvent)="receiveMessage($event)" [filterData]="filterData" [currentSelectedPipeline]="currentSelectedPipeline"></app-filter>
             </ngx-simplebar>
         </div>
     </div>

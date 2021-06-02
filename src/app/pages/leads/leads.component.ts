@@ -64,6 +64,7 @@ export class LeadsComponent implements OnInit, AfterViewInit {
   options: string[] = ['One', 'Two', 'Three'];
   filteredOptions: Observable<string[]>;
   active: number = 1;
+  private subscriptions: Subscription[] = [];
 
   filterCount: number = 0;
   viewLeads = 'pipe1';
@@ -93,12 +94,20 @@ export class LeadsComponent implements OnInit, AfterViewInit {
   isLoadingResults = true;
   isRateLimitReached = false;
 
+  pageSize = 10
+  recordsTotal = 0
+  items = []
+  allItems = []
+
+  filterData;
+
   ngOnChanges() {
-    console.log('changed');
+    console.log('grid ngOnChanges');
     console.log(this.child.minValue);
   }
   ngAfterViewInit() {
     console.log('ngAfterViewInit');
+    //setInterval(function(){  }, 3000);
   }
 
   ngOnInit(): void {
@@ -108,13 +117,14 @@ export class LeadsComponent implements OnInit, AfterViewInit {
       map((value) => this._filter(value))
     );
 
-    this.LeadApiService.getPipelines().subscribe(
+    const subs_query_param = this.LeadApiService.getFilterValues().subscribe(
       (res: any) => {
         if (res.success) {
-          console.log(res);
-          this.pipelineMaster = res.data.pipelines;
+          console.log("getFilterValues", res);
+          this.filterData = res;
+          this.pipelineMaster = res.data.pipeline;
           this.currentSelectedPipeline = this.pipelineMaster[0].id;
-          this.listLeadGridView();
+          this.fetchLeadGridView();
           //this.triggerSnackBar(res.message, 'Close');
         } else {
           this.triggerSnackBar(res.message, 'Close');
@@ -125,13 +135,36 @@ export class LeadsComponent implements OnInit, AfterViewInit {
         this.triggerSnackBar(messages.toString(), 'Close');
       }
     );
+    this.subscriptions.push(subs_query_param);
   }
+  /*async getFilterData(){
+    console.log("getFiltersValue");
+    const subs_query = this.LeadApiService.getFilterValues().subscribe(
+      (res: any) => {
+        console.log("getFilterResult",res);
+        if (res.success) {
+          this.outputFilterData = res;
+          return true;
+        } else {
+          this.triggerSnackBar(res.message, 'Close');
+        }
+        return false;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        const messages = extractErrorMessagesFromErrorResponse(errorResponse);
+        this.triggerSnackBar(messages.toString(), 'Close');
+        return false;
+      }
+    );
+    this.subscriptions.push(subs_query);
+  }*/
   receiveMessage($event) {
-    console.log('anyParentMehtod');
-    console.log($event);
+    //console.log('anyParentMehtod');
+    //console.log($event);
     this.filterObj$ = $event;
     //this.filterObj$.next($event);
-    this.listLeadGridView();
+    this.listShow ? this.fetchLeadListView() : this.fetchLeadGridView();
+    //this.fetchLeadGridView();
   }
 
   private _filter(value: string): string[] {
@@ -148,7 +181,7 @@ export class LeadsComponent implements OnInit, AfterViewInit {
   }
 
   public setActive(num) {
-    console.log('set active', num);
+    //'set active', num);
     this.active = num;
     if (num == 1) {
       this.options = ['One', 'Two', 'Three'];
@@ -164,17 +197,18 @@ export class LeadsComponent implements OnInit, AfterViewInit {
   }
 
   public onSelectionChange(event) {
-    console.log(event.option.value);
+    //console.log(event.option.value);
   }
 
   showList() {
     this.listShow = true;
-    this.listLeadGridView();
+    this.fetchLeadListView();
   }
 
   showGrid() {
     this.listShow = false;
     this.showFilter = false;
+    this.fetchLeadGridView();
   }
 
   dropped(id, event: CdkDragDrop<string[]>) {
@@ -188,8 +222,8 @@ export class LeadsComponent implements OnInit, AfterViewInit {
         event.currentIndex
       );
     } else {
-      console.log('else');
-      console.log(
+      //console.log('else');
+      /*console.log(
         event.previousContainer.data,
         event.container.data,
         event.previousIndex,
@@ -198,7 +232,7 @@ export class LeadsComponent implements OnInit, AfterViewInit {
       console.log(
         'Moved Data is',
         event.previousContainer.data[event.currentIndex]
-      );
+      );*/
       let lead_id = event.previousContainer.data[event.currentIndex]['id'];
       transferArrayItem(
         event.previousContainer.data,
@@ -206,10 +240,10 @@ export class LeadsComponent implements OnInit, AfterViewInit {
         event.previousIndex,
         event.currentIndex
       );
-      this.LeadApiService.changeLeadStage(lead_id, id).subscribe(
+      const subs_query_param = this.LeadApiService.changeLeadStage(lead_id, id).subscribe(
         (res: any) => {
           if (res.success) {
-            console.log(res);
+            //console.log(res);
             this.triggerSnackBar(res.message, 'Close');
           } else {
             this.triggerSnackBar(res.message, 'Close');
@@ -220,6 +254,7 @@ export class LeadsComponent implements OnInit, AfterViewInit {
           this.triggerSnackBar(messages.toString(), 'Close');
         }
       );
+      this.subscriptions.push(subs_query_param);
     }
   }
 
@@ -233,21 +268,23 @@ export class LeadsComponent implements OnInit, AfterViewInit {
     alert(this.child.minValue);
   }
 
-  clickFilter() {
+  async clickFilter() {
+    //let isData = await this.getFilterData();
+    console.log(this.filterData);
     this.showFilter = true;
   }
 
   onPipelineChange() {
-    this.listLeadGridView();
+    this.fetchLeadGridView();
   }
 
   search(searchvalue: string) {
     this.searchText$.next(searchvalue);
   }
 
-  listLeadGridView() {
+  fetchLeadGridView() {
     this.StagesForDrag = [];
-    console.log(this.filterObj$);
+    //console.log(this.filterObj$);
     /*this.Leads = combineLatest(this.filterObj$)
       .pipe(
         // startWith([undefined, ]),
@@ -294,9 +331,9 @@ export class LeadsComponent implements OnInit, AfterViewInit {
         if (res.success) {
           if (res.data.data.length > 0) {
             this.Leads = res.data.data;
-            console.log('listLeadGridView');
-            console.log(res);
-            console.log(this.Leads);
+            //console.log('listLeadGridView');
+            //console.log(res);
+            //console.log(this.Leads);
             this.totalLead = res.data.summary.total_leads;
             this.totalValue = res.data.summary.total_value;
             this.avgValue = res.data.summary.lead_average;
@@ -324,8 +361,8 @@ export class LeadsComponent implements OnInit, AfterViewInit {
               this.connectedTo.push(stage.idref);
             }
             this.canShow = true;
-            console.log('stagesList');
-            console.log(this.StagesForDrag);
+            //console.log('stagesList');
+            //console.log(this.StagesForDrag);
           } else {
             this.canShow = false;
             this.triggerSnackBar('No Records found', 'Close');
@@ -341,11 +378,47 @@ export class LeadsComponent implements OnInit, AfterViewInit {
     );
   }
 
+  private fetchLeadListView() {
+    alert("fetchLeadListView");
+    this.filterObj$['pipeline_id'] = this.currentSelectedPipeline;
+    this.filterObj$['search'] = this.searchValue;
+    const subs_query_param = this.LeadApiService
+      .getLeadList(this.filterObj$)
+      .subscribe((res: any) => {
+        //console.log('fetchLeadListView', res)
+        if (!res.success) {
+          this.triggerSnackBar(res.message, 'Close')
+          return
+        }
+        this.recordsTotal = res.data.recordsTotal
+        const items = res.data.data.map(item => {
+          return {...item, Lead: true}
+        })
+        this.items = this.items.concat(items)
+        this.allItems = this.items
+        //this.updateOwners()
+      },
+      err => {
+        this.triggerSnackBar(err.error.message, 'Close')
+      })
+      this.subscriptions.push(subs_query_param);
+  }
+
   triggerSnackBar(message: string, action: string) {
     this.sb.openSnackBarBottomCenter(message, action);
   }
 
   compareFunction(o1: any, o2: any) {
     return o1 == o2;
+  }
+
+  ngAfterContentChecked() {
+    this.cdref.detectChanges();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((sub) => {
+      sub.unsubscribe();
+    });
   }
 }

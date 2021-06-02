@@ -39,6 +39,13 @@ export class LeadApiService {
     );
   }
 
+  getLeadList(data): Observable<any> {
+    return this.httpClient.post(
+      `${this.baseURL + environment.leads + "/index"}`,
+      data
+    );
+  }
+
   changeLeadStage(lead_id, stage_id){
     return this.httpClient.put(
       `${this.baseURL + environment.leads + "/stage/"+ lead_id}`,

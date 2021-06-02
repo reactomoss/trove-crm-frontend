@@ -34,26 +34,19 @@
                 </div> -->
                     <div class="text">
                         <mat-form-field class="statusSelect text-center">
-                            <mat-select [(value)]="selectedDisplay">
-                                <mat-option value="pipe1">
-                                    Pipe 1
+                            <mat-select [compareWith]="compareFunction" [(value)]="currentSelectedPipeline">
+                                <mat-option *ngFor="let pipeline of pipelines" value="{{pipeline.id}}">
+                                    {{pipeline.name}}
                                 </mat-option>
-                                <mat-option value="pipe2">
-                                    Pipe 2
-                                </mat-option>
-                                <mat-option value="pipe3">
-                                    Pipe 3
-                                </mat-option>
-
                             </mat-select>
                         </mat-form-field>
                     </div>
 
                 </div>
-                <div class="trapezoid2" [class.activePipe]="checkPipe('discovery')">
-                    <div class="text" (click)="clickDiscovery('discovery')">Discovery</div>
+                <div class="trapezoid2" *ngFor="let stage of SelectedPipelineStages" [class.activePipe]="checkPipe(stage)">
+                    <div class="text" (click)="clickDiscovery(stage)">{{stage.name}}</div>
                 </div>
-                <div class="trapezoid3" [class.activePipe]="checkPipe('content')">
+                <!--<div class="trapezoid3" [class.activePipe]="checkPipe('content')">
                     <div class="text" (click)="clickDiscovery('content')">Content</div>
                 </div>
                 <div class="trapezoid4" [class.activePipe]="checkPipe('qualified')">
@@ -64,7 +57,7 @@
                 </div>
                 <div class="trapezoid6" [class.activePipe]="checkPipe('closed')">
                     <div class="text" (click)="clickDiscovery('closed')">Closed Won</div>
-                </div>
+                </div>-->
                 <div class="trapezoid7">
                     <div class="text">
                         <button mat-button [matMenuTriggerFor]="closeMenu">
@@ -242,7 +235,7 @@
             <mat-expansion-panel-header [@.disabled]="true">
                 <mat-panel-title>
                     <div>
-                        Source<br> {{canShow}}
+                        Source<br>
                         <span>{{getSelectedSource()}}</span>
                     </div>
                 </mat-panel-title>
