@@ -33,6 +33,7 @@ import { extractErrorMessagesFromErrorResponse } from '../../services/extract-er
 import { FormStatus } from '../../services/form-status';
 import { LeadApiService } from '../../services/lead-api.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { A11yModule } from '@angular/cdk/a11y';
 
 interface HTMLInputEvent extends Event {
   target: HTMLInputElement & EventTarget;
@@ -212,13 +213,20 @@ export class HeaderComponent implements OnInit {
   }
 
   openCreateDialog() {
+    let dialCodes = this.companyData.countries.filter(x => x.dial_code).map(x => x.dial_code)
+    dialCodes = dialCodes.sort((a: string, b: string) => {
+      const a1 = a.replace(/ /g, ''), b1 = b.replace(/ /g, '')
+      if (a1.length < b1.length) return -1
+      else if (a1.length > b1.length) return 1
+      return a1.localeCompare(b1)
+    })
     const dialogRef = this.dialog.open(CompanyDialog, {
       width: '560px',
       autoFocus: false,
       data : { 
         countries: this.companyData.countries,
         emailOwners: this.companyData.owners,
-        dialCodes: this.companyData.countries.filter(x => x.dial_code).map(x => x.dial_code)
+        dialCodes: dialCodes
       }
     })
     dialogRef.afterClosed().subscribe((result) => {
@@ -687,7 +695,7 @@ export class CompanyDialog {
       organization_name: ['', [Validators.required]],
       mobile_code: ['', [Validators.required]],
       mobile_number: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern("^[0-9]*$")]],
-      work_phone: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern("^[0-9]*$")]],
+      work_phone: ['', [Validators.minLength(10), Validators.maxLength(10), Validators.pattern("^[0-9]*$")]],
       email: ['', [Validators.required, Validators.email]],
       address: [''],
       city: [''],

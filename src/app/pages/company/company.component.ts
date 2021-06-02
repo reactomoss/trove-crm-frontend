@@ -37,18 +37,15 @@ export class CompanyComponent implements OnInit {
   showFilter:boolean = false
   filters: CompanyFilters = null
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
-  hoveredItem
-  //detect for click card, check
-  detect: number
+  hoveredItem = null
   
   pageSize = 10
   recordsTotal = 0
-  allItems = []
   items = []
   owners = []
   selectedItems: item[] = []
   currentCategory = null
-  searchText = null
+  lastQuery: any = {}
 
   listShow: boolean = false
   typeString: string = 'Companies'
@@ -58,7 +55,7 @@ export class CompanyComponent implements OnInit {
 
   constructor(
     private modalService: NgbModal,
-    private companyApiService: CompanyApiService,
+    public companyApiService: CompanyApiService,
     public dialog: MatDialog, 
     private router: Router, 
     private dateService: DateService,
@@ -100,7 +97,6 @@ export class CompanyComponent implements OnInit {
           !this.owners.find(x => x.id == company.owner.id) && this.owners.push(company.owner)
         })
       }
-      this.allItems = this.items
       console.log(this.items)
     }*/
 
@@ -109,24 +105,27 @@ export class CompanyComponent implements OnInit {
   }
 
   update() {
+    this.lastQuery = {}
     this.listShow ? this.showList() : this.showGrid() 
   }
   
   showList() {
     this.listShow = true
     this.selectedItems = []
-    this.items = this.allItems = []
+    this.items = []
     
-    const query = { view_type: 'list', draw: 0, start: 0, length: this.pageSize }    
-    this.fetchCompanyListView(query)
+    // const query = { view_type: 'list', draw: 0, start: 0, length: this.pageSize }    
+    // this.fetchCompanyListView(query)
+    this.applyFilter()
   }
 
   showGrid() {
     this.listShow = false
     this.selectedItems = []
 
-    const query = { view_type: 'grid', draw: 0, start: 0, length: 20 }    
-    this.fetchCompanyGridView(query)
+    //const query = { view_type: 'grid', draw: 0, start: 0, length: 20 }    
+    //this.fetchCompanyGridView(query)
+    this.applyFilter()
   }
 
   private fetchCompanyListView(query) {
@@ -138,12 +137,11 @@ export class CompanyComponent implements OnInit {
           this.triggerSnackBar(res.message, 'Close')
           return
         }
-        this.recordsTotal = res.data.recordsTotal
+        this.recordsTotal = res.data.recordsFiltered
         const items = res.data.data.map(item => {
           return {...item, company: true}
         })
         this.items = this.items.concat(items)
-        this.allItems = this.items
         this.updateOwners()
       },
       err => {
@@ -168,7 +166,6 @@ export class CompanyComponent implements OnInit {
             this.items.push({...company, category: activity, company: true})
           })
         }
-        this.allItems = this.items
         this.updateOwners()
       },
       err => {
@@ -186,7 +183,7 @@ export class CompanyComponent implements OnInit {
 
   pageChanged(e) {
     console.log('pageChanged', e)
-    if (this.allItems.length >= e.length) {
+    if (this.items.length >= e.length) {
       return
     }
     const start = e.pageIndex * e.pageSize
@@ -204,7 +201,6 @@ export class CompanyComponent implements OnInit {
 
   clickCheck(e, item) {
     e.preventDefault()
-    this.detect = 1
     const index = this.selectedItems.indexOf(item, 0)
     if (index > -1) {
       this.selectedItems.splice(index, 1)
@@ -265,52 +261,73 @@ export class CompanyComponent implements OnInit {
   }
 
   applyFilter() {
+    let query = { }
+    if (this.companyApiService.searchText) {
+      query['search'] = this.companyApiService.searchText
+    }
+
     const filters = this.filters
-    console.log('applyFilter', filters)
-    if (!filters) return
+    if (filters) {
+      console.log('applyFilter', filters)
+      if (filters.owners.length > 0) {
+        query['created_user'] = filters.owners
+      }
+      if (filters.addedon >= 0) {
+        let startDate = null, lastDate = null
+        if (filters.activity == 6) {
+          startDate = moment(this.filters.addedonStartDate)
+          lastDate = moment(this.filters.addedonEndDate)
+        }
+        else {
+          const dateRange = this.dateService.getDateRange(this.filters.addedon)
+          startDate = dateRange.startDate?.format('DD-MM-YYYY')
+          lastDate = dateRange.lastDate?.format('DD-MM-YYYY')
+        }
+        query['added'] = {from: startDate, to: lastDate}
+      }
 
-    let query = { view_type: this.listShow? 'list' : 'grid' }
-    if (this.searchText) {
-      query['search'] = this.searchText
-    }
-    if (filters.owners.length > 0) {
-      query['created_user'] = filters.owners
-    }
-    if (filters.addedon >= 0) {
-      let startDate = null, lastDate = null
-      if (filters.activity == 6) {
-        startDate = moment(this.filters.addedonStartDate)
-        lastDate = moment(this.filters.addedonEndDate)
+      if (filters.activity >= 0) {
+        let startDate = null, lastDate = null
+        if (filters.activity == 6) {
+          startDate = moment(this.filters.activityStartDate)
+          lastDate = moment(this.filters.activityEndDate)
+        }
+        else {
+          const dateRange = this.dateService.getDateRange(this.filters.activity)
+          startDate = dateRange.startDate?.format('DD-MM-YYYY')
+          lastDate = dateRange.lastDate?.format('DD-MM-YYYY')
+        }
+        query['modified'] = {from: startDate, to: lastDate}
       }
-      else {
-        const dateRange = this.dateService.getDateRange(this.filters.addedon)
-        startDate = dateRange.startDate?.format('DD-MM-YYYY')
-        lastDate = dateRange.lastDate?.format('DD-MM-YYYY')
+      if (filters.status && filters.status !== 'All') {
+        query['status'] = filters.status == 'Active' ? 1 : 2
       }
-      query['added'] = {from: startDate, to: lastDate}
     }
 
-    if (filters.activity >= 0) {
-      let startDate = null, lastDate = null
-      if (filters.activity == 6) {
-        startDate = moment(this.filters.activityStartDate)
-        lastDate = moment(this.filters.activityEndDate)
-      }
-      else {
-        const dateRange = this.dateService.getDateRange(this.filters.activity)
-        startDate = dateRange.startDate?.format('DD-MM-YYYY')
-        lastDate = dateRange.lastDate?.format('DD-MM-YYYY')
-      }
-      query['modified'] = {from: startDate, to: lastDate}
-    }
-    if (filters.status && filters.status !== 'All') {
-      query['status'] = filters.status == 'Active' ? 1 : 2
-    }
-    console.log('applyFilter, query=', query)
+    query['view_type'] = this.listShow? 'list' : 'grid'    
+    console.log('applyFilter, query=', query, this.lastQuery)
 
-    this.items = this.allItems = []
-    if (this.listShow) this.fetchCompanyListView(query)
-    else this.fetchCompanyGridView(query)
+    // Compare query
+    if (!this.compareQuery(this.lastQuery, query)) {
+      this.lastQuery = query
+      this.items = []
+      if (this.listShow) this.fetchCompanyListView(query)
+      else this.fetchCompanyGridView(query)
+    }
+  }
+
+  compareQuery(object1, object2) {
+    const keys1 = Object.keys(object1);
+    const keys2 = Object.keys(object2);
+    if (keys1.length !== keys2.length) {
+      return false;
+    }
+    for (let key of keys1) {
+      if (object1[key] !== object2[key]) {
+        return false;
+      }
+    }
+    return true;
   }
 
   clickFilter() {
@@ -336,7 +353,6 @@ export class CompanyComponent implements OnInit {
     this.companyApiService
       .deleteCompany(companyIds)
       .subscribe((res: any) => {
-        console.log('deleteCompany', res)
         if (res.success) {
           this.deleteSelectedItems()
           this.triggerSnackBar(res.message, 'Close')
@@ -350,10 +366,9 @@ export class CompanyComponent implements OnInit {
   deleteSelectedItems() {
     console.log('deleteSelectedItems', this.selectedItems)
     this.selectedItems.forEach(item => {
-      const index = this.allItems.indexOf(item)
-      index >= 0 && this.allItems.splice(index, 1)
+      const index = this.items.indexOf(item)
+      index >= 0 && this.items.splice(index, 1)
     })
-    this.items = this.allItems
     this.selectedItems = []
   }
 }

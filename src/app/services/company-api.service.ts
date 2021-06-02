@@ -11,6 +11,7 @@ import { database } from 'firebase';
 })
 export class CompanyApiService {
   baseURL = environment.baseUrl;
+  public searchText: string = null
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
