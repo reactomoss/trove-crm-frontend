@@ -58,16 +58,16 @@ const routes: Routes = [
   // {path:'settings' , loadChildren: () => import('./settings/settings.module') .then(m=>m.SettingsModule)},
   { path: 'settings', component: SettingsComponent, canActivate:[AuthGuardService]},
   { path: 'leads', component: LeadsComponent, canActivate:[AuthGuardService]},
-  { path: 'lead_detail', component: DetailComponent },
-  { path: 'contact', component: ContactComponent },
-  { path: 'contact_detail', component: ContactDetailComponent },
-  { path: 'task', component: TaskComponent },
-  { path: 'company', component: CompanyComponent},
-  { path: 'company_detail', component: CompanyDetailComponent},
-  { path: 'addnote', component: AddnoteComponent},
-  { path: 'editnote', component: EditnoteComponent},
-  { path: 'sourcedetail' , component: SourcechartComponent},
-  { path: 'activities', component: ActivitylogComponent}
+  { path: 'lead_detail', component: DetailComponent, canActivate:[AuthGuardService]},
+  { path: 'contact', component: ContactComponent, canActivate:[AuthGuardService]},
+  { path: 'contact_detail', component: ContactDetailComponent, canActivate:[AuthGuardService]},
+  { path: 'task', component: TaskComponent, canActivate:[AuthGuardService]},
+  { path: 'company', component: CompanyComponent, canActivate:[AuthGuardService]},
+  { path: 'company_detail', component: CompanyDetailComponent, canActivate:[AuthGuardService]},
+  { path: 'addnote', component: AddnoteComponent, canActivate:[AuthGuardService]},
+  { path: 'editnote', component: EditnoteComponent, canActivate:[AuthGuardService]},
+  { path: 'sourcedetail' , component: SourcechartComponent, canActivate:[AuthGuardService]},
+  { path: 'activities', component: ActivitylogComponent, canActivate:[AuthGuardService]},
 ]
 @NgModule({
   declarations: [

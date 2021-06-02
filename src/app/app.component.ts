@@ -10,8 +10,8 @@ import { AccountApiService } from './services/account-api.service';
 export class AppComponent {
   title = 'Mikontact';
   constructor(authService: AccountApiService, router: Router) {
-    if (authService.isLoggedIn()) {
+    /*if (authService.isLoggedIn()) {
       router.navigate(['pages/dashboard']);
-    }
+    }*/
   }
 }
