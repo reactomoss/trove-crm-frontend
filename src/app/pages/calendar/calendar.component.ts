@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, Renderer2 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { FullCalendarComponent, CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/angular';
@@ -10,6 +10,7 @@ import * as moment from 'moment';
 
 export interface Reminder {
   count: number,
+  date: moment.Moment,
   events: EventApi[]
 }
 
@@ -40,7 +41,7 @@ export class CalendarComponent implements OnInit {
     initialView: 'dayGridMonth',
     //initialEvents: INITIAL_EVENTS,
     weekends: true,
-    dayMaxEvents: 2,
+    dayMaxEvents: 4,
     //editable: true,
     //selectable: true,
     //selectMirror: true,
@@ -60,9 +61,12 @@ export class CalendarComponent implements OnInit {
       reminder: true
   }
   dialogOpened = false;
+  reminderTitle = ''
+  reminderEvents = []
 
   constructor(
     public dialog: MatDialog, 
+    private renderer: Renderer2,
     private router: Router) {
   }
 
@@ -259,7 +263,21 @@ export class CalendarComponent implements OnInit {
       this.openAppointDialog(true, appointment)
     }
     else if (arg.event.extendedProps.reminder) {
-      const reminder = arg.event.extendedProps.reminder
+      const reminder: Reminder = arg.event.extendedProps.reminder
+      this.reminderTitle = reminder.date.format('MMM DD dddd')
+      this.reminderEvents = reminder.events.map(e => {
+        if (e.extendedProps.task) {
+          return { task: true, title: e.extendedProps.task.title }
+        }
+        if (e.extendedProps.appointment) {
+          return { task: false, title: e.extendedProps.appointment.title }
+        }
+      })
+      console.log(this.reminderEvents)
+      const reminderButton: HTMLElement = document.getElementById('reminderButton')
+      this.renderer.setStyle(reminderButton, "left", `${arg.jsEvent.x}px`)
+      this.renderer.setStyle(reminderButton, "top", `${arg.jsEvent.y-50}px`)      
+      reminderButton.click();
     }
   }
 
@@ -334,7 +352,7 @@ export class CalendarComponent implements OnInit {
       }
       else {
         reminders[key] = {
-          count: 1, events: [event]
+          count: 1, date: date, events: [event]
         }
       }
     }
@@ -364,8 +382,8 @@ export class CalendarComponent implements OnInit {
           extendedProps: {
             'reminder': reminder 
           },
-          color: '#e9effb',
-          textColor: '#315186'
+          color: 'rgb(233,251,236)',
+          textColor: '#000'
         })
       }
     }
