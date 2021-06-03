@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterViewInit, ViewChild, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, ViewChild, EventEmitter, Output } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -21,29 +21,40 @@ export interface item {
   styleUrls: ['./contact-table.component.css']
 })
 export class ContactTableComponent implements AfterViewInit {
+ 
+  @Input() length
+  @Input() pageSize
   @Input() propItems
   @Input() selectedItems
+  @Output() pagination = new EventEmitter();
 
-  displayedColumns: string[] = ['contact', 'company', 'last', 'since', 'city', 'added', 'type', 'status', 'phone'];
+  displayedColumns: string[] = ['contact', 'company', 'last', 'since', 'city', 'added', 'status', 'phone'];
   dataSource
   selectedTh: string = ''
+  items = []
+  page = null
 
   constructor(private dateService: DateService, private router: Router) {
-    this.dataSource = new MatTableDataSource(this.propItems);
+      
   }
 
   @ViewChild(MatSort, { static: false }) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngAfterViewInit(): void {
-    this.dataSource = new MatTableDataSource(this.propItems)
-    this.dataSource.sort = this.sort
-    this.dataSource.paginator = this.paginator
-
+      
   }
 
   ngOnChanges() {
-    this.dataSource = new MatTableDataSource(this.propItems)
+    console.log('ngOnChanges', this.length, this.propItems)
+    this.items = [...this.propItems]
+    if (this.items.length > 0 && this.items.length < this.length) {
+      const displayItems = this.items.length % this.pageSize;
+      if (displayItems == this.pageSize - 1) {
+        this.items.push({}) //for pagination
+      }
+    }
+    this.dataSource = new MatTableDataSource(this.items)
     this.dataSource.sort = this.sort
     this.dataSource.paginator = this.paginator
   }
@@ -78,5 +89,10 @@ export class ContactTableComponent implements AfterViewInit {
 
   clickItem(item) {
     this.router.navigate(['/pages/contact_detail'])
+  }
+  
+  pageChanged(event) {
+    this.page = event
+    this.pagination.emit(event)
   }
 }

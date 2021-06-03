@@ -115,7 +115,7 @@ export class CompanyComponent implements OnInit {
     this.items = []
     
     // const query = { view_type: 'list', draw: 0, start: 0, length: this.pageSize }    
-    // this.fetchCompanyListView(query)
+    // this.fetchListView(query)
     this.applyFilter()
   }
 
@@ -124,15 +124,15 @@ export class CompanyComponent implements OnInit {
     this.selectedItems = []
 
     //const query = { view_type: 'grid', draw: 0, start: 0, length: 20 }    
-    //this.fetchCompanyGridView(query)
+    //this.fetchGridView(query)
     this.applyFilter()
   }
 
-  private fetchCompanyListView(query) {
+  private fetchListView(query) {
     this.contactService
       .getCompanyList(query)
       .subscribe((res: any) => {
-        console.log('fetchCompanyListView', res)
+        console.log('fetchListView', res)
         if (!res.success) {
           this.triggerSnackBar(res.message, 'Close')
           return
@@ -149,11 +149,11 @@ export class CompanyComponent implements OnInit {
       })
   }
 
-  private fetchCompanyGridView(query) {
+  private fetchGridView(query) {
     this.contactService
       .getCompanyList(query)
       .subscribe((res: any) => {
-        console.log('fetchCompanyGridView', res)
+        console.log('fetchGridView', res)
         if (!res.success) {
           this.triggerSnackBar(res.message, 'Close')
           return
@@ -188,7 +188,7 @@ export class CompanyComponent implements OnInit {
     }
     const start = e.pageIndex * e.pageSize
     const query = { view_type: 'list', draw: 0, start: start, length: e.pageSize }    
-    this.fetchCompanyListView(query)
+    this.fetchListView(query)
   }
 
   clickCard(item) {
@@ -311,8 +311,8 @@ export class CompanyComponent implements OnInit {
     if (!this.compareQuery(this.lastQuery, query)) {
       this.lastQuery = query
       this.items = []
-      if (this.listShow) this.fetchCompanyListView(query)
-      else this.fetchCompanyGridView(query)
+      if (this.listShow) this.fetchListView(query)
+      else this.fetchGridView(query)
     }
   }
 
@@ -347,7 +347,7 @@ export class CompanyComponent implements OnInit {
     return false
   }
 
-  deleteCompany(e) {
+  deleteItem(e) {
     console.log('deleteCompnay', this.selectedItems)
     const companyIds = this.selectedItems.map(item => item.id)
     this.contactService

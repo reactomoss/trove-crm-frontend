@@ -158,8 +158,9 @@ span {
 
 .threeDiv, .twoDiv {
     display: flex;
-    align-items: top;
-    justify-content: space-between;
+    align-items: center;
+    /*align-items: top;
+    justify-content: space-between;*/
 }
 
 .threeDiv div:nth-child(1) {

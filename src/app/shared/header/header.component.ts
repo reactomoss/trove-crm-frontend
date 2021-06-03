@@ -584,11 +584,11 @@ export class ContactDialog {
 
   reactiveForm() {
     this.form = this.fb.group({
-      first_name: ['', [Validators.required]],
-      last_name: ['', [Validators.required]],
+      first_name: ['Loneyn', [Validators.required]],
+      last_name: ['Messoal', [Validators.required]],
       mobile_code: ['', [Validators.required]],
       mobile_number: [
-        '',
+        '3334411298',
         [
           Validators.required,
           Validators.minLength(10),
@@ -604,7 +604,8 @@ export class ContactDialog {
           Validators.pattern('^[0-9]*$'),
         ],
       ],
-      email: ['', [Validators.required, Validators.email]],
+      email: ['ktageisk333@gmail.com', [Validators.required, Validators.email]],
+      owner_id: ['', [Validators.required]],
       organization: [''],
       address: [''],
       skype_id: [''],
@@ -644,7 +645,7 @@ export class ContactDialog {
   }
 
   submitForm(): void {
-    console.log(this.form.value);
+    console.log('contact.submit', this.form.value, 'Image:', this.imageSrc);
     if (!this.form.valid) {
       return;
     }
@@ -656,6 +657,10 @@ export class ContactDialog {
         number: this.form.value.mobile_number,
       },
     };
+    /*if (this.imageSrc) {
+      post_data['profile_pic'] = this.imageSrc
+    }*/
+    
     this.contactService.createContact(post_data).subscribe(
       (res: any) => {
         console.log('contact created', res);
@@ -706,6 +711,7 @@ export class ContactDialog {
   }
 
   readURL(event: HTMLInputEvent): void {
+    console.log('readURL', event.target)
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
 

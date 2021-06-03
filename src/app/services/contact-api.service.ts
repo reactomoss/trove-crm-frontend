@@ -38,19 +38,19 @@ export class ContactApiService {
   }
 
   getContactList(data): Observable<any> {
-    const API_URL = `${this.baseURL + environment.company_index}`
+    const API_URL = `${this.baseURL + environment.contacts_index}`
     return this.httpClient.post(API_URL, data)
   }
 
   deleteContact(companyIds: any[]): Observable<any> {
     if (companyIds.length > 1) {
       const data = { ids: companyIds }
-      const API_URL = `${this.baseURL + environment.company_delete_multiple}`
+      const API_URL = `${this.baseURL + environment.contacts_delete_multiple}`
       return this.httpClient.post(API_URL, data)
     } else {
       const companyId = companyIds[0]
       const API_URL = `${
-        this.baseURL + environment.company_delete
+        this.baseURL + environment.contacts_delete
       }/${companyId}`
       return this.httpClient.delete(API_URL)
     }

@@ -40,6 +40,9 @@ export const environment = {
   company_delete: 'organizations',
   company_delete_multiple: 'organizations?_method=DELETE',
   contacts: 'contacts',
+  contacts_index: 'contacts/index',
+  contacts_delete: 'contacts',
+  contacts_delete_multiple: 'contacts?_method=DELETE',
   leads: 'leads',
 };
 
