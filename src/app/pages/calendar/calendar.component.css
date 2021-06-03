@@ -170,6 +170,25 @@ ul.addPanelUL li {
     background-color: rgba(235, 238, 242, 1);
 }
 
+.reminderEventCard {
+    padding: 12px!important;
+}
+
+.reminderButton {
+    position: absolute;
+    left: 100px;
+    top: 350px
+}
+
+.reminderTitle {
+    font-size: 14px;
+    margin: 0px!important;
+}
+
+::ng-deep .mat-card-header-text {
+    margin: 0px!important;
+}
+
 ::ng-deep .fullcalendar table {
     border-radius: 7px;
     background: white;
