@@ -35,13 +35,18 @@ export const environment = {
   listroles: 'settings/roles/index',
   notifications: 'settings/notifications',
   pipelines: 'settings/pipeline',
+  /*======= Company ====================*/
   company: 'organizations',
   company_index: 'organizations/index',
   company_delete: 'organizations',
   company_delete_multiple: 'organizations?_method=DELETE',
+  /*======= Leads ====================*/
   leads: 'leads',
   pipelineMaster: 'pipelines',
   leadFilter: 'leads/filter',
+  /*======= Activity ====================*/
+  verifyActivity: 'verify-acitivity',
+  activity: 'activity'
 };
 
 /*

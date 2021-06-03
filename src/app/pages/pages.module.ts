@@ -64,8 +64,8 @@ const routes: Routes = [
   { path: 'task', component: TaskComponent, canActivate:[AuthGuardService]},
   { path: 'company', component: CompanyComponent, canActivate:[AuthGuardService]},
   { path: 'company_detail', component: CompanyDetailComponent, canActivate:[AuthGuardService]},
-  { path: 'addnote', component: AddnoteComponent, canActivate:[AuthGuardService]},
-  { path: 'editnote', component: EditnoteComponent, canActivate:[AuthGuardService]},
+  { path: 'addnote', component: AddnoteComponent},
+  { path: 'editnote', component: EditnoteComponent},
   { path: 'sourcedetail' , component: SourcechartComponent, canActivate:[AuthGuardService]},
   { path: 'activities', component: ActivitylogComponent, canActivate:[AuthGuardService]},
 ]
