@@ -4,7 +4,7 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 import { SnackBarService} from '../../shared/snack-bar.service'
 import { NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-import { CompanyApiService } from '../../services/company-api.service';
+import { ContactApiService } from '../../services/contact-api.service';
 import { CompanyFilters } from './filter/filter.component';
 import { DateService } from '../../service/date.service'
 import * as moment from 'moment';
@@ -55,7 +55,7 @@ export class CompanyComponent implements OnInit {
 
   constructor(
     private modalService: NgbModal,
-    public companyApiService: CompanyApiService,
+    public contactService: ContactApiService,
     public dialog: MatDialog, 
     private router: Router, 
     private dateService: DateService,
@@ -100,7 +100,7 @@ export class CompanyComponent implements OnInit {
       console.log(this.items)
     }*/
 
-    this.companyApiService.obs.subscribe(() => this.update());
+    this.contactService.obs.subscribe(() => this.update());
     this.showGrid()
   }
 
@@ -129,7 +129,7 @@ export class CompanyComponent implements OnInit {
   }
 
   private fetchCompanyListView(query) {
-    this.companyApiService
+    this.contactService
       .getCompanyList(query)
       .subscribe((res: any) => {
         console.log('fetchCompanyListView', res)
@@ -150,7 +150,7 @@ export class CompanyComponent implements OnInit {
   }
 
   private fetchCompanyGridView(query) {
-    this.companyApiService
+    this.contactService
       .getCompanyList(query)
       .subscribe((res: any) => {
         console.log('fetchCompanyGridView', res)
@@ -262,8 +262,8 @@ export class CompanyComponent implements OnInit {
 
   applyFilter() {
     let query = { }
-    if (this.companyApiService.searchText) {
-      query['search'] = this.companyApiService.searchText
+    if (this.contactService.searchText) {
+      query['search'] = this.contactService.searchText
     }
 
     const filters = this.filters
@@ -350,7 +350,7 @@ export class CompanyComponent implements OnInit {
   deleteCompany(e) {
     console.log('deleteCompnay', this.selectedItems)
     const companyIds = this.selectedItems.map(item => item.id)
-    this.companyApiService
+    this.contactService
       .deleteCompany(companyIds)
       .subscribe((res: any) => {
         if (res.success) {

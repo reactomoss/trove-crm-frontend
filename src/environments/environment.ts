@@ -39,6 +39,7 @@ export const environment = {
   company_index: 'organizations/index',
   company_delete: 'organizations',
   company_delete_multiple: 'organizations?_method=DELETE',
+  contacts: 'contacts',
   leads: 'leads',
 };
 

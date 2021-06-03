@@ -38,7 +38,7 @@
                 </mat-menu>
 
                 <mat-form-field class="searchForm noLabelForm noSpaceForm" appearance="outline" >
-                    <input type="text" matInput placeholder="Search..." [(ngModel)]="companyApiService.searchText" (keydown.enter)="applyFilter()">
+                    <input type="text" matInput placeholder="Search..." [(ngModel)]="contactService.searchText" (keydown.enter)="applyFilter()">
                     <mat-icon matSuffix>search</mat-icon>
                 </mat-form-field>
             </div>
