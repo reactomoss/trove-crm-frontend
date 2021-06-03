@@ -158,7 +158,8 @@ span {
 
 .threeDiv, .twoDiv {
     display: flex;
-    align-items: center;
+    align-items: top;
+    justify-content: space-between;
 }
 
 .threeDiv div:nth-child(1) {
@@ -236,4 +237,13 @@ input.mat-input-element , textarea.mat-input-element {
 }
 .pl-15 {
   padding-left: 15px;
+}
+
+::ng-deep.mat-form-field-hint-wrapper {
+    display: block!important;
+}
+
+::ng-deep.mat-form-field-subscript-wrapper {
+    position: inherit!important;
+    padding: 0px!important;
 }

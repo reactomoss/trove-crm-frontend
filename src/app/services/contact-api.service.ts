@@ -34,7 +34,7 @@ export class ContactApiService {
   }
 
   createContact(data: any): Observable<any> {
-    return this.httpClient.post(`${this.baseURL + environment.company}`, data)
+    return this.httpClient.post(`${this.baseURL + environment.contacts}`, data)
   }
 
   getContactList(data): Observable<any> {

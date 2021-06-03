@@ -561,6 +561,7 @@ export class ContactDialog {
   companyList = [];
   emailOwners = [];
   dialCodes = [];
+  errors = null
 
   constructor(
     private contactService: ContactApiService,
@@ -604,7 +605,7 @@ export class ContactDialog {
         ],
       ],
       email: ['', [Validators.required, Validators.email]],
-      company_name: [''],
+      organization: [''],
       address: [''],
       skype_id: [''],
       description: [''],
@@ -643,6 +644,41 @@ export class ContactDialog {
   }
 
   submitForm(): void {
+    console.log(this.form.value);
+    if (!this.form.valid) {
+      return;
+    }
+
+    const post_data = {
+      ...this.form.value,
+      mobile: {
+        code: this.form.value.mobile_code,
+        number: this.form.value.mobile_number,
+      },
+    };
+    this.contactService.createContact(post_data).subscribe(
+      (res: any) => {
+        console.log('contact created', res);
+        if (res.success) {
+          this.dialogRef.close(res.message);
+          this.contactService.notify();
+        } else {
+          this.sb.openSnackBarBottomCenter(res.message, 'Close');
+        }
+      },
+      (err) => {
+        this.errors = {};
+        const data = err.error.data;
+        for (const key in data) {
+          if (Array.isArray(data[key])) this.errors[key] = data[key][0];
+          else this.errors[key] = data[key];
+        }
+        console.log('this.errors', this.errors);
+        const messages = Object.values(this.errors).join('\r\n');
+        console.log(messages);
+        this.sb.openSnackBarTopCenterAsDuration(messages, 'Close', 4000);
+      }
+    );
   }
 
   checkMandatory(e) {
