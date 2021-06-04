@@ -50,6 +50,7 @@ import { ActivitylistComponent } from './detail/activitylist/activitylist.compon
 import { ContactActivitylistComponent } from './contact-detail/contact-activitylist/contact-activitylist.component';
 import { CompanyActivitylistComponent } from './company-detail/company-activitylist/company-activitylist.component';
 import { RolesComponent } from './settings/usersroles/roles/roles.component';
+import { ViewnoteComponent } from './viewnote/viewnote.component';
 
 //canActivate:[AuthGuardService]
 const routes: Routes = [
@@ -66,6 +67,7 @@ const routes: Routes = [
   { path: 'company_detail', component: CompanyDetailComponent, canActivate:[AuthGuardService]},
   { path: 'addnote', component: AddnoteComponent},
   { path: 'editnote', component: EditnoteComponent},
+  { path: 'viewnote', component: ViewnoteComponent},
   { path: 'sourcedetail' , component: SourcechartComponent, canActivate:[AuthGuardService]},
   { path: 'activities', component: ActivitylogComponent, canActivate:[AuthGuardService]},
 ]
@@ -107,6 +109,7 @@ const routes: Routes = [
     CompanyMailDialog,
     EditnoteComponent,
     AddnoteComponent,
+    ViewnoteComponent,
     SourcechartComponent,
     SourceFilterComponent,
     SourceTableComponent,
