@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { AccountApiService } from './services/account-api.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +9,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Mikontact';
+  constructor(authService: AccountApiService, router: Router) {
+    /*if (authService.isLoggedIn()) {
+      router.navigate(['pages/dashboard']);
+    }*/
+  }
 }
