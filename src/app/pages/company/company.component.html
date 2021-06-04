@@ -13,7 +13,11 @@
                     </button>
             </div> -->
             <!-- <ngx-simplebar [options]="scrollOptions" class="filterContainer1"> -->
-                <company-filter *ngIf="showFilter" [owners]="owners" (closeDialog)="drawer.toggle()" (notifyFilters)="setFilter($event)"></company-filter>
+                <company-filter *ngIf="showFilter" 
+                    [companyOwners]="companyOwners" 
+                    (closeDialog)="drawer.toggle()" 
+                    (notifyFilters)="setFilter($event)">
+                </company-filter>
             <!-- </ngx-simplebar> -->
             <!-- <contact-filter></contact-filter> -->
         </div>
@@ -23,7 +27,7 @@
         <div fxLayout="row" fxLayoutAlign="space-between" fxLayout.xs="column">
             <div class="topBarDiv" >
                 <button mat-button [matMenuTriggerFor]="companyMenu">
-                    <span class="title fontObjektivMk mt-1">{{typeString}}</span>
+                    <span class="title fontObjektivMk mt-1">Companies</span>
                     <mat-icon class="iconInButton">arrow_drop_down</mat-icon>
                 </button>
                 <mat-menu #companyMenu="matMenu" class="settingsPanel">

@@ -5,10 +5,9 @@ import { Router } from '@angular/router';
 import { SnackBarService} from '../../shared/snack-bar.service'
 import { NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { ContactApiService } from '../../services/contact-api.service';
-import { CompanyFilters } from './filter/filter.component';
+import { CompanyFilters, CompanyOwner } from './filter/filter.component';
 import { DateService } from '../../service/date.service'
 import * as moment from 'moment';
-import response_companies from './company.sample'
 
 export interface item {
   id: number;
@@ -42,16 +41,13 @@ export class CompanyComponent implements OnInit {
   pageSize = 10
   recordsTotal = 0
   items = []
-  owners = []
+  companyOwners: CompanyOwner[] = []
   selectedItems: item[] = []
   currentCategory = null
   lastQuery: any = {}
 
   listShow: boolean = false
-  typeString: string = 'Companies'
-  /*Modal dialog*/
   closeResult = '';
-  /*Modal dialog*/
 
   constructor(
     private modalService: NgbModal,
@@ -87,19 +83,6 @@ export class CompanyComponent implements OnInit {
   /*Modal dialog*/
 
   ngOnInit(): void {
-    /*const res = response_companies
-    if (res.success) {
-      const data = res.data.id
-      for (const activity in data) {
-        const companies: any[] = data[activity]
-        companies.map((company, index) => {
-          this.items.push({...company, category: activity, company: true, last_activity: company.updated_at})
-          !this.owners.find(x => x.id == company.owner.id) && this.owners.push(company.owner)
-        })
-      }
-      console.log(this.items)
-    }*/
-
     this.contactService.obs.subscribe(() => this.update());
     this.showGrid()
   }
@@ -113,18 +96,12 @@ export class CompanyComponent implements OnInit {
     this.listShow = true
     this.selectedItems = []
     this.items = []
-    
-    // const query = { view_type: 'list', draw: 0, start: 0, length: this.pageSize }    
-    // this.fetchListView(query)
     this.applyFilter()
   }
 
   showGrid() {
     this.listShow = false
     this.selectedItems = []
-
-    //const query = { view_type: 'grid', draw: 0, start: 0, length: 20 }    
-    //this.fetchGridView(query)
     this.applyFilter()
   }
 
@@ -174,11 +151,11 @@ export class CompanyComponent implements OnInit {
   }
 
   private updateOwners() {
-    this.owners = []
+    this.companyOwners = []
     this.items.forEach(item => {
-      !this.owners.find(x => x.id == item.owner.id) && this.owners.push(item.owner)
+      !this.companyOwners.find(x => x.id == item.owner.id) && this.companyOwners.push(item.owner)
     })
-    console.log('updateOwners', this.owners)
+    console.log('updateOwners', this.companyOwners)
   }
 
   pageChanged(e) {

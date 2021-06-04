@@ -48,49 +48,49 @@
                     <div class="">
                         <mat-form-field appearance="outline" class="serachForm noLabelForm whiteBackground">
                             <input class="typo" matInput placeholder="Search by owner" aria-label="Search by owner"
-                                [matAutocomplete]="autoCreatedBy" [formControl]="contactCtrl">
+                                [matAutocomplete]="autoCreatedBy" [formControl]="ownerFilterCtrl">
                             <mat-autocomplete #autoCreatedBy="matAutocomplete" class="matAutoComplete001">
-                                <mat-option class="h-auto" *ngFor="let state of filteredCont | async" [value]="state.name">
+                                <mat-option class="h-auto" *ngFor="let item of ownerFilterObserver | async" [value]="item.full_name">
                                     <div class="row" (click)="$event.stopPropagation()">
                                         <div class="col-auto pr-0">
                                             <mat-checkbox color="primary" class="customCheckBox"
-                                                [(ngModel)]="state.isChecked" (change)="createdBySelection(state)">
+                                                [(ngModel)]="item.isChecked" (change)="filterByOwner(item)">
                                             </mat-checkbox>
                                         </div>
                                         <div class="col pl-0"
-                                            (click)="state.isChecked = !state.isChecked;createdBySelection(state)">
+                                            (click)="item.isChecked = !item.isChecked;filterByOwner(item)">
                                             <span class="bgRoundIcon adjThis">
                                                 <mat-icon class="color-455B66 mr-0">person</mat-icon>
                                             </span>
-                                            <span class="ml-2 typo">{{state.name}}</span>
+                                            <span class="ml-2 typo">{{item.full_name}}</span>
                                         </div>
                                     </div>
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
-                        <div [class.hgt-150]="selectedCreatedBy.length > 3" class="customVerScroll matAutoComplete001">
-                            <div class="" *ngFor="let state of selectedCreatedBy">
+                        <div [class.hgt-150]="selectedOwners.length > 3" class="customVerScroll matAutoComplete001">
+                            <div class="" *ngFor="let item of selectedOwners">
                                 <div class="row align-items-center">
                                     <div class="col-auto pr-0">
                                         <mat-checkbox color="primary" class="customCheckBox"
-                                            [(ngModel)]="state.isChecked" (change)="createdBySelection(state)">
+                                            [(ngModel)]="item.isChecked" (change)="filterByOwner(item)">
                                         </mat-checkbox>
                                     </div>
                                     <div class="col-auto p-0"
-                                        (click)="state.isChecked = !state.isChecked;createdBySelection(state)">
+                                        (click)="item.isChecked = !item.isChecked;filterByOwner(item)">
                                         <span class="bgRoundIcon bg-white">
                                             <mat-icon class="mr-0 color-455B66">person</mat-icon>
                                         </span>
                                     </div>
                                     <div class="col pl-0"
-                                        (click)="state.isChecked = !state.isChecked;createdBySelection(state)">
-                                        <span class="ml-2 typo">{{state.name}}</span>
+                                        (click)="item.isChecked = !item.isChecked;filterByOwner(item)">
+                                        <span class="ml-2 typo">{{item.full_name}}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="py-3 text-right">
-                            <button mat-button class="clearBtn" (click)="clearCreatedBy()">Clear</button>
+                            <button mat-button class="clearBtn" (click)="clearOwner()">Clear</button>
                         </div>
                     </div>
                 </div>

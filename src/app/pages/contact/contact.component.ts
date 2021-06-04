@@ -5,7 +5,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { SnackBarService} from '../../shared/snack-bar.service'
 import { NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { ContactApiService } from '../../services/contact-api.service';
-import { ContactFilters } from './filter/filter.component';
+import { ContactFilters, ContactOwner } from './filter/filter.component';
 import { DateService } from '../../service/date.service'
 import * as moment from 'moment';
 
@@ -37,20 +37,17 @@ export class ContactComponent implements OnInit {
   filters: ContactFilters = null
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
   hoveredItem = null
-
+  
   pageSize = 10
   recordsTotal = 0
   items = []
-  owners = []
+  companies: ContactOwner[] = []
   selectedItems: item[] = []
   currentCategory = null
   lastQuery: any = {}
 
   listShow: boolean = false
-  typeString: string = 'Contact'
-  /*Modal dialog*/
   closeResult = '';
-  /*Modal dialog*/
 
   constructor(
     private modalService: NgbModal,
@@ -86,7 +83,6 @@ export class ContactComponent implements OnInit {
   /*Modal dialog*/
 
   ngOnInit(): void {
-
     this.contactService.obs.subscribe(() => this.update());
     this.showGrid()
   }
@@ -121,7 +117,7 @@ export class ContactComponent implements OnInit {
         const contacts = res.data.contacts
         this.recordsTotal = contacts.recordsFiltered
         this.items = this.items.concat(contacts.data)
-        this.updateOwners()
+        this.updateCompanies()
       },
       err => {
         this.triggerSnackBar(err.error.message, 'Close')
@@ -145,19 +141,32 @@ export class ContactComponent implements OnInit {
             this.items.push({...contact, category: activity, company: false})
           })
         }
-        this.updateOwners()
+        this.updateCompanies()
       },
       err => {
         this.triggerSnackBar(err.error.message, 'Close')
       })
   }
 
-  private updateOwners() {
-    /*this.owners = []
+  private updateCompanies() {
+    this.companies = []
+
+    let idArray = [], nameArray = []
     this.items.forEach(item => {
-      !this.owners.find(x => x.id == item.owner.id) && this.owners.push(item.owner)
+      if (item.organization_id && item.organization_id.length > 0) {
+        idArray = idArray.concat(item.organization_id)
+        nameArray = nameArray.concat(item.organization_name.split(','))
+      }
     })
-    console.log('updateOwners', this.owners)*/
+    idArray = Array.from(new Set(idArray))
+    nameArray = Array.from(new Set(nameArray))
+
+    if (idArray.length === nameArray.length) {
+      this.companies = idArray.map((id, index) => {
+        return {id: id, name: nameArray[index]}
+      })
+    }
+    console.log('updateCompanies', this.companies)
   }
 
   pageChanged(e) {
@@ -249,7 +258,7 @@ export class ContactComponent implements OnInit {
     if (filters) {
       console.log('applyFilter', filters)
       if (filters.owners.length > 0) {
-        query['created_user'] = filters.owners
+        query['Created_organization'] = filters.owners
       }
       if (filters.addedon >= 0) {
         let startDate = null, lastDate = null

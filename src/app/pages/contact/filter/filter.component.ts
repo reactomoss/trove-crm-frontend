@@ -15,26 +15,10 @@ export interface ContactFilters {
   addedonEndDate: Date
   owners: number[]
 }
-
-export class Type {
-  constructor(public name: string, public selected?: boolean) {
-    if (selected === undefined) selected = false;
-  }
-}
-export interface createContact {
+export interface ContactOwner {
   id: number;
   name: string;
   isChecked?: boolean;
-}
-export interface createCompany {
-  name: string;
-  isChecked?: boolean;
-}
-// multi autocomplete
-export class Contact {
-  constructor(public name: string, public selected?: boolean) {
-    if (selected === undefined) selected = false;
-  }
 }
 
 @Component({
@@ -43,18 +27,13 @@ export class Contact {
   styleUrls: ['./filter.component.css']
 })
 export class ContactFilterComponent implements OnInit {
-  @Input() owners = null;
+  @Input() companies: ContactOwner[] = [];
   @Output() closeDialog = new EventEmitter();
   @Output() notifyFilters = new EventEmitter<ContactFilters>();
-  contactCtrl = new FormControl();
-  companyCtrl = new FormControl();
-  filteredCont: Observable<createContact[]>;
-  filteredComp: Observable<createCompany[]>;
-  selectedCreatedBy: createContact[] = [];
-  selectedCompany: createCompany[] = [];
-  status: string
+  ownerFilterCtrl = new FormControl();
+  ownerFilterObserver: Observable<ContactOwner[]>;
+  selectedOwners: ContactOwner[] = [];
   statusTypes: string[] = ['All', 'Active', 'Inactive']
-  filterCount: number = 0
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 }
   filters: ContactFilters = {
     count: 0, 
@@ -69,104 +48,36 @@ export class ContactFilterComponent implements OnInit {
   }
   dateFormat = 'DD/MM/YYYY'
 
-  createdBySelection(contact: createContact){
-    console.log('createdBySelection', contact)
-    if (contact.isChecked) {
-      this.selectedCreatedBy = [...this.selectedCreatedBy, contact]
+  filterByOwner(item: ContactOwner){
+    if (item.isChecked) {
+      this.selectedOwners = [...this.selectedOwners, item];
     }
     else {
-      let index = this.selectedCreatedBy.findIndex(c => c.name === contact.name);
-      this.selectedCreatedBy.splice(index,1);
+      let index = this.selectedOwners.findIndex(c => c.name === item.name);
+      this.selectedOwners.splice(index, 1);
     }
-    this.filters.owners = this.selectedCreatedBy.map(item => item.id)
+    this.filters.owners = this.selectedOwners.map(s => s.id)
     this.notify()
-  }
-  companySelection(contact: createCompany){
-    if(contact.isChecked) {
-      this.selectedCompany = [...this.selectedCompany, contact]
-    }else {
-      let index = this.selectedCompany.findIndex(c => c.name === contact.name);
-      this.selectedCompany.splice(index,1);
-    }
   }
 
   dateTypes: number[] = [0, 1, 2, 3, 4, 5, 6]
   dateTypeString: string[] = ['Today', 'Yesterday', 'Last Week', 'This month', 'Last month', 'This Quarter', 'Custom']
   dateType: number
-  startDate: Date = null
-  endDate: Date = null
 
   addDateTypes: number[] = [0, 1, 2, 3, 4, 5, 6]
   addDateTypeString: string[] = ['Today', 'Yesterday', 'Last Week', 'This month', 'Last month', 'This Quarter', 'Custom']
-  addDateType: number
-  addStartDate: Date = null
-  addEndDate: Date = null
 
-  contactType: string = 'contact'
-  contacts: createContact[] = [];
-  companys: createCompany[] = [
-    {
-      name: 'Company 1',
-    },
-    {
-      name: 'Company 2'
-    },
-    {
-      name: 'Company 3'
-    },
-    {
-      name: 'Company 4'
-    }
-  ];
-
-  types: Type[] = [
-    new Type('Added by user'),
-    new Type('Import from CSV'),
-    new Type('Google contacts'),
-    new Type('Twitter contacts'),
-    new Type('Outlook contacts')
-  ]
-
-  // multi autocomplete
 
   constructor(private dateService: DateService) {
-    this.filteredCont = this.contactCtrl.valueChanges
+    this.ownerFilterObserver = this.ownerFilterCtrl.valueChanges
       .pipe(
         startWith(''),
-        map(state => state ? this._filterStates(state) : this.contacts.slice())
+        map(state => state ? this._filterStatesComp(state) : this.companies.slice())
       );
-    //   this.filteredComp = this.companyCtrl.valueChanges
-    //   .pipe(
-    //     startWith(''),
-    //     map(state => state ? this._filterStatesComp(state) : this.companys.slice())
-    //   );
   }
-
 
   ngOnInit(): void {
-    this.contacts = this.owners.map(owner => {
-      return { id: owner.id, name: owner.full_name }
-    })
-  }
 
-  public displayArray(arr) {
-    let ret = ''
-    arr.length == 1 && (ret += arr[0])
-    arr.length == 2 && (ret += arr[0] + ', ' + arr[1])
-    arr.length > 2 && (ret += arr[0] + ', ' + arr[1] + ' +' + (arr.length - 2))
-    return ret
-  }
-
-  clickType(e, type) {
-    type.selected = e.checked
-  }
-
-  displaySelectedTypes() {
-    let arr = []
-    this.types.forEach(e => {
-      e.selected && arr.push(e.name)
-    })
-    return this.displayArray(arr)
   }
 
   public getSelectedDate() {
@@ -202,7 +113,7 @@ export class ContactFilterComponent implements OnInit {
     if (this.filters.status) {
       filterCount += 1;
     }
-    if (this.selectedCreatedBy.length > 0) {
+    if (this.selectedOwners.length > 0) {
       filterCount += 1;
     }
     if (this.filters.activity != -1 && (this.filters.activity || this.filters.activity == 0)) {
@@ -211,25 +122,14 @@ export class ContactFilterComponent implements OnInit {
     if (this.filters.addedon != -1 && (this.filters.addedon || this.filters.addedon == 0)) {
       filterCount += 1;
     }
-    if (this.displaySelectedTypes() != '') {
-      filterCount += 1;
-    }
     return filterCount;
   }
 
   clearAll() {
-    this.clearType();
     this.clearStatus();
-    this.clearCreatedBy();
-    this.clearCompany();
+    this.clearOwner();
     this.clearDate();
     this.clearAddDate();
-  }
-
-  clearType() {
-    this.types.forEach(e => {
-      e.selected = false;
-    })
   }
 
   public clearStatus() {
@@ -237,21 +137,9 @@ export class ContactFilterComponent implements OnInit {
     this.notify()
   }
 
-  public clearCreatedBy() {
-    this.selectedCreatedBy = [];
-    this.filteredCont.pipe(
-      tap(data => {
-        data.forEach(c => {
-          c.isChecked = false;
-        })
-      }),
-      take(1)
-    ).subscribe();
-  }
-
-  public clearCompany() {
-    this.selectedCompany = [];
-    this.filteredComp.pipe(
+  public clearOwner() {
+    this.selectedOwners = [];
+    this.ownerFilterObserver.pipe(
       tap(data => {
         data.forEach(c => {
           c.isChecked = false;
@@ -298,15 +186,9 @@ export class ContactFilterComponent implements OnInit {
     this.closeDialog.emit(this.filters)
   }
 
-  private _filterStates(value: string): createContact[] {
+  private _filterStatesComp(value: string): ContactOwner[] {
     const filterValue = value.toLowerCase();
-    return this.contacts.filter(state => state.name.toLowerCase().indexOf(filterValue) === 0);
-  }
-
-  private _filterStatesComp(value: string): createContact[] {
-    //const filterValue = value.toLowerCase();
-    //return this.companys.filter(state => state.name.toLowerCase().indexOf(filterValue) === 0);
-    return null //TODO
+    return this.companies.filter(state => state.name.toLowerCase().indexOf(filterValue) === 0);
   }
 }
 
