@@ -596,7 +596,7 @@ export class ContactDialog {
           Validators.pattern('^[0-9]*$'),
         ],
       ],
-      work_phone: [
+      work_number: [
         '',
         [
           Validators.minLength(10),
