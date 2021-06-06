@@ -584,11 +584,11 @@ export class ContactDialog {
 
   reactiveForm() {
     this.form = this.fb.group({
-      first_name: ['Loneyn', [Validators.required]],
-      last_name: ['Messoal', [Validators.required]],
+      first_name: ['', [Validators.required]],
+      last_name: ['', [Validators.required]],
       mobile_code: ['', [Validators.required]],
       mobile_number: [
-        '3334411298',
+        '',
         [
           Validators.required,
           Validators.minLength(10),
@@ -604,7 +604,7 @@ export class ContactDialog {
           Validators.pattern('^[0-9]*$'),
         ],
       ],
-      email: ['ktageisk333@gmail.com', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, Validators.email]],
       owner_id: ['', [Validators.required]],
       organization: [''],
       address: [''],
