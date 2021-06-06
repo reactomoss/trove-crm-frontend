@@ -666,7 +666,7 @@ export class ContactDialog {
         console.log('contact created', res);
         if (res.success) {
           this.dialogRef.close(res.message);
-          this.contactService.notify();
+          this.contactService.notifyContact();
         } else {
           this.sb.openSnackBarBottomCenter(res.message, 'Close');
         }
@@ -866,7 +866,7 @@ export class CompanyDialog {
         console.log('company created', res);
         if (res.success) {
           this.dialogRef.close(res.message);
-          this.contactService.notify();
+          this.contactService.notifyCompany();
         } else {
           this.sb.openSnackBarBottomCenter(res.message, 'Close');
         }

@@ -83,7 +83,7 @@ export class CompanyComponent implements OnInit {
   /*Modal dialog*/
 
   ngOnInit(): void {
-    this.contactService.obs.subscribe(() => this.update());
+    this.contactService.companyObserver.subscribe(() => this.update());
     this.showGrid()
   }
 
@@ -151,10 +151,9 @@ export class CompanyComponent implements OnInit {
   }
 
   private updateOwners() {
-    this.companyOwners = []
-    this.items.forEach(item => {
-      !this.companyOwners.find(x => x.id == item.owner.id) && this.companyOwners.push(item.owner)
-    })
+    this.companyOwners = this.items
+      .map(item => item.owner)
+      .filter((item, index, array) => array.findIndex((t) => t.id === item.id) === index)
     console.log('updateOwners', this.companyOwners)
   }
 

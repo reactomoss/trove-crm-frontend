@@ -12,8 +12,11 @@ import {
   providedIn: 'root',
 })
 export class ContactApiService {
-  subject: ReplaySubject<any> = new ReplaySubject()
-  obs: Observable<any> = this.subject.asObservable()
+  private companySubject: ReplaySubject<any> = new ReplaySubject()
+  companyObserver: Observable<any> = this.companySubject.asObservable()
+
+  private contactSubject: ReplaySubject<any> = new ReplaySubject()
+  contactObserver: Observable<any> = this.contactSubject.asObservable()
 
   baseURL = environment.baseUrl
   public searchText: string = null
@@ -134,8 +137,12 @@ export class ContactApiService {
     })
   }
 
-  notify() {
-    this.subject.next()
+  notifyCompany() {
+    this.companySubject.next()
+  }
+
+  notifyContact() {
+    this.contactSubject.next()
   }
 
   ngOnDestroy() {}

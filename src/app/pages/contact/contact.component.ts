@@ -83,7 +83,7 @@ export class ContactComponent implements OnInit {
   /*Modal dialog*/
 
   ngOnInit(): void {
-    this.contactService.obs.subscribe(() => this.update());
+    this.contactService.contactObserver.subscribe(() => this.update());
     this.showGrid()
   }
 
@@ -258,7 +258,7 @@ export class ContactComponent implements OnInit {
     if (filters) {
       console.log('applyFilter', filters)
       if (filters.owners.length > 0) {
-        query['Created_organization'] = filters.owners
+        query['created_organization'] = filters.owners
       }
       if (filters.addedon >= 0) {
         let startDate = null, lastDate = null
