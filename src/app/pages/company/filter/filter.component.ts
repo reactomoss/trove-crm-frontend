@@ -139,6 +139,8 @@ export class CompanyFilterComponent implements OnInit {
 
   public clearOwner() {
     this.selectedOwners = [];
+    this.filters.owners = []
+    this.ownerFilterCtrl.setValue('')
     this.ownerFilterObserver.pipe(
       tap(data => {
         data.forEach(c => {
@@ -147,6 +149,7 @@ export class CompanyFilterComponent implements OnInit {
       }),
       take(1)
     ).subscribe();
+    this.notify()
   }
 
   public clearDate() {
