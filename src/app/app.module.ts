@@ -11,7 +11,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AccountApiService } from './services/account-api.service';
 import { TokenService } from './services/token.service';
 import { UserRegistrationModule } from './user-registration/user-registration.module';
-import { CompanyApiService } from './services/company-api.service';
+import { ContactApiService } from './services/contact-api.service';
 
 import {
   SocialLoginModule,
@@ -73,7 +73,7 @@ const config: ExtraOptions = {
   providers: [
     AccountApiService,
     TokenService,
-    CompanyApiService,
+    ContactApiService,
     SettingsApiService,
     {
       provide: HTTP_INTERCEPTORS,

@@ -27,7 +27,7 @@ export class CompanyTableComponent implements AfterViewInit {
   @Input() selectedItems
   @Output() pagination = new EventEmitter();
 
-  displayedColumns: string[] = ['contact', 'last', 'since', 'city', 'added', 'type', 'status', 'phone'];
+  displayedColumns: string[] = ['contact', 'mobile', 'email', 'city', 'state', 'owner', 'last', 'contacts', 'status', 'added', 'modified'];
   dataSource
   selectedTh: string = ''
   items = []
@@ -45,10 +45,13 @@ export class CompanyTableComponent implements AfterViewInit {
   }
 
   ngOnChanges() {
-    console.log('ngOnChanges', this.propItems)
+    console.log('ngOnChanges', this.length, this.propItems)
     this.items = [...this.propItems]
     if (this.items.length > 0 && this.items.length < this.length) {
-      this.items.push({})
+      const displayItems = this.items.length % this.pageSize;
+      if (displayItems == this.pageSize - 1) {
+        this.items.push({}) //for pagination
+      }
     }
     this.dataSource = new MatTableDataSource(this.items)
     this.dataSource.sort = this.sort

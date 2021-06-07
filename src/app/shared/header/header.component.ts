@@ -2,19 +2,20 @@ import { TokenService } from './../../services/token.service';
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import { AccountApiService } from '../../services/account-api.service';
-import { CompanyApiService } from '../../services/company-api.service';
+import { ContactApiService } from '../../services/contact-api.service';
 import {
   MatDialog,
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-import { FormGroup,
+import {
+  FormGroup,
   FormControl,
   FormBuilder,
   Validators,
   FormArray,
-  FormGroupDirective
- } from '@angular/forms';
+  FormGroupDirective,
+} from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import {
@@ -33,6 +34,7 @@ import { extractErrorMessagesFromErrorResponse } from '../../services/extract-er
 import { FormStatus } from '../../services/form-status';
 import { LeadApiService } from '../../services/lead-api.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { A11yModule } from '@angular/cdk/a11y';
 
 interface HTMLInputEvent extends Event {
   target: HTMLInputElement & EventTarget;
@@ -51,43 +53,42 @@ export class HeaderComponent implements OnInit {
   filteredOptions: Observable<string[]>;
   active: number = 1;
   selectedStage: number = 3;
-  companyData = null;
 
   constructor(
     private router: Router,
     private account: AccountApiService,
-    private companyApiService: CompanyApiService,
+    private contactService: ContactApiService,
     private token: TokenService,
     public dialog: MatDialog,
-    private sb: SnackBarService,
+    private sb: SnackBarService
   ) {}
 
   ngOnInit(): void {
     this.menus = [
       {
-        icon:'menu001.png',
-        link:'/pages/dashboard'
+        icon: 'menu001.png',
+        link: '/pages/dashboard',
       },
       {
-        icon:'menu006.png',
-        link:'/pages/leads'
+        icon: 'menu006.png',
+        link: '/pages/leads',
       },
       {
-        icon:'menu002.png',
-        link:'/pages/contact'
+        icon: 'menu002.png',
+        link: '/pages/contact',
       },
       {
-        icon:'menu003.png',
-        link:'/pages/company'
+        icon: 'menu003.png',
+        link: '/pages/company',
       },
       {
-        icon:'menu004.png',
-        link:'/pages/task'
+        icon: 'menu004.png',
+        link: '/pages/task',
       },
       {
-        icon:'menu005.png',
-        link:'/pages/appointments'
-      }
+        icon: 'menu005.png',
+        link: '/pages/appointments',
+      },
     ];
   }
   showNotification() {
@@ -166,65 +167,69 @@ export class HeaderComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {});
   }
+
   clickContact() {
-    const dialogRef = this.dialog.open(ContactDialog, {
-      width: '531px',
-      autoFocus: false,
-    });
-    dialogRef.afterClosed().subscribe((result) => {});
+    const openCreateContactDialog = () => {
+      const dialogRef = this.dialog.open(ContactDialog, {
+        width: '531px',
+        autoFocus: false,
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          this.sb.openSnackBarBottomCenter(result, 'Close');
+        }
+      })
+    }
+
+    if (this.contactService.contactData) {
+      openCreateContactDialog()
+      return
+    }
+
+    this.contactService.getContacts().subscribe((res: any) => {
+      console.log('contacts', res);
+      if (!res.success) {
+        this.sb.openSnackBarBottomCenter(res.message, 'Close')
+        return
+      }
+      if (res.data.menu_previlages.create !== 1) {
+        this.sb.openSnackBarBottomCenter("You don't have permission", 'Close')
+        return
+      }
+      this.contactService.contactData = res.data
+      openCreateContactDialog()
+    })
   }
 
   clickCompany() {
-    /*const dialogRef = this.dialog.open(CompanyDialog, {
+    const openCreateCompanyDialog = () => {
+      const dialogRef = this.dialog.open(CompanyDialog, {
         width: '560px',
         autoFocus: false,
-        data : {
-          countries: [],
-          emailOwners: [],
-          dialCodes: []
-        }
-      })
+      });
       dialogRef.afterClosed().subscribe((result) => {
         if (result) {
           this.sb.openSnackBarBottomCenter(result, 'Close')
         }
-      })*/
+      })
+    }
 
-    if (this.companyData) {
-      this.openCreateDialog()
+    if (this.contactService.companyData) {
+      openCreateCompanyDialog();
       return
     }
 
-    this.companyApiService
-      .getCompanyCreateForm()
-      .subscribe((res: any) => {
-        if (!res.success) {
+    this.contactService.getCompanies().subscribe((res: any) => {
+      if (!res.success) {
         this.sb.openSnackBarBottomCenter(res.message, 'Close')
         return
-        }
-        if (res.data.menu_previlages.create !== 1) {
+      }
+      if (res.data.menu_previlages.create !== 1) {
         this.sb.openSnackBarBottomCenter("You don't have permission", 'Close')
         return
-        }
-        this.companyData = res.data
-        this.openCreateDialog()
-    })
-  }
-
-  openCreateDialog() {
-    const dialogRef = this.dialog.open(CompanyDialog, {
-      width: '560px',
-      autoFocus: false,
-      data : {
-        countries: this.companyData.countries,
-        emailOwners: this.companyData.owners,
-        dialCodes: this.companyData.countries.filter(x => x.dial_code).map(x => x.dial_code)
       }
-    })
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.sb.openSnackBarBottomCenter(result, 'Close')
-      }
+      this.contactService.companyData = res.data
+      openCreateCompanyDialog()
     })
   }
 }
@@ -237,7 +242,7 @@ export const MY_DATE_FORMATS = {
     dateInput: 'MM/DD/YYYY',
     monthYearLabel: 'MMMM YYYY',
     dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY'
+    monthYearA11yLabel: 'MMMM YYYY',
   },
 };
 
@@ -307,7 +312,7 @@ export class LeadDialog {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private sb: SnackBarService,
     private LeadApiService: LeadApiService,
-    private fb: FormBuilder,
+    private fb: FormBuilder
   ) {
     this.isEdit = this.data?.isEdit;
     this.filteredOptions = this.searchControl.valueChanges.pipe(
@@ -320,7 +325,7 @@ export class LeadDialog {
   ngOnInit() {
     this.LeadApiService.initLeadForm().subscribe(
       (res: any) => {
-        console.log("Lead Init form");
+        console.log('Lead Init form');
         console.log(res);
         if (res.success) {
           this.formLoaded = true;
@@ -331,7 +336,7 @@ export class LeadDialog {
           this.contacts = res.data.contacts;
           this.owners = res.data.owner;
           //this.currencypostvalue.id = res.data.currency.id;
-          if(res.data.lead){
+          if (res.data.lead) {
             this.initaddLeadForm(res.data.lead);
           } else {
             this.initaddLeadForm();
@@ -415,8 +420,8 @@ export class LeadDialog {
         pipeline_id: [data.pipeline_id, [Validators.required]],
         stage_id: [data.stage_id, [Validators.required]],
         currency: this.fb.group({
-            id: ['', [Validators.required]],
-            value: ['', [Validators.required]]
+          id: ['', [Validators.required]],
+          value: ['', [Validators.required]],
         }),
         source_id: [data.source_id, []],
         added_on: [data.added_on, [Validators.required]],
@@ -425,8 +430,6 @@ export class LeadDialog {
         contacts: [null, [Validators.required]],
       });
       let assignedContacts = [];
-      console.log("if");
-      console.log(data);
       data.contacts.forEach((contact) => {
         assignedContacts.push(contact.id);
       });
@@ -450,17 +453,17 @@ export class LeadDialog {
         stage_id: ['', [Validators.required]],
         currency: this.fb.group({
           id: ['', [Validators.required]],
-          value: ['', [Validators.required]]
+          value: ['', [Validators.required]],
         }),
         source_id: ['', []],
         added_on: ['', [Validators.required]],
         closed_on: ['', [Validators.required]],
-        description: ['', Validators.maxLength(100),],
-        contacts: [null, [Validators.required]]
+        description: ['', Validators.maxLength(100)],
+        contacts: [null, [Validators.required]],
       });
     }
   }
-  saveLead(){
+  saveLead() {
     if (!this.addLeadForm.valid) {
       return false;
     } else {
@@ -473,7 +476,7 @@ export class LeadDialog {
         stage_id: this.selectedStageId,
         // formControlName2: myValue2
       });
-      console.log("submitting");
+      console.log('submitting');
       //console.log(this.selectedContacts.value);
       //console.log(this.selectedStage);
       console.log(this.addLeadForm.value);
@@ -499,9 +502,8 @@ export class LeadDialog {
             console.log("vaidation errors");
             console.log(validationErrors);
           } else {
-            const messages = extractErrorMessagesFromErrorResponse(
-              errorResponse
-            );
+            const messages =
+              extractErrorMessagesFromErrorResponse(errorResponse);
             // call onFormSubmitResponse with the submission success status (false) and the array of messages
             this.formStatus.onFormSubmitResponse({
               success: false,
@@ -509,8 +511,8 @@ export class LeadDialog {
             });
             this.sb.openSnackBarBottomCenter(messages.toString(), 'Close');
           }
-          }
-        );
+        }
+      );
       this.subscriptions.push(subs_form);
     }
   }
@@ -519,23 +521,23 @@ export class LeadDialog {
     this.selectedStage = 0;
     let selectedPipeline = ob.value;
     console.log(selectedPipeline);
-    var result = this.pipelines.find(obj => {
-      return obj.id === selectedPipeline
+    var result = this.pipelines.find((obj) => {
+      return obj.id === selectedPipeline;
     });
     this.stages = result.stages;
     this.selectedStageId = result.stages[0].id;
   }
 
-  onContactChange(selected){
+  onContactChange(selected) {
     this.selectedContacts = selected;
     this.addLeadForm.controls.contacts.setValue(this.selectedContacts);
   }
 
   compareFunction(o1: any, o2: any) {
-    return (o1 == o2);
+    return o1 == o2;
   }
 
-   ngOnDestroy() {
+  ngOnDestroy() {
     this.subscriptions.forEach((sub) => {
       sub.unsubscribe();
     });
@@ -565,6 +567,7 @@ export class ContactDialog {
   ];
   filteredOptions: Observable<string[]>;
 
+  form: FormGroup;
   showMandatory: boolean = false;
   search: string = '';
   mobileCode = 'USA';
@@ -572,16 +575,101 @@ export class ContactDialog {
   imageHover: boolean = false;
   imageSrc: string;
   isEdit: boolean = false;
+  countries = [];
+  companyList = [];
+  emailOwners = [];
+  dialCodes = [];
+  errors = null
 
   constructor(
+    private contactService: ContactApiService,
+    private sb: SnackBarService,
+    public fb: FormBuilder,
     public dialogRef: MatDialogRef<ContactDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.isEdit = this.data?.isEdit;
+    this.countries = this.contactService.getCountries()
+    this.emailOwners = this.contactService.getEmailOwners()
+    this.dialCodes = this.contactService.getDialCodes()
+    this.companyList = this.contactService.getContactCompanyList()
     this.filteredOptions = this.searchControl.valueChanges.pipe(
       startWith(''),
       map((value) => this._filter(value))
     );
+    this.reactiveForm()
+  }
+
+  reactiveForm() {
+    this.form = this.fb.group({
+      file: [null, [this.validateImageFileType()]],
+      profile_pic: [null],
+      first_name: ['', [Validators.required]],
+      last_name: ['', [Validators.required]],
+      mobile_code: ['', [Validators.required]],
+      mobile_number: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(10),
+          Validators.pattern('^[0-9]*$'),
+        ],
+      ],
+      work_number: [
+        '',
+        [
+          Validators.minLength(10),
+          Validators.maxLength(10),
+          Validators.pattern('^[0-9]*$'),
+        ],
+      ],
+      email: ['', [Validators.required, Validators.email]],
+      owner_id: ['', [Validators.required]],
+      organization: [''],
+      address: [''],
+      skype_id: [''],
+      description: [''],
+    });
+  }
+
+  checkImageFileExtension(extension) {
+    return (extension === 'png' || extension === 'jpg' || extension === 'jpeg' || extension === 'bmp')
+  }
+
+  validateImageFileType() {
+    return function (control: FormControl) {
+      const file = control.value;
+      if (file) {
+        const extension = file.split('.')[1].toLowerCase();
+        if (extension === 'png' || extension === 'jpg' || extension === 'jpeg' || extension === 'bmp') {
+          return null
+        }
+        return {
+          requiredFileType: true,
+        }
+      }
+      return null;
+    };
+  }
+
+  hasValidationError(key) {
+    return this.form.controls[key].invalid && this.form.controls[key].errors;
+  }
+
+  getValidationMessage(key) {
+    const control = this.form.controls[key];
+    if (control.hasError('required')) return 'This field is required';
+    if (control.hasError('email')) return 'Please enter a valid email address';
+    if (control.hasError('pattern')) {
+      if (control.errors.pattern.requiredPattern == '^[0-9]*$')
+        return 'Please input numbers only';
+    }
+    if (control.hasError('minlength'))
+      return `The minimum length is ${control.errors.minlength.requiredLength}.`;
+    if (control.hasError('maxlength'))
+      return `The minimum length is ${control.errors.maxlength.requiredLength}.`;
+    return '';
   }
 
   private _filter(value: string): string[] {
@@ -594,6 +682,51 @@ export class ContactDialog {
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  submitForm(): void {
+    console.log('contact.submit', this.form.value);
+    if (!this.form.valid) {
+      return;
+    }
+
+    const formData = new FormData()
+    formData.append('first_name', this.form.value.first_name);
+    formData.append('last_name', this.form.value.last_name);
+    formData.append('profile_pic', this.form.value.profile_pic);
+    formData.append("mobile[code]", this.form.value.mobile_code);
+    formData.append("mobile[number]", this.form.value.mobile_number);
+    formData.append('work_number', this.form.value.work_number);
+    formData.append('email', this.form.value.email);
+    formData.append('owner_id', this.form.value.owner_id);
+    formData.append('organization', this.form.value.organization);
+    formData.append('address', this.form.value.address);
+    formData.append('skype_id', this.form.value.skype_id);
+    formData.append('description', this.form.value.description);
+
+    this.contactService.createContact(formData).subscribe(
+      (res: any) => {
+        console.log('contact created', res);
+        if (res.success) {
+          this.dialogRef.close(res.message);
+          this.contactService.notifyContact();
+        } else {
+          this.sb.openSnackBarBottomCenter(res.message, 'Close');
+        }
+      },
+      (err) => {
+        this.errors = {};
+        const data = err.error.data;
+        for (const key in data) {
+          if (Array.isArray(data[key])) this.errors[key] = data[key][0];
+          else this.errors[key] = data[key];
+        }
+        console.log('this.errors', this.errors);
+        const messages = Object.values(this.errors).join('\r\n');
+        console.log(messages);
+        this.sb.openSnackBarTopCenterAsDuration(messages, 'Close', 4000);
+      }
+    );
   }
 
   checkMandatory(e) {
@@ -621,11 +754,23 @@ export class ContactDialog {
   }
 
   readURL(event: HTMLInputEvent): void {
+    console.log('readURL', event.target)
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
 
+      const extension = file.name.split('.')[1].toLowerCase();
+      if (!this.checkImageFileExtension(extension)) {
+        this.form.patchValue({file: null})
+        return
+      }
+
       const reader = new FileReader();
-      reader.onload = (e) => (this.imageSrc = reader.result as string);
+      reader.onload = (e) => {
+        this.imageSrc = reader.result as string
+        this.form.patchValue({
+            profile_pic: file
+        });
+      }
 
       reader.readAsDataURL(file);
     }
@@ -676,29 +821,44 @@ export class CompanyDialog {
   errors = null
 
   constructor(
-    private companyApiService: CompanyApiService,
+    private contactService: ContactApiService,
     private sb: SnackBarService,
     public fb: FormBuilder,
     public dialogRef: MatDialogRef<CompanyDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.isEdit = this.data?.isEdit;
-    this.countries = this.data?.countries
-    this.emailOwners = this.data?.emailOwners
-    this.dialCodes = this.data?.dialCodes
+    this.countries = this.contactService.getCountries()
+    this.emailOwners = this.contactService.getEmailOwners()
+    this.dialCodes = this.contactService.getDialCodes()
     this.filteredOptions = this.searchControl.valueChanges.pipe(
       startWith(''),
       map((value) => this._filter(value))
     );
-    this.reactiveForm()
+    this.reactiveForm();
   }
 
   reactiveForm() {
     this.form = this.fb.group({
       organization_name: ['', [Validators.required]],
       mobile_code: ['', [Validators.required]],
-      mobile_number: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern("^[0-9]*$")]],
-      work_phone: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern("^[0-9]*$")]],
+      mobile_number: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(10),
+          Validators.pattern('^[0-9]*$'),
+        ],
+      ],
+      work_phone: [
+        '',
+        [
+          Validators.minLength(10),
+          Validators.maxLength(10),
+          Validators.pattern('^[0-9]*$'),
+        ],
+      ],
       email: ['', [Validators.required, Validators.email]],
       address: [''],
       city: [''],
@@ -708,23 +868,26 @@ export class CompanyDialog {
       owner_id: ['', [Validators.required]],
       skype_id: [''],
       description: [''],
-    })
+    });
   }
 
   hasValidationError(key) {
-    return this.form.controls[key].invalid && this.form.controls[key].errors
+    return this.form.controls[key].invalid && this.form.controls[key].errors;
   }
 
   getValidationMessage(key) {
-    const control = this.form.controls[key]
-    if (control.hasError('required')) return 'This field is required'
-    if (control.hasError('email')) return 'Please enter a valid email address'
+    const control = this.form.controls[key];
+    if (control.hasError('required')) return 'This field is required';
+    if (control.hasError('email')) return 'Please enter a valid email address';
     if (control.hasError('pattern')) {
-      if (control.errors.pattern.requiredPattern == '^[0-9]*$') return 'Please input numbers only'
+      if (control.errors.pattern.requiredPattern == '^[0-9]*$')
+        return 'Please input numbers only';
     }
-    if (control.hasError('minlength')) return `The minimum length is ${control.errors.minlength.requiredLength}.`
-    if (control.hasError('maxlength')) return `The minimum length is ${control.errors.maxlength.requiredLength}.`
-    return ''
+    if (control.hasError('minlength'))
+      return `The minimum length is ${control.errors.minlength.requiredLength}.`;
+    if (control.hasError('maxlength'))
+      return `The minimum length is ${control.errors.maxlength.requiredLength}.`;
+    return '';
   }
 
   private _filter(value: string): string[] {
@@ -740,9 +903,9 @@ export class CompanyDialog {
   }
 
   submitForm(): void {
-    console.log(this.form.value)
+    console.log(this.form.value);
     if (!this.form.valid) {
-      return
+      return;
     }
 
     const post_data = {
@@ -750,32 +913,31 @@ export class CompanyDialog {
       mobile: {
         code: this.form.value.mobile_code,
         number: this.form.value.mobile_number,
-      }
-    }
-    this.companyApiService
-      .createCompany(post_data)
-      .subscribe((res: any) => {
-        console.log('company created', res)
+      },
+    };
+    this.contactService.createCompany(post_data).subscribe(
+      (res: any) => {
+        console.log('company created', res);
         if (res.success) {
           this.dialogRef.close(res.message);
-          this.companyApiService.notify()
-        }
-        else {
-          this.sb.openSnackBarBottomCenter(res.message, 'Close')
+          this.contactService.notifyCompany();
+        } else {
+          this.sb.openSnackBarBottomCenter(res.message, 'Close');
         }
       },
-      err => {
-        this.errors = {}
-        const data = err.error.data
+      (err) => {
+        this.errors = {};
+        const data = err.error.data;
         for (const key in data) {
-          if (Array.isArray(data[key])) this.errors[key] = data[key][0]
-          else this.errors[key] = data[key]
+          if (Array.isArray(data[key])) this.errors[key] = data[key][0];
+          else this.errors[key] = data[key];
         }
-        console.log('this.errors', this.errors)
-        const messages = Object.values(this.errors).join('\r\n')
-        console.log(messages)
-        this.sb.openSnackBarTopCenterAsDuration(messages, 'Close', 4000)
-      })
+        console.log('this.errors', this.errors);
+        const messages = Object.values(this.errors).join('\r\n');
+        console.log(messages);
+        this.sb.openSnackBarTopCenterAsDuration(messages, 'Close', 4000);
+      }
+    );
   }
 
   checkMandatory(e) {

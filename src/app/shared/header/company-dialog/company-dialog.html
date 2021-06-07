@@ -39,12 +39,10 @@
                         <mat-error *ngIf="hasValidationError('mobile_number')">{{getValidationMessage('mobile_number')}}</mat-error>
                     </mat-form-field>
                 </div>
-                <div *ngIf="checkShow('Work Number')">
-                    <span class="required">Work Number</span><br>
+                <div *ngIf="checkShow('Work Number') && !showMandatory">
+                    <span>Work Number</span><br>
                     <mat-form-field appearance="outline" class="formControl noLabelForm" [style.width.px]="232">
-                        <input matInput formControlName="work_phone" required>
-                        <mat-hint class="mat-error" *ngIf="errors?.work_phone">{{errors.work_phone}}</mat-hint>
-                        <mat-error *ngIf="hasValidationError('work_phone')">{{getValidationMessage('work_phone')}}</mat-error>
+                        <input matInput formControlName="work_phone">
                     </mat-form-field>
                 </div>
             </div>
