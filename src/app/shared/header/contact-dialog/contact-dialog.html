@@ -18,9 +18,7 @@
 <form [formGroup]="form" (ngSubmit)="submitForm()" novalidate>
     <div mat-dialog-content>
         <div class="mainContent">
-
-            <input type='file' (change)="readURL($event);" id="fileInput" accept=".png"/>
-
+            <input type='file' formControlName="file" (change)="readURL($event);" id="fileInput" accept=".png, .jpg, .jpeg, .bmp"/>
             <div class="threeDiv">
                 <div *ngIf="checkShow('First Name') || checkShow('Last Name')" style="position: relative;">
                     <mat-icon *ngIf="!imageSrc" class="material-icons-outlined bigRoundIcon"

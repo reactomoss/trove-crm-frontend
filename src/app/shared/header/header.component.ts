@@ -584,6 +584,8 @@ export class ContactDialog {
 
   reactiveForm() {
     this.form = this.fb.group({
+      file: [null, [this.validateImageFileType()]],
+      profile_pic: [null],
       first_name: ['', [Validators.required]],
       last_name: ['', [Validators.required]],
       mobile_code: ['', [Validators.required]],
@@ -611,6 +613,26 @@ export class ContactDialog {
       skype_id: [''],
       description: [''],
     });
+  }
+
+  checkImageFileExtension(extension) {
+    return (extension === 'png' || extension === 'jpg' || extension === 'jpeg' || extension === 'bmp')
+  }
+
+  validateImageFileType() {
+    return function (control: FormControl) {
+      const file = control.value;
+      if (file) {
+        const extension = file.split('.')[1].toLowerCase();
+        if (extension === 'png' || extension === 'jpg' || extension === 'jpeg' || extension === 'bmp') {
+          return null
+        }
+        return {
+          requiredFileType: true,
+        }
+      }
+      return null;
+    };
   }
 
   hasValidationError(key) {
@@ -645,23 +667,26 @@ export class ContactDialog {
   }
 
   submitForm(): void {
-    console.log('contact.submit', this.form.value, 'Image:', this.imageSrc);
+    console.log('contact.submit', this.form.value);
     if (!this.form.valid) {
       return;
     }
 
-    const post_data = {
-      ...this.form.value,
-      mobile: {
-        code: this.form.value.mobile_code,
-        number: this.form.value.mobile_number,
-      },
-    };
-    /*if (this.imageSrc) {
-      post_data['profile_pic'] = this.imageSrc
-    }*/
-    
-    this.contactService.createContact(post_data).subscribe(
+    const formData = new FormData()
+    formData.append('first_name', this.form.value.first_name);
+    formData.append('last_name', this.form.value.last_name);
+    formData.append('profile_pic', this.form.value.profile_pic);
+    formData.append("mobile[code]", this.form.value.mobile_code);
+    formData.append("mobile[number]", this.form.value.mobile_number);
+    formData.append('work_number', this.form.value.work_number);
+    formData.append('email', this.form.value.email);
+    formData.append('owner_id', this.form.value.owner_id);
+    formData.append('organization', this.form.value.organization);
+    formData.append('address', this.form.value.address);
+    formData.append('skype_id', this.form.value.skype_id);
+    formData.append('description', this.form.value.description);
+
+    this.contactService.createContact(formData).subscribe(
       (res: any) => {
         console.log('contact created', res);
         if (res.success) {
@@ -715,8 +740,19 @@ export class ContactDialog {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
 
+      const extension = file.name.split('.')[1].toLowerCase();
+      if (!this.checkImageFileExtension(extension)) {
+        this.form.patchValue({file: null})
+        return
+      }
+
       const reader = new FileReader();
-      reader.onload = (e) => (this.imageSrc = reader.result as string);
+      reader.onload = (e) => {
+        this.imageSrc = reader.result as string
+        this.form.patchValue({
+            profile_pic: file
+        });
+      }
 
       reader.readAsDataURL(file);
     }
