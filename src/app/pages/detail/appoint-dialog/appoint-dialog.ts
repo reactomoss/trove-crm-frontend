@@ -21,8 +21,8 @@ export interface Appointment {
   end_date: Moment,
   end_time: string,
   contact: string,
-  remainder_date: Moment,
-  remainder_time: string,
+  reminder_date: Moment,
+  reminder_time: string,
 }
 
 @Component({
@@ -75,8 +75,8 @@ export class AppointDialog {
     end_date: null,
     end_time: null,
     contact: null,
-    remainder_date: null,
-    remainder_time: null,
+    reminder_date: null,
+    reminder_time: null,
   }
 
   constructor(

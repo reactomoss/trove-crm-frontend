@@ -17,8 +17,8 @@ export interface NTask {
   content: string
   due_date: Moment,
   due_time: string,
-  remainder_date: Moment,
-  remainder_time: string,
+  reminder_date: Moment,
+  reminder_time: string,
   owner: string,
 }
 
@@ -70,8 +70,8 @@ export class TaskDialog {
     content: null,
     due_date: null,
     due_time: null,
-    remainder_date: null,
-    remainder_time: null,
+    reminder_date: null,
+    reminder_time: null,
     owner: null,
   }
 

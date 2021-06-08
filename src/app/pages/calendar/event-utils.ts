@@ -11,8 +11,8 @@ export const INITIAL_TASKS: NTask[] = [
         content: '',
         due_date: moment('2021-05-31'),
         due_time: '05:00',
-        remainder_date: moment('2021-05-31'),
-        remainder_time: '',
+        reminder_date: moment('2021-05-31'),
+        reminder_time: '',
         owner: '',
     },
     {
@@ -21,8 +21,8 @@ export const INITIAL_TASKS: NTask[] = [
         content: '',
         due_date: moment('2021-06-12'),
         due_time: '15:00',
-        remainder_date: moment('2021-06-12'),
-        remainder_time: '',
+        reminder_date: moment('2021-06-12'),
+        reminder_time: '',
         owner: ''
     },
     {
@@ -31,8 +31,8 @@ export const INITIAL_TASKS: NTask[] = [
         content: '',
         due_date: moment('2021-06-23'),
         due_time: '18:00',
-        remainder_date: null,
-        remainder_time: '',
+        reminder_date: null,
+        reminder_time: '',
         owner: ''
     },
     {
@@ -41,8 +41,8 @@ export const INITIAL_TASKS: NTask[] = [
         content: '',
         due_date: moment('2021-06-28'),
         due_time: '18:00',
-        remainder_date: null,
-        remainder_time: '',
+        reminder_date: null,
+        reminder_time: '',
         owner: ''
     },
     {
@@ -51,8 +51,8 @@ export const INITIAL_TASKS: NTask[] = [
         content: '',
         due_date: moment('2021-07-02'),
         due_time: '18:00',
-        remainder_date: null,
-        remainder_time: '',
+        reminder_date: null,
+        reminder_time: '',
         owner: ''
     }
 ];

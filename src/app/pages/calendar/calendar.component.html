@@ -39,22 +39,22 @@
                                 <span class="color-253238 f-12-700 mr-2">{{reminderTitle}}</span>
                                 <!-- <mat-icon aria-hidden="false">close</mat-icon> -->
                             </li>
-                            <li mat-menu-item *ngFor="let event of reminderEvents">
-                                <div class="row alignText" *ngIf="event.task">
+                            <li mat-menu-item *ngFor="let e of reminderEvents">
+                                <div class="row alignText" *ngIf="e.extendedProps.task">
                                     <div class="col-auto pr-0">
                                         <img src="../../../assets/images/notification002.png" alt="Image">
                                     </div>
                                     <div class="col">
-                                        <div class="color-253238">{{event.title}}</div>
+                                        <div class="color-253238" (click)="eventClicked(e)">{{e.title}}</div>
                                     </div>
                                 </div>
-                                <div class="row alignText" *ngIf="!event.task">
+                                <div class="row alignText" *ngIf="e.extendedProps.appointment" (click)="eventClicked(e)">
                                     <div class="col-auto pr-0 mt-0">
                                         <img src="../../../assets/images/notification004.png" alt="Image">
                                     </div>
                                     <div class="col mt-1">
                                         <div class="f-12-400 color-253238"> 
-                                            <span class="mr-1">{{event.title}}</span>
+                                            <span class="mr-1">{{e.title}}</span>
                                         </div>
                                     </div>
                                 </div>

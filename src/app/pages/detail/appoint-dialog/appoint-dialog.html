@@ -122,7 +122,7 @@
                 <div class="col-sm-12 col-md-6">
                     <mat-form-field appearance="outline" class="formControl timePickerBox iconColorPath">
                         <div class="d-flex">
-                            <input matInput [ngxTimepicker]="reTimepicker" [disableClick]="true" readonly [(ngModel)]="appointment.remainder_time">
+                            <input matInput [ngxTimepicker]="reTimepicker" [disableClick]="true" readonly [(ngModel)]="appointment.reminder_time">
                             <ngx-material-timepicker-toggle [for]="reTimepicker"></ngx-material-timepicker-toggle>
                             <ngx-material-timepicker #reTimepicker></ngx-material-timepicker>
                         </div>
@@ -137,7 +137,7 @@
     </button>
 </div>
 <div mat-dialog-actions class="justify-content-start">
-  <button *ngIf="isEdit" mat-button class="deleteBtn">Delete</button>
+  <button *ngIf="isEdit" mat-button class="deleteBtn" (click)="onDelete()">Delete</button>
     <button mat-button (click)="onNoClick()" class="cancelBtn ml-auto">Cancel</button>
-    <button mat-button class="createBtn ml-3">{{isEdit ? 'Update' : 'Create'}}</button>
+    <button mat-button class="createBtn ml-3" (click)="onConfirm()">{{isEdit ? 'Update' : 'Create'}}</button>
 </div>

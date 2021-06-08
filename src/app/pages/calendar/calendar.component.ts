@@ -10,7 +10,8 @@ import * as moment from 'moment';
 
 export interface Reminder {
   count: number,
-  date: moment.Moment,
+  title: string,
+  dateTime: string,
   events: EventApi[]
 }
 
@@ -124,29 +125,39 @@ export class CalendarComponent implements OnInit {
     })
   }
 
-  private addAppointmentEvent(appointment: Appointment) {
-    console.log('addAppointmentEvent:', appointment);
+  private getEventDate(day: moment.Moment, time: string) {
+    if (!day) return null
+    if (time) {
+      var tm = moment(time, ["h:mm A"])
+      console.log('tm=', tm)
+      day.add(tm.hours(), 'hours').add(tm.minutes(), 'minutes') 
+    }
+    return day.format('YYYY-MM-DD HH:mm:ss')
+  }
+
+  private addAppointmentEvent(appoint: Appointment) {
+    console.log('addAppointmentEvent:', appoint);
     const calendarApi = this.calendarComponent.getApi()
     calendarApi.unselect();
 
-    if (appointment.id) {
-      const event = calendarApi.getEventById(appointment.id)
-      event.setProp('title', appointment.title)
-      event.setStart(appointment.start_date.format('YYYY-MM-DD'))
-      event.setEnd(appointment.end_date.format('YYYY-MM-DD'))
-      event.setExtendedProp('appointment', appointment)
+    if (appoint.id) {
+      const event = calendarApi.getEventById(appoint.id)
+      event.setProp('title', appoint.title)
+      event.setStart(appoint.start_date.format('YYYY-MM-DD'))
+      event.setEnd(appoint.end_date.format('YYYY-MM-DD'))
+      event.setExtendedProp('appointment', appoint)
     }
     else {
       const eventId = createEventId()
-      appointment.id = eventId
+      appoint.id = eventId
       
       calendarApi.addEvent({
         id: eventId,
-        title: appointment.title,
-        start: appointment.start_date.format('YYYY-MM-DD'),
-        end: appointment.end_date.format('YYYY-MM-DD'),
+        title: appoint.title,
+        start: this.getEventDate(appoint.start_date, appoint.start_time),
+        end: this.getEventDate(appoint.end_date, appoint.end_time),
         extendedProps: {
-          'appointment': appointment 
+          'appointment': appoint 
         },
         color: '#e9effb',
         textColor: '#315186'
@@ -249,35 +260,36 @@ export class CalendarComponent implements OnInit {
   }
 
   handleEventClick(arg: EventClickArg) {
-    console.log(arg)
-    if (arg.event.extendedProps.task) {
-      if (this.dialogOpened) return
-      this.dialogOpened = true
-      const task = arg.event.extendedProps.task
-      this.openTaskDialog(true, task)
-    }
-    else if (arg.event.extendedProps.appointment) {
-      if (this.dialogOpened) return
-      this.dialogOpened = true
-      const appointment = arg.event.extendedProps.appointment
-      this.openAppointDialog(true, appointment)
-    }
-    else if (arg.event.extendedProps.reminder) {
-      const reminder: Reminder = arg.event.extendedProps.reminder
-      this.reminderTitle = reminder.date.format('MMM DD dddd')
-      this.reminderEvents = reminder.events.map(e => {
-        if (e.extendedProps.task) {
-          return { task: true, title: e.extendedProps.task.title }
-        }
-        if (e.extendedProps.appointment) {
-          return { task: false, title: e.extendedProps.appointment.title }
-        }
-      })
-      console.log(this.reminderEvents)
-      const reminderButton: HTMLElement = document.getElementById('reminderButton')
-      this.renderer.setStyle(reminderButton, "left", `${arg.jsEvent.x}px`)
-      this.renderer.setStyle(reminderButton, "top", `${arg.jsEvent.y-50}px`)      
+    if (arg.event.extendedProps.reminder) {
+      const reminder: Reminder = arg.event.extendedProps.reminder;
+      this.reminderTitle = reminder.title;
+      this.reminderEvents = reminder.events;
+
+      const reminderButton: HTMLElement = document.getElementById('reminderButton');
+      this.renderer.setStyle(reminderButton, 'left', `${arg.jsEvent.x}px`);
+      this.renderer.setStyle(reminderButton, 'top', `${arg.jsEvent.pageY - 46}px`);
       reminderButton.click();
+      return
+    }
+
+    if (arg.event.extendedProps.task) {
+      const target = arg.jsEvent.target;
+      if (target['tagName'] === 'INPUT' || target['className'] === 'event-checkmark') {
+        console.log('checkbox is clicked');
+        return;
+      }
+    }
+    
+    this.eventClicked(arg.event)
+  }
+
+  eventClicked(event) {
+    if (!this.dialogOpened) {
+      this.dialogOpened = true;
+
+      const props = event.extendedProps
+      props.task && this.openTaskDialog(true, props.task)
+      props.appointment && this.openAppointDialog(true, props.appointment)
     }
   }
 
@@ -287,24 +299,27 @@ export class CalendarComponent implements OnInit {
   }
 
   handleEventContent(arg) {
-    let divEl = document.createElement('label')
+    const divEl = document.createElement('label')
     divEl.className = 'event-content'
 
     if (arg.event.extendedProps.task) {
       const task: NTask = arg.event.extendedProps.task
       const inputClass = task.due_date < moment() ? 'overdue' : 'upcoming'
-      divEl.innerHTML = `<input type='checkbox' class='${inputClass}'><span class='event-checkmark'>${task.due_time??''} ${arg.event.title}</span>`
+      divEl.innerHTML = `<input type='checkbox' class='${inputClass}'><span class='event-checkmark'></span>`
+      const div2 = document.createElement('label')
+      div2.className = 'event-content'
+      div2.innerHTML = `<span>${task.due_time??''} ${arg.event.title}</span>`
+      return { domNodes: [ divEl, div2 ] }
     }
-    else if (arg.event.extendedProps.reminder) {
-      const reminder = arg.event.extendedProps.reminder
+    
+    if (arg.event.extendedProps.reminder) {
       divEl.innerHTML = `<mat-icon role='img' class='mat-icon notranslate material-icons mat-icon-no-color reminder-icon' aria-hidden='true' data-mat-icon-type='font'>notifications</mat-icon><span class='event-checkmark'>${arg.event.title}</span>`
     }
     else if (arg.event.extendedProps.appointment) {
       divEl.innerHTML = `<span class='event-checkmark'>${arg.event.title}</span>`
     }
     
-    let arrayOfDomNodes = [ divEl ]
-    return { domNodes: arrayOfDomNodes }
+    return { domNodes: [ divEl ] }
   }
 
   showAllEvents() {
@@ -334,38 +349,48 @@ export class CalendarComponent implements OnInit {
   }
 
   private updateReminders() {
-    const temp = [...this.currentEvents]
-    temp.forEach(e => {
+    // First, remove reminders
+    [...this.currentEvents].forEach(e => {
       if (e.extendedProps.reminder) {
         e.remove()
       }
     })
-
-    const events: EventApi[] = this.currentEvents.filter(e => e.extendedProps.task || e.extendedProps.appointment)
+    
     const reminders = {}
-    const addReminder = function(date: moment.Moment, event: EventApi) {
-      const key = date.format('YYYY-MM-DD')
-      if (key in reminders) {
-        const reminder: Reminder = reminders[key]
+    const addReminder = function(title: string, dateTime: string, event: EventApi) {
+      console.log('addReminder', title, dateTime)
+      if (title in reminders) {
+        const reminder: Reminder = reminders[title]
         reminder.count++
         reminder.events.push(event)
       }
       else {
-        reminders[key] = {
-          count: 1, date: date, events: [event]
+        reminders[title] = {
+          count: 1, 
+          title: title,
+          dateTime: dateTime,
+          events: [event]
         }
       }
     }
+
+    const events: EventApi[] = this.currentEvents.filter(e => e.extendedProps.task || e.extendedProps.appointment)
     events.forEach(e => {
-      if (e.extendedProps.task) {
-        const task: NTask = e.extendedProps.task
-        task.remainder_date && addReminder(task.remainder_date, e)
+      const props = e.extendedProps
+      if (props.task && props.task.reminder_date) {
+        const task: NTask = props.task
+        const title = task.reminder_date.format('YYYY-MM-DD')
+        const dateTime = this.getEventDate(task.reminder_date, task.reminder_time)
+        task.reminder_date && addReminder(title, dateTime, e)
       }
-      if (e.extendedProps.appointment) {
-        const appoint: Appointment = e.extendedProps.appointment
-        appoint.remainder_date && addReminder(appoint.remainder_date, e)
+      else if (props.appointment && props.appointment.reminder_date) {
+        const appoint: Appointment = props.appointment
+        const title = appoint.reminder_date.format('YYYY-MM-DD')
+        const dateTime = this.getEventDate(appoint.reminder_date, appoint.reminder_time)
+        appoint.reminder_date && addReminder(title, dateTime, e)
       }
     })
+    console.log('reminders', reminders)
 
     // Add reminders
     if (Object.keys(reminders).length > 0) {
@@ -378,7 +403,7 @@ export class CalendarComponent implements OnInit {
         calendarApi.addEvent({
           id: eventId,
           title: `${reminder.count} Reminders`,
-          date: date,
+          date: reminder.dateTime,
           extendedProps: {
             'reminder': reminder 
           },

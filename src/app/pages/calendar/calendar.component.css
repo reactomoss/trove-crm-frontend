@@ -207,7 +207,7 @@ ul.addPanelUL li {
 ::ng-deep .event-content>span {
     /*color: #34495E;*/
     margin-top: 0.15rem;
-    padding: 0.5rem 0.25rem;
+    padding: 0.5rem 0.1rem;
 }
 
 ::ng-deep .event-content>input {
@@ -239,8 +239,8 @@ ul.addPanelUL li {
     text-align: center;
     /*color: #41B883;*/
     position: absolute;
-    left: 0.5rem;
-    top: 0.65rem;
+    left: 0.55rem;
+    top: 0.5rem;
 }
 
 
