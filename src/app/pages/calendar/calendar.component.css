@@ -298,9 +298,13 @@ ul.addPanelUL li {
 }
 
 /* Timegrid */
-::ng-deep .fc-timegrid-slot-minor {
-    display: none;
+::ng-deep .fc-timegrid .fc-col-header-cell {
+    height: 6.5rem!important;
 }
+
+/* ::ng-deep .fc-timegrid-slot-minor {
+    display: none;
+} */
 
 ::ng-deep .fc-scrollgrid-shrink {
     border: 0px!important;

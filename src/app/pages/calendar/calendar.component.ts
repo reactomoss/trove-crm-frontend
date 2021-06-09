@@ -45,6 +45,7 @@ export class CalendarComponent implements OnInit {
     weekends: true,
     dayMaxEvents: 4,
     allDaySlot: false,
+    slotDuration: '01:00:00',
     //editable: true,
     //selectable: true,
     //selectMirror: true,
@@ -82,9 +83,35 @@ export class CalendarComponent implements OnInit {
     })
   }
 
+  testWeekDay(date) {
+    let now = date;
+    // First row
+    let firstWeekDays = 7 - now.startOf('month').isoWeekday() + 1;
+    let rows = 1
+    let rest = now.daysInMonth() - firstWeekDays;
+    // Middle rows
+    let middleRows = Math.floor(rest/7);
+    rows = rows + middleRows;
+    rest = rest - (middleRows * 7);
+    // Last row?
+    if (rest > 0) {
+        rows = rows + 1;
+    }
+    console.log('rows', rows); // 5
+  }
+
   updateTitle() {
     let calendarApi = this.calendarComponent.getApi();
-    this.title = calendarApi.getCurrentData().viewTitle
+    if (calendarApi.view.type === 'dayGridMonth') {
+      this.title = calendarApi.getCurrentData().viewTitle
+    }
+    else {
+      console.log(calendarApi.getCurrentData())
+      const date = moment(calendarApi.getDate())
+      this.testWeekDay(date)
+      const weekNumber = date.week() - moment(date).startOf('month').week() + 1;
+      this.title = calendarApi.getCurrentData().viewTitle
+    }
   }
 
   openAppointDialog(isEdit: boolean, appointment: Appointment) {
@@ -234,7 +261,7 @@ export class CalendarComponent implements OnInit {
     this.updateTitle();
   }
 
-  weekView() {
+  weekView() {      
     const calendarApi = this.calendarComponent.getApi();
     calendarApi.changeView('timeGridWeek');
   }
