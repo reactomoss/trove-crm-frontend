@@ -36,7 +36,7 @@
     <div class="dateDiv">
       <div>
           <mat-form-field appearance="outline" [style.width.px]=155 class="formControl noLabelForm datePicker iconColorPath">
-              <input matInput [matDatepicker]="reminderDatePicker" readonly [(ngModel)]="task.remainder_date">
+              <input matInput [matDatepicker]="reminderDatePicker" readonly [(ngModel)]="task.reminder_date">
               <mat-datepicker-toggle matSuffix [for]="reminderDatePicker"></mat-datepicker-toggle>
               <mat-datepicker #reminderDatePicker></mat-datepicker>
           </mat-form-field>

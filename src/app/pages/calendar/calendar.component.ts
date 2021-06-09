@@ -11,7 +11,8 @@ import * as moment from 'moment';
 export interface Reminder {
   count: number,
   title: string,
-  dateTime: string,
+  date: moment.Moment,
+  time: string,
   events: EventApi[]
 }
 
@@ -39,10 +40,11 @@ export class CalendarComponent implements OnInit {
         center:'',
         right: '',
     },
-    initialView: 'dayGridMonth',
+    initialView: 'timeGridWeek',
     //initialEvents: INITIAL_EVENTS,
     weekends: true,
     dayMaxEvents: 4,
+    allDaySlot: false,
     //editable: true,
     //selectable: true,
     //selectMirror: true,
@@ -262,7 +264,7 @@ export class CalendarComponent implements OnInit {
   handleEventClick(arg: EventClickArg) {
     if (arg.event.extendedProps.reminder) {
       const reminder: Reminder = arg.event.extendedProps.reminder;
-      this.reminderTitle = reminder.title;
+      this.reminderTitle = reminder.date.format('MMM DD dddd');
       this.reminderEvents = reminder.events;
 
       const reminderButton: HTMLElement = document.getElementById('reminderButton');
@@ -357,20 +359,22 @@ export class CalendarComponent implements OnInit {
     })
     
     const reminders = {}
-    const addReminder = function(title: string, dateTime: string, event: EventApi) {
-      console.log('addReminder', title, dateTime)
+    const addReminder = function(date: moment.Moment, time: string, event: EventApi) {
+      const title = date.format('YYYY-MM-DD')
       if (title in reminders) {
         const reminder: Reminder = reminders[title]
         reminder.count++
         reminder.events.push(event)
       }
       else {
-        reminders[title] = {
+        const reminder: Reminder = {
           count: 1, 
           title: title,
-          dateTime: dateTime,
+          date: date,
+          time: time,
           events: [event]
         }
+        reminders[title] = reminder
       }
     }
 
@@ -379,15 +383,11 @@ export class CalendarComponent implements OnInit {
       const props = e.extendedProps
       if (props.task && props.task.reminder_date) {
         const task: NTask = props.task
-        const title = task.reminder_date.format('YYYY-MM-DD')
-        const dateTime = this.getEventDate(task.reminder_date, task.reminder_time)
-        task.reminder_date && addReminder(title, dateTime, e)
+        task.reminder_date && addReminder(task.reminder_date, task.reminder_time, e)
       }
       else if (props.appointment && props.appointment.reminder_date) {
         const appoint: Appointment = props.appointment
-        const title = appoint.reminder_date.format('YYYY-MM-DD')
-        const dateTime = this.getEventDate(appoint.reminder_date, appoint.reminder_time)
-        appoint.reminder_date && addReminder(title, dateTime, e)
+        appoint.reminder_date && addReminder(appoint.reminder_date, appoint.reminder_time, e)
       }
     })
     console.log('reminders', reminders)
@@ -403,7 +403,7 @@ export class CalendarComponent implements OnInit {
         calendarApi.addEvent({
           id: eventId,
           title: `${reminder.count} Reminders`,
-          date: reminder.dateTime,
+          date: date,
           extendedProps: {
             'reminder': reminder 
           },

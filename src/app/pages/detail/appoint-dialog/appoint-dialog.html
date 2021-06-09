@@ -114,7 +114,7 @@
                 <div class="col-sm-12"> <span>Remainder On</span></div>
                 <div class="col-sm-12 col-md-6">
                     <mat-form-field appearance="outline" class="formControl noLabelForm datePicker">
-                        <input matInput [matDatepicker]="assPicker" readonly [(ngModel)]="appointment.remainder_date">
+                        <input matInput [matDatepicker]="assPicker" readonly [(ngModel)]="appointment.reminder_date">
                         <mat-datepicker-toggle matSuffix [for]="assPicker"></mat-datepicker-toggle>
                         <mat-datepicker #assPicker></mat-datepicker>
                     </mat-form-field>

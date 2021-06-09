@@ -84,17 +84,6 @@
     line-height: inherit!important;
 }
 
-::ng-deep .fc-scheduleAppointment-button {
-    background: #002868!important;
-    border-radius: 9px 9px 9px 0px!important;
-    font-weight: normal!important;
-    font-size: 16px!important;
-    line-height: 21px!important;
-    text-align: center!important;
-    color: #FFFFFF!important;
-    padding: 8px 15px!important;
-}
-
 .notificationPanelWrap ul,
 .settingsPanelUL,
 .addPanelUL {
@@ -189,9 +178,9 @@ ul.addPanelUL li {
     margin: 0px!important;
 }
 
-::ng-deep .fullcalendar table {
-    border-radius: 7px;
-    background: white;
+::ng-deep .fc .fc-scrollgrid-liquid {
+    border-radius: 7px!important;
+    background-color: white!important;
 }
 
 ::ng-deep .event-content {
@@ -292,8 +281,7 @@ ul.addPanelUL li {
     width: 200px!important;
 }
 
-::ng-deep.fc-prev-button,
- ::ng-deep.fc-next-button {
+::ng-deep.fc-prev-button, ::ng-deep.fc-next-button {
     background-color: white!important;
     color: rgba(0, 0, 0, 0.8)!important;
 }
@@ -303,4 +291,21 @@ ul.addPanelUL li {
     width: 18px!important;
     height: 20px!important;
     margin-left: 4px;
+}
+
+ ::ng-deep .fc .fc-timegrid-slot {
+    height: 6.5rem!important;
+}
+
+/* Timegrid */
+::ng-deep .fc-timegrid-slot-minor {
+    display: none;
+}
+
+::ng-deep .fc-scrollgrid-shrink {
+    border: 0px!important;
+}
+
+::ng-deep .fc .fc-timegrid-slot-label {
+    vertical-align: top!important;
 }
