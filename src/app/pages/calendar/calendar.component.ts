@@ -31,7 +31,6 @@ export class CalendarComponent implements OnInit {
         right: '',
     },
     initialView: 'dayGridMonth',
-    //initialEvents: INITIAL_EVENTS,
     firstDay: 1,
     weekends: true,
     dayMaxEvents: 4,
@@ -39,11 +38,6 @@ export class CalendarComponent implements OnInit {
     slotDuration: '01:00:00',
     fixedWeekCount: false,
     aspectRatio: 2.0,
-    //editable: true,
-    //selectable: true,
-    //selectMirror: true,
-    //select: this.handleDateSelect.bind(this),
-    //eventOverlap: false,
     eventClick: this.handleEventClick.bind(this),
     eventsSet: this.handleEvents.bind(this),
     eventContent: this.handleEventContent.bind(this),
@@ -95,24 +89,23 @@ export class CalendarComponent implements OnInit {
   }
 
   updateTitle() {
-    let calendarApi = this.calendarComponent.getApi();
+    const calendarApi = this.calendarComponent.getApi();
     if (calendarApi.view.type === 'dayGridMonth') {
       this.title = calendarApi.getCurrentData().viewTitle
     }
     else {
-      //console.log(calendarApi.getCurrentData())
       const date = moment(calendarApi.getDate())
       this.title = `W${date.week()}-${date.format('MMM YYYY')}`
     }
   }
 
-  openAppointDialog(isEdit: boolean, appointment: Appointment) {
+  openAppointDialog(isEdit: boolean, appoint: Appointment) {
     if (this.dialogOpened) return
     this.dialogOpened = true
 
     const dialogRef = this.dialog.open(AppointDialog, {
       width: '740px',
-      data : { isEdit: isEdit, appointment: appointment }
+      data : { isEdit: isEdit, appointment: appoint }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -120,10 +113,10 @@ export class CalendarComponent implements OnInit {
       this.dialogOpened = false
       if (result) {
         if (result.action == 'delete') {
-            this.deleteAppointment(result.appointment)
+          this.deleteAppointment(result.appointment)
         }
         else {
-            this.addAppointment(result.appointment)
+          this.addAppointment(result.appointment)
         }
       }
     })
@@ -155,11 +148,11 @@ export class CalendarComponent implements OnInit {
       var tm = moment(time, ["h:mm A"])
       date.add(tm.hours(), 'hours').add(tm.minutes(), 'minutes') 
     }
-    return date.toDate() //date.format('YYYY-MM-DD HH:mm:ss')
+    return date.toDate()
   }
 
   private addAppointment(appoint: Appointment) {
-    //console.log('addAppointmentEvent:', appoint);
+    //console.log('addAppointment:', appoint);
     const calendarApi = this.calendarComponent.getApi()
 
     if (appoint.id) {
@@ -171,8 +164,7 @@ export class CalendarComponent implements OnInit {
       this.updateEventDuration()
     }
     else {
-      const eventId = createEventId()
-      appoint.id = eventId
+      appoint.id = createEventId()
       this.appointments.push(appoint)
       this.addAppointmentEvent(appoint, false)
     }
@@ -208,15 +200,14 @@ export class CalendarComponent implements OnInit {
       const calendarApi = this.calendarComponent.getApi()
       const event = calendarApi.getEventById(appointment.id)
       event.remove()
-
-      const index = this.appointments.indexOf(appointment)
-      index >= 0 && this.appointments.splice(index, 1)
     }
+    const index = this.appointments.indexOf(appointment)
+    index >= 0 && this.appointments.splice(index, 1)
     this.updateReminders()
   }
 
   private addTask(task: NTask) {
-    //console.log('addTaskEvent:', task);
+    //console.log('addTask:', task);
     const calendarApi = this.calendarComponent.getApi()   
 
     if (task.id) {
@@ -226,8 +217,7 @@ export class CalendarComponent implements OnInit {
       event.setExtendedProp('task', task)
     }
     else {
-      const eventId = createEventId()
-      task.id = eventId
+      task.id = createEventId()
       this.tasks.push(task)
       this.addTaskEvent(task, false)
     }
@@ -256,10 +246,9 @@ export class CalendarComponent implements OnInit {
       const calendarApi = this.calendarComponent.getApi()
       const event = calendarApi.getEventById(task.id)
       event.remove()
-
-      const index = this.tasks.indexOf(task)
-      index >= 0 && this.tasks.splice(index, 1)
     }
+    const index = this.tasks.indexOf(task)
+    index >= 0 && this.tasks.splice(index, 1)
     this.updateReminders()
   }
 
@@ -280,22 +269,21 @@ export class CalendarComponent implements OnInit {
   weekView() {      
     const calendarApi = this.calendarComponent.getApi();
     calendarApi.changeView('timeGridWeek');
+    this.updateTitle()
     this.resetEvents()
     this.updateEventDuration()
-    this.updateTitle()
     this.updateWeekViewEvents()
   }
 
   monthView() {
     const calendarApi = this.calendarComponent.getApi();
     calendarApi.changeView('dayGridMonth');
+    this.updateTitle()
     this.resetEvents()
     this.updateEventDuration()
-    this.updateTitle()
   }
 
   private resetEvents() {
-      console.log('resetEvents')
     const calendarApi = this.calendarComponent.getApi();
     calendarApi.removeAllEvents()
 
@@ -312,23 +300,6 @@ export class CalendarComponent implements OnInit {
       each.id = undefined
       this.addAppointment(each)
     })
-  }
-
-  handleDateSelect(selectInfo: DateSelectArg) {
-    const title = prompt('Please enter a new title for your event');
-    const calendarApi = selectInfo.view.calendar;
-
-    calendarApi.unselect(); // clear date selection
-
-    if (title) {
-      calendarApi.addEvent({
-        id: createEventId(),
-        title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay
-      });
-    }
   }
 
   handleEventClick(arg: EventClickArg) {
@@ -386,7 +357,6 @@ export class CalendarComponent implements OnInit {
         node: parentNode,
         event: arg.event
       })
-      //console.log('addElement', this.eventElements)
     }
   }
 
@@ -395,7 +365,6 @@ export class CalendarComponent implements OnInit {
       const parentNode = arg.el.parentNode as HTMLElement
       const index = this.eventElements.findIndex(el => el['node'] == parentNode)
       index >= 0 && this.eventElements.splice(index, 1)
-      //console.log('removeElement', index)
     }
   }
 
