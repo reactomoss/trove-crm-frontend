@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject, ViewChild, Renderer2 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { FullCalendarComponent, CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/angular';
+import { FullCalendarComponent, CalendarOptions, DateSelectArg, EventClickArg, EventApi, EventMountArg } from '@fullcalendar/angular';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { AppointDialog, Appointment } from '../detail/appoint-dialog/appoint-dialog';
 import { TaskDialog, NTask } from '../detail/task-dialog/task-dialog';
@@ -42,18 +42,21 @@ export class CalendarComponent implements OnInit {
     },
     initialView: 'timeGridWeek',
     //initialEvents: INITIAL_EVENTS,
+    firstDay: 1,
     weekends: true,
     dayMaxEvents: 4,
     allDaySlot: false,
     slotDuration: '01:00:00',
+    fixedWeekCount: false,
+    aspectRatio: 2.0,
     //editable: true,
     //selectable: true,
     //selectMirror: true,
-    firstDay: 1,
     //select: this.handleDateSelect.bind(this),
     eventClick: this.handleEventClick.bind(this),
     eventsSet: this.handleEvents.bind(this),
     eventContent: this.handleEventContent.bind(this),
+    eventDidMount: this.handleEventDidMount.bind(this),
   }
   events = []
   currentEvents: EventApi[] = [];
@@ -81,23 +84,43 @@ export class CalendarComponent implements OnInit {
     INITIAL_TASKS.forEach(task => {
       this.addTaskEvent(task)
     })
+
+    const appoint: Appointment = {
+      id: undefined,
+      title: 'New android phone presentation',
+      where: '',
+      description: '',
+      start_date: moment('2021-06-10'),
+      start_time: '09:00 AM',
+      end_date: moment('2021-06-12'),
+      end_time: '11:00 AM',
+      contact: '',
+      reminder_date: undefined,
+      reminder_time: undefined,
+    };
+    this.addAppointmentEvent(appoint)
   }
 
-  testWeekDay(date) {
-    let now = date;
-    // First row
-    let firstWeekDays = 7 - now.startOf('month').isoWeekday() + 1;
-    let rows = 1
-    let rest = now.daysInMonth() - firstWeekDays;
-    // Middle rows
-    let middleRows = Math.floor(rest/7);
-    rows = rows + middleRows;
-    rest = rest - (middleRows * 7);
-    // Last row?
-    if (rest > 0) {
-        rows = rows + 1;
+  testWeekDay(date: moment.Moment) {
+    let weekNumber = date.week() - moment(date).startOf('month').week();
+    
+    let dayOfWeek = date.clone().startOf('month').day()
+    if (dayOfWeek != 0 && dayOfWeek <= 4) {
+        weekNumber += 1
     }
-    console.log('rows', rows); // 5
+
+    dayOfWeek = date.clone().add(1, 'month').startOf('month').day()
+    // let prevMonth = 1, nextMonth = 0
+    // for (let i = 1; i < 7; i++) {
+    //   const next = date.add(i, 'day')
+    //   date.month() == next.month() ? prevMonth ++ : nextMonth ++
+    // }
+
+    // let weekNumber = date.week() - moment(date).startOf('month').week();
+    // if (nextMonth > 0 && prevMonth > nextMonth) {
+    //   weekNumber -= 1
+    // }
+    // const monthDay = (prevMonth > nextMonth) ? date : date.add(6, 'day')
   }
 
   updateTitle() {
@@ -109,7 +132,7 @@ export class CalendarComponent implements OnInit {
       console.log(calendarApi.getCurrentData())
       const date = moment(calendarApi.getDate())
       this.testWeekDay(date)
-      const weekNumber = date.week() - moment(date).startOf('month').week() + 1;
+      //const weekNumber = date.week() - moment(date).startOf('month').week() + 1;
       this.title = calendarApi.getCurrentData().viewTitle
     }
   }
@@ -155,13 +178,12 @@ export class CalendarComponent implements OnInit {
   }
 
   private getEventDate(day: moment.Moment, time: string) {
-    if (!day) return null
+    const date = day ? moment(day) : moment()
     if (time) {
       var tm = moment(time, ["h:mm A"])
-      console.log('tm=', tm)
-      day.add(tm.hours(), 'hours').add(tm.minutes(), 'minutes') 
+      date.add(tm.hours(), 'hours').add(tm.minutes(), 'minutes') 
     }
-    return day.format('YYYY-MM-DD HH:mm:ss')
+    return date.toDate() //date.format('YYYY-MM-DD HH:mm:ss')
   }
 
   private addAppointmentEvent(appoint: Appointment) {
@@ -179,12 +201,18 @@ export class CalendarComponent implements OnInit {
     else {
       const eventId = createEventId()
       appoint.id = eventId
+
+      let startTime = this.getEventDate(appoint.start_date, appoint.start_time)
+      let endTime = this.getEventDate(appoint.end_date, appoint.end_time)
+      if (calendarApi.view.type === 'timeGridWeek') {
+        endTime = moment(startTime).add(1, 'minute').toDate()
+      }
       
       calendarApi.addEvent({
         id: eventId,
         title: appoint.title,
-        start: this.getEventDate(appoint.start_date, appoint.start_time),
-        end: this.getEventDate(appoint.end_date, appoint.end_time),
+        start: startTime,
+        end: endTime,
         extendedProps: {
           'appointment': appoint 
         },
@@ -205,7 +233,7 @@ export class CalendarComponent implements OnInit {
   }
 
   private addTaskEvent(task: NTask) {
-    console.log('addTaskEvent:', task);
+    //console.log('addTaskEvent:', task);
     const calendarApi = this.calendarComponent.getApi()
     calendarApi.unselect();
 
@@ -219,22 +247,15 @@ export class CalendarComponent implements OnInit {
       const eventId = createEventId()
       task.id = eventId
 
-      let color = '#f9e8ec'
-      let textColor = '#d5617a'
-      if (task.due_date > moment()) {
-        color = 'rgb(255,214,193)'
-        textColor = 'rgb(80,80,80)'
-      }
-
+      const className = task.due_date <= moment() ? 'event-overdue' : 'event-future'
       calendarApi.addEvent({
         id: eventId,
         title: task.title,
-        date: task.due_date.format('YYYY-MM-DD'),
+        date: this.getEventDate(task.due_date, task.due_time),
         extendedProps: {
           'task': task 
         },
-        color: color,
-        textColor: textColor
+        className: [className]
       })
     }
     this.updateReminders()
@@ -351,6 +372,29 @@ export class CalendarComponent implements OnInit {
     return { domNodes: [ divEl ] }
   }
 
+  handleEventDidMount(arg: EventMountArg) {
+    if (arg.view.type == 'timeGridWeek') {
+      const parentNode = arg.el.parentNode as HTMLElement
+      const values = parentNode.style['inset'].split(' ')
+
+      const props = arg.event.extendedProps
+      if (props.appointment) {
+        const appoint: Appointment = props.appointment
+        if (appoint.start_date && appoint.end_date) {
+          const delta = appoint.end_date.diff(appoint.start_date, 'day')
+          console.log('handleEventDidMount, delta=', delta)
+          if (delta > 1) {
+            values[1] = `${-105 * delta}%`
+          }
+        }
+      }
+      
+      const insetStyle = `${values[0]} ${values[1]} 0% 0%`
+      parentNode.setAttribute('style', `inset: ${insetStyle}; z-index: 1;`)
+      console.log('handleEventDidMount, style', arg.event, values, insetStyle)
+    }
+  }
+
   showAllEvents() {
     if (this.filters.all) {
       this.filters.task = this.filters.appoint = this.filters.reminder = true  
@@ -417,7 +461,7 @@ export class CalendarComponent implements OnInit {
         appoint.reminder_date && addReminder(appoint.reminder_date, appoint.reminder_time, e)
       }
     })
-    console.log('reminders', reminders)
+    //console.log('reminders', reminders)
 
     // Add reminders
     if (Object.keys(reminders).length > 0) {

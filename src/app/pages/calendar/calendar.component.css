@@ -232,12 +232,20 @@ ul.addPanelUL li {
     top: 0.5rem;
 }
 
-
 /* ::ng-deep .event-content>input:active {
     border: 2px solid #34495E;
 } */
 
+::ng-deep .fc-timegrid-event {
+    position: relative!important;
+    display: flex;
+    white-space: nowrap;
+    margin-top: 2px;
+    border: 0px!important;
+}
+
 ::ng-deep .fc-event-main {
+    color: inherit!important;
     overflow: hidden;
 }
 
@@ -293,8 +301,24 @@ ul.addPanelUL li {
     margin-left: 4px;
 }
 
+::ng-deep .fc-daygrid-day {
+    height: 6.0rem!important;
+}
+
  ::ng-deep .fc .fc-timegrid-slot {
-    height: 6.5rem!important;
+    height: 6.0rem!important;
+}
+
+::ng-deep .event-overdue {
+    background-color: #f9e8ec!important;
+    color: #d5617a!important;
+}
+::ng-deep .event-future {
+    background-color:rgb(255,214,193)!important;
+    color: rgb(80,80,80)!important;
+}
+::ng-deep .event-content {
+    color: inherit;
 }
 
 /* Timegrid */
