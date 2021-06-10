@@ -196,7 +196,7 @@ ul.addPanelUL li {
 ::ng-deep .event-content>span {
     /*color: #34495E;*/
     margin-top: 0.15rem;
-    padding: 0.5rem 0.1rem;
+    padding: 0.3rem 0.1rem;
 }
 
 ::ng-deep .event-content>input {
@@ -295,9 +295,9 @@ ul.addPanelUL li {
 }
 
 ::ng-deep.reminder-icon {
-    font-size: 20px;
+    font-size: 18px;
     width: 18px!important;
-    height: 20px!important;
+    height: 18px!important;
     margin-left: 4px;
 }
 
@@ -305,7 +305,7 @@ ul.addPanelUL li {
     height: 6.0rem!important;
 }
 
- ::ng-deep .fc .fc-timegrid-slot {
+::ng-deep .fc .fc-timegrid-slot {
     height: 6.0rem!important;
 }
 
@@ -317,14 +317,24 @@ ul.addPanelUL li {
     background-color:rgb(255,214,193)!important;
     color: rgb(80,80,80)!important;
 }
+::ng-deep .event-appoint {
+    background-color:#e9effb!important;
+    color: #315186!important;
+    border: 0px!important;
+}
+::ng-deep .event-reminder {
+    background-color:rgb(233,251,236)!important;
+    color: #000!important;
+    border: 0px!important;
+}
 ::ng-deep .event-content {
     color: inherit;
 }
 
 /* Timegrid */
-::ng-deep .fc-timegrid .fc-col-header-cell {
+/* ::ng-deep .fc-timegrid .fc-col-header-cell {
     height: 6.5rem!important;
-}
+} */
 
 /* ::ng-deep .fc-timegrid-slot-minor {
     display: none;

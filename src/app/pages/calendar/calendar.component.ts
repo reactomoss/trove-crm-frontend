@@ -25,22 +25,12 @@ export class CalendarComponent implements OnInit {
   @ViewChild('calendar') calendarComponent: FullCalendarComponent;
   calendarOptions: CalendarOptions = {
     plugins: [ timeGridPlugin ],
-    customButtons: {
-      scheduleAppointment: {
-        text: 'Schedule an appointment',
-        click: () => this.openAppointDialog(false, null)
-      },
-      scheduleTask: {
-        text: 'Schedule a task',
-        click: () => this.openTaskDialog(false, null)
-      }
-    },
     headerToolbar: {
         left: '',
         center:'',
         right: '',
     },
-    initialView: 'timeGridWeek',
+    initialView: 'dayGridMonth',
     //initialEvents: INITIAL_EVENTS,
     firstDay: 1,
     weekends: true,
@@ -53,10 +43,12 @@ export class CalendarComponent implements OnInit {
     //selectable: true,
     //selectMirror: true,
     //select: this.handleDateSelect.bind(this),
+    //eventOverlap: false,
     eventClick: this.handleEventClick.bind(this),
     eventsSet: this.handleEvents.bind(this),
     eventContent: this.handleEventContent.bind(this),
     eventDidMount: this.handleEventDidMount.bind(this),
+    eventWillUnmount: this.handleEventWillUnmount.bind(this),
   }
   events = []
   currentEvents: EventApi[] = [];
@@ -90,8 +82,8 @@ export class CalendarComponent implements OnInit {
       title: 'New android phone presentation',
       where: '',
       description: '',
-      start_date: moment('2021-06-10'),
-      start_time: '09:00 AM',
+      start_date: moment('2021-06-09'),
+      start_time: '10:00 AM',
       end_date: moment('2021-06-12'),
       end_time: '11:00 AM',
       contact: '',
@@ -101,39 +93,15 @@ export class CalendarComponent implements OnInit {
     this.addAppointmentEvent(appoint)
   }
 
-  testWeekDay(date: moment.Moment) {
-    let weekNumber = date.week() - moment(date).startOf('month').week();
-    
-    let dayOfWeek = date.clone().startOf('month').day()
-    if (dayOfWeek != 0 && dayOfWeek <= 4) {
-        weekNumber += 1
-    }
-
-    dayOfWeek = date.clone().add(1, 'month').startOf('month').day()
-    // let prevMonth = 1, nextMonth = 0
-    // for (let i = 1; i < 7; i++) {
-    //   const next = date.add(i, 'day')
-    //   date.month() == next.month() ? prevMonth ++ : nextMonth ++
-    // }
-
-    // let weekNumber = date.week() - moment(date).startOf('month').week();
-    // if (nextMonth > 0 && prevMonth > nextMonth) {
-    //   weekNumber -= 1
-    // }
-    // const monthDay = (prevMonth > nextMonth) ? date : date.add(6, 'day')
-  }
-
   updateTitle() {
     let calendarApi = this.calendarComponent.getApi();
     if (calendarApi.view.type === 'dayGridMonth') {
       this.title = calendarApi.getCurrentData().viewTitle
     }
     else {
-      console.log(calendarApi.getCurrentData())
+      //console.log(calendarApi.getCurrentData())
       const date = moment(calendarApi.getDate())
-      this.testWeekDay(date)
-      //const weekNumber = date.week() - moment(date).startOf('month').week() + 1;
-      this.title = calendarApi.getCurrentData().viewTitle
+      this.title = `W${date.week()}-${date.format('MMM YYYY')}`
     }
   }
 
@@ -194,9 +162,10 @@ export class CalendarComponent implements OnInit {
     if (appoint.id) {
       const event = calendarApi.getEventById(appoint.id)
       event.setProp('title', appoint.title)
-      event.setStart(appoint.start_date.format('YYYY-MM-DD'))
-      event.setEnd(appoint.end_date.format('YYYY-MM-DD'))
+      event.setStart(this.getEventDate(appoint.start_date, appoint.start_time))
+      event.setEnd(this.getEventDate(appoint.end_date, appoint.end_time))
       event.setExtendedProp('appointment', appoint)
+      this.updateEventDuration()
     }
     else {
       const eventId = createEventId()
@@ -216,8 +185,7 @@ export class CalendarComponent implements OnInit {
         extendedProps: {
           'appointment': appoint 
         },
-        color: '#e9effb',
-        textColor: '#315186'
+        className: ['event-appoint']
       })
     }
     this.updateReminders()
@@ -233,14 +201,14 @@ export class CalendarComponent implements OnInit {
   }
 
   private addTaskEvent(task: NTask) {
-    //console.log('addTaskEvent:', task);
+    console.log('addTaskEvent:', task);
     const calendarApi = this.calendarComponent.getApi()
     calendarApi.unselect();
 
     if (task.id) {
       const event = calendarApi.getEventById(task.id)
       event.setProp('title', task.title)
-      event.setProp('date', task.due_date.format('YYYY-MM-DD'))
+      event.setStart(this.getEventDate(task.due_date, task.due_time))
       event.setExtendedProp('task', task)
     }
     else {
@@ -271,12 +239,14 @@ export class CalendarComponent implements OnInit {
   }
 
   prev() {
+    this.reset()
     const calendarApi = this.calendarComponent.getApi();
     calendarApi.prev();
     this.updateTitle();
   }
 
   next() {
+    this.reset()
     const calendarApi = this.calendarComponent.getApi();
     calendarApi.next();
     this.updateTitle();
@@ -285,11 +255,16 @@ export class CalendarComponent implements OnInit {
   weekView() {      
     const calendarApi = this.calendarComponent.getApi();
     calendarApi.changeView('timeGridWeek');
+    this.updateEventDuration()
+    this.updateTitle()
+    this.updateWeekViewEvents()
   }
 
   monthView() {
     const calendarApi = this.calendarComponent.getApi();
     calendarApi.changeView('dayGridMonth');
+    this.updateEventDuration()
+    this.updateTitle()
   }
 
   handleDateSelect(selectInfo: DateSelectArg) {
@@ -343,9 +318,99 @@ export class CalendarComponent implements OnInit {
     }
   }
 
+  private eventElements = []
+  private reset() {
+    this.eventElements = []
+  }
+
+  handleEventDidMount(arg: EventMountArg) {
+    if (arg.view.type == 'timeGridWeek') {
+      const parentNode = arg.el.parentNode as HTMLElement
+      this.eventElements.push({
+        node: parentNode,
+        event: arg.event
+      })
+      //console.log('addElement', this.eventElements)
+    }
+  }
+
+  handleEventWillUnmount(arg: EventMountArg) {
+    if (arg.view.type == 'timeGridWeek') {
+      const parentNode = arg.el.parentNode as HTMLElement
+      const index = this.eventElements.findIndex(el => el['node'] == parentNode)
+      index >= 0 && this.eventElements.splice(index, 1)
+      //console.log('removeElement', index)
+    }
+  }
+
+  private updateWeekViewEvents() {
+    //console.log('updateWeekViewEvents', this.eventElements)
+    const positions = {}
+    for (let each of this.eventElements) {
+      const element = each['node'] as HTMLElement;
+      const values = element.style['inset'].split(' ');
+
+      let insetTop = 0;
+      const event = each['event'] as EventApi;
+      if (event.extendedProps.appointment) {
+        const appoint: Appointment = event.extendedProps.appointment;
+        if (appoint.start_date && appoint.end_date) {
+          const delta = appoint.end_date.diff(appoint.start_date, 'day');
+          if (delta > 1) {
+            insetTop = -105 * delta;
+          }
+        }
+      }
+
+      let insetLeft = parseInt(values[0].replace('px', ''));
+      if (positions.hasOwnProperty(insetLeft)) {
+        const key = insetLeft;
+        insetLeft += positions[key] * 26;
+        positions[key]++;
+      } else {
+        positions[insetLeft] = 1;
+      }
+
+      const insetStyle = `${insetLeft}px ${insetTop}% 0% 0%`;
+      element.setAttribute('style', `inset: ${insetStyle}; z-index: 1;`);
+    }
+  }
+
+  private updateEventDuration() {
+    const calendarApi = this.calendarComponent.getApi();
+    const viewType = calendarApi.view.type
+    //console.log('updateEventDuration', viewType)
+
+    if (viewType === 'timeGridWeek') {
+      const events = [...this.currentEvents];
+      for (const event of events) {
+        const appoint = event.extendedProps.appointment as Appointment;
+        if (appoint) {
+          const date = this.getEventDate(appoint.start_date, appoint.start_time);
+          event.setEnd(moment(date).add(1, 'minute').toDate());
+        }
+      }
+    }
+    else {
+      const events = [...this.currentEvents];
+      for (const event of events) {
+        const appoint = event.extendedProps.appointment as Appointment;
+        if (appoint) {
+          const date = this.getEventDate(appoint.end_date, appoint.end_time);
+          event.setEnd(date);
+        }
+      }
+    }
+  }
+
   handleEvents(events: EventApi[]) {
     this.currentEvents = events;
-    //console.log('currentEvents', this.currentEvents)
+    //console.log('currentEvents', this.currentEvents, this.eventElements)
+
+    const calendarApi = this.calendarComponent.getApi()
+    if (calendarApi.view.type === 'timeGridWeek') {
+      this.updateWeekViewEvents()
+    }
   }
 
   handleEventContent(arg) {
@@ -370,29 +435,6 @@ export class CalendarComponent implements OnInit {
     }
     
     return { domNodes: [ divEl ] }
-  }
-
-  handleEventDidMount(arg: EventMountArg) {
-    if (arg.view.type == 'timeGridWeek') {
-      const parentNode = arg.el.parentNode as HTMLElement
-      const values = parentNode.style['inset'].split(' ')
-
-      const props = arg.event.extendedProps
-      if (props.appointment) {
-        const appoint: Appointment = props.appointment
-        if (appoint.start_date && appoint.end_date) {
-          const delta = appoint.end_date.diff(appoint.start_date, 'day')
-          console.log('handleEventDidMount, delta=', delta)
-          if (delta > 1) {
-            values[1] = `${-105 * delta}%`
-          }
-        }
-      }
-      
-      const insetStyle = `${values[0]} ${values[1]} 0% 0%`
-      parentNode.setAttribute('style', `inset: ${insetStyle}; z-index: 1;`)
-      console.log('handleEventDidMount, style', arg.event, values, insetStyle)
-    }
   }
 
   showAllEvents() {
@@ -467,9 +509,9 @@ export class CalendarComponent implements OnInit {
     if (Object.keys(reminders).length > 0) {
       const calendarApi = this.calendarComponent.getApi()
       calendarApi.unselect();
-      for (const date in reminders) {
-        const reminder = reminders[date]
-        
+      for (const key in reminders) {
+        const reminder = reminders[key]
+        const date = this.getEventDate(reminder.date, reminder.time)
         const eventId = createEventId()
         calendarApi.addEvent({
           id: eventId,
@@ -478,8 +520,7 @@ export class CalendarComponent implements OnInit {
           extendedProps: {
             'reminder': reminder 
           },
-          color: 'rgb(233,251,236)',
-          textColor: '#000'
+          className: ['event-reminder']
         })
       }
     }
