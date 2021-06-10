@@ -19,9 +19,9 @@ export const INITIAL_TASKS: NTask[] = [
         id: null,
         title: 'Ux design meeting', 
         content: '',
-        due_date: moment('2021-06-12'),
+        due_date: moment('2021-06-09'),
         due_time: '11:00 AM',
-        reminder_date: moment('2021-06-12'),
+        reminder_date: moment('2021-06-09'),
         reminder_time: '11:00 AM',
         owner: ''
     },
@@ -29,10 +29,10 @@ export const INITIAL_TASKS: NTask[] = [
         id: null,
         title: 'Family', 
         content: '',
-        due_date: moment('2021-06-23'),
+        due_date: moment('2021-06-10'),
         due_time: '18:00',
-        reminder_date: null,
-        reminder_time: '',
+        reminder_date: moment('2021-06-09'),
+        reminder_time: '12:00 AM',
         owner: ''
     },
     {

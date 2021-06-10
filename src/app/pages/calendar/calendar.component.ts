@@ -13,7 +13,7 @@ export interface Reminder {
   title: string,
   date: moment.Moment,
   time: string,
-  events: EventApi[]
+  tasks: any[]
 }
 
 @Component({
@@ -50,7 +50,8 @@ export class CalendarComponent implements OnInit {
     eventDidMount: this.handleEventDidMount.bind(this),
     eventWillUnmount: this.handleEventWillUnmount.bind(this),
   }
-  events = []
+  tasks: NTask[] = []
+  appointments: Appointment[] = []
   currentEvents: EventApi[] = [];
   title = moment().format('MMM YYYY')
   filters = {
@@ -74,7 +75,7 @@ export class CalendarComponent implements OnInit {
 
   ngAfterViewInit(): void {
     INITIAL_TASKS.forEach(task => {
-      this.addTaskEvent(task)
+      this.addTask(task)
     })
 
     const appoint: Appointment = {
@@ -90,7 +91,7 @@ export class CalendarComponent implements OnInit {
       reminder_date: undefined,
       reminder_time: undefined,
     };
-    this.addAppointmentEvent(appoint)
+    this.addAppointment(appoint)
   }
 
   updateTitle() {
@@ -106,6 +107,9 @@ export class CalendarComponent implements OnInit {
   }
 
   openAppointDialog(isEdit: boolean, appointment: Appointment) {
+    if (this.dialogOpened) return
+    this.dialogOpened = true
+
     const dialogRef = this.dialog.open(AppointDialog, {
       width: '740px',
       data : { isEdit: isEdit, appointment: appointment }
@@ -119,7 +123,7 @@ export class CalendarComponent implements OnInit {
             this.deleteAppointment(result.appointment)
         }
         else {
-            this.addAppointmentEvent(result.appointment)
+            this.addAppointment(result.appointment)
         }
       }
     })
@@ -136,10 +140,10 @@ export class CalendarComponent implements OnInit {
       this.dialogOpened = false
       if (result) {
         if (result.action == 'delete') {
-            this.deleteTask(result.task)
+          this.deleteTask(result.task)
         }
         else {
-            this.addTaskEvent(result.task)
+          this.addTask(result.task)
         }
       }
     })
@@ -154,10 +158,9 @@ export class CalendarComponent implements OnInit {
     return date.toDate() //date.format('YYYY-MM-DD HH:mm:ss')
   }
 
-  private addAppointmentEvent(appoint: Appointment) {
-    console.log('addAppointmentEvent:', appoint);
+  private addAppointment(appoint: Appointment) {
+    //console.log('addAppointmentEvent:', appoint);
     const calendarApi = this.calendarComponent.getApi()
-    calendarApi.unselect();
 
     if (appoint.id) {
       const event = calendarApi.getEventById(appoint.id)
@@ -170,25 +173,34 @@ export class CalendarComponent implements OnInit {
     else {
       const eventId = createEventId()
       appoint.id = eventId
-
-      let startTime = this.getEventDate(appoint.start_date, appoint.start_time)
-      let endTime = this.getEventDate(appoint.end_date, appoint.end_time)
-      if (calendarApi.view.type === 'timeGridWeek') {
-        endTime = moment(startTime).add(1, 'minute').toDate()
-      }
-      
-      calendarApi.addEvent({
-        id: eventId,
-        title: appoint.title,
-        start: startTime,
-        end: endTime,
-        extendedProps: {
-          'appointment': appoint 
-        },
-        className: ['event-appoint']
-      })
+      this.appointments.push(appoint)
+      this.addAppointmentEvent(appoint, false)
     }
     this.updateReminders()
+  }
+
+  private addAppointmentEvent(appoint: Appointment, group: boolean) {
+    const calendarApi = this.calendarComponent.getApi()
+    calendarApi.unselect();
+
+    let title = (appoint.start_time) ? `${appoint.start_time} ${appoint.title}` : appoint.title
+    let startTime = this.getEventDate(appoint.start_date, appoint.start_time)
+    let endTime = this.getEventDate(appoint.end_date, appoint.end_time)
+    if (calendarApi.view.type === 'timeGridWeek') {
+      endTime = moment(startTime).add(1, 'minute').toDate()
+    }
+    
+    calendarApi.addEvent({
+      id: appoint.id,
+      title: title,
+      start: startTime,
+      end: endTime,
+      extendedProps: {
+        'appointment': appoint,
+        'group': group
+      },
+      className: ['event-appoint']
+    })
   }
 
   private deleteAppointment(appointment: Appointment) {
@@ -196,14 +208,16 @@ export class CalendarComponent implements OnInit {
       const calendarApi = this.calendarComponent.getApi()
       const event = calendarApi.getEventById(appointment.id)
       event.remove()
+
+      const index = this.appointments.indexOf(appointment)
+      index >= 0 && this.appointments.splice(index, 1)
     }
     this.updateReminders()
   }
 
-  private addTaskEvent(task: NTask) {
-    console.log('addTaskEvent:', task);
-    const calendarApi = this.calendarComponent.getApi()
-    calendarApi.unselect();
+  private addTask(task: NTask) {
+    //console.log('addTaskEvent:', task);
+    const calendarApi = this.calendarComponent.getApi()   
 
     if (task.id) {
       const event = calendarApi.getEventById(task.id)
@@ -214,19 +228,27 @@ export class CalendarComponent implements OnInit {
     else {
       const eventId = createEventId()
       task.id = eventId
-
-      const className = task.due_date <= moment() ? 'event-overdue' : 'event-future'
-      calendarApi.addEvent({
-        id: eventId,
-        title: task.title,
-        date: this.getEventDate(task.due_date, task.due_time),
-        extendedProps: {
-          'task': task 
-        },
-        className: [className]
-      })
+      this.tasks.push(task)
+      this.addTaskEvent(task, false)
     }
     this.updateReminders()
+  }
+
+  private addTaskEvent(task: NTask, group: boolean) {
+    const calendarApi = this.calendarComponent.getApi()
+    calendarApi.unselect();
+
+    const className = task.due_date <= moment() ? 'event-overdue' : 'event-future'
+    calendarApi.addEvent({
+      id: task.id,
+      title: task.title,
+      date: this.getEventDate(task.due_date, task.due_time),
+      extendedProps: {
+        'task': task,
+        'group': group
+      },
+      className: [className]
+    })
   }
 
   private deleteTask(task: NTask) {
@@ -234,6 +256,9 @@ export class CalendarComponent implements OnInit {
       const calendarApi = this.calendarComponent.getApi()
       const event = calendarApi.getEventById(task.id)
       event.remove()
+
+      const index = this.tasks.indexOf(task)
+      index >= 0 && this.tasks.splice(index, 1)
     }
     this.updateReminders()
   }
@@ -255,6 +280,7 @@ export class CalendarComponent implements OnInit {
   weekView() {      
     const calendarApi = this.calendarComponent.getApi();
     calendarApi.changeView('timeGridWeek');
+    this.resetEvents()
     this.updateEventDuration()
     this.updateTitle()
     this.updateWeekViewEvents()
@@ -263,8 +289,29 @@ export class CalendarComponent implements OnInit {
   monthView() {
     const calendarApi = this.calendarComponent.getApi();
     calendarApi.changeView('dayGridMonth');
+    this.resetEvents()
     this.updateEventDuration()
     this.updateTitle()
+  }
+
+  private resetEvents() {
+      console.log('resetEvents')
+    const calendarApi = this.calendarComponent.getApi();
+    calendarApi.removeAllEvents()
+
+    const tazks = [...this.tasks]
+    this.tasks = []
+    tazks.forEach(each => {
+      each.id = undefined
+      this.addTask(each)
+    })
+
+    const appoints = [...this.appointments]
+    this.appointments = []
+    appoints.forEach(each => {
+      each.id = undefined
+      this.addAppointment(each)
+    })
   }
 
   handleDateSelect(selectInfo: DateSelectArg) {
@@ -288,12 +335,16 @@ export class CalendarComponent implements OnInit {
     if (arg.event.extendedProps.reminder) {
       const reminder: Reminder = arg.event.extendedProps.reminder;
       this.reminderTitle = reminder.date.format('MMM DD dddd');
-      this.reminderEvents = reminder.events;
+      this.reminderEvents = reminder.tasks
 
       const reminderButton: HTMLElement = document.getElementById('reminderButton');
       this.renderer.setStyle(reminderButton, 'left', `${arg.jsEvent.x}px`);
       this.renderer.setStyle(reminderButton, 'top', `${arg.jsEvent.pageY - 46}px`);
       reminderButton.click();
+      return
+    }
+
+    if (arg.event.extendedProps.group) {
       return
     }
 
@@ -303,18 +354,23 @@ export class CalendarComponent implements OnInit {
         console.log('checkbox is clicked');
         return;
       }
+      this.openTaskDialog(true, arg.event.extendedProps.task)
     }
-    
-    this.eventClicked(arg.event)
+    else if (arg.event.extendedProps.appointment) {
+      this.openAppointDialog(true, arg.event.extendedProps.appointment)
+    }
   }
 
-  eventClicked(event) {
+  eventClicked(task) {
     if (!this.dialogOpened) {
       this.dialogOpened = true;
 
-      const props = event.extendedProps
-      props.task && this.openTaskDialog(true, props.task)
-      props.appointment && this.openAppointDialog(true, props.appointment)
+      if (task as NTask) {
+        this.openTaskDialog(true, task as NTask)
+      }
+      else if (task as Appointment) {
+        this.openAppointDialog(true, task as Appointment)
+      }
     }
   }
 
@@ -382,24 +438,22 @@ export class CalendarComponent implements OnInit {
     //console.log('updateEventDuration', viewType)
 
     if (viewType === 'timeGridWeek') {
-      const events = [...this.currentEvents];
-      for (const event of events) {
+      [...this.currentEvents].forEach(event => {
         const appoint = event.extendedProps.appointment as Appointment;
         if (appoint) {
           const date = this.getEventDate(appoint.start_date, appoint.start_time);
           event.setEnd(moment(date).add(1, 'minute').toDate());
         }
-      }
+      })
     }
     else {
-      const events = [...this.currentEvents];
-      for (const event of events) {
+      [...this.currentEvents].forEach(event => {
         const appoint = event.extendedProps.appointment as Appointment;
         if (appoint) {
           const date = this.getEventDate(appoint.end_date, appoint.end_time);
           event.setEnd(date);
         }
-      }
+      })
     }
   }
 
@@ -420,11 +474,16 @@ export class CalendarComponent implements OnInit {
     if (arg.event.extendedProps.task) {
       const task: NTask = arg.event.extendedProps.task
       const inputClass = task.due_date < moment() ? 'overdue' : 'upcoming'
-      divEl.innerHTML = `<input type='checkbox' class='${inputClass}'><span class='event-checkmark'></span>`
-      const div2 = document.createElement('label')
-      div2.className = 'event-content'
-      div2.innerHTML = `<span>${task.due_time??''} ${arg.event.title}</span>`
-      return { domNodes: [ divEl, div2 ] }
+      if (arg.event.extendedProps.group) {
+        divEl.innerHTML = `<span class='event-taskgroup'>${arg.event.title}</span>`
+      }
+      else {
+        divEl.innerHTML = `<input type='checkbox' class='${inputClass}'><span class='event-checkmark'></span>`
+        const div2 = document.createElement('label')
+        div2.className = 'event-content'
+        div2.innerHTML = `<span>${arg.event.title}</span>`
+        return { domNodes: [ divEl, div2 ] }
+      }
     }
     
     if (arg.event.extendedProps.reminder) {
@@ -466,18 +525,18 @@ export class CalendarComponent implements OnInit {
   private updateReminders() {
     // First, remove reminders
     [...this.currentEvents].forEach(e => {
-      if (e.extendedProps.reminder) {
+      if (e.extendedProps.reminder || e.extendedProps.group) {
         e.remove()
       }
     })
     
     const reminders = {}
-    const addReminder = function(date: moment.Moment, time: string, event: EventApi) {
+    const addReminder = function(date: moment.Moment, time: string, task: any, isTask: boolean) {
       const title = date.format('YYYY-MM-DD')
       if (title in reminders) {
         const reminder: Reminder = reminders[title]
         reminder.count++
-        reminder.events.push(event)
+        reminder.tasks.push({...task, isTask: isTask})
       }
       else {
         const reminder: Reminder = {
@@ -485,32 +544,27 @@ export class CalendarComponent implements OnInit {
           title: title,
           date: date,
           time: time,
-          events: [event]
+          tasks: [{...task, isTask: isTask}]
         }
         reminders[title] = reminder
       }
     }
 
-    const events: EventApi[] = this.currentEvents.filter(e => e.extendedProps.task || e.extendedProps.appointment)
-    events.forEach(e => {
-      const props = e.extendedProps
-      if (props.task && props.task.reminder_date) {
-        const task: NTask = props.task
-        task.reminder_date && addReminder(task.reminder_date, task.reminder_time, e)
-      }
-      else if (props.appointment && props.appointment.reminder_date) {
-        const appoint: Appointment = props.appointment
-        appoint.reminder_date && addReminder(appoint.reminder_date, appoint.reminder_time, e)
-      }
+    
+    this.tasks.forEach(task => {
+      task.reminder_date && addReminder(task.reminder_date, task.reminder_time, task, true)
     })
-    //console.log('reminders', reminders)
+    this.appointments.forEach(appoint => {
+      appoint.reminder_date && addReminder(appoint.reminder_date, appoint.reminder_time, appoint, false)
+    })
 
     // Add reminders
     if (Object.keys(reminders).length > 0) {
       const calendarApi = this.calendarComponent.getApi()
       calendarApi.unselect();
+
       for (const key in reminders) {
-        const reminder = reminders[key]
+        const reminder = reminders[key] as Reminder
         const date = this.getEventDate(reminder.date, reminder.time)
         const eventId = createEventId()
         calendarApi.addEvent({
@@ -522,6 +576,54 @@ export class CalendarComponent implements OnInit {
           },
           className: ['event-reminder']
         })
+      }
+
+      if (calendarApi.view.type === 'dayGridMonth') {
+        for (const key in reminders) {
+          const reminder = reminders[key] as Reminder
+          //console.log('reminder', reminder)
+          if (reminder.count < 3) {
+            continue;
+          }
+          
+          const items = this.currentEvents
+            .filter(e => e.extendedProps.task || e.extendedProps.appointment)
+            .filter(e => moment(e.start).dayOfYear() == reminder.date.dayOfYear())
+          if (items && items.length > 0) {
+            items.forEach(e => e.remove())
+          }
+          
+          const tazks = reminder.tasks.filter((t) => t.isTask);
+          if (tazks && tazks.length > 0) {
+            this.addTaskEvent({
+              id: null,
+              title: `${tazks.length} Tasks`,
+              content: '',
+              due_date: reminder.date,
+              due_time: undefined,
+              reminder_date: undefined,
+              reminder_time: undefined,
+              owner: '',
+            }, true);
+          }
+
+          const appoints = reminder.tasks.filter((t) => !t.isTask);
+          if (appoints && appoints.length > 0) {
+            this.addAppointmentEvent({
+              id: null,
+              title: `${appoints.length} Appointments`,
+              where: '',
+              description: '',
+              start_date: reminder.date,
+              start_time: undefined,
+              end_date: reminder.date,
+              end_time: undefined,
+              contact: '',
+              reminder_date: undefined,
+              reminder_time: undefined,
+            }, true);
+          }
+        }
       }
     }
   }

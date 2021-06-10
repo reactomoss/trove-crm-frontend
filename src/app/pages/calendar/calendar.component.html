@@ -40,7 +40,7 @@
                                 <!-- <mat-icon aria-hidden="false">close</mat-icon> -->
                             </li>
                             <li mat-menu-item *ngFor="let e of reminderEvents">
-                                <div class="row alignText" *ngIf="e.extendedProps.task">
+                                <div class="row alignText" *ngIf="e.isTask">
                                     <div class="col-auto pr-0">
                                         <img src="../../../assets/images/notification002.png" alt="Image">
                                     </div>
@@ -48,7 +48,7 @@
                                         <div class="color-253238" (click)="eventClicked(e)">{{e.title}}</div>
                                     </div>
                                 </div>
-                                <div class="row alignText" *ngIf="e.extendedProps.appointment" (click)="eventClicked(e)">
+                                <div class="row alignText" *ngIf="!e.isTask" (click)="eventClicked(e)">
                                     <div class="col-auto pr-0 mt-0">
                                         <img src="../../../assets/images/notification004.png" alt="Image">
                                     </div>

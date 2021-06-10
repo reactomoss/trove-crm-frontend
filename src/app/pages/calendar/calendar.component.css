@@ -229,7 +229,7 @@ ul.addPanelUL li {
     /*color: #41B883;*/
     position: absolute;
     left: 0.55rem;
-    top: 0.5rem;
+    top: 0.35rem;
 }
 
 /* ::ng-deep .event-content>input:active {
@@ -295,9 +295,9 @@ ul.addPanelUL li {
 }
 
 ::ng-deep.reminder-icon {
-    font-size: 18px;
-    width: 18px!important;
-    height: 18px!important;
+    font-size: 16px;
+    width: 16px!important;
+    height: 16px!important;
     margin-left: 4px;
 }
 
@@ -321,6 +321,10 @@ ul.addPanelUL li {
     background-color:#e9effb!important;
     color: #315186!important;
     border: 0px!important;
+    padding-left: 6px!important;
+}
+::ng-deep .event-taskgroup {
+    padding-left: 6px!important;
 }
 ::ng-deep .event-reminder {
     background-color:rgb(233,251,236)!important;
