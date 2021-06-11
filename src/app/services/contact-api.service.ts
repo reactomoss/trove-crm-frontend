@@ -69,6 +69,14 @@ export class ContactApiService {
     return this.httpClient.post(`${this.baseURL + environment.company}`, data)
   }
 
+  updateCompany(companyId, data: any): Observable<any> {
+    return this.httpClient.put(`${this.baseURL + environment.company}/${companyId}`, data)
+  }
+
+  getCompanyDetial(companyId): Observable<any> {
+    return this.httpClient.get(`${this.baseURL + environment.company_detail}/${companyId}`)
+  }
+
   getCompanyList(data): Observable<any> {
     const API_URL = `${this.baseURL + environment.company_index}`
     return this.httpClient.post(API_URL, data)
