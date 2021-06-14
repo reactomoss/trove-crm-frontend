@@ -10,7 +10,8 @@ import {
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
 } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import { AppointDialog, TaskDialog } from '../detail/detail.component';
+import { AppointDialog } from '../detail/appoint-dialog/appoint-dialog';
+import { TaskDialog } from '../detail/task-dialog/task-dialog';
 import { ContactDialog } from 'src/app/shared/header/header.component';
 
 @Component({

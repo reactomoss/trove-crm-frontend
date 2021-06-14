@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import * as echarts from 'echarts';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AppointDialog, TaskDialog } from './detail/detail.component';
+import { TaskDialog } from './detail/task-dialog/task-dialog';
+import { AppointDialog } from './detail/appoint-dialog/appoint-dialog';
+
 export class Task {
   constructor(public name: string,  public selected?: boolean) {
     if (selected === undefined) selected = false

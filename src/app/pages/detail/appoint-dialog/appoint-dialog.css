@@ -17,8 +17,18 @@
     margin: 0;
     border-top: #E4E9EF solid 1.73px;
     background: #EFF2F7;
-    display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.deleteBtn {
+    background: #EFF2F7;
+    border: 1px solid #D0D9DE;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 16px;
+    width: 119px;
+    color: red;
 }
 
 .cancelBtn {
@@ -28,6 +38,7 @@
     font-weight: bold;
     font-size: 16px;
     width: 119px;
+    float: right!important;
 }
 
 .deleteBtn {
@@ -49,6 +60,7 @@
     font-size: 16px;
     color: #FFFFFF;
     width: 119px;
+    float: right!important;
 }
 
 span {
