@@ -108,4 +108,17 @@ export class DateService {
     }
     return {startDate, lastDate}
   }
+
+  getEventTime(day: moment.Moment, time: string) {
+    const date = day ? moment(day) : moment()
+    if (time) {
+      var tm = moment(time, ["h:mm A"])
+      date.add(tm.hours(), 'hours').add(tm.minutes(), 'minutes') 
+    }
+    return date
+  }
+
+  getEventDate(day: moment.Moment, time: string) {
+    return this.getEventTime(day, time).toDate()
+  }
 }

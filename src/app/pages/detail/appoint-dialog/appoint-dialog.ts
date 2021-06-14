@@ -26,7 +26,6 @@ export interface Appointment {
   contact: string,
   reminder_date: Moment,
   reminder_time: string,
-  associate_with: any[],
 }
 export interface AppointOwner {
   id: number,
@@ -72,13 +71,12 @@ export class AppointDialog {
     location: "France",
     description: "Test Appointment",
     start_date: moment('2021-06-15'),
-    start_time: '09:00 AM',
+    start_time: '09:00:00',
     end_date: moment('2021-06-20'),
-    end_time: '10:00 AM',
+    end_time: '22:20:00',
     contact: null,
     reminder_date: moment('2021-06-16'),
-    reminder_time: '03:00 PM',
-    associate_with: [],
+    reminder_time: '05:15:00',
   }
   errors = null
 
@@ -100,16 +98,35 @@ export class AppointDialog {
   }
 
   reactiveForm() {
+    const appoint = this.appointment
     this.form = this.fb.group({
-      title: [this.appointment.title, [Validators.required, Validators.maxLength(10)]],
-      location: [this.appointment.location, [Validators.required]],
-      description: [this.appointment.description, [Validators.required, Validators.maxLength(500)]],
-      start_date: [this.appointment.start_date, [Validators.required]],
-      start_time: [this.appointment.start_time, [Validators.required]],
-      end_date: [this.appointment.end_date, [Validators.required]],
-      end_time: [this.appointment.end_time, [Validators.required]],
-      reminder_date: [this.appointment.reminder_date, [Validators.required]],
-      reminder_time: [this.appointment.reminder_time, [Validators.required]],
+      title: [appoint.title, [Validators.required, Validators.maxLength(100)]],
+      location: [appoint.location, [Validators.required]],
+      description: [appoint.description, [Validators.required, Validators.maxLength(500)]],
+      start_date: [
+        appoint.start_date ? moment(appoint.start_date) : null, 
+        [Validators.required]
+      ],
+      start_time: [
+        appoint.start_time ? moment(appoint.start_time, ["h:mm A"]).format('h:mm A') : null, 
+        [Validators.required]
+      ],
+      end_date: [
+        appoint.end_date ? moment(appoint.end_date) : null, 
+        [Validators.required]
+      ],
+      end_time: [
+        appoint.end_time ? moment(appoint.end_time, ["h:mm A"]).format('h:mm A') : null, 
+        [Validators.required]
+      ],
+      reminder_date: [
+        appoint.reminder_date ? moment(appoint.reminder_date) : null, 
+        [Validators.required]
+      ],
+      reminder_time: [
+        appoint.reminder_time ? moment(appoint.reminder_time, ["h:mm A"]).format('h:mm A') : null, 
+        [Validators.required]
+      ],
     });
   }
 
@@ -169,6 +186,10 @@ export class AppointDialog {
       reminder_date: values.reminder_date.format('YYYY-MM-DD'),
     };
 
+    if (this.isEdit) {
+      payload['id'] = this.appointment.id
+    }
+
     if (this.selected && this.selected.length > 0) {
       const appointments = {}
       const contacts = this.selected.filter(e => e.type == 'contact').map(e => e.id) 
@@ -192,16 +213,13 @@ export class AppointDialog {
     }
     console.log('submit-payload', payload);
 
-    // const observable = this.isEdit ? 
-    //     this.contactService.updateCompany(this.company.id, payload) :
-    //     this.contactService.createCompany(payload)
-
-    const observable = this.contactService.createAppointment(payload)
+    const observable = this.isEdit ? 
+        this.contactService.updateAppointment(this.appointment.id, payload) :
+        this.contactService.createAppointment(payload)
 
     observable.subscribe(
       (res: any) => {
         if (res.success) {
-          //this.updateCompany()
           this.dialogRef.close({
             state: this.isEdit? 'updated' : 'created',
             message: res.message,
@@ -271,7 +289,7 @@ export class AppointDialog {
 
   public setActive(num) {
     this.active = num
-    
+
     if (num == 1) this.options = this.getContacts()
     else if (num == 2) this.options = this.getOrganizations()
     else if (num == 3) this.options = this.getLeads()

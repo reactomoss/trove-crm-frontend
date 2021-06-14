@@ -92,9 +92,10 @@
           <app-widget 
             [leads_value]="company.leads_value"
             [associate_members]="company.associate_members"
+            [appointments]="company.appointments"
             [user_files]="company.files"
             (addTaskClicked)="openTaskDialog($event)" 
-            (addAppointClicked)="openAppointDialog($event)"></app-widget>
+            (addAppointClicked)="editAppointClicked($event)"></app-widget>
         </div>
     </div>
 </ngx-simplebar>

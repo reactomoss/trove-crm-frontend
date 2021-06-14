@@ -1,12 +1,8 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import * as moment from 'moment';
+import { DateService } from 'src/app/service/date.service';
 
 export class Task {
-  constructor(public name: string, public icon: string , public color: string, public desc: string,  public selected?: boolean) {
-    if (selected === undefined) selected = false
-  }
-}
-
-export class Appointment {
   constructor(public name: string, public icon: string , public color: string, public desc: string,  public selected?: boolean) {
     if (selected === undefined) selected = false
   }
@@ -28,6 +24,8 @@ export class WidgetComponent implements OnInit {
   @Input() leads_value
   @Input() associate_members
   @Input() user_files
+  @Input() appointments
+  
   
   tasks: Task[] = [
     new Task("Packet Monster Sales opportunity", "notification", "default", "Today at 9:00"),
@@ -36,16 +34,11 @@ export class WidgetComponent implements OnInit {
     new Task("Meeting required for new CRM app", "calendar", "default", "Mon, 23 Apr, 2021"),
   ]
 
-  appointments: Appointment[] = [
-    new Appointment("Packet Monster Sales opportunity", "notification", "default", "Today at 9:00"),
-    new Appointment("Appointment meeting at 17:30hrs.", "calendar", "red", "Sat, 21 Apr, 2021"),
-    new Appointment("Landing page required for new CRM app", "notification", "default", "Sun, 22 Apr, 2021"),
-    new Appointment("UX required for new CRM app", "calendar", "default", "Mon, 23 Apr, 2021"),
-  ]
-
   files: File[] = []
 
-  constructor() { }
+  constructor(
+    private dateService: DateService
+  ) { }
 
   ngOnInit(): void {
     console.log('user_files', this.user_files)
@@ -86,12 +79,12 @@ export class WidgetComponent implements OnInit {
 
   addAppoint() {
     console.log('add appoint')
-    this.addAppointClicked.emit(false)
+    this.addAppointClicked.emit()
   }
 
-  editAppoint() {
-    console.log('Edit appoint')
-    this.addAppointClicked.emit(true)
+  editAppoint(appoint) {
+    console.log('Edit appoint', appoint)
+    this.addAppointClicked.emit(appoint)
   }
 
   addTask() {
@@ -101,6 +94,38 @@ export class WidgetComponent implements OnInit {
   editTask() {
     console.log('add task')
     this.addTaskClicked.emit(true)
+  }
+
+  isPastDate(appoint) {
+    const endDate = moment(appoint.end_date_time)
+    return endDate < moment()
+  }
+
+  upcomingNotification(appoint) {
+    const reminderDate = moment(appoint.reminder_date_time)
+    return reminderDate.diff(moment(), 'seconds') > 0
+  }
+
+  getAppointmentIcon(appoint) {
+    if (this.upcomingNotification(appoint)) {
+      return 'notification_important'
+    }
+    return 'calendar_today'
+  }
+
+  getAppointDate(appoint) {
+    let dateTime = moment(appoint.start_date_time)
+    if (this.upcomingNotification(appoint)) {
+      dateTime = moment(appoint.reminder_date_time)
+    }
+
+    if (moment().isSame(dateTime, 'date')) {
+      return `Today at ${dateTime.format('hh:mm A')}`
+    }
+    if (moment().add(1, 'days').isSame(dateTime, 'd')) {
+      return `Tomorrow at ${dateTime.format('hh:mm A')}`
+    }
+    return moment(appoint.start_date).format('YYYY-MM-DD')
   }
 
   getLeadsTotalValue() {

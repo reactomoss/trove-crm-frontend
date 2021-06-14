@@ -101,6 +101,11 @@ export class ContactApiService {
     return this.httpClient.post(API_URL, appoint)
   }
 
+  updateAppointment(id, appoint): Observable<any> {
+    const API_URL = `${this.baseURL + environment.company_update_appointment}`
+    return this.httpClient.post(API_URL, appoint)
+  }
+
   /* Helper Functions */
   getCountries() {
     if (this.contactData) {
