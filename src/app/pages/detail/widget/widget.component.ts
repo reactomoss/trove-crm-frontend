@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 
 export class Task {
   constructor(public name: string, public icon: string , public color: string, public desc: string,  public selected?: boolean) {
@@ -13,7 +13,7 @@ export class Appointment {
 }
 
 export class File {
-  constructor(public name: string, public type: string, public description: string) {
+  constructor(public name: string, public url: string, public description: string) {
   }
 }
 
@@ -25,6 +25,10 @@ export class File {
 export class WidgetComponent implements OnInit {
   @Output() addTaskClicked = new EventEmitter()
   @Output() addAppointClicked = new EventEmitter()
+  @Input() leads_value
+  @Input() associate_members
+  @Input() user_files
+  
   tasks: Task[] = [
     new Task("Packet Monster Sales opportunity", "notification", "default", "Today at 9:00"),
     new Task("Ux design meeting at 17:30hrs.", "calendar", "red", "Sat, 21 Apr, 2021"),
@@ -39,19 +43,45 @@ export class WidgetComponent implements OnInit {
     new Appointment("UX required for new CRM app", "calendar", "default", "Mon, 23 Apr, 2021"),
   ]
 
-  files: File[] = [
-    new File("Sales guide to file.docx", "word", "57.35KB, 2021/01/16  14:05"),
-    new File("Weekly sales reort(Jan 1-7).xls", "excel", "5 Bytes, 2021/01/16  14:05"),
-    new File("FIle export-status.pdf", "pdf", "3.9 MB, 2021/01/16  14:05"),
-    new File("Sales guide to file1.docx", "word", "57.35KB, 2021/02/1  14:05"),
-    new File("Sales guide to file2.docx", "pdf", "57.35KB, 2021/02/2  15:05"),
-    new File("Sales guide to file3.docx", "excel", "57.35KB, 2021/02/3  16:05"),
-    new File("Sales guide to file4.docx", "word", "57.35KB, 2021/02/4  17:05")
-  ]
+  files: File[] = []
 
   constructor() { }
 
   ngOnInit(): void {
+    console.log('user_files', this.user_files)
+    this.files = this.user_files.map(url => {
+      const filename = decodeURI(url.substring(url.lastIndexOf('/')+1))
+      return new File(filename, url, '')
+    })
+  }
+
+  getFileIcon(filename: string) {
+    const ext = filename.substring(filename.lastIndexOf('.')+1)
+    switch (ext) {
+      case 'doc': case 'docx':
+        return '/assets/images/word-icon.svg';
+      case 'xls': case 'xlsx':
+        return '/assets/images/excel-icon.svg';
+      case 'pdf':
+        return '/assets/images/pdf-icon.svg';
+      case 'jpg': case 'jpeg':
+      case 'png': case 'bmp':
+      case 'svg':
+        return '/assets/images/pdf-icon.svg';
+      default:
+        return '/assets/images/pdf-icon.svg';
+    }
+  }
+
+  downloadFile(file: File) {
+    console.log('downloadfile', file)
+    const link = document.createElement('a');
+    link.setAttribute('target', '_blank');
+    link.setAttribute('href', file.url);
+    link.setAttribute('download', file.name);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
   }
 
   addAppoint() {
@@ -71,5 +101,13 @@ export class WidgetComponent implements OnInit {
   editTask() {
     console.log('add task')
     this.addTaskClicked.emit(true)
+  }
+
+  getLeadsTotalValue() {
+    return (this.leads_value?.total_value | 0.0).toFixed(2)
+  }
+
+  getLeadsExpectValue() {
+    return (this.leads_value?.expected_value | 0.0).toFixed(2)
   }
 }

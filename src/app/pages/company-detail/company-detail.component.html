@@ -18,8 +18,8 @@
     <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column">
         <div class="leftPart" fxFlex="22" fxFill>
             <div class="leftItem1 leftItemBorderBottom">
-                <img alt="Image" src="../../../assets/images/business.svg" width="35" height="35">
-                <div style="padding-left: 3px;position: relative;top: 4px;">
+                <img alt="Image" src="../../../assets/images/business.svg" width="30" height="30">
+                <div style="padding-left: 10px;position: relative;top: 4px;">
                     <span class="span1">{{organization.name}}</span><br/>
                     <!-- <span class="span2">Employee at Packet Monster, Inc.</span> -->
                 </div>
@@ -89,7 +89,12 @@
         </div>
 
         <div fxFlex="28">
-          <app-widget (addTaskClicked) = "openTaskDialog($event)" (addAppointClicked) = "openAppointDialog($event)"></app-widget>
+          <app-widget 
+            [leads_value]="company.leads_value"
+            [associate_members]="company.associate_members"
+            [user_files]="company.files"
+            (addTaskClicked)="openTaskDialog($event)" 
+            (addAppointClicked)="openAppointDialog($event)"></app-widget>
         </div>
     </div>
 </ngx-simplebar>

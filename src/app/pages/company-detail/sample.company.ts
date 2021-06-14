@@ -64,6 +64,11 @@ export default {
                 "name": "Chrome 555",
                 "id": 56,
                 "email": "chrome@gmail.com"
+            },
+            {
+                "name": "Chrome 7",
+                "id": 57,
+                "email": "chrome7@gmail.com"
             }
         ]
     },
@@ -211,7 +216,12 @@ export default {
             "activity_name": "call"
         }
     ],
-    "files": [],
+    "files": [
+        "https://ct.trovecrm.in/public/storage/activity/Sales%20guide%20to%20file.docx",
+        "https://ct.trovecrm.in/public/storage/activity/Weekly%20sales%20reort%28Jan%201-7%29.xls",
+        "https://ct.trovecrm.in/public/storage/activity/FIle%20export-status.pdf",
+        "https://ct.trovecrm.in/public/storage/activity/no-profile.png"
+    ],
     "leads_value": {
         "expected_value": 10,
         "total_value": 10,
