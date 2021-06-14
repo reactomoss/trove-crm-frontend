@@ -1,4 +1,11 @@
 <app-header></app-header>
+
+<div *ngIf="showDetails">
+    <app-company-detail [company]="companyDetails">
+    </app-company-detail>
+</div> 
+
+<div *ngIf="!showDetails">
 <mat-drawer-container hasBackdrop="true">
     <mat-drawer #drawer mode="Over" position="end" class="noScrollDrawer" (closedStart)="filterClosedStart()">
         <div class="drawerContainer">
@@ -142,6 +149,7 @@
     </ngx-simplebar>
 
 </mat-drawer-container>
+</div>
 
 <ng-template #modalDelete let-modal>
   <div class="modal-header border-bottom-0">

@@ -43,6 +43,7 @@ export const environment = {
   company_delete_multiple: 'organizations?_method=DELETE',
   company_create_appointment: 'organizations/appointment',
   company_update_appointment: 'appointment',
+  company_appointment_state: 'organizations/task-status',
   contacts: 'contacts',
   contacts_index: 'contacts/index',
   contacts_delete: 'contacts',

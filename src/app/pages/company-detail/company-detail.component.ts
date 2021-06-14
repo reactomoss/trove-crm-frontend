@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import { CompanyDialog } from 'src/app/shared/header/header.component';
@@ -15,11 +15,10 @@ import sample from './sample.company'
   styleUrls: ['./company-detail.component.css'],
 })
 export class CompanyDetailComponent implements OnInit {
-  company = null;
+  @Input() company = null;
   organization = null;
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 };
   status = 'active';
-  // selectedDisplay = "all"
 
   constructor(
     private contactService: ContactApiService,
@@ -27,13 +26,20 @@ export class CompanyDetailComponent implements OnInit {
     private router: Router,
     public dialog: MatDialog
   ) {
-    const companyId = this.router.getCurrentNavigation().extras.state;
-    console.log('detail-compnay:', companyId, sample);
-
-    this.setCompany(sample)
+    // const data = this.router.getCurrentNavigation().extras.state;
+    // console.log('detail-compnay:', data);
+    // if (!data) {      
+    //   this.router.navigate(['/pages/company'])
+    // }
+    // else {
+    //   this.setCompany(data)
+    // }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log('~~~~~~~~~~~~', this.company)
+    this.organization = this.company.organization;
+  }
 
   setCompany(data: any) {
     this.company = data;
@@ -46,7 +52,7 @@ export class CompanyDetailComponent implements OnInit {
 
   getFullAddress() {
     const c = this.organization;
-    const address = [c.address, c.city, c.state, c.country_id?.name].join(', ');
+    const address = [c.address, c.city, c.state, c.country_id?.name].filter(i => i).join(', ');
     return address || '-';
   }
 
@@ -84,6 +90,38 @@ export class CompanyDetailComponent implements OnInit {
 
   editAppointClicked(appoint) {
     this.openAppointDialog(true, appoint)
+  }
+
+  appointStateChanged({appointment, checked}) {
+    const payload = {
+      id: appointment.id,
+      associate_id: this.organization.id,
+      status: checked ? 1 : 0,
+    }
+    this.contactService
+      .updateAppointmentState(this.organization.id, payload)
+      .subscribe((res: any) => {
+        console.log('appointStateChanged', res);
+        if (res.success) {
+          
+        }
+      });
+  }
+
+  taskStateChanged({task, checked}) {
+    const payload = {
+      id: task.id,
+      associate_id: this.organization.id,
+      status: checked ? 1 : 0,
+    }
+    this.contactService
+      .updateAppointmentState(this.organization.id, payload)
+      .subscribe((res: any) => {
+        console.log('appointStateChanged', res);
+        if (res.success) {
+          
+        }
+      });
   }
 
   refreshCompany() {

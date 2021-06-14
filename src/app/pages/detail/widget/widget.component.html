@@ -105,18 +105,18 @@
                     <div *ngFor="let e of appointments" class="mb-3">
                         <div class="row">
                             <div class="col-auto pr-0">
-                                <mat-checkbox color="primary" class="mb-1 customCheckBox" [(ngModel)]="e.selected">
+                                <mat-checkbox color="primary" class="mb-1 customCheckBox" [checked]="e.appointment_status==0" (change)="changeAppointState(e, $event)">
                                 </mat-checkbox>
                             </div>
                             <div class="col pl-1">
                                 <div class="cursor-pointer" (click)="editAppoint(e)">
                                     <div class="mb-2">{{e.title}}</div>
-                                    <span [class.color-ff0000]="isPastDate(e)" class="alertSpan">
+                                    <span [class.color-ff0000]="isPastDateAppoint(e)" class="alertSpan">
                                         <!-- <mat-icon *ngIf="e.icon== 'notification'" class="fs-14 align-text-top">
                                             notification_important</mat-icon>
                                         <mat-icon *ngIf="e.icon== 'calendar'" class="fs-14 align-text-top">calendar_today</mat-icon> -->
                                         <mat-icon class="fs-14 align-text-top">{{getAppointmentIcon(e)}}</mat-icon>
-                                        <span [class.color-ff0000]="isPastDate(e)" class="">{{getAppointDate(e)}}</span>
+                                        <span [class.color-ff0000]="isPastDateAppoint(e)" class="">{{getAppointDate(e)}}</span>
                                     </span>
                                 </div>
                             </div>
@@ -148,34 +148,33 @@
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="panel-content pt-2">
-              <div [class.hgt-200]="tasks.length > 3" class="customVerScroll">
-              <div *ngFor="let e of tasks" class="mb-3">
-                <div class="row">
-                  <div class="col-auto pr-0">
-                    <mat-checkbox color="primary" class="mb-1 customCheckBox" [(ngModel)]="e.selected">
-                    </mat-checkbox>
-                  </div>
-                  <div class="col pl-1">
-                    <div class="cursor-pointer" (click)="editTask()">
-                      <div class="mb-2"  [class.lineThrough]="e.selected">{{e.name}}</div>
-                    <span [class.color-ff0000]="e.color == 'red'" class="alertSpan">
-                      <mat-icon *ngIf="e.icon== 'notification'" class="fs-14 align-text-top">notification_important</mat-icon>
-                      <mat-icon *ngIf="e.icon== 'calendar'" class="fs-14 align-text-top">calendar_today</mat-icon>
-                      <span [class.color-ff0000]="e.color == 'red'" class="">{{e.desc}}</span>
-                  </span>
+                <div [class.hgt-200]="tasks.length > 3" class="customVerScroll">
+                    <div *ngFor="let e of tasks" class="mb-3">
+                        <div class="row">
+                            <div class="col-auto pr-0">
+                                <mat-checkbox color="primary" class="mb-1 customCheckBox" [checked]="e.task_status==0" (change)="changeTaskState(e, $event)">
+                                </mat-checkbox>
+                            </div>
+                            <div class="col pl-1">
+                                <div class="cursor-pointer" (click)="editTask()">
+                                    <div class="mb-2" [class.lineThrough]="e.selected">{{e.title}}</div>
+                                    <span [class.color-ff0000]="isPastDateTask(e)" class="alertSpan">
+                                        <mat-icon class="fs-14 align-text-top">{{getAppointmentIcon(e)}}</mat-icon>
+                                        <span [class.color-ff0000]="isPastDateTask(e)" class="">{{getTaskDate(e)}}</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
-              </div>
-              </div>
-              <div class="text-center"  *ngIf="tasks.length == 0">
-                <div class="mb-3">
-                  <img src="../../../../assets/images/task-empty.png">
+                <div class="text-center" *ngIf="tasks.length == 0">
+                    <div class="mb-3">
+                        <img src="../../../../assets/images/task-empty.png">
+                    </div>
+                    <div class="color-455B66 f-16-400 mb-3">
+                        <span>You have no upcoming tasks.</span>
+                    </div>
                 </div>
-                <div class="color-455B66 f-16-400 mb-3">
-                 <span>You have no upcoming tasks.</span>
-                </div>
-              </div>
             </div>
         </mat-expansion-panel>
         <mat-expansion-panel class="mat-elevation-z0  grayExpanded" [hideToggle]="true">
@@ -188,7 +187,7 @@
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="panel-content pt-2">
-              <div [class.hgt-275]="files.length > 0" class="customVerScroll">
+              <div [class.hgt-275]="files.length > 5" class="customVerScroll">
                 <div *ngFor="let f of files; let i = index" class="fileItem"
                     [class.pb-2]="i == 0" [class.py-2]="i > 0" [class.borderBottom]="i < files.length - 1">
                     <!-- <img *ngIf="f.type == 'word'" alt="Image" src="../../../assets/images/word-icon.svg">

@@ -49,6 +49,9 @@ export class CompanyComponent implements OnInit {
   listShow: boolean = false
   closeResult = '';
 
+  showDetails = false
+  companyDetails = null
+
   constructor(
     private modalService: NgbModal,
     public contactService: ContactApiService,
@@ -169,9 +172,18 @@ export class CompanyComponent implements OnInit {
 
   clickCard(item) {
     console.log('click', item)
-    this.router.navigate(['/pages/company_detail'], {
-      state: item,
-    })
+    this.contactService
+      .getCompanyDetial(item.id)
+      .subscribe((res: any) => {
+        console.log('refresh', res);
+        if (res.success) {
+          /*this.router.navigate(['/pages/company_detail'], {
+            state: res.data,
+          })*/
+          this.companyDetails = res.data
+          this.showDetails = true
+        }
+      });
   }
 
   clickContactPage() {

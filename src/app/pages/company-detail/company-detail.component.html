@@ -1,4 +1,4 @@
-<app-header></app-header>
+<!-- <app-header></app-header> -->
 <div class="topBar">
     <div class="top1">
         <mat-icon (click)="goToList()">arrow_back</mat-icon>
@@ -93,9 +93,13 @@
             [leads_value]="company.leads_value"
             [associate_members]="company.associate_members"
             [appointments]="company.appointments"
+            [tasks]="company.tasks"
             [user_files]="company.files"
             (addTaskClicked)="openTaskDialog($event)" 
-            (addAppointClicked)="editAppointClicked($event)"></app-widget>
+            (addAppointClicked)="editAppointClicked($event)"
+            (appointStateChanged)="appointStateChanged($event)"
+            (taskStateChanged)="taskStateChanged($event)">
+        </app-widget>
         </div>
     </div>
 </ngx-simplebar>

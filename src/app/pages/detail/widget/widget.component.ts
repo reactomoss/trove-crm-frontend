@@ -1,12 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 import * as moment from 'moment';
 import { DateService } from 'src/app/service/date.service';
-
-export class Task {
-  constructor(public name: string, public icon: string , public color: string, public desc: string,  public selected?: boolean) {
-    if (selected === undefined) selected = false
-  }
-}
 
 export class File {
   constructor(public name: string, public url: string, public description: string) {
@@ -21,18 +16,13 @@ export class File {
 export class WidgetComponent implements OnInit {
   @Output() addTaskClicked = new EventEmitter()
   @Output() addAppointClicked = new EventEmitter()
+  @Output() appointStateChanged = new EventEmitter()
+  @Output() taskStateChanged = new EventEmitter()
   @Input() leads_value
   @Input() associate_members
   @Input() user_files
   @Input() appointments
-  
-  
-  tasks: Task[] = [
-    new Task("Packet Monster Sales opportunity", "notification", "default", "Today at 9:00"),
-    new Task("Ux design meeting at 17:30hrs.", "calendar", "red", "Sat, 21 Apr, 2021"),
-    new Task("Landing page required for new CRM app", "notification", "default", "Sun, 22 Apr, 2021"),
-    new Task("Meeting required for new CRM app", "calendar", "default", "Mon, 23 Apr, 2021"),
-  ]
+  @Input() tasks
 
   files: File[] = []
 
@@ -96,7 +86,23 @@ export class WidgetComponent implements OnInit {
     this.addTaskClicked.emit(true)
   }
 
-  isPastDate(appoint) {
+  changeAppointState(appoint, event: MatCheckboxChange) {
+    console.log('changeAppointState', event);
+    this.appointStateChanged.emit({
+      appointment: appoint,
+      checked: event.checked
+    })
+  }
+
+  changeTaskState(task, event: MatCheckboxChange) {
+    console.log('changeTaskState', event);
+    this.taskStateChanged.emit({
+      task: task,
+      checked: event.checked
+    })
+  }
+
+  isPastDateAppoint(appoint) {
     const endDate = moment(appoint.end_date_time)
     return endDate < moment()
   }
@@ -126,6 +132,26 @@ export class WidgetComponent implements OnInit {
       return `Tomorrow at ${dateTime.format('hh:mm A')}`
     }
     return moment(appoint.start_date).format('YYYY-MM-DD')
+  }
+
+  isPastDateTask(task) {
+    const endDate = moment(task.due_date_time)
+    return endDate < moment()
+  }
+
+  getTaskDate(appoint) {
+    let dateTime = moment(appoint.due_date_time)
+    if (this.upcomingNotification(appoint)) {
+      dateTime = moment(appoint.reminder_date_time)
+    }
+
+    if (moment().isSame(dateTime, 'date')) {
+      return `Today at ${dateTime.format('hh:mm A')}`
+    }
+    if (moment().add(1, 'days').isSame(dateTime, 'd')) {
+      return `Tomorrow at ${dateTime.format('hh:mm A')}`
+    }
+    return moment(appoint.due_date_time).format('YYYY-MM-DD')
   }
 
   getLeadsTotalValue() {

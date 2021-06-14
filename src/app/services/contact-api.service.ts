@@ -106,6 +106,11 @@ export class ContactApiService {
     return this.httpClient.post(API_URL, appoint)
   }
 
+  updateAppointmentState(id: number, data) {
+    const API_URL = `${this.baseURL + environment.company_appointment_state}/${id}`
+    return this.httpClient.put(API_URL, data)
+  }
+
   /* Helper Functions */
   getCountries() {
     if (this.contactData) {
