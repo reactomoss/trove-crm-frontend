@@ -8,6 +8,8 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { DashboardApiService } from '../services/dashboard-api.service';
 import { DateService } from '../service/date.service';
 import * as moment from 'moment';
+import { HttpErrorResponse } from '@angular/common/http';
+import { extractErrorMessagesFromErrorResponse } from '../services/extract-error-messages-from-error-response';
 export class Task {
   constructor(public name: string,  public selected?: boolean) {
     if (selected === undefined) selected = false
@@ -233,7 +235,7 @@ export class PagesComponent implements OnInit {
         });
     }
     onTaskSelected(event,task){
-        var value =(event.checked)?2:1;
+        var value =(event.checked)?0:1;
         var data={
             status:value,
             taskid:task.id
@@ -245,9 +247,10 @@ export class PagesComponent implements OnInit {
              this.triggerSnackBar(res.message, 'Close')
            }
        },
-      err => {
-          task.selected=(event.checked)?false:true;
-        this.triggerSnackBar(err.error.message, 'Close')
+      (errorResponse: HttpErrorResponse) => {
+        task.selected=(event.checked)?false:true;
+        const messages = extractErrorMessagesFromErrorResponse(errorResponse);
+        this.triggerSnackBar(messages.toString(), 'Close');
       })
           
     }
