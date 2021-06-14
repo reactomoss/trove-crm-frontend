@@ -1,7 +1,9 @@
 <app-header></app-header>
 
 <div *ngIf="showDetails">
-    <app-company-detail [company]="companyDetails">
+    <app-company-detail 
+        [company]="companyDetails"
+        (backEvent)="onHideDetails()">
     </app-company-detail>
 </div> 
 

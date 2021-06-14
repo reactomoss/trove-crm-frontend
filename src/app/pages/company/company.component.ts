@@ -177,13 +177,18 @@ export class CompanyComponent implements OnInit {
       .subscribe((res: any) => {
         console.log('refresh', res);
         if (res.success) {
-          /*this.router.navigate(['/pages/company_detail'], {
-            state: res.data,
-          })*/
           this.companyDetails = res.data
           this.showDetails = true
         }
+        else {
+          //TODO
+        }
       });
+  }
+
+  onHideDetails() {
+    this.showDetails = false
+    this.companyDetails = null
   }
 
   clickContactPage() {

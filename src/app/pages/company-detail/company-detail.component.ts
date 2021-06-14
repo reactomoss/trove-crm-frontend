@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import { CompanyDialog } from 'src/app/shared/header/header.component';
@@ -16,6 +16,8 @@ import sample from './sample.company'
 })
 export class CompanyDetailComponent implements OnInit {
   @Input() company = null;
+  @Output() backEvent = new EventEmitter()
+
   organization = null;
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 };
   status = 'active';
@@ -47,7 +49,8 @@ export class CompanyDetailComponent implements OnInit {
   }
 
   goToList() {
-    this.router.navigate(['/pages/company']);
+    //this.router.navigate(['/pages/company']);
+    this.backEvent.emit()
   }
 
   getFullAddress() {
