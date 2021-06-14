@@ -168,7 +168,10 @@ export class CompanyComponent implements OnInit {
   }
 
   clickCard(item) {
-    this.router.navigate(['/pages/company_detail'])
+    console.log('click', item)
+    this.router.navigate(['/pages/company_detail'], {
+      state: item,
+    })
   }
 
   clickContactPage() {

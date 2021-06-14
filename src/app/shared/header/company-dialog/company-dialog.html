@@ -119,8 +119,8 @@
         </div>
     </div>
     <div mat-dialog-actions class="justify-content-start">
-        <button *ngIf="isEdit" mat-button class="deleteBtn">Delete</button>
-        <button mat-button (click)="onNoClick()" class="cancelBtn ml-auto">Cancel</button>
+        <button *ngIf="isEdit" mat-button type="button" class="deleteBtn">Delete</button>
+        <button mat-button type="button" (click)="onNoClick()" class="cancelBtn ml-auto">Cancel</button>
         <button mat-button type="submit" class="btnColor2 ml-3 px-4">{{isEdit ? 'Update' : 'Save'}}</button>
     </div>
 </form>
