@@ -951,20 +951,22 @@ export class CompanyDialog {
   }
 
   updateCompany() {
-    const fb = this.form.value
-    this.company.name = fb.organization_name
-    this.company.country_code = fb.mobile_code
-    this.company.mobile = fb.mobile_number
-    this.company.work_phone = fb.work_phone
-    this.company.email = fb.email
-    this.company.address = fb.address
-    this.company.city = fb.city
-    this.company.postal_code = fb.postal_code
-    this.company.state = fb.state
-    this.company.country = fb.country
-    this.company.owner_id = fb.owner_id
-    this.company.skype_id = fb.skype_id
-    this.company.description = fb.description
+    if (this.company) {
+      const fb = this.form.value;
+      this.company.name = fb.organization_name;
+      this.company.country_code = fb.mobile_code;
+      this.company.mobile = fb.mobile_number;
+      this.company.work_phone = fb.work_phone;
+      this.company.email = fb.email;
+      this.company.address = fb.address;
+      this.company.city = fb.city;
+      this.company.postal_code = fb.postal_code;
+      this.company.state = fb.state;
+      this.company.country = fb.country;
+      this.company.owner_id = fb.owner_id;
+      this.company.skype_id = fb.skype_id;
+      this.company.description = fb.description;
+    }
   }
 
   checkMandatory(e) {

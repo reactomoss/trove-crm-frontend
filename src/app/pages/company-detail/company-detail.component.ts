@@ -69,7 +69,11 @@ export class CompanyDetailComponent implements OnInit {
   openAppointDialog(isEdit: boolean) {
     const dialogRef = this.dialog.open(AppointDialog, {
       width: '740px',
-      data: { isEdit: isEdit },
+      data: { 
+        isEdit: isEdit, 
+        associate_members: this.company.associate_members,
+        appoint_owner: { id: this.organization.id, type: 'company'}
+      },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
