@@ -980,6 +980,14 @@ export class CompanyDialog {
     return (name.toUpperCase().search(this.form.value.search.toUpperCase()) >= 0)
   }
 
+  getSearchState() {
+    return this.form.value.search && this.form.value.search.length > 0
+  }
+
+  resetSearch() {
+    this.form.value.search = ''
+  }
+
   open(content) {
     this.modalService.open(content, {ariaLabelledBy: 'dialog001'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;

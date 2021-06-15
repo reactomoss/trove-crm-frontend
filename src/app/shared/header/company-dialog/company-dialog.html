@@ -3,8 +3,8 @@
     <div class="filterPart">
         <mat-form-field class="dialogSearchFormField whiteBackground" appearance="outline">
             <input type="text" placeholder="Search field" aria-label="Number" matInput [formControl]="searchControl" [matAutocomplete]="auto" formControlName="search">
-            <mat-icon matSuffix *ngIf="!search">search</mat-icon>
-            <mat-icon matSuffix *ngIf="search" style="color: #253238;cursor: pointer" (click)="search = ''">close</mat-icon>
+            <mat-icon matSuffix *ngIf="!getSearchState()">search</mat-icon>
+            <mat-icon matSuffix *ngIf="getSearchState()" style="color: #253238;cursor: pointer" (click)="resetSearch()">close</mat-icon>
             <mat-autocomplete #auto="matAutocomplete" class="smFontAutocomplete">
                 <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
                     {{option}}
