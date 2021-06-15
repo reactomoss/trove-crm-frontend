@@ -825,7 +825,7 @@ export class CompanyDialog {
   dialCodes = []
   errors = null
   closeResult = '';
-  search: string = '';
+
   constructor(
     private modalService: NgbModal,
     private contactService: ContactApiService,
