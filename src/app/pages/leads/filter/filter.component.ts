@@ -1,4 +1,3 @@
-import { Source } from './../../sourcechart/source-filter/source-filter.component';
 import {
   Component,
   OnInit,

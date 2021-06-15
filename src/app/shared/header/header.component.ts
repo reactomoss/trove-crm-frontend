@@ -214,7 +214,7 @@ export class HeaderComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe((result) => {
         if (result) {
-          
+
         }
       })
     }
@@ -825,7 +825,7 @@ export class CompanyDialog {
   dialCodes = []
   errors = null
   closeResult = '';
-
+  search: string = '';
   constructor(
     private modalService: NgbModal,
     private contactService: ContactApiService,
@@ -925,7 +925,7 @@ export class CompanyDialog {
       },
     };
 
-    const observable = this.isEdit ? 
+    const observable = this.isEdit ?
         this.contactService.updateCompany(this.company.id, payload) :
         this.contactService.createCompany(payload)
 

@@ -59,12 +59,12 @@ export class CalendarComponent implements OnInit {
   reminderEvents = []
 
   constructor(
-    public dialog: MatDialog, 
+    public dialog: MatDialog,
     private renderer: Renderer2,
     private router: Router) {
   }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
   }
 
   ngAfterViewInit(): void {
@@ -75,7 +75,7 @@ export class CalendarComponent implements OnInit {
     const appoint: Appointment = {
       id: undefined,
       title: 'New android phone presentation',
-      where: '',
+      location: '',
       description: '',
       start_date: moment('2021-06-09'),
       start_time: '10:00 AM',
@@ -121,7 +121,7 @@ export class CalendarComponent implements OnInit {
       }
     })
   }
-  
+
   openTaskDialog(isEdit: boolean, task: NTask) {
     const dialogRef = this.dialog.open(TaskDialog, {
       width: '405px',
@@ -146,7 +146,7 @@ export class CalendarComponent implements OnInit {
     const date = day ? moment(day) : moment()
     if (time) {
       var tm = moment(time, ["h:mm A"])
-      date.add(tm.hours(), 'hours').add(tm.minutes(), 'minutes') 
+      date.add(tm.hours(), 'hours').add(tm.minutes(), 'minutes')
     }
     return date.toDate()
   }
@@ -181,7 +181,7 @@ export class CalendarComponent implements OnInit {
     if (calendarApi.view.type === 'timeGridWeek') {
       endTime = moment(startTime).add(1, 'minute').toDate()
     }
-    
+
     calendarApi.addEvent({
       id: appoint.id,
       title: title,
@@ -208,7 +208,7 @@ export class CalendarComponent implements OnInit {
 
   private addTask(task: NTask) {
     //console.log('addTask:', task);
-    const calendarApi = this.calendarComponent.getApi()   
+    const calendarApi = this.calendarComponent.getApi()
 
     if (task.id) {
       const event = calendarApi.getEventById(task.id)
@@ -266,7 +266,7 @@ export class CalendarComponent implements OnInit {
     this.updateTitle();
   }
 
-  weekView() {      
+  weekView() {
     const calendarApi = this.calendarComponent.getApi();
     calendarApi.changeView('timeGridWeek');
     this.updateTitle()
@@ -454,20 +454,20 @@ export class CalendarComponent implements OnInit {
         return { domNodes: [ divEl, div2 ] }
       }
     }
-    
+
     if (arg.event.extendedProps.reminder) {
       divEl.innerHTML = `<mat-icon role='img' class='mat-icon notranslate material-icons mat-icon-no-color reminder-icon' aria-hidden='true' data-mat-icon-type='font'>notifications</mat-icon><span class='event-checkmark'>${arg.event.title}</span>`
     }
     else if (arg.event.extendedProps.appointment) {
       divEl.innerHTML = `<span class='event-checkmark'>${arg.event.title}</span>`
     }
-    
+
     return { domNodes: [ divEl ] }
   }
 
   showAllEvents() {
     if (this.filters.all) {
-      this.filters.task = this.filters.appoint = this.filters.reminder = true  
+      this.filters.task = this.filters.appoint = this.filters.reminder = true
     }
     this.filterEvents()
   }
@@ -498,7 +498,7 @@ export class CalendarComponent implements OnInit {
         e.remove()
       }
     })
-    
+
     const reminders = {}
     const addReminder = function(date: moment.Moment, time: string, task: any, isTask: boolean) {
       const title = date.format('YYYY-MM-DD')
@@ -509,7 +509,7 @@ export class CalendarComponent implements OnInit {
       }
       else {
         const reminder: Reminder = {
-          count: 1, 
+          count: 1,
           title: title,
           date: date,
           time: time,
@@ -519,7 +519,7 @@ export class CalendarComponent implements OnInit {
       }
     }
 
-    
+
     this.tasks.forEach(task => {
       task.reminder_date && addReminder(task.reminder_date, task.reminder_time, task, true)
     })
@@ -541,7 +541,7 @@ export class CalendarComponent implements OnInit {
           title: `${reminder.count} Reminders`,
           date: date,
           extendedProps: {
-            'reminder': reminder 
+            'reminder': reminder
           },
           className: ['event-reminder']
         })
@@ -554,14 +554,14 @@ export class CalendarComponent implements OnInit {
           if (reminder.count < 3) {
             continue;
           }
-          
+
           const items = this.currentEvents
             .filter(e => e.extendedProps.task || e.extendedProps.appointment)
             .filter(e => moment(e.start).dayOfYear() == reminder.date.dayOfYear())
           if (items && items.length > 0) {
             items.forEach(e => e.remove())
           }
-          
+
           const tazks = reminder.tasks.filter((t) => t.isTask);
           if (tazks && tazks.length > 0) {
             this.addTaskEvent({
@@ -581,7 +581,7 @@ export class CalendarComponent implements OnInit {
             this.addAppointmentEvent({
               id: null,
               title: `${appoints.length} Appointments`,
-              where: '',
+              location: '',
               description: '',
               start_date: reminder.date,
               start_time: undefined,
