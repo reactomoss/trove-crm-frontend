@@ -34,7 +34,7 @@
                                 <td mat-cell *matCellDef="let row">
                                     <img class="userTableImg" [src]="row.profile_pic" />{{row.full_name}} </td>
                             </ng-container>
-                            <ng-container matColumnDef="name">
+                            <ng-container matColumnDef="role_name">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
                                 <td mat-cell *matCellDef="let row"> {{row.user_role[0].name}} </td>
                             </ng-container>

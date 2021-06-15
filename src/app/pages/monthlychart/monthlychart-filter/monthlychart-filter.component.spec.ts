@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SourceFilterComponent } from './source-filter.component';
+import { MonthlychartFilterComponent } from './monthlychart-filter.component';
 
-describe('SourceFilterComponent', () => {
-  let component: SourceFilterComponent;
-  let fixture: ComponentFixture<SourceFilterComponent>;
+describe('MonthlychartFilterComponent', () => {
+  let component: MonthlychartFilterComponent;
+  let fixture: ComponentFixture<MonthlychartFilterComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SourceFilterComponent ]
+      declarations: [ MonthlychartFilterComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SourceFilterComponent);
+    fixture = TestBed.createComponent(MonthlychartFilterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

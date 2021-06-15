@@ -13,13 +13,13 @@
     <table mat-table [dataSource]="PipelineList" class="w-100" matSort matSortActive="name" matSortDisableClear matSortDirection="asc" (matSortChange)="resetPagingRole()">
         <!-- Position Column -->
         <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef> Pipeline and Stages </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Pipeline and Stages </th>
             <td mat-cell *matCellDef="let element"> {{element?.name}} </td>
         </ng-container>
 
         <!-- Name Column -->
         <ng-container matColumnDef="stages_count">
-            <th mat-header-cell *matHeaderCellDef> Deal stages </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Deal stages </th>
             <td mat-cell *matCellDef="let element"> {{element?.stages_count}} </td>
         </ng-container>
         <!-- Weight Column -->

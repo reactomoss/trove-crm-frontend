@@ -1274,6 +1274,16 @@ button.iconSmall {
   padding: 7px;
   border-top: 0;
 }
+.hgt200 {
+  height: 200px;
+}
+.chartHeight .eChart {
+  height: 400px !important;
+}
+
+.cdk-overlay-container {
+    z-index: 500 !important;
+}
 
 .hgt200 {
   height: 200px;

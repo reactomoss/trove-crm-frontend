@@ -41,7 +41,7 @@ export class SourcechartComponent implements OnInit {
         {
             name: 'Source',
             type: 'bar',
-            barWidth: '10%',
+            barWidth: '15%',
             data: [10, 52, 100, 200]
         }
     ],
@@ -50,6 +50,7 @@ export class SourcechartComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+
   }
   filterCountChangedHandler(e) {
     this.filterCount = e

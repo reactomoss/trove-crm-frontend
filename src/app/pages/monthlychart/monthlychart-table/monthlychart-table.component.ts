@@ -1,7 +1,6 @@
 import { Component, AfterViewInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 export interface PeriodicElement {
   avatar: string;
@@ -34,17 +33,19 @@ const ELEMENT_DATA: PeriodicElement[] = [
   company: 'Company 1' , source: 'Source 1', closedate: '22/05/2021', category: 'Category 5' , addedon: '' }
 ]
 
+
 @Component({
-  selector: 'app-source-table',
-  templateUrl: './source-table.component.html',
-  styleUrls: ['./source-table.component.css']
+  selector: 'app-monthlychart-table',
+  templateUrl: './monthlychart-table.component.html',
+  styleUrls: ['./monthlychart-table.component.css']
 })
-export class SourceTableComponent implements AfterViewInit {
+export class MonthlychartTableComponent implements AfterViewInit {
+
   displayedColumns: string[] = ['name', 'stage', 'value', 'owner', 'company', 'category', 'addedon', 'closedate', 'contact', 'source'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
   selectedTh = ''
 
-  constructor(private router: Router) { }
+  constructor() { }
 
   @ViewChild(MatSort, {static: false}) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -52,7 +53,5 @@ export class SourceTableComponent implements AfterViewInit {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator
   }
-
-
 
 }

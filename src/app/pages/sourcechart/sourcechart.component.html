@@ -3,7 +3,7 @@
 
     <mat-drawer #drawer mode="Over" position="end" class="noScrollDrawer">
       <div class="drawerContainer">
-              <app-source-filter *ngIf="showFilter"  (closeDialog)="drawer.toggle()" (count)="filterCount=$event"></app-source-filter>
+              <app-sourcechart-filter *ngIf="showFilter"  (closeDialog)="drawer.toggle()" (count)="filterCount=$event"></app-sourcechart-filter>
       </div>
     </mat-drawer>
 
@@ -32,7 +32,7 @@
             <app-echarts class="chartHeight" [chartOption]="sourceChart"></app-echarts>
           </div>
 
-           <app-source-table></app-source-table>
+           <app-sourcechart-table></app-sourcechart-table>
         </ngx-simplebar>
     </div>
 

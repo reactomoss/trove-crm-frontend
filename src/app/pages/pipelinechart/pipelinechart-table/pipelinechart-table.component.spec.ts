@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SourceTableComponent } from './source-table.component';
+import { PipelinechartTableComponent } from './pipelinechart-table.component';
 
-describe('SourceTableComponent', () => {
-  let component: SourceTableComponent;
-  let fixture: ComponentFixture<SourceTableComponent>;
+describe('PipelinechartTableComponent', () => {
+  let component: PipelinechartTableComponent;
+  let fixture: ComponentFixture<PipelinechartTableComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SourceTableComponent ]
+      declarations: [ PipelinechartTableComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SourceTableComponent);
+    fixture = TestBed.createComponent(PipelinechartTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

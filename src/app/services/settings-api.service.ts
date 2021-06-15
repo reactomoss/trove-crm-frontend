@@ -119,7 +119,7 @@ export class SettingsApiService {
       length: pageSize,
     };
     if (typeof sort != 'undefined' && typeof order != 'undefined') {
-      data['order'] = [{ column: sort, dir: order }];
+      data['order'] = { column: sort, dir: order };
     }
     return this.httpClient.post(
       `${this.baseURL + environment.listusers}`,
@@ -164,7 +164,7 @@ export class SettingsApiService {
       length: pageSize,
     };
     if (typeof sort != 'undefined' && typeof order != 'undefined') {
-      data['order'] = [{ column: sort, dir: order }];
+      data['order'] = { column: sort, dir: order };
     }
     return this.httpClient.post(
       `${this.baseURL + environment.listroles}`,
@@ -213,7 +213,7 @@ export class SettingsApiService {
       length: pageSize,
     };
     if (typeof sort != 'undefined' && typeof order != 'undefined') {
-      data['order'] = [{ column: sort, dir: order }];
+      data['order'] = { column: sort, dir: order };
     }
     return this.httpClient.post(
       `${this.baseURL + environment.pipelines + "/list"}`,

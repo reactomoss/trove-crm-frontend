@@ -15,7 +15,7 @@
                 <mat-panel-title>
                     <div>
                         Pipeline / Stages<br>
-                        <span>{{displayArray(selectedPipe)}}</span>
+                        <span>{{displayArray(filters.selectedPipe)}}</span>
                     </div>
                 </mat-panel-title>
             </mat-expansion-panel-header>
@@ -34,7 +34,7 @@
                 </div> -->
                     <div class="text">
                         <mat-form-field class="statusSelect text-center">
-                            <mat-select [compareWith]="compareFunction" [(value)]="currentSelectedPipeline">
+                            <mat-select [compareWith]="compareFunction" [(value)]="currentSelectedPipeline" (selectionChange)="onPipelineChange($event.value)">
                                 <mat-option *ngFor="let pipeline of pipelines" value="{{pipeline.id}}">
                                     {{pipeline.name}}
                                 </mat-option>
@@ -58,7 +58,7 @@
                 <div class="trapezoid6" [class.activePipe]="checkPipe('closed')">
                     <div class="text" (click)="clickDiscovery('closed')">Closed Won</div>
                 </div>-->
-                <div class="trapezoid7">
+                <div class="trapezoid7" *ngIf="SelectedPipelineStages > 5">
                     <div class="text">
                         <button mat-button [matMenuTriggerFor]="closeMenu">
                         More
@@ -66,15 +66,15 @@
                     </button>
                         <mat-menu #closeMenu="matMenu" xPosition="before" class="closeMenu">
                             <ul class="m-0 p-0" (click)="$event.stopPropagation()">
-                                <li mat-menu-item class="px-0">
-                                    <div [class.activePipeDropdown]="checkPipe('Progress')" class="text alignDDItem" (click)="clickDiscovery('Progress')">Progress</div>
+                                <li mat-menu-item class="px-0" *ngFor="let item of SelectedPipelineStages | slice:4; let i = index;">
+                                    <div [class.activePipeDropdown]="checkPipe(item)" class="text alignDDItem" (click)="clickDiscovery(item)">{{item.name}}</div>
                                 </li>
-                                <li mat-menu-item class="px-0">
+                                <!--<li mat-menu-item class="px-0">
                                     <div [class.activePipeDropdown]="checkPipe('Won')" class="text alignDDItem" (click)="clickDiscovery('Won')">Won</div>
                                 </li>
                                 <li mat-menu-item class="px-0">
                                     <div [class.activePipeDropdown]="checkPipe('Lost')" class="text alignDDItem" (click)="clickDiscovery('Lost')">Lost</div>
-                                </li>
+                                </li>-->
                             </ul>
                         </mat-menu>
                     </div>
@@ -92,7 +92,7 @@
                 <mat-panel-title>
                     <div>
                         Value<br>
-                        <span>{{minValue ? '$' : ''}}{{minValue}}&nbsp;&nbsp; {{highValue ? '-' : ''}} &nbsp;&nbsp;{{highValue ? '$' : ''}}{{highValue}}</span>
+                        <span>{{filters.minValue ? '$' : ''}}{{filters.minValue}}&nbsp;&nbsp; {{filters.highValue ? '-' : ''}} &nbsp;&nbsp;{{filters.highValue ? '$' : ''}}{{filters.highValue}}</span>
                     </div>
                 </mat-panel-title>
             </mat-expansion-panel-header>
@@ -101,17 +101,17 @@
                     <span>From</span>
                     <mat-form-field appearance="outline" class="noLabelForm whiteBackground noTopPrefixField" [style.width.px]=96>
                         <span matPrefix>$</span>
-                        <input matInput [(ngModel)]="minValue" type='number' maxlength="4" class="valueInput" (change)="callParent()">
+                        <input matInput [(ngModel)]="filters.minValue" type='number' maxlength="4" class="valueInput" (change)="callParent()">
                     </mat-form-field>
                     <span>To</span>
                     <mat-form-field appearance="outline" class="noLabelForm whiteBackground noTopPrefixField" [style.width.px]=96>
                         <span matPrefix>$</span>
-                        <input matInput [(ngModel)]="highValue" type='number' maxlength="4" class="valueInput" (change)="callParent()">
+                        <input matInput [(ngModel)]="filters.highValue" type='number' maxlength="4" class="valueInput" (change)="callParent()">
                     </mat-form-field>
                 </div>
                 <br>
                 <div class="rangeDiv">
-                    <ngx-slider [(value)]="minValue" [(highValue)]="highValue" [options]="sliderOptions"></ngx-slider>
+                    <ngx-slider [(value)]="filters.minValue" [(highValue)]="filters.highValue" [options]="sliderOptions"></ngx-slider>
                 </div>
                 <div class="text-right">
                     <button mat-button class="clearButton w-auto px-4" (click)="clearValueClick()">
@@ -156,8 +156,8 @@
                                             </mat-option>
                                         </mat-autocomplete>
                                     </mat-form-field>
-                                    <div [class.hgt-150]="selectedCreatedBy.length > 3" class="customVerScroll matAutoComplete001">
-                                        <div class="" *ngFor="let state of selectedCreatedBy">
+                                    <div [class.hgt-150]="filters.selectedCreatedBy.length > 3" class="customVerScroll matAutoComplete001">
+                                        <div class="" *ngFor="let state of filters.selectedCreatedBy">
                                             <div class="row align-items-center">
                                                 <div class="col-auto pr-0">
                                                     <mat-checkbox color="primary" class="customCheckBox" [(ngModel)]="state.isChecked" (change)="createdBySelection(state)"></mat-checkbox>
@@ -203,8 +203,8 @@
                                             </mat-option>
                                         </mat-autocomplete>
                                     </mat-form-field>
-                                    <div [class.hgt-150]="selectedCompany.length > 3" class="customVerScroll matAutoComplete001">
-                                        <div class="" *ngFor="let state of selectedCompany">
+                                    <div [class.hgt-150]="filters.selectedCompany.length > 3" class="customVerScroll matAutoComplete001">
+                                        <div class="" *ngFor="let state of filters.selectedCompany">
                                             <div class="row align-items-center">
                                                 <div class="col-auto pr-0">
                                                     <mat-checkbox color="primary" class="customCheckBox" [(ngModel)]="state.isChecked" (change)="companySelection(state)"></mat-checkbox>
@@ -242,9 +242,9 @@
             </mat-expansion-panel-header>
             <div class="panel-content">
                 <ngx-simplebar [options]="scrollOptions" style="height: 120px; margin-bottom: 16px;">
-                    <mat-checkbox class="mb-2" [(ngModel)]="sourceAll" color="primary" (change)="allSourceSelect($event)" class="mx-4 customCheckBox">All</mat-checkbox>
-                    <div *ngFor="let e of sources" class="mt-2">
-                        <mat-checkbox class="mx-4 customCheckBox" color="primary" [checked]="e.selected" (change)="sourceSelect(e)">{{e.name}}</mat-checkbox>
+                    <mat-checkbox class="mb-2" [(ngModel)]="filters.sourceAll" color="primary" (change)="allSourceSelect($event)" class="mx-4 customCheckBox">All</mat-checkbox>
+                    <div *ngFor="let e of filters.sources" class="mt-2">
+                        <mat-checkbox [(ngModel)]="e.selected" class="mx-4 customCheckBox" color="primary" [checked]="e.selected" (change)="sourceSelect(e)">{{e.name}}</mat-checkbox>
                     </div>
 
                 </ngx-simplebar>
@@ -261,12 +261,12 @@
                 <mat-panel-title>
                     <div>
                         Status<br>
-                        <span>{{statusType}}</span>
+                        <span>{{filters.statusType}}</span>
                     </div>
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="panel-content">
-                <mat-radio-group aria-label="Select an option" class="displayColumn customRadio" color="primary" [(ngModel)]="statusType" (change)="callParent()">
+                <mat-radio-group aria-label="Select an option" class="displayColumn customRadio" color="primary" [(ngModel)]="filters.statusType" (change)="callParent()">
                     <mat-radio-button value="">All</mat-radio-button>
                     <mat-radio-button *ngFor="let e of status" value="{{e.id}}">{{e.name}}</mat-radio-button>
                 </mat-radio-group>
@@ -288,23 +288,23 @@
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="panel-content">
-                <mat-radio-group aria-labelledby="example-radio-group-label" class="displayColumn customRadio" [(ngModel)]="dateType">
+                <mat-radio-group aria-labelledby="example-radio-group-label" class="displayColumn customRadio" [(ngModel)]="filters.dateType">
                     <mat-radio-button color="primary" class="example-radio-button" *ngFor="let type of dateTypes" [value]="type" (click)="changeLastmodified(type)">
                         {{dateTypeString[type]}}
                     </mat-radio-button>
                     <br>
                 </mat-radio-group>
-                <div class="customDateDiv mt-2" *ngIf="dateType == 6">
+                <div class="customDateDiv mt-2" *ngIf="filters.dateType == 6">
                     <span>From</span>
                     <mat-form-field appearance="outline" class="noLabelForm noSpaceField">
-                        <input matInput [matDatepicker]="picker" [(ngModel)]="startDate">
+                        <input matInput [matDatepicker]="picker" [(ngModel)]="filters.startDate">
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
 
                     <span>To</span>
                     <mat-form-field appearance="outline" class="noLabelForm noSpaceField">
-                        <input matInput [matDatepicker]="picker1" [(ngModel)]="endDate">
+                        <input matInput [matDatepicker]="picker1" [(ngModel)]="filters.endDate">
                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                         <mat-datepicker #picker1 (selectedChanged)="onEndDate($event)"></mat-datepicker>
                     </mat-form-field>

@@ -34,7 +34,7 @@ export class CompanyDetailComponent implements OnInit {
   ) {
     // const data = this.router.getCurrentNavigation().extras.state;
     // console.log('detail-compnay:', data);
-    // if (!data) {      
+    // if (!data) {
     //   this.router.navigate(['/pages/company'])
     // }
     // else {
@@ -96,8 +96,8 @@ export class CompanyDetailComponent implements OnInit {
   openAppointDialog(isEdit: boolean, appointment?: any) {
     const dialogRef = this.dialog.open(AppointDialog, {
       width: '740px',
-      data: { 
-        isEdit: isEdit, 
+      data: {
+        isEdit: isEdit,
         appointment: appointment,
         associate_members: this.company.associate_members,
         appoint_owner: { id: this.organization.id, type: 'company'}
@@ -130,7 +130,7 @@ export class CompanyDetailComponent implements OnInit {
       .subscribe((res: any) => {
         console.log('appointStateChanged', res);
         if (res.success) {
-          
+
         }
       });
   }
@@ -146,7 +146,7 @@ export class CompanyDetailComponent implements OnInit {
       .subscribe((res: any) => {
         console.log('appointStateChanged', res);
         if (res.success) {
-          
+
         }
       });
   }

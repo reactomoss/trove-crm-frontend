@@ -120,7 +120,7 @@ export class UsersrolesComponent implements OnInit, AfterViewInit {
   rolesList = [];
 
   /**============ User Section ============*/
-  displayedColumns: string[] = ['first_name', 'name', 'access_level', 'record_status', 'Action'];
+  displayedColumns: string[] = ['first_name', 'role_name', 'access_level', 'record_status', 'Action'];
 
   data: Observable<any[]>;
   UsersList: Observable<any[]>;

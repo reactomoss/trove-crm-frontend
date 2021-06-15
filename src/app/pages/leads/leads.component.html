@@ -16,7 +16,7 @@
                 <!-- <ngx-simplebar [options]="scrollOptions" class="filterContainer1">
 
                 </ngx-simplebar> -->
-                <app-filter *ngIf="showFilter" [canShow]="canShow" (messageEvent)="receiveMessage($event)" (closeDialog)="drawer.toggle()" (count)="filterCount=$event" [filterData]="filterData" [currentSelectedPipeline]="currentSelectedPipeline"></app-filter>
+                <app-filter *ngIf="showFilter" (filtersChange)="receivefilters($event)" (closeDialog)="drawer.toggle()" (count)="filterCount=$event" [(filters)]="filters" [filterData]="filterData" [(currentSelectedPipeline)]="currentSelectedPipeline"></app-filter>
             </div>
         </mat-drawer>
 
@@ -26,7 +26,7 @@
                     <span class="title mr-3 fontObjektivMk mt-1">All Leads</span>
 
                     <mat-form-field class="searchForm noLabelForm noSpaceForm" appearance="outline">
-                        <input type="text" matInput placeholder="Search..." (keyup)="search($event.target.value)">
+                        <input type="text" matInput placeholder="Search..." [(ngModel)]="searchValue" (keydown.enter)="search($event.target.value)">
                         <mat-icon matSuffix>search</mat-icon>
                     </mat-form-field>
 
@@ -249,7 +249,7 @@
                 </button>
             </div> -->
             <ngx-simplebar [options]="scrollOptions" class="filterContainer2">
-                <app-filter (closeDialog)="drawer.toggle()" (count)="filterCount=$event" [listShow]="listShow" (messageEvent)="receiveMessage($event)" [filterData]="filterData" [currentSelectedPipeline]="currentSelectedPipeline"></app-filter>
+                <app-filter (closeDialog)="drawer.toggle()" (count)="filterCount=$event" [listShow]="listShow" (filtersChange)="receivefilters($event)" [(filters)]="filters" [filterData]="filterData" [(currentSelectedPipeline)]="currentSelectedPipeline"></app-filter>
             </ngx-simplebar>
         </div>
     </div>

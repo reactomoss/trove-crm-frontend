@@ -33,15 +33,33 @@ import {
 } from 'rxjs';
 import { SnackBarService } from '../../shared/snack-bar.service';
 import { extractErrorMessagesFromErrorResponse } from 'src/app/services/extract-error-messages-from-error-response';
-import { FilterComponent } from './filter/filter.component';
-
+import { LeadFilters } from './filter/filter.component';
+import { DateService } from '../../service/date.service'
+import * as moment from 'moment';
 @Component({
   selector: 'app-leads',
   templateUrl: './leads.component.html',
   styleUrls: ['./leads.component.css'],
 })
 export class LeadsComponent implements OnInit, AfterViewInit {
-  @ViewChild(FilterComponent) child: FilterComponent;
+  @ViewChild('drawer') drawer
+  filters: LeadFilters = {
+    filterCount: 0,
+    minValue: null,
+    highValue: null,
+    sourceAll: false,
+    sources: [],
+    selectedCreatedBy: [],
+    selectedCompany: [],
+    statusType: null,
+    dateType: -1,
+    startDate: null,
+    endDate: null,
+    selectedPipe: [],
+    selectedStages: [],
+  }
+  dateFormat = 'DD/MM/YYYY'
+  lastQuery: any = {}
 
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 };
   showFilter: boolean = false;
@@ -72,10 +90,11 @@ export class LeadsComponent implements OnInit, AfterViewInit {
     private router: Router,
     private sb: SnackBarService,
     private LeadApiService: LeadApiService,
-    private cdref: ChangeDetectorRef
+    private cdref: ChangeDetectorRef,
+    private dateService: DateService,
   ) {}
 
-  currentSelectedPipeline = '';
+  currentSelectedPipeline:number = 0;
   pipelineMaster = [];
   totalLead = 0;
   totalValue = 0;
@@ -88,7 +107,6 @@ export class LeadsComponent implements OnInit, AfterViewInit {
   filterObj$ = {};
   //filterObj$ = new BehaviorSubject<any>({});
   searchValue = '';
-  private searchText$ = new Subject<string>();
 
   resultsLength = 0;
   isLoadingResults = true;
@@ -102,11 +120,11 @@ export class LeadsComponent implements OnInit, AfterViewInit {
   filterData;
 
   ngOnChanges() {
-    console.log('grid ngOnChanges');
-    console.log(this.child.minValue);
+    //console.log('grid ngOnChanges');
+    //console.log(this.child.minValue);
   }
   ngAfterViewInit() {
-    console.log('ngAfterViewInit');
+    //console.log('ngAfterViewInit');
     //setInterval(function(){  }, 3000);
   }
 
@@ -120,11 +138,12 @@ export class LeadsComponent implements OnInit, AfterViewInit {
     const subs_query_param = this.LeadApiService.getFilterValues().subscribe(
       (res: any) => {
         if (res.success) {
-          console.log("getFilterValues", res);
+          //console.log("getFilterValues", res);
           this.filterData = res;
           this.pipelineMaster = res.data.pipeline;
           this.currentSelectedPipeline = this.pipelineMaster[0].id;
-          this.fetchLeadGridView();
+          //this.fetchLeadGridView();
+          this.applyFilter();
           //this.triggerSnackBar(res.message, 'Close');
         } else {
           this.triggerSnackBar(res.message, 'Close');
@@ -158,13 +177,107 @@ export class LeadsComponent implements OnInit, AfterViewInit {
     );
     this.subscriptions.push(subs_query);
   }*/
-  receiveMessage($event) {
-    //console.log('anyParentMehtod');
-    //console.log($event);
-    this.filterObj$ = $event;
-    //this.filterObj$.next($event);
-    this.listShow ? this.fetchLeadListView() : this.fetchLeadGridView();
+  receivefilters(filters: LeadFilters) {
+    this.filters = filters;
+    //console.log("receivedFilters", filters);
+    this.applyFilter();
     //this.fetchLeadGridView();
+  }
+
+  update() {
+    this.lastQuery = {}
+    this.listShow ? this.showList() : this.showGrid()
+  }
+
+  applyFilter() {
+    let query = { }
+    if (this.searchValue) {
+      query['search'] = this.searchValue
+    }
+    if(this.listShow){
+      query['pipeline'] = {
+        id: this.currentSelectedPipeline,
+      }
+    } else {
+      query['pipeline_id'] = this.currentSelectedPipeline
+    }
+
+    const filters = this.filters
+    if (filters) {
+      let arrSource = []; let arrCompany = []; let arrContacts = []
+      this.filters.sources.forEach((e) => {
+        e['selected'] && arrSource.push(e['id']);
+      });
+      this.filters.selectedCreatedBy.forEach((e) => {
+        arrContacts.push(e['id']);
+      });
+      this.filters.selectedCompany.forEach((e) => {
+        arrCompany.push(e['id']);
+      });
+      if(this.filters.minValue && this.filters.highValue){
+        query['lead_value'] = {
+            min: this.filters.minValue,
+            max: this.filters.highValue,
+        };
+      }
+
+      if(this.listShow){
+        if(this.filters.selectedStages.length > 0){
+          query['pipeline']['stages'] = this.filters.selectedStages;
+        }
+      }
+      if(arrSource.length > 0){
+        query['source'] = arrSource;
+      }
+      if(arrContacts.length > 0){
+        query['contact_users'] = arrContacts;
+      }
+      if(arrCompany.length > 0){
+        query['contact_organization'] = arrCompany;
+      }
+      if (filters.dateType >= 0) {
+        let startDate = null, lastDate = null
+        if (filters.dateType == 6) {
+          startDate = moment(this.filters.startDate, this.dateFormat).format('YYYY-MM-DD')
+          lastDate = moment(this.filters.endDate, this.dateFormat).format('YYYY-MM-DD')
+        }
+        else {
+          const dateRange = this.dateService.getDateRange(this.filters.dateType)
+          startDate = moment(dateRange.startDate, this.dateFormat).format('YYYY-MM-DD')
+          lastDate = moment(dateRange.lastDate, this.dateFormat).format('YYYY-MM-DD')
+        }
+        query['modified'] = {from: startDate, to: lastDate}
+      }
+      if(this.filters.statusType && typeof this.filters.statusType != 'undefined'){
+        query['status'] = [this.filters.statusType];
+      }
+      console.log('Lead - applyFilter', filters, "Query=", query);
+    }
+
+    //console.log('Lead - applyFilter, query=', query, this.lastQuery)
+
+    // Compare query
+    if (!this.compareQuery(this.lastQuery, query)) {
+      //console.log("Query and Last query not same", query, this.lastQuery);
+      this.lastQuery = query
+      this.items = []
+      if (this.listShow) this.fetchLeadListView(query)
+      else this.fetchLeadGridView(query)
+    }
+  }
+
+  compareQuery(object1, object2) {
+    const keys1 = Object.keys(object1);
+    const keys2 = Object.keys(object2);
+    if (keys1.length !== keys2.length) {
+      return false;
+    }
+    for (let key of keys1) {
+      if (object1[key] !== object2[key]) {
+        return false;
+      }
+    }
+    return true;
   }
 
   private _filter(value: string): string[] {
@@ -202,13 +315,15 @@ export class LeadsComponent implements OnInit, AfterViewInit {
 
   showList() {
     this.listShow = true;
-    this.fetchLeadListView();
+    this.applyFilter();
+    //this.fetchLeadListView();
   }
 
   showGrid() {
     this.listShow = false;
     this.showFilter = false;
-    this.fetchLeadGridView();
+    this.applyFilter();
+    //this.fetchLeadGridView();
   }
 
   dropped(id, event: CdkDragDrop<string[]>) {
@@ -263,26 +378,27 @@ export class LeadsComponent implements OnInit, AfterViewInit {
   }
 
   filterCountChangedHandler(e) {
-    alert('filterCountChangedHandler');
+    //alert('filterCountChangedHandler');
     this.filterCount = e;
-    alert(this.child.minValue);
+    //alert(this.child.minValue);
   }
 
   async clickFilter() {
     //let isData = await this.getFilterData();
-    console.log(this.filterData);
+    //console.log(this.filterData);
     this.showFilter = true;
   }
 
   onPipelineChange() {
-    this.fetchLeadGridView();
+    this.applyFilter();
   }
 
   search(searchvalue: string) {
-    this.searchText$.next(searchvalue);
+    this.applyFilter();
   }
 
-  fetchLeadGridView() {
+  fetchLeadGridView(query) {
+    //alert("fetchLeadGridView");
     this.StagesForDrag = [];
     //console.log(this.filterObj$);
     /*this.Leads = combineLatest(this.filterObj$)
@@ -324,9 +440,9 @@ export class LeadsComponent implements OnInit, AfterViewInit {
         })
     );*/
 
-    this.filterObj$['pipeline_id'] = this.currentSelectedPipeline;
-    this.filterObj$['search'] = this.searchValue;
-    this.LeadApiService.listLeadGridView(this.filterObj$).subscribe(
+    //this.filterObj$['pipeline_id'] = this.currentSelectedPipeline;
+    //this.filterObj$['search'] = this.searchValue;
+    this.LeadApiService.listLeadGridView(query).subscribe(
       (res: any) => {
         if (res.success) {
           if (res.data.data.length > 0) {
@@ -378,12 +494,10 @@ export class LeadsComponent implements OnInit, AfterViewInit {
     );
   }
 
-  private fetchLeadListView() {
-    alert("fetchLeadListView");
-    this.filterObj$['pipeline_id'] = this.currentSelectedPipeline;
-    this.filterObj$['search'] = this.searchValue;
+  private fetchLeadListView(query) {
+    this.items = [];
     const subs_query_param = this.LeadApiService
-      .getLeadList(this.filterObj$)
+      .getLeadList(query)
       .subscribe((res: any) => {
         //console.log('fetchLeadListView', res)
         if (!res.success) {

@@ -104,27 +104,27 @@ export class AppointDialog {
       location: [appoint.location, [Validators.required]],
       description: [appoint.description, [Validators.required, Validators.maxLength(500)]],
       start_date: [
-        appoint.start_date ? moment(appoint.start_date) : null, 
+        appoint.start_date ? moment(appoint.start_date) : null,
         [Validators.required]
       ],
       start_time: [
-        appoint.start_time ? moment(appoint.start_time, ["h:mm A"]).format('h:mm A') : null, 
+        appoint.start_time ? moment(appoint.start_time, ["h:mm A"]).format('h:mm A') : null,
         [Validators.required]
       ],
       end_date: [
-        appoint.end_date ? moment(appoint.end_date) : null, 
+        appoint.end_date ? moment(appoint.end_date) : null,
         [Validators.required]
       ],
       end_time: [
-        appoint.end_time ? moment(appoint.end_time, ["h:mm A"]).format('h:mm A') : null, 
+        appoint.end_time ? moment(appoint.end_time, ["h:mm A"]).format('h:mm A') : null,
         [Validators.required]
       ],
       reminder_date: [
-        appoint.reminder_date ? moment(appoint.reminder_date) : null, 
+        appoint.reminder_date ? moment(appoint.reminder_date) : null,
         [Validators.required]
       ],
       reminder_time: [
-        appoint.reminder_time ? moment(appoint.reminder_time, ["h:mm A"]).format('h:mm A') : null, 
+        appoint.reminder_time ? moment(appoint.reminder_time, ["h:mm A"]).format('h:mm A') : null,
         [Validators.required]
       ],
     });
@@ -134,7 +134,7 @@ export class AppointDialog {
     const date = day ? moment(day) : moment()
     if (time) {
       var tm = moment(time, ["h:mm A"])
-      date.add(tm.hours(), 'hours').add(tm.minutes(), 'minutes') 
+      date.add(tm.hours(), 'hours').add(tm.minutes(), 'minutes')
     }
     return date
   }
@@ -187,17 +187,17 @@ export class AppointDialog {
 
     if (this.selected && this.selected.length > 0) {
       const appointments = {}
-      const contacts = this.selected.filter(e => e.type == 'contact').map(e => e.id) 
+      const contacts = this.selected.filter(e => e.type == 'contact').map(e => e.id)
       if (contacts.length > 0) {
         appointments['contacts'] = contacts
       }
 
-      const companies = this.selected.filter(e => e.type == 'company').map(e => e.id) 
+      const companies = this.selected.filter(e => e.type == 'company').map(e => e.id)
       if (companies.length > 0) {
         appointments['organizations'] = companies
       }
 
-      const leads = this.selected.filter(e => e.type == 'lead').map(e => e.id) 
+      const leads = this.selected.filter(e => e.type == 'lead').map(e => e.id)
       if (leads.length > 0) {
         appointments['leads'] = leads
       }
@@ -208,12 +208,12 @@ export class AppointDialog {
     }
     console.log('submit-payload', payload);
 
-    const observable = this.isEdit ? 
+    const observable = this.isEdit ?
         this.contactService.updateAppointment(this.appointment.id, payload) :
         this.contactService.createAppointment(payload)
 
     observable.subscribe(
-      (res: any) => {        
+      (res: any) => {
         if (res.success) {
           this.dialogRef.close({
             state: this.isEdit? 'updated' : 'created',
@@ -241,7 +241,7 @@ export class AppointDialog {
   private _filter(value: any): string[] {
     if (value && typeof(value) === 'string') {
       const filterValue = value.toLowerCase();
-      return this.options.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);  
+      return this.options.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
     }
     return this.options
   }
@@ -278,7 +278,7 @@ export class AppointDialog {
   private getLeads() {
     return this.associate_members.leads.map(item => {
       return {type: 'lead', id: item.id, name: item.name, desc: '', icon: 'leaderboard'}
-    }) 
+    })
   }
 
   public setActive(num) {

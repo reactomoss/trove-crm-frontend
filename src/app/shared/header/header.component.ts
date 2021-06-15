@@ -91,6 +91,10 @@ export class HeaderComponent implements OnInit {
         link: '/pages/appointments',
       },
     ];
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    )
   }
   showNotification() {
     this.isNotification = !this.isNotification;
@@ -210,7 +214,7 @@ export class HeaderComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe((result) => {
         if (result) {
-          
+
         }
       })
     }
@@ -921,7 +925,7 @@ export class CompanyDialog {
       },
     };
 
-    const observable = this.isEdit ? 
+    const observable = this.isEdit ?
         this.contactService.updateCompany(this.company.id, payload) :
         this.contactService.createCompany(payload)
 
