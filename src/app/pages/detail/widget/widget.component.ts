@@ -21,23 +21,30 @@ export class WidgetComponent implements OnInit {
   @Output() taskStateChanged = new EventEmitter()
   @Input() leads_value
   @Input() associate_members
-  @Input() user_files
-  @Input() appointments
-  @Input() tasks
+  @Input() user_files = []
+  @Input() appointments = []
+  @Input() tasks = []
 
   files: File[] = []
 
   constructor(
     private dateService: DateService,
     private settingsApiService: SettingsApiService,
-  ) { }
+  ) { 
+    this.associate_members = {
+      contacts: [],
+      organizations: [],
+      leads: []
+    }
+  }
 
   ngOnInit(): void {
-    console.log('user_files', this.user_files)
-    this.files = this.user_files.map(url => {
-      const filename = decodeURI(url.substring(url.lastIndexOf('/')+1))
-      return new File(filename, url, '')
-    })
+    if (this.user_files) {
+      this.files = this.user_files.map(url => {
+        const filename = decodeURI(url.substring(url.lastIndexOf('/')+1))
+        return new File(filename, url, '')
+      })
+    }
   }
 
   getFileIcon(filename: string) {

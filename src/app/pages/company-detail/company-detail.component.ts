@@ -32,15 +32,7 @@ export class CompanyDetailComponent implements OnInit {
     private router: Router,
     public dialog: MatDialog
   ) {
-    // const data = this.router.getCurrentNavigation().extras.state;
-    // console.log('detail-compnay:', data);
-    // if (!data) {
-    //   this.router.navigate(['/pages/company'])
-    // }
-    // else {
-    //   this.setCompany(data)
-    // }
-    this.setCompany(sample)
+    //this.setCompany(sample)
   }
 
   ngOnInit(): void {
