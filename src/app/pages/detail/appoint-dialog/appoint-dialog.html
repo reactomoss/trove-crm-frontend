@@ -1,131 +1,135 @@
 <h1 mat-dialog-title>{{isEdit ? 'Edit' : 'New'}} Appointment</h1>
 <div mat-dialog-content>
-  <div class="row">
-    <div class="col-sm-12 col-md-6">
-      <span>Title</span>
-            <mat-form-field appearance="outline" class="formControl noLabelForm">
-                <input matInput>
-            </mat-form-field>
-    </div>
-    <div class="col-sm-12 col-md-6">
-      <span>Where?</span>
-            <mat-form-field appearance="outline" class="formControl noLabelForm">
-                <input matInput>
-            </mat-form-field>
-    </div>
-  </div>
-
-  <div>
-    <span>Description</span>
-    <mat-form-field appearance="outline" class="formControl noLabelForm">
-        <textarea matInput ></textarea>
-    </mat-form-field>
-  </div>
-
     <div class="row">
-      <div class="col-sm-12 col-md-6">
-        <div class="row">
-          <div class="col-sm-12">
-            <span>Start Date</span>
-          </div>
-          <div class="col-sm-12 col-md-6">
-            <mat-form-field appearance="outline" class="formControl noLabelForm datePicker">
-              <input matInput [matDatepicker]="startPicker" readonly>
-              <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-              <mat-datepicker #startPicker></mat-datepicker>
-          </mat-form-field>
-          </div>
-          <div class="col-sm-12 col-md-6">
-            <mat-form-field appearance="outline"  class="formControl timePickerBox iconColorPath">
-              <div class="d-flex">
-                <input matInput [ngxTimepicker]="startTimepicker" [disableClick]="true" readonly>
-              <ngx-material-timepicker-toggle [for]="startTimepicker"></ngx-material-timepicker-toggle>
-              <ngx-material-timepicker #startTimepicker></ngx-material-timepicker>
-              </div>
-          </mat-form-field>
-          </div>
+        <div class="col-sm-12 col-md-6">
+            <span>Title</span>
+            <mat-form-field appearance="outline" class="formControl noLabelForm">
+                <input matInput [(ngModel)]="appointment.title">
+            </mat-form-field>
         </div>
-      </div>
-      <div class="col-sm-12 col-md-6">
-        <div class="row">
-          <div class="col-sm-12">
-            <span>End Date</span>
-          </div>
-          <div class="col-sm-12 col-md-6">
-            <mat-form-field appearance="outline"  class="formControl noLabelForm datePicker">
-              <input matInput [matDatepicker]="endPicker" readonly>
-              <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-              <mat-datepicker #endPicker></mat-datepicker>
-          </mat-form-field>
-          </div>
-          <div class="col-sm-12 col-md-6">
-            <mat-form-field appearance="outline"  class="formControl timePickerBox iconColorPath">
-              <div class="d-flex">
-                <input matInput [ngxTimepicker]="endTimepicker" [disableClick]="true" readonly>
-              <ngx-material-timepicker-toggle [for]="endTimepicker"></ngx-material-timepicker-toggle>
-              <ngx-material-timepicker #endTimepicker></ngx-material-timepicker>
-              </div>
-          </mat-form-field>
-          </div>
-          </div>
-          </div>
+        <div class="col-sm-12 col-md-6">
+            <span>Where?</span>
+            <mat-form-field appearance="outline" class="formControl noLabelForm">
+                <input matInput [(ngModel)]="appointment.where">
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div>
+        <span>Description</span>
+        <mat-form-field appearance="outline" class="formControl noLabelForm">
+            <textarea matInput [(ngModel)]="appointment.description"></textarea>
+        </mat-form-field>
     </div>
 
     <div class="row">
-      <div class="col-sm-12 col-md-6">
-          <span>Associated Contact</span>
-          <div>
-            <div *ngFor="let e of selected" class="optionDiv selectedDiv" [style.width.px]="320" style="position: relative">
-              <i class="material-icons">{{e.icon}}</i>
-               <div class="ml-3">
-                   <p class="span1">{{e.name}}</p>
-                   <p class="span2">{{e.description}}</p>
-               </div>
-               <mat-icon style="position: absolute; right: 10px" class="cursorPointer"
-                           (click)="deleteSelected(e)">close</mat-icon>
-           </div>
-            <mat-form-field class="halfControl noLabelForm" appearance="outline" *ngIf="showAuto" [style.width.px]="320">
-                <input type="text" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
-                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="onSelectionChange($event)">
-                    <div class="optionBtnContainer">
-                        <button mat-button class={{activeClass(1)}} (click)="setActive(1)">Person</button>
-                        <button mat-button class={{activeClass(2)}} (click)="setActive(2)">Company</button>
-                        <button mat-button class={{activeClass(3)}} (click)="setActive(3)">Lead</button>
-                    </div>
-                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (click)="setEmpty()">
-                        <div class="optionDiv">
-                            <i class="material-icons">{{option.icon}}</i>
-                            <div class="ml-3">
-                                <p class="span1">{{option.name}}</p>
-                                <p class="span2">{{option.description}}</p>
-                            </div>
+        <div class="col-sm-12 col-md-6">
+            <div class="row">
+                <div class="col-sm-12">
+                    <span>Start Date</span>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <mat-form-field appearance="outline" class="formControl noLabelForm datePicker">
+                        <input matInput [matDatepicker]="startPicker" readonly [(ngModel)]="appointment.start_date">
+                        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #startPicker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <mat-form-field appearance="outline" class="formControl timePickerBox iconColorPath">
+                        <div class="d-flex">
+                            <input matInput [ngxTimepicker]="startTimepicker" [disableClick]="true" readonly [(ngModel)]="appointment.start_time">
+                            <ngx-material-timepicker-toggle [for]="startTimepicker"></ngx-material-timepicker-toggle>
+                            <ngx-material-timepicker #startTimepicker></ngx-material-timepicker>
                         </div>
-                    </mat-option>
-                </mat-autocomplete>
-            </mat-form-field>
-          </div>
-      </div>
-      <div class="col-sm-12 col-md-6">
-        <div class="row">
-          <div class="col-sm-12"> <span>Remainder On</span></div>
-          <div class="col-sm-12 col-md-6">
-            <mat-form-field appearance="outline"  class="formControl noLabelForm datePicker">
-              <input matInput [matDatepicker]="assPicker" readonly>
-              <mat-datepicker-toggle matSuffix [for]="assPicker"></mat-datepicker-toggle>
-              <mat-datepicker #assPicker></mat-datepicker>
-          </mat-form-field>
-          </div>
-          <div class="col-sm-12 col-md-6">
-            <mat-form-field appearance="outline"  class="formControl timePickerBox iconColorPath">
-              <div class="d-flex">
-                <input matInput [ngxTimepicker]="reTimepicker" [disableClick]="true" readonly>
-              <ngx-material-timepicker-toggle [for]="reTimepicker"></ngx-material-timepicker-toggle>
-              <ngx-material-timepicker #reTimepicker></ngx-material-timepicker>
-              </div>
-          </mat-form-field>
-          </div>
+                    </mat-form-field>
+                </div>
+            </div>
         </div>
-      </div>
+        <div class="col-sm-12 col-md-6">
+            <div class="row">
+                <div class="col-sm-12">
+                    <span>End Date</span>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <mat-form-field appearance="outline" class="formControl noLabelForm datePicker">
+                        <input matInput [matDatepicker]="endPicker" readonly [(ngModel)]="appointment.end_date">
+                        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #endPicker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <mat-form-field appearance="outline" class="formControl timePickerBox iconColorPath">
+                        <div class="d-flex">
+                            <input matInput [ngxTimepicker]="endTimepicker" [disableClick]="true" readonly [(ngModel)]="appointment.end_time">
+                            <ngx-material-timepicker-toggle [for]="endTimepicker"></ngx-material-timepicker-toggle>
+                            <ngx-material-timepicker #endTimepicker></ngx-material-timepicker>
+                        </div>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <span>Associated Contact</span>
+            <div>
+                <div *ngFor="let e of selected" class="optionDiv selectedDiv" [style.width.px]="320"
+                    style="position: relative">
+                    <i class="material-icons">{{e.icon}}</i>
+                    <div class="ml-3">
+                        <p class="span1">{{e.name}}</p>
+                        <p class="span2">{{e.description}}</p>
+                    </div>
+                    <mat-icon style="position: absolute; right: 10px" class="cursorPointer" (click)="deleteSelected(e)">
+                        close</mat-icon>
+                </div>
+                <mat-form-field class="halfControl noLabelForm" appearance="outline" *ngIf="showAuto"
+                    [style.width.px]="320">
+                    <input type="text" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
+                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+                        (optionSelected)="onSelectionChange($event)">
+                        <div class="optionBtnContainer">
+                            <button mat-button class={{activeClass(1)}} (click)="setActive(1)">Person</button>
+                            <button mat-button class={{activeClass(2)}} (click)="setActive(2)">Company</button>
+                            <button mat-button class={{activeClass(3)}} (click)="setActive(3)">Lead</button>
+                        </div>
+                        <mat-option *ngFor="let option of filteredOptions | async" [value]="option"
+                            (click)="setEmpty()">
+                            <div class="optionDiv">
+                                <i class="material-icons">{{option.icon}}</i>
+                                <div class="ml-3">
+                                    <p class="span1">{{option.name}}</p>
+                                    <p class="span2">{{option.description}}</p>
+                                </div>
+                            </div>
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <div class="row">
+                <div class="col-sm-12"> <span>Remainder On</span></div>
+                <div class="col-sm-12 col-md-6">
+                    <mat-form-field appearance="outline" class="formControl noLabelForm datePicker">
+                        <input matInput [matDatepicker]="assPicker" readonly [(ngModel)]="appointment.reminder_date">
+                        <mat-datepicker-toggle matSuffix [for]="assPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #assPicker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <mat-form-field appearance="outline" class="formControl timePickerBox iconColorPath">
+                        <div class="d-flex">
+                            <input matInput [ngxTimepicker]="reTimepicker" [disableClick]="true" readonly [(ngModel)]="appointment.reminder_time">
+                            <ngx-material-timepicker-toggle [for]="reTimepicker"></ngx-material-timepicker-toggle>
+                            <ngx-material-timepicker #reTimepicker></ngx-material-timepicker>
+                        </div>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
 
     </div>
     <button mat-button *ngIf="!showAuto" (click)="clickAdd()" class="addBtn">
@@ -133,7 +137,7 @@
     </button>
 </div>
 <div mat-dialog-actions class="justify-content-start">
-  <button *ngIf="isEdit" mat-button class="deleteBtn">Delete</button>
+  <button *ngIf="isEdit" mat-button class="deleteBtn" (click)="onDelete()">Delete</button>
     <button mat-button (click)="onNoClick()" class="cancelBtn ml-auto">Cancel</button>
-    <button mat-button class="createBtn ml-3">{{isEdit ? 'Update' : 'Create'}}</button>
+    <button mat-button class="createBtn ml-3" (click)="onConfirm()">{{isEdit ? 'Update' : 'Create'}}</button>
 </div>

@@ -54,7 +54,7 @@
         <div class="col-sm-6 col-md-6 col-lg-6 col-xl-3 mb-3">
           <div class="whiteBox">
             <div class="color-455B66">
-              <span class="f-16-700 mr-2">Pipeline</span>
+              <span routerLink='/pages/pipelinedetail' class="f-16-700 mr-2 cursorPointer">Pipeline</span>
               <mat-icon class="fs-20 align-middle">keyboard_arrow_right</mat-icon>
             </div>
             <app-echarts [chartOption]="pipelineChart"></app-echarts>
@@ -63,7 +63,7 @@
         <div class="col-sm-6 col-md-6 col-lg-6 col-xl-3 mb-3">
           <div class="whiteBox">
             <div class="color-455B66">
-              <span class="f-16-700 mr-2">Monthly</span>
+              <span routerLink='/pages/monthlydetail' class="f-16-700 mr-2 cursorPointer">Monthly</span>
               <mat-icon class="fs-20 align-middle">keyboard_arrow_right</mat-icon>
             </div>
             <app-echarts [chartOption]="monthlyChart"></app-echarts>
@@ -93,7 +93,7 @@
               </div>
               </div>
               <div *ngIf="appointments.length > 0" class="f-14-400 color-455B66 mt-3">
-                <span routerLink='/pages/task' class="underlineText cursorPointer">View Calendar</span>
+                <span routerLink='/pages/appointments' class="underlineText cursorPointer">View Calendar</span>
               </div>
 
               <!-- empty records design enable when the appointment records are not available -->
@@ -150,5 +150,4 @@
        </div>
       </div>
   </ngx-simplebar>
-
 </section>

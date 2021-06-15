@@ -26,11 +26,11 @@ export class Source {
 }
 
 @Component({
-  selector: 'app-source-filter',
-  templateUrl: './source-filter.component.html',
-  styleUrls: ['./source-filter.component.css']
+  selector: 'app-pipelinechart-filter',
+  templateUrl: './pipelinechart-filter.component.html',
+  styleUrls: ['./pipelinechart-filter.component.css']
 })
-export class SourceFilterComponent implements OnInit {
+export class PipelinechartFilterComponent implements OnInit {
 
   @ViewChildren("checkboxes") checkboxes: QueryList<ElementRef>
 
@@ -72,7 +72,7 @@ export class SourceFilterComponent implements OnInit {
   public endDate: Date = null
 
   scrollOptions = { autoHide: true, scrollbarMinSize: 30 }
-
+  selectedDisplay = "pipe1"
   // multi autocomplete
 
   sources = [
@@ -145,6 +145,7 @@ export class SourceFilterComponent implements OnInit {
    }
 
   ngOnInit(): void {
+
   }
 
   calculateFilterCount(): number {

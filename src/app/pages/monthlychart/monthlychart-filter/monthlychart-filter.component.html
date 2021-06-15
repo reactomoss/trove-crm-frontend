@@ -22,15 +22,20 @@
         <div class="panel-content">
             <div class="trapezoid1">
                 <div class="text">
-                    <button mat-button [matMenuTriggerFor]="salesPipeMenu">
-                        Sales Pipleline
-                        <mat-icon>arrow_drop_down</mat-icon>
-                    </button>
-                    <mat-menu #salesPipeMenu="matMenu" xPosition="before" class="pipeMenu">
-                        <button mat-menu-item>pipe1</button>
-                        <button mat-menu-item>pipe2</button>
-                        <button mat-menu-item>pipe3</button>
-                    </mat-menu>
+                  <mat-form-field class="statusSelect text-center">
+                    <mat-select [(value)]="selectedDisplay">
+                        <mat-option value="pipe1">
+                            Pipe 1
+                        </mat-option>
+                        <mat-option value="pipe2">
+                          Pipe 2
+                        </mat-option>
+                        <mat-option value="pipe3">
+                          Pipe 3
+                        </mat-option>
+
+                    </mat-select>
+                </mat-form-field>
                 </div>
             </div>
             <div class="trapezoid2" [class.activePipe]="checkPipe('discovery')">

@@ -90,6 +90,10 @@ export class HeaderComponent implements OnInit {
         link: '/pages/appointments',
       },
     ];
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    )
   }
   showNotification() {
     this.isNotification = !this.isNotification;
