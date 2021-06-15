@@ -13,6 +13,13 @@ import {
 } from 'rxjs';
 import { SnackBarService } from '../../shared/snack-bar.service';
 import { extractErrorMessagesFromErrorResponse } from 'src/app/services/extract-error-messages-from-error-response';
+
+import FroalaEditor from 'froala-editor';
+//import "froala-editor/css/third_party/embedly.min.css";
+//import "froala-editor/js/third_party/embedly.min.js";
+import 'froala-editor/js/plugins.pkgd.min.js';
+import 'froala-editor/js/plugins/file.min.js';
+import 'froala-editor/js/plugins/image.min.js';
 @Component({
   selector: 'app-addnote',
   templateUrl: './addnote.component.html',
@@ -140,7 +147,31 @@ export class AddnoteComponent implements OnInit {
 
   public titleOptions1: Object = {
     key: 'cJC7bA5D3G2F2C2G2yQNDMIJg1IQNSEa1EUAi1XVFQd1EaG3C2A5D5C4E3D2D4D2B2==',
-    // toolbarBottom: true,
+    charCounterCount: true,
+    attribution: false,
+    toolbarButtons: [
+      ['bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'clearFormatting'],
+      //['fontFamily', 'fontSize', 'backgroundColor', 'textColor'],
+      /*['paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', '-', 'insertImage', 'embedly',
+        'insertTable', 'insertLink'],*/
+      ['outdent', 'indent', '-'],
+      ['insertFile'],
+      //['specialCharacters', 'insertHR', 'clearFormatting'],
+      //['print', 'spellChecker'],
+      ['undo', 'redo']],
+    toolbarSticky: false,
+    //language: 'de',
+    /*fontFamily: {
+      'Arial,Helvetica,sans-serif': 'Arial',
+      '\'Courier New\',Courier,monospace': 'Courier New',
+      'Georgia,serif': 'Georgia',
+      'Impact,Charcoal,sans-serif': 'Impact',
+      '\'Lucida Console\',Monaco,monospace': 'Lucida Console',
+      'Tahoma,Geneva,sans-serif': 'Tahoma',
+      '\'Times New Roman\',Times,serif': 'Times New Roman',
+      'Verdana,Geneva,sans-serif': 'Verdana',
+    },*/
+    //toolbarBottom: true,
     events: {
       initialized: () => {
         console.log('initialized');

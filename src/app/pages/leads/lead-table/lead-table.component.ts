@@ -127,24 +127,26 @@ export class LeadTableComponent implements AfterViewInit {
   }
 
   ngOnChanges() {
-    console.log('table view ngOnChanges', [...this.propItems]);
+    this.items = [];
+    //console.log('table view ngOnChanges', [...this.propItems]);
     this.items = [...this.propItems];
     if (this.items.length > 0 && this.items.length < this.length) {
-      this.items.push({});
+      //this.items.push({});
     }
+    console.log("this.items", this.items);
     this.dataSource = new MatTableDataSource(this.items);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
   }
 
   clickRow(row) {
-    console.log('row', row);
+    //console.log('row', row);
     this.router.navigate(['/pages/lead_detail']);
   }
 
   clickTh(type) {
     this.selectedTh = type;
-    console.log(this.selectedTh);
+    //console.log(this.selectedTh);
   }
   pageChanged(event) {
     this.page = event;

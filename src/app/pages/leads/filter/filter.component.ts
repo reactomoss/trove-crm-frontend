@@ -25,6 +25,8 @@ import {
 } from 'rxjs';
 import { SnackBarService } from '../../../shared/snack-bar.service';
 import { extractErrorMessagesFromErrorResponse } from 'src/app/services/extract-error-messages-from-error-response';
+import * as moment from 'moment';
+
 export interface createContact {
   id: any;
   name: string;
@@ -42,12 +44,21 @@ export class Contact {
   }
 }
 
-/*export class Source {
-  constructor(public name: string, public selected?: boolean) {
-    if (selected === undefined) selected = false;
-  }
-}*/
-
+export interface LeadFilters {
+  filterCount: number
+  minValue: number,
+  highValue: number,
+  sourceAll: boolean,
+  sources: number[],
+  selectedCreatedBy: number[],
+  selectedCompany: number[],
+  statusType: number,
+  dateType: number,
+  startDate: Date,
+  endDate: Date,
+  selectedPipe: string[],
+  selectedStages: number[],
+}
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
@@ -61,29 +72,49 @@ export class FilterComponent implements OnInit, OnChanges {
   @Input() listShow: boolean;
   @Output() closeDialog = new EventEmitter();
   @Output() count = new EventEmitter<any>();
-  @Input() canShow;
   contactCtrl = new FormControl();
   companyCtrl = new FormControl();
   filteredCont: Observable<createContact[]>;
   filteredComp: Observable<createCompany[]>;
-  selectedCreatedBy: createContact[] = [];
-  selectedCompany: createCompany[] = [];
-  filterCount: number = 0;
+  //selectedCreatedBy: createContact[] = [];
+  //selectedCompany: createCompany[] = [];
+  //filterCount: number = 0;
   myControl = new FormControl();
   searchOptions: string[] = ['One', 'Two', 'Three'];
   filteredOptions: Observable<string[]>;
 
+  @Input() filters:LeadFilters /*= {
+    filterCount: 0,
+    minValue: 100,
+    highValue: 9000,
+    sourceAll: false,
+    sources: [],
+    selectedCreatedBy: [],
+    selectedCompany: [],
+    statusType: null,
+    dateType: -1,
+    startDate: null,
+    endDate: null,
+    selectedPipe: [],
+    selectedStages: [],
+  }*/
+  @Output() filtersChange = new EventEmitter<LeadFilters>();
+  dateFormat = 'DD/MM/YYYY'
+
+  //@Output() messageEvent = new EventEmitter<any>();
+  //@Output() messageEvent = new EventEmitter<LeadFilters>();
+
   @Input() filterData:any;
 
-  dateFrom="";
-  dateTo="";
+  //dateFrom="";
+  //dateTo="";
 
   //@Output() public notifyParent: EventEmitter<any> = new EventEmitter();
-  @Output() messageEvent = new EventEmitter<any>();
+
 
   callParent() {
-    console.log("ok-changed");
-    let arrSource = []; let arrCompany = []; let arrContacts = []
+    //console.log("ok-changed");
+    /*let arrSource = []; let arrCompany = []; let arrContacts = []
     this.sources.forEach((e) => {
       e.selected && arrSource.push(e.id);
     });
@@ -99,6 +130,14 @@ export class FilterComponent implements OnInit, OnChanges {
         max: this.highValue,
       }
     };
+    if(this.listShow){
+      obj['pipeline'] = {
+        id: this.currentSelectedPipeline,
+      }
+      if(this.selectedStages.length > 0){
+        obj['pipeline']['stages'] = this.selectedStages;
+      }
+    }
     if(arrSource.length > 0){
       obj['source'] = arrSource;
     }
@@ -113,15 +152,18 @@ export class FilterComponent implements OnInit, OnChanges {
     }
     if(this.dateFrom != "" && this.dateTo != ""){
       obj['modified'] = {
-        from: this.dateFrom,
-        to: this.dateTo
+        from: moment(this.dateFrom, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+        to: moment(this.dateTo, 'DD/MM/YYYY').format('YYYY-MM-DD')
       };
-    }
-    this.messageEvent.emit(obj);
+    }*/
+    //console.log("Before Emit Object", obj);
+    this.filters.filterCount = this.calculateFilterCount()
+    this.filtersChange.emit(this.filters);
+    //alert("Value Emitted");
   }
 
-  minValue: number = 100;
-  highValue: number = 9000;
+  //minValue: number = 100;
+  //highValue: number = 9000;
   sliderOptions: Options = {
     floor: 0,
     ceil: 100000,
@@ -129,7 +171,8 @@ export class FilterComponent implements OnInit, OnChanges {
 
   contactActive: number = 0;
 
-  selectedPipe: string[] = [];
+  //selectedPipe: string[] = [];
+  //selectedStages: number[] = [];
 
   dateTypes: number[] = [0, 1, 2, 3, 4, 5, 6];
   dateTypeString: string[] = [
@@ -141,43 +184,42 @@ export class FilterComponent implements OnInit, OnChanges {
     'This Quarter',
     'Custom',
   ];
-  dateType: number;
+  //dateType: number;
 
-  statusType: string = '';
+  //statusType: string = '';
   selectedSource: string[] = [];
 
-  public startDate: Date = null;
-  public endDate: Date = null;
+  //public startDate: Date = null;
+  //public endDate: Date = null;
 
   scrollOptions = { autoHide: true, scrollbarMinSize: 30 };
-  @Input() currentSelectedPipeline;
+  @Input() currentSelectedPipeline: number;
+  @Output() currentSelectedPipelineChange: EventEmitter<number> = new EventEmitter<number>();
   SelectedPipelineStages = [];
   // multi autocomplete
 
-  sources = [];
-  sourceAll: boolean = false;
+  //sources = [];
+  //sourceAll: boolean = false;
 
-  createdBySelection(contact: createContact) {
-    console.log("createdBySelection");
-    console.log(contact);
+  createdBySelection(contact) {
     if (contact.isChecked) {
-      this.selectedCreatedBy = [...this.selectedCreatedBy, contact];
+      this.filters.selectedCreatedBy = [...this.filters.selectedCreatedBy, contact];
     } else {
-      let index = this.selectedCreatedBy.findIndex(
-        (c) => c.name === contact.name
+      let index = this.filters.selectedCreatedBy.findIndex(
+        (c) => c['name'] === contact.name
       );
-      this.selectedCreatedBy.splice(index, 1);
+      this.filters.selectedCreatedBy.splice(index, 1);
     }
     this.callParent();
   }
-  companySelection(contact: createCompany) {
+  companySelection(contact) {
     if (contact.isChecked) {
-      this.selectedCompany = [...this.selectedCompany, contact];
+      this.filters.selectedCompany = [...this.filters.selectedCompany, contact];
     } else {
-      let index = this.selectedCompany.findIndex(
-        (c) => c.name === contact.name
+      let index = this.filters.selectedCompany.findIndex(
+        (c) => c['name'] === contact.name
       );
-      this.selectedCompany.splice(index, 1);
+      this.filters.selectedCompany.splice(index, 1);
     }
     this.callParent();
   }
@@ -228,11 +270,11 @@ export class FilterComponent implements OnInit, OnChanges {
     private dateService: DateService,
     private sb: SnackBarService,
   ) {
-    console.log("constrctor start");
-    console.log(this.filteredCont);
+    //console.log("constrctor start");
+    //console.log(this.filteredCont);
   }
   ngOnChanges(){
-    console.log("filter ngOnchanges", this.filterData);
+    //console.log("filter ngOnchanges", this.filterData, this.filters);
     this.contacts = [];
     this.filterData.data.contacts.users.forEach(element => {
       this.contacts.push({
@@ -241,19 +283,23 @@ export class FilterComponent implements OnInit, OnChanges {
       });
     });
     this.companys = this.filterData.data.contacts.organizations;
-    this.minValue = this.filterData.data.lead_value.min;
-    this.highValue = this.filterData.data.lead_value.max;
-    this.sources = this.filterData.data.source;
+    this.filters.minValue = this.filterData.data.lead_value.min;
+    this.filters.highValue = this.filterData.data.lead_value.max;
+    this.filters.sources = this.filterData.data.source;
     this.status = this.filterData.data.status;
     this.leadValue = this.filterData.data.lead_value;
     this.pipelines = this.filterData.data.pipeline;
 
-    let stages = this.pipelines.find(obj => {
-      return obj.id === this.currentSelectedPipeline
+    let pipelineObj = this.pipelines.find(obj => {
+      return obj.id == this.currentSelectedPipeline
     });
-    this.SelectedPipelineStages = stages;
-    console.log("stages", this.SelectedPipelineStages);
-    //this.triggerSnackBar(res.message, 'Close');
+    this.SelectedPipelineStages = pipelineObj.stages;
+
+    if(this.filters){
+     // console.log("if filters", this.filters);
+    } else {
+      //console.log("else filters");
+    }
 
     this.filteredCont = this.contactCtrl.valueChanges.pipe(
       startWith(''),
@@ -270,39 +316,51 @@ export class FilterComponent implements OnInit, OnChanges {
     );
   }
   ngOnInit(): void {
-    console.log("child_component", this.filterData);
+    //console.log("child_component", this.filterData, this.filters);
   }
 
   ngAfterViewInit() {
-    console.log('filter ngAfterViewInit');
+    //console.log('filter ngAfterViewInit');
+  }
+
+  onPipelineChange(id){
+    this.currentSelectedPipeline = id;
+    this.currentSelectedPipelineChange.emit(this.currentSelectedPipeline);
+    let pipelineObj = this.pipelines.find(obj => {
+      if(obj.id == this.currentSelectedPipeline){
+        return obj;
+      }
+      return false;
+    });
+    this.SelectedPipelineStages = pipelineObj.stages;
+    this.callParent();
   }
 
   calculateFilterCount(): number {
-    this.filterCount = 0;
-    if (this.statusType) {
-      this.filterCount += 1;
+    this.filters.filterCount = 0;
+    if (this.filters.statusType) {
+      this.filters.filterCount += 1;
     }
-    if (this.selectedCreatedBy.length > 0) {
-      this.filterCount += 1;
+    if (this.filters.selectedCreatedBy.length > 0) {
+      this.filters.filterCount += 1;
     }
-    if (this.selectedCompany.length > 0) {
-      this.filterCount += 1;
+    if (this.filters.selectedCompany.length > 0) {
+      this.filters.filterCount += 1;
     }
-    if (this.dateType != -1 && (this.dateType || this.dateType == 0)) {
-      this.filterCount += 1;
+    if (this.filters.dateType != -1 && (this.filters.dateType || this.filters.dateType == 0)) {
+      this.filters.filterCount += 1;
     }
     if (this.getSelectedSource() != '') {
-      this.filterCount += 1;
+      this.filters.filterCount += 1;
     }
-    if (this.selectedPipe.length > 0) {
-      this.filterCount += 1;
+    if (this.filters.selectedPipe.length > 0) {
+      this.filters.filterCount += 1;
     }
-    if (this.minValue != null && this.highValue != null) {
-      this.filterCount += 1;
+    if (this.filters.minValue != null && this.filters.highValue != null) {
+      this.filters.filterCount += 1;
     }
-    this.count.emit(this.filterCount);
-    //this.callParent();
-    return this.filterCount;
+    this.count.emit(this.filters.filterCount);
+    return this.filters.filterCount;
   }
 
   clearAll() {
@@ -317,39 +375,38 @@ export class FilterComponent implements OnInit, OnChanges {
   }
 
   public clearSource(type = "") {
-    this.sources.forEach((e) => {
-      e.selected = false;
+    this.filters.sources.forEach((e) => {
+      e['selected'] = false;
     });
-    this.sourceAll = false;
+    this.filters.sourceAll = false;
     if(type == ""){
       this.callParent();
     }
   }
   public clearDate(type = "") {
-    this.dateType = -1;
-    this.dateFrom = "";
-    this.dateTo = "";
+    this.filters.dateType = -1;
     if(type == ""){
       this.callParent();
     }
   }
 
   public clearStatus(type = "") {
-    this.statusType = undefined;
+    this.filters.statusType = undefined;
     if(type == ""){
       this.callParent();
     }
   }
 
   public clearPipe(type = "") {
-    this.selectedPipe = [];
+    this.filters.selectedPipe = [];
+    this.filters.selectedStages = [];
     if(type == ""){
       this.callParent();
     }
   }
 
   public clearCreatedBy(type = "") {
-    this.selectedCreatedBy = [];
+    this.filters.selectedCreatedBy = [];
     this.filteredCont
       .pipe(
         tap((data) => {
@@ -366,7 +423,7 @@ export class FilterComponent implements OnInit, OnChanges {
   }
 
   public clearCompany(type = "") {
-    this.selectedCompany = [];
+    this.filters.selectedCompany = [];
     this.filteredComp
       .pipe(
         tap((data) => {
@@ -395,24 +452,28 @@ export class FilterComponent implements OnInit, OnChanges {
   }
 
   public clearValueClick(type="") {
-    this.minValue = this.leadValue['min'];
-    this.highValue = this.leadValue['max'];
+    this.filters.minValue = this.leadValue['min'];
+    this.filters.highValue = this.leadValue['max'];
     if(type == ""){
       this.callParent();
     }
   }
 
   public clickDiscovery(item) {
-    const index = this.selectedPipe.indexOf(item.name, 0);
+    //console.log(item);
+    const index = this.filters.selectedPipe.indexOf(item.name, 0);
     if (index > -1) {
-      this.selectedPipe.splice(index, 1);
+      this.filters.selectedPipe.splice(index, 1);
+      this.filters.selectedStages.splice(index, 1);
     } else {
-      this.selectedPipe.push(item.name);
+      this.filters.selectedPipe.push(item.name);
+      this.filters.selectedStages.push(item.id);
     }
+    this.callParent();
   }
 
   public checkPipe(item) {
-    const index = this.selectedPipe.indexOf(item.name, 0);
+    const index = this.filters.selectedPipe.indexOf(item.name, 0);
     if (index > -1) {
       return true;
     } else {
@@ -422,24 +483,29 @@ export class FilterComponent implements OnInit, OnChanges {
 
   //source
   public sourceSelect(source) {
+    //console.log(source);
+    source.selected = false;
+    if(source.selected){
+      source.selected = true;
+    }
     source.selected = !source.selected;
-    this.sourceAll =
-      this.sources != null && this.sources.every((t) => t.selected);
+    this.filters.sourceAll =
+      this.filters.sources != null && this.filters.sources.every((t) => t['selected']);
     this.callParent();
   }
 
   //source
   public allSourceSelect(event) {
     const checked = event.checked;
-    this.sources.forEach((e) => (e.selected = checked));
+    this.filters.sources.forEach((e) => (e['selected'] = checked));
     this.callParent();
   }
 
   //source
   getSelectedSource() {
     let arr = [];
-    this.sources.forEach((e) => {
-      e.selected && arr.push(e.name);
+    this.filters.sources.forEach((e) => {
+      e['selected'] && arr.push(e['name']);
     });
     return this.displayArray(arr);
   }
@@ -455,10 +521,11 @@ export class FilterComponent implements OnInit, OnChanges {
   changeLastmodified(type){
     //alert(this.dateType);
     //alert(type);
-    if (this.dateType == -1) {
+    /*if (this.filters.dateType == -1) {
       return '';
     }
     let date = "";
+    let dateArray = [];
     switch (type) {
       case 0:
         const today = this.dateService.getToday();
@@ -474,36 +541,62 @@ export class FilterComponent implements OnInit, OnChanges {
         return yesterday + ' ~ ' + yesterday;
       case 2:
         date =  this.dateService.getLastWeek();
+        dateArray = date.split("~");
+        this.dateFrom = dateArray[0];
+        this.dateTo = dateArray[1];
+        this.callParent();
+        return date;
       case 3:
         date = this.dateService.getThisMonth();
+        dateArray = date.split("~");
+        this.dateFrom = dateArray[0];
+        this.dateTo = dateArray[1];
+        this.callParent();
+        return date;
       case 4:
         date =  this.dateService.getLastMonth();
+        dateArray = date.split("~");
+        this.dateFrom = dateArray[0];
+        this.dateTo = dateArray[1];
+        this.callParent();
+        return date;
       case 5:
         date =  this.dateService.getThisQuarter();
+        dateArray = date.split("~");
+        this.dateFrom = dateArray[0];
+        this.dateTo = dateArray[1];
+        this.callParent();
+        return date;
       case 6:
         let firstDay = '',
           lastDay = '';
-        this.startDate &&
-          (firstDay = this.dateService.dateToString(this.startDate));
-        this.endDate && (lastDay = this.dateService.dateToString(this.endDate));
+        this.filters.startDate &&
+          (firstDay = this.dateService.dateToString(this.filters.startDate));
+        this.filters.endDate && (lastDay = this.dateService.dateToString(this.filters.endDate));
         this.dateFrom = firstDay;
         this.dateTo = lastDay;
         this.callParent();
         return firstDay + ' ~ ' + lastDay;
+    }*/
+    if (this.filters.dateType == -1) {
+      return ''
     }
-    let dateArray = date.split("~");
-    this.dateFrom = dateArray[0];
-    this.dateTo = dateArray[1];
-    this.callParent();
-    return date;
+    if (this.filters.dateType == 6) {
+      let firstDay = '', lastDay = ''
+      this.filters.startDate && (firstDay = this.dateService.dateToString(this.filters.startDate))
+      this.filters.endDate && (lastDay = this.dateService.dateToString(this.filters.endDate))
+      return firstDay + ' ~ ' + lastDay
+    }
+    const {startDate, lastDate} = this.dateService.getDateRange(this.filters.dateType)
+    return startDate.format(this.dateFormat) + '~' + lastDate.format(this.dateFormat)
   }
 
   public getSelectedDate() {
     //console.log(this.dateType);
-    if (this.dateType == -1) {
+    if (this.filters.dateType == -1) {
       return '';
     }
-    switch (this.dateType) {
+    /*switch (this.dateType) {
       case 0:
         const today = this.dateService.getToday();
         return today + ' ~ ' + today;
@@ -525,7 +618,15 @@ export class FilterComponent implements OnInit, OnChanges {
           (firstDay = this.dateService.dateToString(this.startDate));
         this.endDate && (lastDay = this.dateService.dateToString(this.endDate));
         return firstDay + ' ~ ' + lastDay;
+    }*/
+    if (this.filters.dateType == 6) {
+      let firstDay = '', lastDay = ''
+      this.filters.startDate && (firstDay = this.dateService.dateToString(this.filters.startDate))
+      this.filters.endDate && (lastDay = this.dateService.dateToString(this.filters.endDate))
+      return firstDay + ' ~ ' + lastDay
     }
+    const {startDate, lastDate} = this.dateService.getDateRange(this.filters.dateType)
+    return startDate.format(this.dateFormat) + '~' + lastDate.format(this.dateFormat)
   }
 
   private _filterStates(value: string): createContact[] {
