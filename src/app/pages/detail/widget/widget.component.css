@@ -37,6 +37,7 @@ mat-expansion-panel-header {
 .rightPart .panel-content1 {
     /* display: flex; */
     justify-content: space-between;
+    margin: 0 60px;
 }
 
 .rightPart .panel-content1 div span:nth-child(1) {

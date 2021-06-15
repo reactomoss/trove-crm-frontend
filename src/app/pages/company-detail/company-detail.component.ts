@@ -39,7 +39,6 @@ export class CompanyDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('~~~~~~~~~~~~', this.company)
     this.organization = this.company.organization;
   }
 
@@ -153,9 +152,13 @@ export class CompanyDetailComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe((result) => {
         if (result) {
-          this.sb.openSnackBarBottomCenter(result.message, 'Close');
-          this.company.organization = result.company
-          this.organization = result.company
+          if (result.state == 'deleted') {
+            this.contactService.notifyCompany();
+            this.goToList();
+          } else {
+            this.company.organization = result.company;
+            this.organization = result.company;
+          }
         }
       });
     };

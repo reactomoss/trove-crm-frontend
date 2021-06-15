@@ -87,11 +87,10 @@ export class ContactApiService {
       const data = { ids: companyIds }
       const API_URL = `${this.baseURL + environment.company_delete_multiple}`
       return this.httpClient.post(API_URL, data)
-    } else {
+    }
+    else {
       const companyId = companyIds[0]
-      const API_URL = `${
-        this.baseURL + environment.company_delete
-      }/${companyId}`
+      const API_URL = `${this.baseURL + environment.company_delete}/${companyId}`
       return this.httpClient.delete(API_URL)
     }
   }

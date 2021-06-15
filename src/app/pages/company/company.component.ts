@@ -65,26 +65,6 @@ export class CompanyComponent implements OnInit {
     this.sb.openSnackBarBottomCenter(message, action);
   }
 
-  /*Modal dialog*/
-  open(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'dialog001'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-  }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-    return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
-  }
-  /*Modal dialog*/
-
   ngOnInit(): void {
     this.contactService.companyObserver.subscribe(() => this.update());
     this.showGrid()
@@ -367,6 +347,26 @@ export class CompanyComponent implements OnInit {
     })
     this.selectedItems = []
   }
+
+  /*Modal dialog*/
+  open(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'dialog001'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+    return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
+  /*Modal dialog*/
 }
 
 @Component({

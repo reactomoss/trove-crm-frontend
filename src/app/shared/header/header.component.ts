@@ -1,6 +1,7 @@
 import { TokenService } from './../../services/token.service';
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
+import { NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { AccountApiService } from '../../services/account-api.service';
 import { ContactApiService } from '../../services/contact-api.service';
 import {
@@ -209,7 +210,7 @@ export class HeaderComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe((result) => {
         if (result) {
-          this.sb.openSnackBarBottomCenter(result.message, 'Close')
+          
         }
       })
     }
@@ -811,7 +812,6 @@ export class CompanyDialog {
 
   form: FormGroup;
   showMandatory: boolean = false;
-  search: string = '';
 
   addressSelect = false;
   isEdit: boolean = false;
@@ -820,8 +820,10 @@ export class CompanyDialog {
   emailOwners = [];
   dialCodes = []
   errors = null
+  closeResult = '';
 
   constructor(
+    private modalService: NgbModal,
     private contactService: ContactApiService,
     private sb: SnackBarService,
     public fb: FormBuilder,
@@ -870,6 +872,7 @@ export class CompanyDialog {
       owner_id: [this.company?.owner_id || '', [Validators.required]],
       skype_id: [this.company?.skype_id || ''],
       description: [this.company?.description || ''],
+      search: ['']
     });
   }
 
@@ -924,6 +927,7 @@ export class CompanyDialog {
 
     observable.subscribe(
       (res: any) => {
+        this.sb.openSnackBarBottomCenter(res.message, 'Close');
         if (res.success) {
           this.updateCompany()
           this.dialogRef.close({
@@ -932,8 +936,6 @@ export class CompanyDialog {
             company: this.company
           });
           this.contactService.notifyCompany();
-        } else {
-          this.sb.openSnackBarBottomCenter(res.message, 'Close');
         }
       },
       (err) => {
@@ -974,9 +976,42 @@ export class CompanyDialog {
   }
 
   checkShow(name) {
-    if (!this.search) return true;
-    if (name.toUpperCase().search(this.search.toUpperCase()) == -1)
-      return false;
-    else return true;
+    if (!this.form.value.search) return true;
+    return (name.toUpperCase().search(this.form.value.search.toUpperCase()) >= 0)
+  }
+
+  open(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'dialog001'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    }
+    else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    }
+    else {
+      return `with: ${reason}`;
+    }
+  }
+
+  deleteItem(event) {
+    console.log('deleteItem', this.company)
+    this.contactService
+      .deleteCompany([this.company.id])
+      .subscribe((res: any) => {
+        this.sb.openSnackBarBottomCenter(res.message, 'Close');
+        if (res.success) {
+          this.dialogRef.close({
+            state: 'deleted',
+            message: res.message,
+          });
+        }
+      })
   }
 }
