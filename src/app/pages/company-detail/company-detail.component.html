@@ -27,9 +27,9 @@
             <div class="leftItem2 leftItemBorderBottom">
                 <span class="selectLabel">Status</span><br>
                 <mat-form-field class="statusSelect greenSelect" [style.width.px]="75">
-                    <mat-select [(value)]="organization.status">
+                    <mat-select [(value)]="organization.status" (selectionChange)="companyStatusChanged($event.value)">
                         <mat-option value="Active">Active</mat-option>
-                        <mat-option value="Inactive">Inactive</mat-option>
+                        <mat-option value="In Active">Inactive</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
@@ -96,7 +96,7 @@
             [tasks]="company.tasks"
             [user_files]="company.files"
             (addTaskClicked)="openTaskDialog($event)" 
-            (addAppointClicked)="editAppointClicked($event)"
+            (addAppointClicked)="addAppointClicked($event)"
             (appointStateChanged)="appointStateChanged($event)"
             (taskStateChanged)="taskStateChanged($event)">
         </app-widget>

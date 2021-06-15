@@ -161,11 +161,6 @@ export class AppointDialog {
   }
 
   submitForm() : void {
-    // console.log('appointment:', this.appointment)
-    // this.dialogRef.close({
-    //   action: 'update',
-    //   appointment: this.appointment
-    // })
     console.log('submit', this.form.value);
     if (!this.form.valid) {
       return;
@@ -218,13 +213,12 @@ export class AppointDialog {
         this.contactService.createAppointment(payload)
 
     observable.subscribe(
-      (res: any) => {
+      (res: any) => {        
         if (res.success) {
           this.dialogRef.close({
             state: this.isEdit? 'updated' : 'created',
             message: res.message,
           });
-          this.contactService.notifyCompany();
         }
         else {
           this.sb.openSnackBarBottomCenter(res.message, 'Close');

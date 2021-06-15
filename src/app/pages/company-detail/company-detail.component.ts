@@ -86,13 +86,19 @@ export class CompanyDetailComponent implements OnInit {
       },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog sent: ${result}`);
+    dialogRef.afterClosed().subscribe((res) => {
+      console.log(`Dialog sent: ${res}`);
+      if (res) {
+        this.sb.openSnackBarBottomCenter(res.message, 'Close');
+        setTimeout(() => this.refreshCompany(), 50)
+      }
     });
   }
 
-  editAppointClicked(appoint) {
-    this.openAppointDialog(true, appoint)
+  addAppointClicked(appoint) {
+    console.log('addAppointClicked', appoint)
+    const isEdit: boolean = (appoint !== undefined)
+    this.openAppointDialog(isEdit, appoint)
   }
 
   appointStateChanged({appointment, checked}) {
@@ -171,5 +177,18 @@ export class CompanyDetailComponent implements OnInit {
       this.contactService.companyData = res.data;
       openCreateCompanyDialog();
     });
+  }
+
+  companyStatusChanged(value) {
+    console.log('companyStatusChanged', value)
+    const payload = {
+      id: this.organization.id,
+      status_id: (value === 'Active') ? 1 : 2
+    }
+    this.contactService
+      .updateCompanyState(this.organization.id, payload)
+      .subscribe((res: any) => {
+        this.sb.openSnackBarBottomCenter(res.message, 'Close');
+      })
   }
 }

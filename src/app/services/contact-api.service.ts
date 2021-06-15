@@ -96,14 +96,19 @@ export class ContactApiService {
     }
   }
 
+  updateCompanyState(id, data): Observable<any> {
+    const API_URL = `${this.baseURL + environment.company_update_state}/${id}`
+    return this.httpClient.put(API_URL, data)
+  }
+
   createAppointment(appoint): Observable<any> {
     const API_URL = `${this.baseURL + environment.company_create_appointment}`
     return this.httpClient.post(API_URL, appoint)
   }
 
   updateAppointment(id, appoint): Observable<any> {
-    const API_URL = `${this.baseURL + environment.company_update_appointment}`
-    return this.httpClient.post(API_URL, appoint)
+    const API_URL = `${this.baseURL + environment.company_update_appointment}/${id}`
+    return this.httpClient.put(API_URL, appoint)
   }
 
   updateAppointmentState(id: number, data) {
