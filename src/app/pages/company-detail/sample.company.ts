@@ -244,8 +244,8 @@ export default {
             "status": "Active",
             "created_by": "satham hussain",
             "updated_by": "satham hussain",
-            "created_at": "2021-06-08T07:39:00.000000Z",
-            "updated_at": "2021-06-08T07:39:00.000000Z",
+            "created_at": "2021-06-08T10:39:00.000000Z",
+            "updated_at": "2021-06-08T10:39:00.000000Z",
             "attachement": [],
             "activity_created_by": "satham hussain",
             "can_edit": 1,
@@ -269,7 +269,7 @@ export default {
             "attachement": [],
             "activity_created_by": "satham hussain",
             "can_edit": 1,
-            "can_delete": 1,
+            "can_delete": 0,
             "associate_names": [
                 "Honey Message",
                 "Honey"

@@ -115,6 +115,11 @@ export class ContactApiService {
     return this.httpClient.put(API_URL, data)
   }
 
+  deleteActivity(menu, data) {
+    const API_URL = `${this.baseURL}activity/${menu}?_method=DELETE`
+    return this.httpClient.post(API_URL, data)
+  }
+
   /* Helper Functions */
   getCountries() {
     if (this.contactData) {

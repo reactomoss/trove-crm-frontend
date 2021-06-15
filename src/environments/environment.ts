@@ -45,6 +45,7 @@ export const environment = {
   company_create_appointment: 'organizations/appointment',
   company_update_appointment: 'organizations/appointment',
   company_appointment_state: 'organizations/task-status',
+  company_delete_activity: 'activity',
   contacts: 'contacts',
   contacts_index: 'contacts/index',
   contacts_delete: 'contacts',

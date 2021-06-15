@@ -39,6 +39,12 @@
   height: 24px;
 }
 
+.editDiv {
+  min-width: 180px;
+  display: flex;
+  justify-content: space-between;
+}
+
 .centerContent .centerItem {
   padding: 10px 0 15px;
   border-bottom: 1px solid #E4E9EF;

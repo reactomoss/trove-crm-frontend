@@ -40,15 +40,28 @@ export class CompanyDetailComponent implements OnInit {
     // else {
     //   this.setCompany(data)
     // }
+    this.setCompany(sample)
   }
 
   ngOnInit(): void {
+    this.contactService.companyObserver.subscribe(() => this.update());
     this.organization = this.company.organization;
   }
 
   setCompany(data: any) {
     this.company = data;
     this.organization = this.company.organization;
+  }
+
+  update() {
+    this.contactService
+      .getCompanyDetial(this.organization.id)
+      .subscribe((res: any) => {
+        console.log('refresh', res);
+        if (res.success) {
+          this.setCompany(res.data)
+        }
+      });
   }
 
   goToList() {
@@ -95,7 +108,7 @@ export class CompanyDetailComponent implements OnInit {
       console.log(`Dialog sent: ${res}`);
       if (res) {
         this.sb.openSnackBarBottomCenter(res.message, 'Close');
-        setTimeout(() => this.refreshCompany(), 50)
+        this.contactService.notifyCompany()
       }
     });
   }
@@ -134,17 +147,6 @@ export class CompanyDetailComponent implements OnInit {
         console.log('appointStateChanged', res);
         if (res.success) {
           
-        }
-      });
-  }
-
-  refreshCompany() {
-    this.contactService
-      .getCompanyDetial(this.organization.id)
-      .subscribe((res: any) => {
-        console.log('refresh', res);
-        if (res.success) {
-          this.setCompany(res.data)
         }
       });
   }

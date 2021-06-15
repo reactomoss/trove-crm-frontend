@@ -85,7 +85,10 @@
 
         <div class="centerPart" fxFlex="50">
             <app-text-editor></app-text-editor>
-            <app-company-activitylist></app-company-activitylist>
+            <app-company-activitylist
+                [organization]="organization"
+                [activities]="company.activity">
+            </app-company-activitylist>
         </div>
 
         <div fxFlex="28">
