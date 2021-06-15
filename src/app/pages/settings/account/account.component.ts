@@ -91,10 +91,17 @@ export class AccountComponent implements OnInit, AfterViewInit {
 
   updatePreference() {
     const data = this.accountForm.value;
+    console.log('updatePreference', data)
     const subs_query_param = this.settingsApiService
       .updatePreference(data)
       .subscribe((res: any) => {
         this.triggerSnackBar(res.message, 'Close');
+
+        const dateformat = this.dateFormatsData.find(it => it.id == data.date_format)
+        const timeformat = this.timeFormatsData.find(it => it.id == data.time_format)
+        this.settingsApiService.setDateFormat(dateformat.dateformat)
+        this.settingsApiService.setTimeFormat(timeformat.timeformat)
+        console.log('dateformat', dateformat, timeformat);
       },
       (errorResponse: HttpErrorResponse) => {
         const messages = extractErrorMessagesFromErrorResponse(errorResponse);

@@ -69,6 +69,14 @@ export class ContactApiService {
     return this.httpClient.post(`${this.baseURL + environment.company}`, data)
   }
 
+  updateCompany(companyId, data: any): Observable<any> {
+    return this.httpClient.put(`${this.baseURL + environment.company}/${companyId}`, data)
+  }
+
+  getCompanyDetial(companyId): Observable<any> {
+    return this.httpClient.get(`${this.baseURL + environment.company_detail}/${companyId}`)
+  }
+
   getCompanyList(data): Observable<any> {
     const API_URL = `${this.baseURL + environment.company_index}`
     return this.httpClient.post(API_URL, data)
@@ -79,13 +87,32 @@ export class ContactApiService {
       const data = { ids: companyIds }
       const API_URL = `${this.baseURL + environment.company_delete_multiple}`
       return this.httpClient.post(API_URL, data)
-    } else {
+    }
+    else {
       const companyId = companyIds[0]
-      const API_URL = `${
-        this.baseURL + environment.company_delete
-      }/${companyId}`
+      const API_URL = `${this.baseURL + environment.company_delete}/${companyId}`
       return this.httpClient.delete(API_URL)
     }
+  }
+
+  updateCompanyState(id, data): Observable<any> {
+    const API_URL = `${this.baseURL + environment.company_update_state}/${id}`
+    return this.httpClient.put(API_URL, data)
+  }
+
+  createAppointment(appoint): Observable<any> {
+    const API_URL = `${this.baseURL + environment.company_create_appointment}`
+    return this.httpClient.post(API_URL, appoint)
+  }
+
+  updateAppointment(id, appoint): Observable<any> {
+    const API_URL = `${this.baseURL + environment.company_update_appointment}/${id}`
+    return this.httpClient.put(API_URL, appoint)
+  }
+
+  updateAppointmentState(id: number, data) {
+    const API_URL = `${this.baseURL + environment.company_appointment_state}/${id}`
+    return this.httpClient.put(API_URL, data)
   }
 
   /* Helper Functions */

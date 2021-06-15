@@ -1,7 +1,9 @@
+<form [formGroup]="form" (ngSubmit)="submitForm()" novalidate>
 <h1 mat-dialog-title>{{isEdit ? 'Edit' : 'New'}} Appointment</h1>
 <div mat-dialog-content>
     <div class="row">
         <div class="col-sm-12 col-md-6">
+<<<<<<< HEAD
             <span>Title</span>
             <mat-form-field appearance="outline" class="formControl noLabelForm">
                 <input matInput [(ngModel)]="appointment.title">
@@ -11,14 +13,37 @@
             <span>Where?</span>
             <mat-form-field appearance="outline" class="formControl noLabelForm">
                 <input matInput [(ngModel)]="appointment.where">
+=======
+            <span class="required">Title</span>
+            <mat-form-field appearance="outline" class="formControl noLabelForm">
+                <input matInput formControlName="title" required>
+                <mat-hint class="mat-error" *ngIf="errors?.title">{{errors.title}}</mat-hint>
+                <mat-error *ngIf="hasValidationError('title')">{{getValidationMessage('title')}}</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <span class="required">Where?</span>
+            <mat-form-field appearance="outline" class="formControl noLabelForm">
+                <input matInput formControlName="location" required>
+                <mat-hint class="mat-error" *ngIf="errors?.location">{{errors.location}}</mat-hint>
+                <mat-error *ngIf="hasValidationError('location')">{{getValidationMessage('location')}}</mat-error>
+>>>>>>> ebbd394b6c201ed412f6621fe7cb540737657543
             </mat-form-field>
         </div>
     </div>
 
     <div>
+<<<<<<< HEAD
         <span>Description</span>
         <mat-form-field appearance="outline" class="formControl noLabelForm">
             <textarea matInput [(ngModel)]="appointment.description"></textarea>
+=======
+        <span class="required">Description</span>
+        <mat-form-field appearance="outline" class="formControl noLabelForm">
+            <textarea matInput formControlName="description" required></textarea>
+            <mat-hint class="mat-error" *ngIf="errors?.description">{{errors.description}}</mat-hint>
+            <mat-error *ngIf="hasValidationError('description')">{{getValidationMessage('description')}}</mat-error>
+>>>>>>> ebbd394b6c201ed412f6621fe7cb540737657543
         </mat-form-field>
     </div>
 
@@ -26,11 +51,21 @@
         <div class="col-sm-12 col-md-6">
             <div class="row">
                 <div class="col-sm-12">
+<<<<<<< HEAD
                     <span>Start Date</span>
                 </div>
                 <div class="col-sm-12 col-md-6">
                     <mat-form-field appearance="outline" class="formControl noLabelForm datePicker">
                         <input matInput [matDatepicker]="startPicker" readonly [(ngModel)]="appointment.start_date">
+=======
+                    <span class="required">Start Date</span>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <mat-form-field appearance="outline" class="formControl noLabelForm datePicker">
+                        <input matInput [matDatepicker]="startPicker" readonly formControlName="start_date" required>
+                        <mat-hint class="mat-error" *ngIf="errors?.start_date">{{errors.start_date}}</mat-hint>
+                        <mat-error *ngIf="hasValidationError('start_date')">{{getValidationMessage('start_date')}}</mat-error>
+>>>>>>> ebbd394b6c201ed412f6621fe7cb540737657543
                         <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
                         <mat-datepicker #startPicker></mat-datepicker>
                     </mat-form-field>
@@ -38,7 +73,11 @@
                 <div class="col-sm-12 col-md-6">
                     <mat-form-field appearance="outline" class="formControl timePickerBox iconColorPath">
                         <div class="d-flex">
+<<<<<<< HEAD
                             <input matInput [ngxTimepicker]="startTimepicker" [disableClick]="true" readonly [(ngModel)]="appointment.start_time">
+=======
+                            <input matInput [ngxTimepicker]="startTimepicker" [disableClick]="true" readonly formControlName="start_time" required>
+>>>>>>> ebbd394b6c201ed412f6621fe7cb540737657543
                             <ngx-material-timepicker-toggle [for]="startTimepicker"></ngx-material-timepicker-toggle>
                             <ngx-material-timepicker #startTimepicker></ngx-material-timepicker>
                         </div>
@@ -49,11 +88,21 @@
         <div class="col-sm-12 col-md-6">
             <div class="row">
                 <div class="col-sm-12">
+<<<<<<< HEAD
                     <span>End Date</span>
                 </div>
                 <div class="col-sm-12 col-md-6">
                     <mat-form-field appearance="outline" class="formControl noLabelForm datePicker">
                         <input matInput [matDatepicker]="endPicker" readonly [(ngModel)]="appointment.end_date">
+=======
+                    <span class="required">End Date</span>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <mat-form-field appearance="outline" class="formControl noLabelForm datePicker">
+                        <input matInput [matDatepicker]="endPicker" readonly formControlName="end_date" required>
+                        <mat-hint class="mat-error" *ngIf="errors?.end_date">{{errors.end_date}}</mat-hint>
+                        <mat-error *ngIf="hasValidationError('end_date')">{{getValidationMessage('end_date')}}</mat-error>
+>>>>>>> ebbd394b6c201ed412f6621fe7cb540737657543
                         <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
                         <mat-datepicker #endPicker></mat-datepicker>
                     </mat-form-field>
@@ -61,7 +110,11 @@
                 <div class="col-sm-12 col-md-6">
                     <mat-form-field appearance="outline" class="formControl timePickerBox iconColorPath">
                         <div class="d-flex">
+<<<<<<< HEAD
                             <input matInput [ngxTimepicker]="endTimepicker" [disableClick]="true" readonly [(ngModel)]="appointment.end_time">
+=======
+                            <input matInput [ngxTimepicker]="endTimepicker" [disableClick]="true" readonly formControlName="end_time" required>
+>>>>>>> ebbd394b6c201ed412f6621fe7cb540737657543
                             <ngx-material-timepicker-toggle [for]="endTimepicker"></ngx-material-timepicker-toggle>
                             <ngx-material-timepicker #endTimepicker></ngx-material-timepicker>
                         </div>
@@ -73,6 +126,7 @@
 
     <div class="row">
         <div class="col-sm-12 col-md-6">
+<<<<<<< HEAD
             <span>Associated Contact</span>
             <div>
                 <div *ngFor="let e of selected" class="optionDiv selectedDiv" [style.width.px]="320"
@@ -90,18 +144,44 @@
                     <input type="text" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
                     <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
                         (optionSelected)="onSelectionChange($event)">
+=======
+            <span class="required">Associate With</span>
+            <div>
+                <div *ngFor="let e of selected" class="optionDiv selectedDiv" [style.width.px]="320" style="position: relative">
+                    <i class="material-icons">{{e.icon}}</i>
+                    <div class="ml-3">
+                        <p class="span1">{{e.name}}</p>
+                        <p class="span2">{{e.desc}}</p>
+                    </div>
+                    <mat-icon *ngIf="!isMainOwner(e)"
+                      style="position: absolute; right: 10px" class="cursorPointer" (click)="deleteSelected(e)">
+                        close
+                    </mat-icon>
+                </div>
+                <mat-form-field class="halfControl noLabelForm" appearance="outline" *ngIf="showAuto" [style.width.px]="320">
+                    <input type="text" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
+                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="onSelectionChange($event)">
+>>>>>>> ebbd394b6c201ed412f6621fe7cb540737657543
                         <div class="optionBtnContainer">
                             <button mat-button class={{activeClass(1)}} (click)="setActive(1)">Person</button>
                             <button mat-button class={{activeClass(2)}} (click)="setActive(2)">Company</button>
                             <button mat-button class={{activeClass(3)}} (click)="setActive(3)">Lead</button>
                         </div>
+<<<<<<< HEAD
                         <mat-option *ngFor="let option of filteredOptions | async" [value]="option"
                             (click)="setEmpty()">
+=======
+                        <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (click)="setEmpty()">
+>>>>>>> ebbd394b6c201ed412f6621fe7cb540737657543
                             <div class="optionDiv">
                                 <i class="material-icons">{{option.icon}}</i>
                                 <div class="ml-3">
                                     <p class="span1">{{option.name}}</p>
+<<<<<<< HEAD
                                     <p class="span2">{{option.description}}</p>
+=======
+                                    <p class="span2">{{option.desc}}</p>
+>>>>>>> ebbd394b6c201ed412f6621fe7cb540737657543
                                 </div>
                             </div>
                         </mat-option>
@@ -111,10 +191,21 @@
         </div>
         <div class="col-sm-12 col-md-6">
             <div class="row">
+<<<<<<< HEAD
                 <div class="col-sm-12"> <span>Remainder On</span></div>
                 <div class="col-sm-12 col-md-6">
                     <mat-form-field appearance="outline" class="formControl noLabelForm datePicker">
                         <input matInput [matDatepicker]="assPicker" readonly [(ngModel)]="appointment.reminder_date">
+=======
+                <div class="col-sm-12">
+                    <span class="required">Remainder On</span>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <mat-form-field appearance="outline" class="formControl noLabelForm datePicker">
+                        <input matInput [matDatepicker]="assPicker" readonly formControlName="reminder_date" required>
+                        <mat-hint class="mat-error" *ngIf="errors?.reminder_date">{{errors.reminder_date}}</mat-hint>
+                        <mat-error *ngIf="hasValidationError('reminder_date')">{{getValidationMessage('reminder_date')}}</mat-error>
+>>>>>>> ebbd394b6c201ed412f6621fe7cb540737657543
                         <mat-datepicker-toggle matSuffix [for]="assPicker"></mat-datepicker-toggle>
                         <mat-datepicker #assPicker></mat-datepicker>
                     </mat-form-field>
@@ -122,7 +213,11 @@
                 <div class="col-sm-12 col-md-6">
                     <mat-form-field appearance="outline" class="formControl timePickerBox iconColorPath">
                         <div class="d-flex">
+<<<<<<< HEAD
                             <input matInput [ngxTimepicker]="reTimepicker" [disableClick]="true" readonly [(ngModel)]="appointment.reminder_time">
+=======
+                            <input matInput [ngxTimepicker]="reTimepicker" [disableClick]="true" readonly formControlName="reminder_time" required>
+>>>>>>> ebbd394b6c201ed412f6621fe7cb540737657543
                             <ngx-material-timepicker-toggle [for]="reTimepicker"></ngx-material-timepicker-toggle>
                             <ngx-material-timepicker #reTimepicker></ngx-material-timepicker>
                         </div>
@@ -137,7 +232,14 @@
     </button>
 </div>
 <div mat-dialog-actions class="justify-content-start">
+<<<<<<< HEAD
   <button *ngIf="isEdit" mat-button class="deleteBtn" (click)="onDelete()">Delete</button>
     <button mat-button (click)="onNoClick()" class="cancelBtn ml-auto">Cancel</button>
     <button mat-button class="createBtn ml-3" (click)="onConfirm()">{{isEdit ? 'Update' : 'Create'}}</button>
+=======
+    <button *ngIf="isEdit" mat-button class="deleteBtn" (click)="onDelete()">Delete</button>
+    <button mat-button type="button" (click)="onNoClick()" class="cancelBtn ml-auto">Cancel</button>
+    <button mat-button type="submit" class="createBtn ml-3">{{isEdit ? 'Update' : 'Create'}}</button>
+>>>>>>> ebbd394b6c201ed412f6621fe7cb540737657543
 </div>
+</form>

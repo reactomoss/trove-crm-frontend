@@ -36,6 +36,22 @@ export class SettingsApiService {
     );
   }
 
+  getDateFormat() {
+    return localStorage.getItem('dateformat');
+  }
+
+  setDateFormat(dateformat) {
+    localStorage.setItem('dateformat', dateformat);
+  }
+
+  getTimeFormat() {
+    return localStorage.getItem('timeformat');
+  }
+
+  setTimeFormat(timeformat) {
+    localStorage.setItem('timeformat', timeformat);
+  }
+
   preferenceMe(): Observable<any> {
     let API_URL = `${this.baseURL + environment.preference}`;
     return this.httpClient.get(API_URL);

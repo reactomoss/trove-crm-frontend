@@ -38,8 +38,13 @@ export const environment = {
   /*======= Company ====================*/
   company: 'organizations',
   company_index: 'organizations/index',
+  company_detail: 'organizations/details',
   company_delete: 'organizations',
   company_delete_multiple: 'organizations?_method=DELETE',
+  company_update_state: 'organizations/status',
+  company_create_appointment: 'organizations/appointment',
+  company_update_appointment: 'organizations/appointment',
+  company_appointment_state: 'organizations/task-status',
   contacts: 'contacts',
   contacts_index: 'contacts/index',
   contacts_delete: 'contacts',

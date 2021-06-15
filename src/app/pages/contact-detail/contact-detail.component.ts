@@ -1,6 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+<<<<<<< HEAD
+=======
+import {FormControl} from '@angular/forms';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
+import {
+  MAT_MOMENT_DATE_FORMATS,
+  MomentDateAdapter,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+} from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+>>>>>>> ebbd394b6c201ed412f6621fe7cb540737657543
 import { AppointDialog } from '../detail/appoint-dialog/appoint-dialog';
 import { TaskDialog } from '../detail/task-dialog/task-dialog';
 import { ContactDialog } from 'src/app/shared/header/header.component';

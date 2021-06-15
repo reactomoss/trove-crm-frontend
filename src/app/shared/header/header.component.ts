@@ -1,6 +1,7 @@
 import { TokenService } from './../../services/token.service';
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
+import { NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { AccountApiService } from '../../services/account-api.service';
 import { ContactApiService } from '../../services/contact-api.service';
 import {
@@ -213,7 +214,7 @@ export class HeaderComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe((result) => {
         if (result) {
-          this.sb.openSnackBarBottomCenter(result, 'Close')
+          
         }
       })
     }
@@ -815,16 +816,18 @@ export class CompanyDialog {
 
   form: FormGroup;
   showMandatory: boolean = false;
-  search: string = '';
 
   addressSelect = false;
   isEdit: boolean = false;
+  company = null;
   countries = [];
   emailOwners = [];
   dialCodes = []
   errors = null
+  closeResult = '';
 
   constructor(
+    private modalService: NgbModal,
     private contactService: ContactApiService,
     private sb: SnackBarService,
     public fb: FormBuilder,
@@ -832,6 +835,7 @@ export class CompanyDialog {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.isEdit = this.data?.isEdit;
+    this.company = this.data?.company
     this.countries = this.contactService.getCountries()
     this.emailOwners = this.contactService.getEmailOwners()
     this.dialCodes = this.contactService.getDialCodes()
@@ -844,10 +848,10 @@ export class CompanyDialog {
 
   reactiveForm() {
     this.form = this.fb.group({
-      organization_name: ['', [Validators.required]],
-      mobile_code: ['', [Validators.required]],
+      organization_name: [this.company?.name || '', [Validators.required]],
+      mobile_code: [this.company?.country_code || '', [Validators.required]],
       mobile_number: [
-        '',
+        this.company?.mobile || '',
         [
           Validators.required,
           Validators.minLength(10),
@@ -856,22 +860,23 @@ export class CompanyDialog {
         ],
       ],
       work_phone: [
-        '',
+        this.company?.work_phone || '',
         [
           Validators.minLength(10),
           Validators.maxLength(10),
           Validators.pattern('^[0-9]*$'),
         ],
       ],
-      email: ['', [Validators.required, Validators.email]],
-      address: [''],
-      city: [''],
-      postal_code: [''],
-      state: [''],
-      country: [''],
-      owner_id: ['', [Validators.required]],
-      skype_id: [''],
-      description: [''],
+      email: [this.company?.email || '', [Validators.required, Validators.email]],
+      address: [this.company?.address || ''],
+      city: [this.company?.city || ''],
+      postal_code: [this.company?.postal_code || ''],
+      state: [this.company?.state || ''],
+      country: [this.company?.country || ''],
+      owner_id: [this.company?.owner_id || '', [Validators.required]],
+      skype_id: [this.company?.skype_id || ''],
+      description: [this.company?.description || ''],
+      search: ['']
     });
   }
 
@@ -907,26 +912,34 @@ export class CompanyDialog {
   }
 
   submitForm(): void {
-    console.log(this.form.value);
+    console.log('submit', this.form.value);
     if (!this.form.valid) {
       return;
     }
 
-    const post_data = {
+    const payload = {
       ...this.form.value,
       mobile: {
         code: this.form.value.mobile_code,
         number: this.form.value.mobile_number,
       },
     };
-    this.contactService.createCompany(post_data).subscribe(
+
+    const observable = this.isEdit ? 
+        this.contactService.updateCompany(this.company.id, payload) :
+        this.contactService.createCompany(payload)
+
+    observable.subscribe(
       (res: any) => {
-        console.log('company created', res);
+        this.sb.openSnackBarBottomCenter(res.message, 'Close');
         if (res.success) {
-          this.dialogRef.close(res.message);
+          this.updateCompany()
+          this.dialogRef.close({
+            state: this.isEdit? 'updated' : 'created',
+            message: res.message,
+            company: this.company
+          });
           this.contactService.notifyCompany();
-        } else {
-          this.sb.openSnackBarBottomCenter(res.message, 'Close');
         }
       },
       (err) => {
@@ -938,10 +951,28 @@ export class CompanyDialog {
         }
         console.log('this.errors', this.errors);
         const messages = Object.values(this.errors).join('\r\n');
-        console.log(messages);
         this.sb.openSnackBarTopCenterAsDuration(messages, 'Close', 4000);
       }
     );
+  }
+
+  updateCompany() {
+    if (this.company) {
+      const fb = this.form.value;
+      this.company.name = fb.organization_name;
+      this.company.country_code = fb.mobile_code;
+      this.company.mobile = fb.mobile_number;
+      this.company.work_phone = fb.work_phone;
+      this.company.email = fb.email;
+      this.company.address = fb.address;
+      this.company.city = fb.city;
+      this.company.postal_code = fb.postal_code;
+      this.company.state = fb.state;
+      this.company.country = fb.country;
+      this.company.owner_id = fb.owner_id;
+      this.company.skype_id = fb.skype_id;
+      this.company.description = fb.description;
+    }
   }
 
   checkMandatory(e) {
@@ -949,9 +980,42 @@ export class CompanyDialog {
   }
 
   checkShow(name) {
-    if (!this.search) return true;
-    if (name.toUpperCase().search(this.search.toUpperCase()) == -1)
-      return false;
-    else return true;
+    if (!this.form.value.search) return true;
+    return (name.toUpperCase().search(this.form.value.search.toUpperCase()) >= 0)
+  }
+
+  open(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'dialog001'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    }
+    else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    }
+    else {
+      return `with: ${reason}`;
+    }
+  }
+
+  deleteItem(event) {
+    console.log('deleteItem', this.company)
+    this.contactService
+      .deleteCompany([this.company.id])
+      .subscribe((res: any) => {
+        this.sb.openSnackBarBottomCenter(res.message, 'Close');
+        if (res.success) {
+          this.dialogRef.close({
+            state: 'deleted',
+            message: res.message,
+          });
+        }
+      })
   }
 }

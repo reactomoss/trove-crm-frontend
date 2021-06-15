@@ -8,6 +8,8 @@ import { ContactApiService } from '../../services/contact-api.service';
 import { CompanyFilters, CompanyOwner } from './filter/filter.component';
 import { DateService } from '../../service/date.service'
 import * as moment from 'moment';
+import { SettingsApiService } from 'src/app/services/settings-api.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 export interface item {
   id: number;
@@ -49,45 +51,31 @@ export class CompanyComponent implements OnInit {
   listShow: boolean = false
   closeResult = '';
 
+  showDetails = false
+  companyDetails = null
+
   constructor(
     private modalService: NgbModal,
-    public contactService: ContactApiService,
+    private settingsApiService: SettingsApiService,
+    private contactService: ContactApiService,
     public dialog: MatDialog,
     private router: Router,
     private dateService: DateService,
     private sb: SnackBarService) {
+      const m = moment('2021-07-29 15:20:40')
+      console.log('test', m.format('DD MMM YYYY HH:mm'))
   }
 
   triggerSnackBar(message:string, action:string) {
     this.sb.openSnackBarBottomCenter(message, action);
   }
 
-  /*Modal dialog*/
-  open(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'dialog001'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-  }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-    return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
-  }
-  /*Modal dialog*/
-
   ngOnInit(): void {
     this.contactService.companyObserver.subscribe(() => this.update());
     this.showGrid()
   }
 
-  update() {
+  private update() {
     this.lastQuery = {}
     this.listShow ? this.showList() : this.showGrid()
   }
@@ -120,6 +108,7 @@ export class CompanyComponent implements OnInit {
         })
         this.items = this.items.concat(items)
         this.updateOwners()
+        this.getPreference()
       },
       err => {
         this.triggerSnackBar(err.error.message, 'Close')
@@ -144,6 +133,7 @@ export class CompanyComponent implements OnInit {
           })
         }
         this.updateOwners()
+        this.getPreference()
       },
       err => {
         this.triggerSnackBar(err.error.message, 'Close')
@@ -168,7 +158,24 @@ export class CompanyComponent implements OnInit {
   }
 
   clickCard(item) {
-    this.router.navigate(['/pages/company_detail'])
+    console.log('click', item)
+    this.contactService
+      .getCompanyDetial(item.id)
+      .subscribe((res: any) => {
+        console.log('refresh', res);
+        if (res.success) {
+          this.companyDetails = res.data
+          this.showDetails = true
+        }
+        else {
+          //TODO
+        }
+      });
+  }
+
+  onHideDetails() {
+    this.showDetails = false
+    this.companyDetails = null
   }
 
   clickContactPage() {
@@ -285,14 +292,13 @@ export class CompanyComponent implements OnInit {
 
     // Compare query
     if (!this.compareQuery(this.lastQuery, query)) {
-      this.lastQuery = query
-      this.items = []
-      if (this.listShow) this.fetchListView(query)
-      else this.fetchGridView(query)
+      this.lastQuery = query;
+      this.items = [];
+      this.listShow ? this.fetchListView(query) : this.fetchGridView(query)
     }
   }
 
-  compareQuery(object1, object2) {
+  private compareQuery(object1, object2) {
     const keys1 = Object.keys(object1);
     const keys2 = Object.keys(object2);
     if (keys1.length !== keys2.length) {
@@ -347,6 +353,45 @@ export class CompanyComponent implements OnInit {
     })
     this.selectedItems = []
   }
+
+  private getPreference() {
+    const item = this.settingsApiService.getDateFormat()
+    if (!item || item === 'undefined') {
+      this.settingsApiService.preferenceMe().subscribe(
+        (res: any) => {
+          console.log('getPreference', res);
+          if (res.success) {
+            const dateformat = res.data.deteformats.find(it => it.id === res.data.preference.dateformat_id)
+            const timeformat = res.data.timeformats.find(it => it.id === res.data.preference.timeformat_id)
+            this.settingsApiService.setDateFormat(dateformat.dateformat)
+            this.settingsApiService.setTimeFormat(timeformat.timeformat)
+            console.log('dateformat', dateformat, timeformat);
+          }
+        },
+        (error: HttpErrorResponse) => {}
+      );
+    }
+  }
+
+  /*Modal dialog*/
+  open(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'dialog001'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+    return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
+  /*Modal dialog*/
 }
 
 @Component({
