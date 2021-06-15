@@ -8,6 +8,8 @@ import {SnackBarService} from 'src/app/shared/snack-bar.service'
 import * as moment from 'moment'
 import { ContactApiService } from 'src/app/services/contact-api.service';
 import sample from './sample.company'
+import { SettingsApiService } from 'src/app/services/settings-api.service';
+import { DateService } from 'src/app/service/date.service';
 
 @Component({
   selector: 'app-company-detail',
@@ -23,6 +25,8 @@ export class CompanyDetailComponent implements OnInit {
   status = 'active';
 
   constructor(
+    private dateService: DateService,
+    private settingsApiService: SettingsApiService,
     private contactService: ContactApiService,
     private sb: SnackBarService,
     private router: Router,
@@ -59,8 +63,10 @@ export class CompanyDetailComponent implements OnInit {
   }
 
   getCreatedDate() {
+    const dateFormat = this.settingsApiService.getDateFormat()
+    const format = this.dateService.getDateFormat(dateFormat)
     const date = moment(this.organization.created_at);
-    return date.format('DD MMM YYYY');
+    return date.format(format);
   }
 
   openTaskDialog(isEdit: boolean) {

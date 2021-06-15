@@ -2,6 +2,7 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import * as moment from 'moment';
 import { DateService } from 'src/app/service/date.service';
+import { SettingsApiService } from 'src/app/services/settings-api.service';
 
 export class File {
   constructor(public name: string, public url: string, public description: string) {
@@ -27,7 +28,8 @@ export class WidgetComponent implements OnInit {
   files: File[] = []
 
   constructor(
-    private dateService: DateService
+    private dateService: DateService,
+    private settingsApiService: SettingsApiService,
   ) { }
 
   ngOnInit(): void {
@@ -125,13 +127,16 @@ export class WidgetComponent implements OnInit {
       dateTime = moment(appoint.reminder_date_time)
     }
 
+    const timeformat = this.getTimeFormat()
+    const dateformat = this.getDateFormat()
+
     if (moment().isSame(dateTime, 'date')) {
-      return `Today at ${dateTime.format('hh:mm A')}`
+      return `Today at ${dateTime.format(timeformat)}`
     }
     if (moment().add(1, 'days').isSame(dateTime, 'd')) {
-      return `Tomorrow at ${dateTime.format('hh:mm A')}`
+      return `Tomorrow at ${dateTime.format(timeformat)}`
     }
-    return moment(appoint.start_date).format('YYYY-MM-DD')
+    return moment(appoint.start_date).format(dateformat)
   }
 
   isPastDateTask(task) {
@@ -145,13 +150,26 @@ export class WidgetComponent implements OnInit {
       dateTime = moment(appoint.reminder_date_time)
     }
 
+    const timeformat = this.getTimeFormat()
+    const dateformat = this.getDateFormat()
+
     if (moment().isSame(dateTime, 'date')) {
-      return `Today at ${dateTime.format('hh:mm A')}`
+      return `Today at ${dateTime.format(timeformat)}`
     }
     if (moment().add(1, 'days').isSame(dateTime, 'd')) {
-      return `Tomorrow at ${dateTime.format('hh:mm A')}`
+      return `Tomorrow at ${dateTime.format(timeformat)}`
     }
-    return moment(appoint.due_date_time).format('YYYY-MM-DD')
+    return moment(appoint.due_date_time).format(dateformat)
+  }
+
+  private getTimeFormat() {
+    const timeformat = this.settingsApiService.getTimeFormat()
+    return this.dateService.getTimeFormat(timeformat) 
+  }
+
+  private getDateFormat() {
+    const dateformat = this.settingsApiService.getDateFormat()
+    return this.dateService.getDateFormat(dateformat)
   }
 
   getLeadsTotalValue() {

@@ -121,4 +121,28 @@ export class DateService {
   getEventDate(day: moment.Moment, time: string) {
     return this.getEventTime(day, time).toDate()
   }
+
+  private dateFormats = [
+    {key: 'd-m-Y', value: 'DD-MM-YYYY'},
+    {key: 'm-d-Y', value: 'MM-DD-YYYY'},
+    {key: 'Y-m-d', value: 'YYYY-MM-DD'},
+    {key: 'Y-d-m', value: 'YYYY-DD-MM'},
+    {key: 'd M Y', value: 'DD MMM YYYY'},
+    {key: 'M d Y', value: 'MMM DD YYYY'},
+    {key: 'd F Y', value: 'DD MMM YYYY'},
+    {key: 'F d Y', value: 'MMM DD YYYY'},
+    {key: 'm\/d\/Y', value: 'MM/DD/YYYY'},
+  ]
+  getDateFormat(dateformat: string) {
+    const format = this.dateFormats.find(it => it.key == dateformat)
+    if (format) return format.value
+    return 'DD MMM YYYY'
+  }
+
+  getTimeFormat(timeformat: string) {
+    if (timeformat === '24-hours') {
+      return 'HH:mm'
+    }
+    return 'hh:mm A'
+  }
 }
