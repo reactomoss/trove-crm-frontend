@@ -55,7 +55,10 @@ export const environment = {
   leadFilter: 'leads/filter',
   /*======= Activity ====================*/
   verifyActivity: 'verify-acitivity',
-  activity: 'activity'
+  activity: 'activity',
+  /*======== Dashboard ================*/
+  dashboard:'dashboard',
+  taskstatus:'task/task-status',
 };
 
 /*
