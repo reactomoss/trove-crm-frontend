@@ -74,10 +74,15 @@ export class CompanyDetailComponent implements OnInit {
     return date.format(format);
   }
 
-  openTaskDialog(isEdit: boolean) {
+  openTaskDialog(isEdit: boolean, task?: any) {
     const dialogRef = this.dialog.open(TaskDialog, {
       width: '405px',
-      data: { isEdit: isEdit },
+      data: {
+        isEdit: isEdit,
+        task: task,
+        associate_members: this.company.associate_members,
+        task_owner: { id: this.organization.id, type: 'company'}
+      },
     });
 
     dialogRef.afterClosed().subscribe((result) => {

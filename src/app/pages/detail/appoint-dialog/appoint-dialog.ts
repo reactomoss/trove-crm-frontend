@@ -130,22 +130,13 @@ export class AppointDialog {
     });
   }
 
-  private getEventDate(day: moment.Moment, time: string) {
-    const date = day ? moment(day) : moment()
-    if (time) {
-      var tm = moment(time, ["h:mm A"])
-      date.add(tm.hours(), 'hours').add(tm.minutes(), 'minutes')
-    }
-    return date
-  }
-
   hasValidationError(key) {
     return this.form.controls[key].invalid && this.form.controls[key].errors;
   }
 
   getValidationMessage(key) {
     const control = this.form.controls[key];
-    if (control.hasError('required')) return 'This field is required2';
+    if (control.hasError('required')) return 'This field is required';
     if (control.hasError('email')) return 'Please enter a valid email address';
     if (control.hasError('pattern')) {
       if (control.errors.pattern.requiredPattern == '^[0-9]*$')
@@ -160,6 +151,16 @@ export class AppointDialog {
     return '';
   }
 
+
+  private getEventDate(day: moment.Moment, time: string) {
+    const date = day ? moment(day) : moment()
+    if (time) {
+      var tm = moment(time, ["h:mm A"])
+      date.add(tm.hours(), 'hours').add(tm.minutes(), 'minutes')
+    }
+    return date
+  }
+  
   submitForm() : void {
     console.log('submit', this.form.value);
     if (!this.form.valid) {

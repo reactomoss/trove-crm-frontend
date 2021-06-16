@@ -115,6 +115,16 @@ export class ContactApiService {
     return this.httpClient.put(API_URL, data)
   }
 
+  createTask(task): Observable<any> {
+    const API_URL = `${this.baseURL + environment.company_create_task}`
+    return this.httpClient.post(API_URL, task)
+  }
+
+  updateTask(id, task): Observable<any> {
+    const API_URL = `${this.baseURL + environment.company_update_task}/${id}`
+    return this.httpClient.put(API_URL, task)
+  }
+
   deleteActivity(menu, data) {
     const API_URL = `${this.baseURL}activity/${menu}?_method=DELETE`
     return this.httpClient.post(API_URL, data)

@@ -69,6 +69,11 @@ span {
     color: #253238;
 }
 
+.required:after {
+    content: " *";
+    color: red;
+}
+
 .dateDiv, .reminderDiv {
     display: flex;
     align-items: center;
@@ -119,4 +124,13 @@ span {
 .activeBtn {
     border-bottom: 2px solid #002868;
     border-radius: 0;
+}
+
+::ng-deep.mat-form-field-hint-wrapper {
+    display: block!important;
+}
+
+::ng-deep.mat-form-field-subscript-wrapper {
+    position: inherit!important;
+    padding: 0px!important;
 }
