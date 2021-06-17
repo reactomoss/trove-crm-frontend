@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -80,6 +81,7 @@ export class TaskDialog {
   constructor(
     private sb: SnackBarService,
     private contactService: ContactApiService,
+    private modalService: NgbModal, 
     public dialogRef: MatDialogRef<TaskDialog>,
     public fb: FormBuilder,
      @Inject(MAT_DIALOG_DATA) public data: any
@@ -202,14 +204,11 @@ export class TaskDialog {
 
     observable.subscribe(
       (res: any) => {
+        this.sb.openSnackBarBottomCenter(res.message, 'Close');
         if (res.success) {
           this.dialogRef.close({
             state: this.isEdit? 'updated' : 'created',
-            message: res.message,
           });
-        }
-        else {
-          this.sb.openSnackBarBottomCenter(res.message, 'Close');
         }
       },
       (err) => {
@@ -322,5 +321,36 @@ export class TaskDialog {
     const index = this.selected.indexOf(e)
     this.selected.splice(index, 1)
     this.selected.length == 0 && (this.showAuto = true)
+  }
+
+  private deleteTask() {
+    this.contactService
+      .deleteTask(this.task.id)
+      .subscribe((res: any) => {
+        console.log('deleteTask', res);
+        this.sb.openSnackBarBottomCenter(res.message, 'Close');
+        if (res.success) {
+          this.dialogRef.close({
+            state: 'deleted',
+            task: this.task
+          })
+        }
+      },
+      err => {
+        this.sb.openSnackBarBottomCenter(err.error.message, 'Close');
+      })
+  }
+
+  openModal(content) {
+    this.modalService
+      .open(content, { ariaLabelledBy: 'dialog001' })
+      .result.then(
+        (result) => {
+          result == 'confirm' && this.deleteTask()
+        },
+        (reason) => {
+          console.log(`Dismissed ${reason}`)
+        }
+      );
   }
 }

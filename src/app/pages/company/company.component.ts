@@ -166,7 +166,6 @@ export class CompanyComponent implements OnInit {
   }
 
   clickCard(item) {
-    console.log('click', item)
     this.contactService
       .getCompanyDetial(item.id)
       .subscribe((res: any) => {

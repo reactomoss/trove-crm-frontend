@@ -85,8 +85,12 @@ export class CompanyDetailComponent implements OnInit {
       },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog sent: ${result}`);
+    dialogRef.afterClosed().subscribe((res) => {
+      console.log('Dialog sent', res);
+      if (res) {
+        if (res.state == 'deleted') this.taskDeleted(res.task)
+        else this.contactService.notifyCompanyDetail()
+      }
     });
   }
 
@@ -119,7 +123,13 @@ export class CompanyDetailComponent implements OnInit {
   appointDeleted(appoint) {
     console.log('appointDeleted', appoint)
     const index = this.company.appointments.findIndex(it => it.id === appoint.id)
-    this.company.appointments.splice(index, 1)
+    index >= 0 && this.company.appointments.splice(index, 1)
+  }
+
+  taskDeleted(task) {
+    console.log('taskDeleted', task)
+    const index = this.company.tasks.findIndex(it => it.id === task.id)
+    index >= 0 && this.company.tasks.splice(index, 1)
   }
 
   appointStateChanged({appointment, checked}) {

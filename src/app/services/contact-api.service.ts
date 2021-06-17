@@ -133,6 +133,11 @@ export class ContactApiService {
     return this.httpClient.put(API_URL, task)
   }
 
+  deleteTask(id): Observable<any> {
+    const API_URL = `${this.baseURL + environment.task_delete}/${id}?_method=DELETE`
+    return this.httpClient.post(API_URL, {})
+  }
+
   deleteActivity(menu, data) {
     const API_URL = `${this.baseURL}activity/${menu}?_method=DELETE`
     return this.httpClient.post(API_URL, data)
