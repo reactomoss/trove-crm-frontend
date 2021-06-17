@@ -36,7 +36,7 @@ export class CompanyDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.contactService.companyObserver.subscribe(() => this.update());
+    this.contactService.companyDetailObserver.subscribe(() => this.update());
     this.organization = this.company.organization;
   }
 
@@ -102,10 +102,10 @@ export class CompanyDetailComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((res) => {
-      console.log(`Dialog sent: ${res}`);
+      console.log('Dialog sent', res);
       if (res) {
-        this.sb.openSnackBarBottomCenter(res.message, 'Close');
-        this.contactService.notifyCompany()
+        if (res.state == 'deleted') this.appointDeleted(res.appoint)
+        else this.contactService.notifyCompanyDetail()
       }
     });
   }
@@ -114,6 +114,12 @@ export class CompanyDetailComponent implements OnInit {
     console.log('addAppointClicked', appoint)
     const isEdit: boolean = (appoint !== undefined)
     this.openAppointDialog(isEdit, appoint)
+  }
+
+  appointDeleted(appoint) {
+    console.log('appointDeleted', appoint)
+    const index = this.company.appointments.findIndex(it => it.id === appoint.id)
+    this.company.appointments.splice(index, 1)
   }
 
   appointStateChanged({appointment, checked}) {

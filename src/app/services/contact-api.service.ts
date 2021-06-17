@@ -15,6 +15,9 @@ export class ContactApiService {
   private companySubject: ReplaySubject<any> = new ReplaySubject()
   companyObserver: Observable<any> = this.companySubject.asObservable()
 
+  private companyDetailSubject: ReplaySubject<any> = new ReplaySubject()
+  companyDetailObserver: Observable<any> = this.companyDetailSubject.asObservable()
+
   private contactSubject: ReplaySubject<any> = new ReplaySubject()
   contactObserver: Observable<any> = this.contactSubject.asObservable()
 
@@ -110,6 +113,11 @@ export class ContactApiService {
     return this.httpClient.put(API_URL, appoint)
   }
 
+  deleteAppointment(id): Observable<any> {
+    const API_URL = `${this.baseURL + environment.appointment_delete}/${id}?_method=DELETE`
+    return this.httpClient.post(API_URL, {})
+  }
+
   updateAppointmentState(id: number, data) {
     const API_URL = `${this.baseURL + environment.company_appointment_state}/${id}`
     return this.httpClient.put(API_URL, data)
@@ -181,6 +189,10 @@ export class ContactApiService {
 
   notifyCompany() {
     this.companySubject.next()
+  }
+
+  notifyCompanyDetail() {
+    this.companyDetailSubject.next()
   }
 
   notifyContact() {

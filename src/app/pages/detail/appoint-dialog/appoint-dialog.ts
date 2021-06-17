@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -67,22 +68,23 @@ export class AppointDialog {
   appoint_owner: AppointOwner = null
   appointment: Appointment = {
     id: null,
-    title: "Test",
-    location: "France",
-    description: "Test Appointment",
-    start_date: moment('2021-06-15'),
-    start_time: '09:00:00',
-    end_date: moment('2021-06-20'),
-    end_time: '22:20:00',
+    title: '',
+    location: '',
+    description: '',
+    start_date: null,
+    start_time: '',
+    end_date: null,
+    end_time: '',
     contact: null,
-    reminder_date: moment('2021-06-16'),
-    reminder_time: '05:15:00',
+    reminder_date: null,
+    reminder_time: '',
   }
   errors = null
 
   constructor(
     private sb: SnackBarService,
     private contactService: ContactApiService,
+    private modalService: NgbModal, 
     public dialogRef: MatDialogRef<AppointDialog>,
     public fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -216,10 +218,7 @@ export class AppointDialog {
     observable.subscribe(
       (res: any) => {
         if (res.success) {
-          this.dialogRef.close({
-            state: this.isEdit? 'updated' : 'created',
-            message: res.message,
-          });
+          this.dialogRef.close({ state: this.isEdit? 'updated' : 'created' });
         }
         else {
           this.sb.openSnackBarBottomCenter(res.message, 'Close');
@@ -304,13 +303,6 @@ export class AppointDialog {
     this.dialogRef.close()
   }
 
-  onDelete(): void {
-    this.dialogRef.close({
-      action: 'delete',
-      appointment: this.appointment
-    })
-  }
-
   isMainOwner(item) {
     return (item.type == this.appoint_owner.type && item.id == this.appoint_owner.id)
   }
@@ -335,5 +327,36 @@ export class AppointDialog {
     const index = this.selected.indexOf(e)
     this.selected.splice(index, 1)
     this.selected.length == 0 && (this.showAuto = true)
+  }
+
+  private deleteAppointment() {
+    this.contactService
+      .deleteAppointment(this.appointment.id)
+      .subscribe((res: any) => {
+        console.log('deleteAppointment', res);
+        this.sb.openSnackBarBottomCenter(res.message, 'Close');
+        if (res.success) {
+          this.dialogRef.close({
+            state: 'deleted',
+            appoint: this.appointment
+          })
+        }
+      },
+      err => {
+        this.sb.openSnackBarBottomCenter(err.error.message, 'Close');
+      })
+  }
+
+  openModal(content) {
+    this.modalService
+      .open(content, { ariaLabelledBy: 'dialog001' })
+      .result.then(
+        (result) => {
+          result == 'confirm' && this.deleteAppointment()
+        },
+        (reason) => {
+          console.log(`Dismissed ${reason}`)
+        }
+      );
   }
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 import { SnackBarService} from '../../shared/snack-bar.service'
@@ -53,6 +54,7 @@ export class CompanyComponent implements OnInit {
 
   showDetails = false
   companyDetails = null
+  subscriptions: Subscription[] = [];
 
   constructor(
     private modalService: NgbModal,
@@ -71,8 +73,14 @@ export class CompanyComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.contactService.companyObserver.subscribe(() => this.update());
+    this.subscriptions.push(this.contactService.companyObserver.subscribe(() => this.update()))
     this.showGrid()
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((sub) => {
+      sub.unsubscribe();
+    });
   }
 
   private update() {
