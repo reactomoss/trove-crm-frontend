@@ -88,11 +88,12 @@ export class WidgetComponent implements OnInit {
 
   addTask() {
     console.log('add task')
-    this.addTaskClicked.emit(false)
+    this.addTaskClicked.emit()
   }
-  editTask() {
-    console.log('add task')
-    this.addTaskClicked.emit(true)
+
+  editTask(task) {
+    console.log('edit task', task)
+    this.addTaskClicked.emit(task)
   }
 
   changeAppointState(appoint, event: MatCheckboxChange) {

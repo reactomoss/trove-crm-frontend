@@ -98,9 +98,9 @@
             [appointments]="company.appointments"
             [tasks]="company.tasks"
             [user_files]="company.files"
-            (addTaskClicked)="openTaskDialog($event)" 
             (addAppointClicked)="addAppointClicked($event)"
             (appointStateChanged)="appointStateChanged($event)"
+            (addTaskClicked)="addTaskClicked($event)" 
             (taskStateChanged)="taskStateChanged($event)">
         </app-widget>
         </div>

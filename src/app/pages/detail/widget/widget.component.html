@@ -156,7 +156,7 @@
                                 </mat-checkbox>
                             </div>
                             <div class="col pl-1">
-                                <div class="cursor-pointer" (click)="editTask()">
+                                <div class="cursor-pointer" (click)="editTask(e)">
                                     <div class="mb-2" [class.lineThrough]="e.selected">{{e.title}}</div>
                                     <span [class.color-ff0000]="isPastDateTask(e)" class="alertSpan">
                                         <mat-icon class="fs-14 align-text-top">{{getAppointmentIcon(e)}}</mat-icon>

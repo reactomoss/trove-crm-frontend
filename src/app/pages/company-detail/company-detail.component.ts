@@ -126,6 +126,12 @@ export class CompanyDetailComponent implements OnInit {
     index >= 0 && this.company.appointments.splice(index, 1)
   }
 
+  addTaskClicked(task) {
+    console.log('addTaskClicked', task)
+    const isEdit: boolean = (task !== undefined)
+    this.openTaskDialog(isEdit, task)
+  }
+
   taskDeleted(task) {
     console.log('taskDeleted', task)
     const index = this.company.tasks.findIndex(it => it.id === task.id)
