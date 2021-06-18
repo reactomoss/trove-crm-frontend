@@ -65,7 +65,7 @@ export class AppointDialog {
   active: number = 1
 
   associate_members: any = {}
-  appoint_owner: AppointOwner = null
+  associate_to: AppointOwner = null
   appointment: Appointment = {
     id: null,
     title: '',
@@ -93,7 +93,7 @@ export class AppointDialog {
     this.isEdit = data.isEdit
     data.appointment && (this.appointment = data.appointment);
     data.associate_members && (this.associate_members = data.associate_members);
-    data.appoint_owner  && (this.appoint_owner = data.appoint_owner)
+    data.associate_to  && (this.associate_to = data.associate_to)
     this.setActive(1)
     this.setSelectedAssociate()
     this.reactiveForm()
@@ -287,7 +287,7 @@ export class AppointDialog {
     if (num == 1) this.options = this.getContacts()
     else if (num == 2) this.options = this.getOrganizations()
     else if (num == 3) this.options = this.getLeads()
-    this.options = this.options.filter(item => !this.isMainOwner(item))
+    this.options = this.options.filter(item => !this.isMainAssociate(item))
 
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
@@ -303,23 +303,23 @@ export class AppointDialog {
     this.dialogRef.close()
   }
 
-  isMainOwner(item) {
-    return (item.type == this.appoint_owner.type && item.id == this.appoint_owner.id)
+  isMainAssociate(item) {
+    return (item.type == this.associate_to.type && item.id == this.associate_to.id)
   }
 
   private setSelectedAssociate() {
     let items = null
-    if (this.appoint_owner.type == 'company') {
+    if (this.associate_to.type == 'company') {
       items = this.getOrganizations()
     }
-    else if (this.appoint_owner.type == 'contact') {
+    else if (this.associate_to.type == 'contact') {
         items = this.getOrganizations()
     }
-    else if (this.appoint_owner.type == 'lead') {
+    else if (this.associate_to.type == 'lead') {
         items = this.getOrganizations()
     }
     if (items) {
-      this.selected.push(items.find(it => it.id == this.appoint_owner.id));
+      this.selected.push(items.find(it => it.id == this.associate_to.id));
     }
   }
 

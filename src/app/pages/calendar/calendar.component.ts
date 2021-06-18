@@ -572,7 +572,7 @@ export class CalendarComponent implements OnInit {
               due_time: undefined,
               reminder_date: undefined,
               reminder_time: undefined,
-              owner: '',
+              owner_id: 0,
             }, true);
           }
 

@@ -72,7 +72,8 @@
         <p class="span1">{{e.name}}</p>
         <p class="span2">{{e.description}}</p>
       </div>
-      <mat-icon style="position: absolute; right: 10px" class="cursorPointer" (click)="deleteSelected(e)">close
+      <mat-icon *ngIf="!isMainAssociate(e)" style="position: absolute; right: 10px" class="cursorPointer" (click)="deleteSelected(e)">
+        close
       </mat-icon>
     </div>
     <mat-form-field class="formControl noLabelForm" appearance="outline" *ngIf="showAuto">
@@ -100,10 +101,9 @@
 
     <span>Owner</span>
     <mat-form-field appearance="outline" class="formControl noLabelForm grayBackground">
-      <mat-select>
-        <mat-option value="1">Owner1</mat-option>
-        <mat-option value="2">Owner2</mat-option>
-      </mat-select>
+      <mat-select formControlName="owner_id">
+        <mat-option *ngFor="let owner of owners" [value]="owner.id">{{owner.full_name}}</mat-option>
+    </mat-select>
     </mat-form-field>
 
   </div>

@@ -76,12 +76,13 @@ export class CompanyDetailComponent implements OnInit {
 
   openTaskDialog(isEdit: boolean, task?: any) {
     const dialogRef = this.dialog.open(TaskDialog, {
-      width: '405px',
+      width: '420px',
       data: {
         isEdit: isEdit,
         task: task,
         associate_members: this.company.associate_members,
-        task_owner: { id: this.organization.id, type: 'company'}
+        associate_to: { id: this.organization.id, type: 'company'},
+        owners: this.company.owner,
       },
     });
 
@@ -101,7 +102,7 @@ export class CompanyDetailComponent implements OnInit {
         isEdit: isEdit,
         appointment: appointment,
         associate_members: this.company.associate_members,
-        appoint_owner: { id: this.organization.id, type: 'company'}
+        associate_to: { id: this.organization.id, type: 'company'}
       },
     });
 

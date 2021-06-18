@@ -95,8 +95,7 @@
               <p class="span1">{{e.name}}</p>
               <p class="span2">{{e.desc}}</p>
             </div>
-            <mat-icon *ngIf="!isMainOwner(e)" style="position: absolute; right: 10px" class="cursorPointer"
-              (click)="deleteSelected(e)">
+            <mat-icon *ngIf="!isMainAssociate(e)" style="position: absolute; right: 10px" class="cursorPointer" (click)="deleteSelected(e)">
               close
             </mat-icon>
           </div>

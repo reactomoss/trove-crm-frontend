@@ -23,7 +23,7 @@ export interface NTask {
   due_time: string,
   reminder_date: Moment,
   reminder_time: string,
-  owner: string,
+  owner_id: number,
 }
 export interface AppointOwner {
   id: number,
@@ -64,8 +64,9 @@ export class TaskDialog {
   showAuto: boolean = true
   active: number = 1
 
+  owners: any[] = []
   associate_members: any = {}
-  task_owner: AppointOwner = null
+  associate_to: AppointOwner = null
   task: NTask = {
     id: null,
     title: null,
@@ -74,7 +75,7 @@ export class TaskDialog {
     due_time: null,
     reminder_date: null,
     reminder_time: null,
-    owner: null,
+    owner_id: null,
   }
   errors = null
 
@@ -88,9 +89,10 @@ export class TaskDialog {
   ) {
     console.log('task-dialog', data)
     this.isEdit = data.isEdit;
-    data.appointment && (this.task = data.task);
+    data.task && (this.task = data.task);
     data.associate_members && (this.associate_members = data.associate_members);
-    data.task_owner  && (this.task_owner = data.task_owner)
+    data.associate_to  && (this.associate_to = data.associate_to)
+    data.owners && (this.owners = data.owners)
     this.setActive(1)
     this.setSelectedAssociate()
     this.reactiveForm()
@@ -117,6 +119,10 @@ export class TaskDialog {
         t.reminder_time ? moment(t.reminder_time, ["h:mm A"]).format('h:mm A') : null,
         [Validators.required]
       ],
+      owner_id: [
+        t.owner_id,
+        [Validators.required]
+      ]
     });
   }
 
@@ -274,7 +280,7 @@ export class TaskDialog {
     if (num == 1) this.options = this.getContacts()
     else if (num == 2) this.options = this.getOrganizations()
     else if (num == 3) this.options = this.getLeads()
-    this.options = this.options.filter(item => !this.isMainOwner(item))
+    this.options = this.options.filter(item => !this.isMainAssociate(item))
 
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
@@ -297,23 +303,23 @@ export class TaskDialog {
     });
   }
 
-  isMainOwner(item) {
-    return (item.type == this.task_owner.type && item.id == this.task_owner.id)
+  isMainAssociate(item) {
+    return (item.type == this.associate_to.type && item.id == this.associate_to.id)
   }
 
   private setSelectedAssociate() {
     let items = null
-    if (this.task_owner.type == 'company') {
+    if (this.associate_to.type == 'company') {
       items = this.getOrganizations()
     }
-    else if (this.task_owner.type == 'contact') {
+    else if (this.associate_to.type == 'contact') {
         items = this.getOrganizations()
     }
-    else if (this.task_owner.type == 'lead') {
+    else if (this.associate_to.type == 'lead') {
         items = this.getOrganizations()
     }
     if (items) {
-      this.selected.push(items.find(it => it.id == this.task_owner.id));
+      this.selected.push(items.find(it => it.id == this.associate_to.id));
     }
   }
 
