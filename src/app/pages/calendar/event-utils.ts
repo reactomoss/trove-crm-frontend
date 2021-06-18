@@ -13,7 +13,7 @@ export const INITIAL_TASKS: NTask[] = [
         due_time: '10:00 AM',
         reminder_date: moment('2021-06-09'),
         reminder_time: '10:00 AM',
-        owner: '',
+        owner_id: 1,
     },
     {
         id: null,
@@ -23,7 +23,7 @@ export const INITIAL_TASKS: NTask[] = [
         due_time: '11:00 AM',
         reminder_date: moment('2021-06-09'),
         reminder_time: '11:00 AM',
-        owner: ''
+        owner_id: 1
     },
     {
         id: null,
@@ -33,7 +33,7 @@ export const INITIAL_TASKS: NTask[] = [
         due_time: '18:00',
         reminder_date: moment('2021-06-09'),
         reminder_time: '12:00 AM',
-        owner: ''
+        owner_id: 1
     },
     {
         id: null,
@@ -43,7 +43,7 @@ export const INITIAL_TASKS: NTask[] = [
         due_time: '06:00 PM',
         reminder_date: null,
         reminder_time: '',
-        owner: ''
+        owner_id: 1
     },
     {
         id: null,
@@ -53,7 +53,7 @@ export const INITIAL_TASKS: NTask[] = [
         due_time: '06:00 PM',
         reminder_date: null,
         reminder_time: '',
-        owner: ''
+        owner_id: 1
     }
 ];
 

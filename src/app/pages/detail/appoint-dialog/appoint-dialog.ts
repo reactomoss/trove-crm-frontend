@@ -89,7 +89,7 @@ export class AppointDialog {
     public fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    console.log('appoint-dialog', data)
+    //console.log('appoint-dialog', data)
     this.isEdit = data.isEdit
     data.appointment && (this.appointment = data.appointment);
     data.associate_members && (this.associate_members = data.associate_members);
@@ -164,7 +164,7 @@ export class AppointDialog {
   }
   
   submitForm() : void {
-    console.log('submit', this.form.value);
+    //console.log('submit', this.form.value);
     if (!this.form.valid) {
       return;
     }
@@ -209,7 +209,7 @@ export class AppointDialog {
         payload['appointment_to'] = appointments
       }
     }
-    console.log('submit-payload', payload);
+    //console.log('submit-payload', payload);
 
     const observable = this.isEdit ?
         this.contactService.updateAppointment(this.appointment.id, payload) :
@@ -217,11 +217,9 @@ export class AppointDialog {
 
     observable.subscribe(
       (res: any) => {
+        this.sb.openSnackBarBottomCenter(res.message, 'Close');
         if (res.success) {
           this.dialogRef.close({ state: this.isEdit? 'updated' : 'created' });
-        }
-        else {
-          this.sb.openSnackBarBottomCenter(res.message, 'Close');
         }
       },
       (err) => {
@@ -231,7 +229,6 @@ export class AppointDialog {
           if (Array.isArray(data[key])) this.errors[key] = data[key][0];
           else this.errors[key] = data[key];
         }
-        console.log('this.errors', this.errors);
         const messages = Object.values(this.errors).join('\r\n');
         this.sb.openSnackBarTopCenterAsDuration(messages, 'Close', 4000);
       }
@@ -252,7 +249,6 @@ export class AppointDialog {
   }
 
   public clickAdd() {
-    console.log('click add')
     this.showAuto = !this.showAuto
   }
 
@@ -333,7 +329,6 @@ export class AppointDialog {
     this.contactService
       .deleteAppointment(this.appointment.id)
       .subscribe((res: any) => {
-        console.log('deleteAppointment', res);
         this.sb.openSnackBarBottomCenter(res.message, 'Close');
         if (res.success) {
           this.dialogRef.close({

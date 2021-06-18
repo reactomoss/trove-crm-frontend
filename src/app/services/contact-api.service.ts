@@ -138,6 +138,11 @@ export class ContactApiService {
     return this.httpClient.post(API_URL, {})
   }
 
+  updateTaskState(id: number, data) {
+    const API_URL = `${this.baseURL + environment.company_task_state}/${id}`
+    return this.httpClient.put(API_URL, data)
+  }
+
   deleteActivity(menu, data) {
     const API_URL = `${this.baseURL}activity/${menu}?_method=DELETE`
     return this.httpClient.post(API_URL, data)

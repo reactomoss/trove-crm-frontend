@@ -1,15 +1,15 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import {MatDialog} from '@angular/material/dialog';
+import { MatDialog} from '@angular/material/dialog';
 import { CompanyDialog } from 'src/app/shared/header/header.component';
 import { TaskDialog } from '../detail/task-dialog/task-dialog';
 import { AppointDialog } from '../detail/appoint-dialog/appoint-dialog';
-import {SnackBarService} from 'src/app/shared/snack-bar.service'
-import * as moment from 'moment'
+import { SnackBarService} from 'src/app/shared/snack-bar.service'
 import { ContactApiService } from 'src/app/services/contact-api.service';
-import sample from './sample.company'
 import { SettingsApiService } from 'src/app/services/settings-api.service';
 import { DateService } from 'src/app/service/date.service';
+import * as moment from 'moment'
+//import sample from './sample.company'
 
 @Component({
   selector: 'app-company-detail',
@@ -116,25 +116,21 @@ export class CompanyDetailComponent implements OnInit {
   }
 
   addAppointClicked(appoint) {
-    console.log('addAppointClicked', appoint)
     const isEdit: boolean = (appoint !== undefined)
     this.openAppointDialog(isEdit, appoint)
   }
 
   appointDeleted(appoint) {
-    console.log('appointDeleted', appoint)
     const index = this.company.appointments.findIndex(it => it.id === appoint.id)
     index >= 0 && this.company.appointments.splice(index, 1)
   }
 
   addTaskClicked(task) {
-    console.log('addTaskClicked', task)
     const isEdit: boolean = (task !== undefined)
     this.openTaskDialog(isEdit, task)
   }
 
   taskDeleted(task) {
-    console.log('taskDeleted', task)
     const index = this.company.tasks.findIndex(it => it.id === task.id)
     index >= 0 && this.company.tasks.splice(index, 1)
   }
@@ -146,7 +142,7 @@ export class CompanyDetailComponent implements OnInit {
       status: checked ? 1 : 0,
     }
     this.contactService
-      .updateAppointmentState(this.organization.id, payload)
+      .updateAppointmentState(appointment.id, payload)
       .subscribe((res: any) => {
         console.log('appointStateChanged', res);
         if (res.success) {
@@ -162,7 +158,7 @@ export class CompanyDetailComponent implements OnInit {
       status: checked ? 1 : 0,
     }
     this.contactService
-      .updateAppointmentState(this.organization.id, payload)
+      .updateTaskState(task.id, payload)
       .subscribe((res: any) => {
         console.log('appointStateChanged', res);
         if (res.success) {
@@ -211,7 +207,6 @@ export class CompanyDetailComponent implements OnInit {
   }
 
   companyStatusChanged(value) {
-    console.log('companyStatusChanged', value)
     const payload = {
       id: this.organization.id,
       status_id: (value === 'Active') ? 1 : 2

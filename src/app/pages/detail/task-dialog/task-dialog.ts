@@ -87,7 +87,7 @@ export class TaskDialog {
     public fb: FormBuilder,
      @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    console.log('task-dialog', data)
+    //console.log('task-dialog', data)
     this.isEdit = data.isEdit;
     data.task && (this.task = data.task);
     data.associate_members && (this.associate_members = data.associate_members);
@@ -157,23 +157,22 @@ export class TaskDialog {
   }
   
   submitForm() : void {
-    console.log('submit', this.form.value);
+    //console.log('submit', this.form.value);
     if (!this.form.valid) {
       return;
     }
 
     const values = this.form.value
-    const startDate = this.getEventDate(values.start_date, values.start_time)
+    const dueDate = this.getEventDate(values.due_date, values.due_time)
     const reminderDate = this.getEventDate(values.reminder_date, values.reminder_time)
-    if (startDate < reminderDate) {
+    if (dueDate < reminderDate) {
       this.form.controls['reminder_date'].setErrors({'invalidreminder': true});
       return
     }
 
     const payload = {
       ...this.form.value,
-      start_date: values.start_date.format('YYYY-MM-DD'),
-      end_date: values.end_date.format('YYYY-MM-DD'),
+      due_date: values.due_date.format('YYYY-MM-DD'),
       reminder_date: values.reminder_date.format('YYYY-MM-DD'),
     };
 
@@ -202,7 +201,7 @@ export class TaskDialog {
         payload['task_to'] = tasks
       }
     }
-    console.log('submit-payload', payload);
+    //console.log('submit-payload', payload);
 
     const observable = this.isEdit ?
         this.contactService.updateTask(this.task.id, payload) :
@@ -224,7 +223,6 @@ export class TaskDialog {
           if (Array.isArray(data[key])) this.errors[key] = data[key][0];
           else this.errors[key] = data[key];
         }
-        console.log('this.errors', this.errors);
         const messages = Object.values(this.errors).join('\r\n');
         this.sb.openSnackBarTopCenterAsDuration(messages, 'Close', 4000);
       }
@@ -245,7 +243,6 @@ export class TaskDialog {
   }
 
   public clickAdd() {
-    console.log('click add')
     this.showAuto = !this.showAuto
   }
 
@@ -296,13 +293,6 @@ export class TaskDialog {
     this.dialogRef.close()
   }
 
-  onDelete(): void {
-    this.dialogRef.close({
-      action: 'delete',
-      task: this.task
-    });
-  }
-
   isMainAssociate(item) {
     return (item.type == this.associate_to.type && item.id == this.associate_to.id)
   }
@@ -333,7 +323,6 @@ export class TaskDialog {
     this.contactService
       .deleteTask(this.task.id)
       .subscribe((res: any) => {
-        console.log('deleteTask', res);
         this.sb.openSnackBarBottomCenter(res.message, 'Close');
         if (res.success) {
           this.dialogRef.close({

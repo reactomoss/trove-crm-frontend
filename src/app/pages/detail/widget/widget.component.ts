@@ -97,7 +97,6 @@ export class WidgetComponent implements OnInit {
   }
 
   changeAppointState(appoint, event: MatCheckboxChange) {
-    console.log('changeAppointState', event);
     this.appointStateChanged.emit({
       appointment: appoint,
       checked: event.checked
