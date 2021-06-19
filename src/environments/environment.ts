@@ -49,6 +49,7 @@ export const environment = {
   company_update_task: 'organizations/task',
   company_task_state: 'organizations/task-status',
   company_delete_activity: 'activity',
+  company_add_note: 'organizations/note',
   appointment_delete: 'appointment',
   task_delete: 'task',
   contacts: 'contacts',

@@ -148,6 +148,11 @@ export class ContactApiService {
     return this.httpClient.post(API_URL, data)
   }
 
+  companyAddNote(data) {
+    const API_URL = `${this.baseURL + environment.company_add_note}`
+    return this.httpClient.post(API_URL, data)
+  }
+
   /* Helper Functions */
   getCountries() {
     if (this.contactData) {

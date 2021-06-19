@@ -9,7 +9,7 @@ import { ContactApiService } from 'src/app/services/contact-api.service';
 import { SettingsApiService } from 'src/app/services/settings-api.service';
 import { DateService } from 'src/app/service/date.service';
 import * as moment from 'moment'
-//import sample from './sample.company'
+import sample from './sample.company'
 
 @Component({
   selector: 'app-company-detail',
@@ -23,6 +23,7 @@ export class CompanyDetailComponent implements OnInit {
   organization = null;
   scrollOptions = { autoHide: true, scrollbarMinSize: 50 };
   status = 'active';
+  selectedActivity = null
 
   constructor(
     private dateService: DateService,
@@ -32,7 +33,7 @@ export class CompanyDetailComponent implements OnInit {
     private router: Router,
     public dialog: MatDialog
   ) {
-    //this.setCompany(sample)
+    this.setCompany(sample)
   }
 
   ngOnInit(): void {
@@ -216,5 +217,10 @@ export class CompanyDetailComponent implements OnInit {
       .subscribe((res: any) => {
         this.sb.openSnackBarBottomCenter(res.message, 'Close');
       })
+  }
+
+  editActivity(activity) {
+    console.log('editActivity2', activity)
+    this.selectedActivity = activity
   }
 }

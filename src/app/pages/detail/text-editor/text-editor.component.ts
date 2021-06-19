@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, Input } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
@@ -7,12 +7,16 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
   styleUrls: ['./text-editor.component.css']
 })
 
-export class TextEditorComponent implements AfterViewInit {
-  @ViewChild('tabGroup', { static: false })
+export class TextEditorComponent implements OnInit {
+  //@ViewChild('tabGroup', { static: false })
+  @Input() activity: any
+  @Input() associate_members
   public tabGroup: any;
   public activeTabIndex: number | undefined = undefined;
   public editorShow: boolean = true;
 
+  private noteDescription
+  
   public titleOptions1: Object = {
     // placeholderText: 'Edit Your Content Here!',
     // charCounterCount: false,
@@ -68,230 +72,64 @@ export class TextEditorComponent implements AfterViewInit {
     console.log('tabIndex', this.activeTabIndex)
   }
 
-
-  // input data for company,leads,contacts
-  optionsPerson: any[] = [
-    {
-      name: "Person",
-      icon: "person",
-      isChecked: false,
-      email: "sampleperson@gmail.com"
-    },
-    {
-      name: "Person 2",
-      icon: "person",
-      isChecked: false,
-      email: "sampleperson2@gmail.com"
-    },
-    {
-      name: "Person 3",
-      icon: "person",
-      isChecked: false,
-      email: "sampleperson3@gmail.com"
-    }
-    ]
-    optionsCompany: any[] = [
-      {
-        name: "Company",  icon: "business" , isChecked: false,
-        desc: "Sample Description"
-      },
-      {
-        name: "Company 2",  icon: "business" , isChecked: false,
-        desc: "Sample Description2"
-      },
-      {
-        name: "Company 3",  icon: "business" , isChecked: false,
-        desc: "Sample Description3"
-      }
-      ]
-      optionsLeads: any[] = [
-        {
-          name: "Leads",  icon: "leaderboard" , isChecked: false,
-          desc: "Sample Description"
-        },
-        {
-          name: "Leads 2",  icon: "leaderboard" , isChecked: false,
-          desc: "Sample Description2"
-        },
-        {
-          name: "Leads 3",  icon: "leaderboard" , isChecked: false,
-          desc: "Sample Description3"
-        }
-        ]
-
-  selected: any[] = []
-  // input data for company,leads,contacts
-
-  // input data for company,leads,contacts
-  optionsPersonEmail: any[] = [
-    {
-      name: "Person",
-      icon: "person",
-      isChecked: false,
-      email: "sampleperson@gmail.com"
-    },
-    {
-      name: "Person 2",
-      icon: "person",
-      isChecked: false,
-      email: "sampleperson2@gmail.com"
-    },
-    {
-      name: "Person 3",
-      icon: "person",
-      isChecked: false,
-      email: "sampleperson3@gmail.com"
-    }
-    ]
-    optionsCompanyEmail: any[] = [
-      {
-        name: "Company",  icon: "business" , isChecked: false,
-        desc: "Sample Description"
-      },
-      {
-        name: "Company 2",  icon: "business" , isChecked: false,
-        desc: "Sample Description2"
-      },
-      {
-        name: "Company 3",  icon: "business" , isChecked: false,
-        desc: "Sample Description3"
-      }
-      ]
-      optionsLeadsEmail: any[] = [
-        {
-          name: "Leads",  icon: "leaderboard" , isChecked: false,
-          desc: "Sample Description"
-        },
-        {
-          name: "Leads 2",  icon: "leaderboard" , isChecked: false,
-          desc: "Sample Description2"
-        },
-        {
-          name: "Leads 3",  icon: "leaderboard" , isChecked: false,
-          desc: "Sample Description3"
-        }
-        ]
-
+  selectedAssociates: any[] = []
   selectedEmail: any[] = []
-  // input data for company,leads,contacts
-
-  // input data for company,leads,contacts
-  optionsPersonCall: any[] = [
-    {
-      name: "Person",
-      icon: "person",
-      isChecked: false,
-      email: "sampleperson@gmail.com"
-    },
-    {
-      name: "Person 2",
-      icon: "person",
-      isChecked: false,
-      email: "sampleperson2@gmail.com"
-    },
-    {
-      name: "Person 3",
-      icon: "person",
-      isChecked: false,
-      email: "sampleperson3@gmail.com"
-    }
-    ]
-    optionsCompanyCall: any[] = [
-      {
-        name: "Company",  icon: "business" , isChecked: false,
-        desc: "Sample Description"
-      },
-      {
-        name: "Company 2",  icon: "business" , isChecked: false,
-        desc: "Sample Description2"
-      },
-      {
-        name: "Company 3",  icon: "business" , isChecked: false,
-        desc: "Sample Description3"
-      }
-      ]
-      optionsLeadsCall: any[] = [
-        {
-          name: "Leads",  icon: "leaderboard" , isChecked: false,
-          desc: "Sample Description"
-        },
-        {
-          name: "Leads 2",  icon: "leaderboard" , isChecked: false,
-          desc: "Sample Description2"
-        },
-        {
-          name: "Leads 3",  icon: "leaderboard" , isChecked: false,
-          desc: "Sample Description3"
-        }
-        ]
-
   selectedCall: any[] = []
-  // input data for company,leads,contacts
 
   constructor() {
     this.activeTabIndex = 0;
+    this.associate_members = {
+      contacts: [],
+      organizations: [],
+      leads: []
+    }
   }
 
-  // input data for company,leads,contacts
-  public onSelectionChange(event) {
-    if(event.isChecked) {
-      this.selected.push(event);
+  ngOnInit(): void {
+    console.log('text-editor', this.activity)
+  }
+
+  ngOnChanges(): void {
+    console.log('text-editor-ngOnChanges', this.activity, this.associate_members)
+    if (this.activity) {
+      if (this.activity.activity_name === 'note') this.activeTabIndex = 0;
+      else if (this.activity.activity_name === 'email') this.activeTabIndex = 1;
+      else if (this.activity.activity_name === 'call') this.activeTabIndex = 2;
+    }
+  }
+
+  public onSelectionChange(event, item) {
+    if (event.checked) {
+      this.selectedAssociates.push(item);
     }
     else{
-      this.deleteSelected(event);
+      this.deleteSelected(item);
     }
   }
 
-  deleteSelected(e) {
-    e.isChecked = false;
-    const index = this.selected.indexOf(e)
-    this.selected.splice(index, 1)
-  }
-  // input data for company,leads,contacts
-
-   // input data for company,leads,contacts
-   public onSelectionChangeEmail(event) {
-    if(event.isChecked) {
-      this.selectedEmail.push(event);
-    }
-    else{
-      this.deleteSelectedEmail(event);
-    }
+  deleteSelected(item) {
+    const index = this.selectedAssociates.indexOf(item)
+    this.selectedAssociates.splice(index, 1)
   }
 
-  deleteSelectedEmail(e) {
-    e.isChecked = false;
-    const index = this.selectedEmail.indexOf(e)
-    this.selectedEmail.splice(index, 1)
-  }
-  // input data for company,leads,contacts
-
-  // input data for company,leads,contacts
-  public onSelectionChangeCall(event) {
-    if(event.isChecked) {
-      this.selectedCall.push(event);
-    }
-    else{
-      this.deleteSelectedCall(event);
-    }
-  }
-
-  deleteSelectedCall(e) {
-    e.isChecked = false;
-    const index = this.selectedCall.indexOf(e)
-    this.selectedCall.splice(index, 1)
-  }
-  // input data for company,leads,contacts
-
-  ngAfterViewInit(): void {
-    this.activeTabIndex = this.tabGroup.selectedIndex;
-  }
+  // ngAfterViewInit(): void {
+  //   this.activeTabIndex = this.tabGroup.selectedIndex;
+  // }
 
   public showEditor() {
     this.editorShow = true
   }
 
   public hideEditor() {
-    this.editorShow = false
+    //this.editorShow = false
+  }
+
+  public saveActivity() {
+    console.log('saveActivity')
+    if (this.selectedAssociates.length <= 0) {
+      return
+    }
+    
+
   }
 }

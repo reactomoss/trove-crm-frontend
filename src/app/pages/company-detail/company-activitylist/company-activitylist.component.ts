@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { SnackBarService } from '../../../shared/snack-bar.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { DateService } from 'src/app/service/date.service';
@@ -14,6 +14,7 @@ import { ContactApiService } from 'src/app/services/contact-api.service';
 export class CompanyActivitylistComponent implements OnInit {
   @Input() organization = null
   @Input() activities = []
+  @Output() editActivityEvent = new EventEmitter()
   activityType = 'all';
 
   constructor(
@@ -78,6 +79,10 @@ export class CompanyActivitylistComponent implements OnInit {
       err => {
         this.triggerSnackBar(err.error.message, 'Close')
       })
+  }
+
+  editActivity(activity) {
+    this.editActivityEvent.emit(activity)
   }
 
   openModal(content, activity) {

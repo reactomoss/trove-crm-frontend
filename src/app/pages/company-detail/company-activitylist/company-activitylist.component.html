@@ -28,15 +28,16 @@
             </div>
             <div class="editDiv">
               <div class="actionIcons">
-                <i *ngIf="_it.can_edit===1" class="material-icons fs-16">edit</i>
+                <i *ngIf="_it.can_edit===1" (click)="editActivity(_it)" class="material-icons fs-16">edit</i>
                 <i *ngIf="_it.can_delete===1" (click)="openModal(modalDelete, _it)" class="material-icons fs-16">delete</i>
               </div>
               <div class="span3">{{getActivityDate(_it)}}</div>
             </div>
           </div>
           <div class="centerMsg">
-            Helllo Markinson!<br>
-            Hope your team will implement many new exciting features in the upcoming versions.
+            <!-- Helllo Markinson!<br>
+            Hope your team will implement many new exciting features in the upcoming versions. -->
+            {{_it.description}}
           </div>
         </div>
       </div>

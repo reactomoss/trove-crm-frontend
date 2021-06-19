@@ -84,10 +84,14 @@
         </div>
 
         <div class="centerPart" fxFlex="50">
-            <app-text-editor></app-text-editor>
+            <app-text-editor
+                [activity]="selectedActivity"
+                [associate_members]="company.associate_members">
+            </app-text-editor>
             <app-company-activitylist
                 [organization]="organization"
-                [activities]="company.activity">
+                [activities]="company.activity"
+                (editActivityEvent)="editActivity($event)">
             </app-company-activitylist>
         </div>
 
