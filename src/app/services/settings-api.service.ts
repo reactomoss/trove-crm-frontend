@@ -41,6 +41,7 @@ export class SettingsApiService {
   }
 
   setDateFormat(dateformat) {
+    console.log('setDateFormat', dateformat)
     localStorage.setItem('dateformat', dateformat);
   }
 
@@ -49,6 +50,7 @@ export class SettingsApiService {
   }
 
   setTimeFormat(timeformat) {
+    console.log('setTimeFormat', timeformat)
     localStorage.setItem('timeformat', timeformat);
   }
 

@@ -77,7 +77,7 @@
     <ngx-simplebar [options]="scrollOptions" class="mainContainer" [class.listHeight] = "listShow" [class.gridHeight] = "!listShow">
         <div *ngIf="!selectedItems.length" class="checkDiv m-3">
             <mat-checkbox color="primary" class="contactCheck mr-4 customCheckBox" (click)="clickEmptyCheck()"><span>{{items.length}} Contacts</span></mat-checkbox>
-            <span class="pt-1">Sorted by last activity date</span>
+            <!-- <span class="pt-1">Sorted by last activity date</span> -->
         </div>
         <div *ngIf="selectedItems.length" class="checkDiv m-3">
             <mat-checkbox color="primary" [indeterminate]="selectedItems.length" (click)="clickIndeterminate()"
