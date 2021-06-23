@@ -78,10 +78,10 @@ export class HeaderComponent implements OnInit {
         icon: 'menu002.png',
         link: '/pages/contact',
       },
-      {
+      /*{
         icon: 'menu003.png',
         link: '/pages/company',
-      },
+      },*/
       {
         icon: 'menu004.png',
         link: '/pages/task',
@@ -924,6 +924,8 @@ export class CompanyDialog {
         number: this.form.value.mobile_number,
       },
     };
+    Object.keys(payload).forEach((k) => !payload[k] && delete payload[k])
+    console.log('submit-payload', payload);
 
     const observable = this.isEdit ?
         this.contactService.updateCompany(this.company.id, payload) :
