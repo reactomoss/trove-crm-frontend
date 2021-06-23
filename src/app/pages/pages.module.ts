@@ -33,6 +33,7 @@ import { NgxSliderModule } from "@angular-slider/ngx-slider";
 import { ContactFilterComponent } from './contact/filter/filter.component';
 import { ContactComponent, MailDialog } from './contact/contact.component';
 import { ContactTableComponent } from './contact/contact-table/contact-table.component';
+import "froala-editor/js/plugins/file.min.js";
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 import { ContactDetailComponent } from './contact-detail/contact-detail.component';
 import { TaskComponent } from './task/task.component';

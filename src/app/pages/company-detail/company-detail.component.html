@@ -86,7 +86,8 @@
         <div class="centerPart" fxFlex="50">
             <app-text-editor
                 [activity]="selectedActivity"
-                [associate_members]="company.associate_members">
+                [associate_members]="company.associate_members"
+                (addActivityEvent)="addActivityEvent($event)">
             </app-text-editor>
             <app-company-activitylist
                 [organization]="organization"

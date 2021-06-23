@@ -148,8 +148,18 @@ export class ContactApiService {
     return this.httpClient.post(API_URL, data)
   }
 
-  companyAddNote(data) {
+  createCompanyNote(data) {
     const API_URL = `${this.baseURL + environment.company_add_note}`
+    return this.httpClient.post(API_URL, data)
+  }
+
+  createCompanyEmail(data) {
+    const API_URL = `${this.baseURL + environment.company_add_email}`
+    return this.httpClient.post(API_URL, data)
+  }
+
+  createCompanyCall(data) {
+    const API_URL = `${this.baseURL + environment.company_add_call}`
     return this.httpClient.post(API_URL, data)
   }
 

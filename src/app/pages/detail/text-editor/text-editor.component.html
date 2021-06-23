@@ -104,11 +104,11 @@
           </mat-tab-group>
         </mat-menu>
       </div>
-      <div [froalaEditor] *ngIf="activeTabIndex===0 && editorShow" [froalaEditor]="titleOptions1"></div>
+      <div [froalaEditor] *ngIf="activeTabIndex===0 && editorShow" [(froalaModel)]="noteEditorContent" [froalaEditor]="titleOptions"></div>
 
       <div *ngIf="editorShow">
         <button mat-button class="cancelButton" (click)="hideEditor()">Cancel</button>
-        <button mat-button class="saveButton" (click)="saveActivity()">Save</button>
+        <button mat-button class="saveButton" (click)="saveNote()">Save</button>
       </div>
     </div>
   </mat-tab>
@@ -142,10 +142,10 @@
         </div>
       </div>
       <!-- <button mat-button class="editorButton" *ngIf="!editorShow" (click)="showEditor()">Mindfatory Team</button> -->
-      <div [froalaEditor] *ngIf="activeTabIndex===1 && editorShow" [froalaEditor]="titleOptions2"></div>
+      <div [froalaEditor] *ngIf="activeTabIndex===1 && editorShow"  [(froalaModel)]="emailEditorContent"[froalaEditor]="titleOptions"></div>
       <div *ngIf="editorShow">
         <button mat-button class="cancelButton" (click)="hideEditor()">Cancel</button>
-        <button mat-button class="saveButton" (click)="saveActivity()">Save</button>
+        <button mat-button class="saveButton" (click)="saveEmail()">Save</button>
       </div>
     </div>
   </mat-tab>
@@ -181,10 +181,10 @@
       </div>
 
       <!-- <button mat-button class="editorButton" *ngIf="!editorShow" (click)="showEditor()">Mindfatory Team</button> -->
-      <div [froalaEditor] *ngIf="activeTabIndex===2 && editorShow" [froalaEditor]="titleOptions3"></div>
+      <div *ngIf="activeTabIndex===2 && editorShow" [(froalaModel)]="callEditorContent" [froalaEditor]="titleOptions"></div>
       <div *ngIf="editorShow">
         <button mat-button class="cancelButton" (click)="hideEditor()">Cancel</button>
-        <button mat-button class="saveButton" (click)="saveActivity()">Save</button>
+        <button mat-button class="saveButton" (click)="saveCall()">Save</button>
       </div>
     </div>
   </mat-tab>

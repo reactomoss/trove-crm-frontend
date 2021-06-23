@@ -73,7 +73,7 @@ export class CompanyActivitylistComponent implements OnInit {
         console.log('deleteActivity', res);
         this.triggerSnackBar(res.message, 'Close')
         if (res.success) {
-          this.contactService.notifyCompany()
+          this.contactService.notifyCompanyDetail()
         }
       },
       err => {

@@ -34,10 +34,7 @@
               <div class="span3">{{getActivityDate(_it)}}</div>
             </div>
           </div>
-          <div class="centerMsg">
-            <!-- Helllo Markinson!<br>
-            Hope your team will implement many new exciting features in the upcoming versions. -->
-            {{_it.description}}
+          <div class="centerMsg" [innerHTML]="_it.description">
           </div>
         </div>
       </div>

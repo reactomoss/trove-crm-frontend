@@ -31,7 +31,9 @@
                             "./node_modules/froala-editor/css/froala_style.min.css"
                         ],
                         "scripts": [
-
+                          "./node_modules/froala-editor/js/froala_editor.pkgd.min.js",
+                          "./node_modules/froala-editor/js/plugins/file.min.js",
+                          "./node_modules/froala-editor/js/third_party/image_tui.min.js"
                         ]
 
                     },

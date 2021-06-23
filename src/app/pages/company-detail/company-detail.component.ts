@@ -41,6 +41,10 @@ export class CompanyDetailComponent implements OnInit {
     this.organization = this.company.organization;
   }
 
+  triggerSnackBar(message: string) {
+    this.sb.openSnackBarBottomCenter(message, 'Close');
+  }
+
   setCompany(data: any) {
     this.company = data;
     this.organization = this.company.organization;
@@ -195,11 +199,11 @@ export class CompanyDetailComponent implements OnInit {
 
     this.contactService.getCompanies().subscribe((res: any) => {
       if (!res.success) {
-        this.sb.openSnackBarBottomCenter(res.message, 'Close');
+        this.triggerSnackBar(res.message)
         return;
       }
       if (res.data.menu_previlages.create !== 1) {
-        this.sb.openSnackBarBottomCenter("You don't have permission", 'Close');
+        this.triggerSnackBar("You don't have permission")
         return;
       }
       this.contactService.companyData = res.data;
@@ -215,12 +219,48 @@ export class CompanyDetailComponent implements OnInit {
     this.contactService
       .updateCompanyState(this.organization.id, payload)
       .subscribe((res: any) => {
-        this.sb.openSnackBarBottomCenter(res.message, 'Close');
+        this.triggerSnackBar(res.message)
       })
   }
 
   editActivity(activity) {
-    console.log('editActivity2', activity)
     this.selectedActivity = activity
+  }
+
+  addActivityEvent(event) {
+    console.log('addActivity', event)
+    
+    const payload = this.addOrganizationId(event.data)
+    console.log('addActivity.payload', payload)
+
+    let observer = null
+    if (event.type === 'note') observer = this.contactService.createCompanyNote(payload)
+    else if (event.type === 'email') observer = this.contactService.createCompanyEmail(payload)
+    else if (event.type === 'call') observer = this.contactService.createCompanyCall(payload)
+
+    observer.subscribe((res: any) => {
+      console.log('addActivity', res);
+      this.triggerSnackBar(res.message)
+      if (res.success) {
+        this.contactService.notifyCompanyDetail()
+      }
+    });
+  }
+
+  private addOrganizationId(data) {
+    const payload = {...data}
+    console.log('createNote.organization', this.organization)
+
+    const notes_to = payload.notes_to
+    if (notes_to.organizations) {
+      if (!notes_to.organizations.find(it => it == this.organization.id)) {
+        notes_to.organizations.push(this.organization.id)
+      }
+    }
+    else {
+      notes_to['organizations'] = [this.organization.id]
+    }
+
+    return payload
   }
 }
