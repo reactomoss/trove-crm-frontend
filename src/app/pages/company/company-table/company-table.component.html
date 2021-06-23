@@ -54,24 +54,24 @@
       <td mat-cell *matCellDef="let element">{{element.state}}</td>
   </ng-container>
 
-  <ng-container matColumnDef="owner">
+  <ng-container matColumnDef="ownerName">
       <th mat-header-cell *matHeaderCellDef mat-sort-header
-          (click)="clickTh('owner')" [class.activeTh]="selectedTh == 'owner'">Owner</th>
-      <td mat-cell *matCellDef="let element">{{element.owner.full_name}}</td>
+          (click)="clickTh('ownerName')" [class.activeTh]="selectedTh == 'ownerName'">Owner</th>
+      <td mat-cell *matCellDef="let element">{{element.ownerName}}</td>
   </ng-container>
 
-  <ng-container matColumnDef="last">
+  <ng-container matColumnDef="last_activity">
       <th mat-header-cell *matHeaderCellDef mat-sort-header
-          (click)="clickTh('last')" [class.activeTh]="selectedTh == 'last'">
+          (click)="clickTh('last_activity')" [class.activeTh]="selectedTh == 'last_activity'">
           Last Activity</th>
       <td mat-cell *matCellDef="let element">
-          {{element.updated_at}}
+          {{dateToString(element.last_activity)}}
       </td>
   </ng-container>
 
-  <ng-container matColumnDef="contacts">
+  <ng-container matColumnDef="contacts_count">
       <th mat-header-cell *matHeaderCellDef mat-sort-header
-          (click)="clickTh('contacts')" [class.activeTh]="selectedTh == 'contacts'">
+          (click)="clickTh('contacts_count')" [class.activeTh]="selectedTh == 'contacts_count'">
           Contacts</th>
       <td mat-cell *matCellDef="let element">{{element.contacts_count}}</td>
   </ng-container>
@@ -82,16 +82,16 @@
       <td mat-cell *matCellDef="let element">{{element.status}}</td>
   </ng-container>
 
-  <ng-container matColumnDef="added">
+  <ng-container matColumnDef="created_at">
       <th mat-header-cell *matHeaderCellDef mat-sort-header
-          (click)="clickTh('added')" [class.activeTh]="selectedTh == 'added'">Added on</th>
-      <td mat-cell *matCellDef="let element">{{element.created_at}}</td>
+          (click)="clickTh('created_at')" [class.activeTh]="selectedTh == 'created_at'">Added on</th>
+      <td mat-cell *matCellDef="let element">{{dateToString(element.created_at)}}</td>
   </ng-container>
 
-  <ng-container matColumnDef="modified">
+  <ng-container matColumnDef="updated_at">
       <th mat-header-cell *matHeaderCellDef mat-sort-header
-          (click)="clickTh('modified')" [class.activeTh]="selectedTh == 'modified'">Modified on</th>
-      <td mat-cell *matCellDef="let element">{{element.updated_at}}</td>
+          (click)="clickTh('updated_at')" [class.activeTh]="selectedTh == 'updated_at'">Modified on</th>
+      <td mat-cell *matCellDef="let element">{{dateToString(element.updated_at)}}</td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns ; sticky: true"></tr>
