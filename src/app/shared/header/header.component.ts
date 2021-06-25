@@ -60,7 +60,7 @@ function validationMessage(formGroup: FormGroup, controlName: string) {
     if (controlName === 'mobile_number') return 'The mobile number must be 10 digits';
     if (controlName === 'work_number') return 'The work number must be 10 digits';
     if (controlName === 'work_phone') return 'The work phone must be 10 digits';
-    return 'Invalid format'
+    return 'Invalid value'
   }
   if (control.hasError('minlength')) {
     return `The minimum length is ${control.errors.minlength.requiredLength}.`;
