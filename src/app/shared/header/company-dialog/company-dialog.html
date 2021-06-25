@@ -39,6 +39,7 @@
                     <span>Work Number</span><br>
                     <mat-form-field appearance="outline" class="formControl noLabelForm" [style.width.px]="232">
                         <input matInput formControlName="work_phone">
+                        <mat-error *ngIf="hasValidationError('work_phone')">{{getValidationMessage('work_phone')}}</mat-error>
                     </mat-form-field>
                 </div>
             </div>

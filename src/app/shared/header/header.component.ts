@@ -16,6 +16,7 @@ import {
   Validators,
   FormArray,
   FormGroupDirective,
+  AbstractControl,
 } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -40,6 +41,40 @@ import { A11yModule } from '@angular/cdk/a11y';
 interface HTMLInputEvent extends Event {
   target: HTMLInputElement & EventTarget;
 }
+
+function validateEmail(control: AbstractControl) {
+  const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  if (re.test(control.value)) return null;
+  return { email: 'Invalid email format'}
+}
+
+function validationMessage(formGroup: FormGroup, controlName: string) {
+  const control = formGroup.controls[controlName]
+  if (control.hasError('required')) {
+    return 'This field is required';
+  }
+  if (control.hasError('email')) {
+    return 'The email format is invalid';
+  }
+  if (control.hasError('pattern')) {
+    if (controlName === 'mobile_number') return 'The mobile number must be 10 digits';
+    if (controlName === 'work_number') return 'The work number must be 10 digits';
+    if (controlName === 'work_phone') return 'The work phone must be 10 digits';
+    return 'Invalid format'
+  }
+  if (control.hasError('minlength')) {
+    return `The minimum length is ${control.errors.minlength.requiredLength}.`;
+  }
+  if (control.hasError('maxlength')) {
+    return `The minimum length is ${control.errors.maxlength.requiredLength}.`;
+  }
+  
+  if (control.errors && control.errors.message) {
+    return control.errors.message;
+  }
+  return '';
+}
+
 
 @Component({
   selector: 'app-header',
@@ -608,27 +643,12 @@ export class ContactDialog {
     this.form = this.fb.group({
       file: [null, [this.validateImageFileType()]],
       profile_pic: [null],
-      first_name: ['', [Validators.required]],
-      last_name: ['', [Validators.required]],
+      first_name: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]*$')]],
+      last_name: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]*$')]],
       mobile_code: ['', [Validators.required]],
-      mobile_number: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(10),
-          Validators.maxLength(10),
-          Validators.pattern('^[0-9]*$'),
-        ],
-      ],
-      work_number: [
-        '',
-        [
-          Validators.minLength(10),
-          Validators.maxLength(10),
-          Validators.pattern('^[0-9]*$'),
-        ],
-      ],
-      email: ['', [Validators.required, Validators.email]],
+      mobile_number: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+      work_number: ['', [Validators.pattern('^[0-9]{10}$')]],
+      email: ['', [Validators.required, validateEmail]],
       owner_id: ['', [Validators.required]],
       organization: [''],
       address: [''],
@@ -662,24 +682,7 @@ export class ContactDialog {
   }
 
   getValidationMessage(key) {
-    const control = this.form.controls[key];
-    if (control.hasError('required')) return 'This field is required';
-    if (control.hasError('email')) return 'The email format is invalid';
-    if (control.hasError('pattern')) {
-      if (control.errors.pattern.requiredPattern == '^[0-9]*$')
-        return 'Please input numbers only';
-    }
-    if (control.hasError('minlength')) {
-      return `The minimum length is ${control.errors.minlength.requiredLength}.`;
-    }
-    if (control.hasError('maxlength')) {
-      return `The minimum length is ${control.errors.maxlength.requiredLength}.`;
-    }
-    
-    if (control.errors && control.errors.message) {
-      return control.errors.message;
-    }
-    return '';
+    return validationMessage(this.form, key)
   }
 
   private _filter(value: string): string[] {
@@ -709,11 +712,13 @@ export class ContactDialog {
     formData.append('email', values.email);
     formData.append('owner_id', values.owner_id);
     values.profile_pic && formData.append('profile_pic', values.profile_pic);
-    values.work_number && formData.append('work_number', values.work_number);
-    values.organization && formData.append('organization', values.organization);
+    values.work_number && formData.append('work_number', values.work_number);    
     values.address && formData.append('address', values.address);
     values.skype_id && formData.append('skype_id', values.skype_id);
     values.description && formData.append('description', values.description);
+    if (values.organization) {
+      formData.append('organization', JSON.stringify(values.organization));
+    }
 
     this.contactService.createContact(formData).subscribe(
       (res: any) => {
@@ -855,24 +860,9 @@ export class CompanyDialog {
     this.form = this.fb.group({
       organization_name: [this.company?.name || '', [Validators.required]],
       mobile_code: [this.company?.country_code || '', [Validators.required]],
-      mobile_number: [
-        this.company?.mobile || '',
-        [
-          Validators.required,
-          Validators.minLength(10),
-          Validators.maxLength(10),
-          Validators.pattern('^[0-9]*$'),
-        ],
-      ],
-      work_phone: [
-        this.company?.work_phone || '',
-        [
-          Validators.minLength(10),
-          Validators.maxLength(10),
-          Validators.pattern('^[0-9]*$'),
-        ],
-      ],
-      email: [this.company?.email || '', [Validators.required, Validators.email]],
+      mobile_number: [this.company?.mobile || '', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+      work_phone: [this.company?.work_phone || '', [Validators.pattern('^[0-9]{10}$')]],
+      email: [this.company?.email || '', [Validators.required, validateEmail]],
       address: [this.company?.address || ''],
       city: [this.company?.city || ''],
       postal_code: [this.company?.postal_code || ''],
@@ -890,24 +880,7 @@ export class CompanyDialog {
   }
 
   getValidationMessage(key) {
-    const control = this.form.controls[key];
-    if (control.hasError('required')) return 'This field is required';
-    if (control.hasError('email')) return 'The email format is invalid';
-    if (control.hasError('pattern')) {
-      if (control.errors.pattern.requiredPattern == '^[0-9]*$')
-        return 'Please input numbers only';
-    }
-    if (control.hasError('minlength')) {
-      return `The minimum length is ${control.errors.minlength.requiredLength}.`;
-    }
-    if (control.hasError('maxlength')) {
-      return `The minimum length is ${control.errors.maxlength.requiredLength}.`;
-    }
-    
-    if (control.errors && control.errors.message) {
-      return control.errors.message;
-    }
-    return '';
+    return validationMessage(this.form, key)
   }
 
   private _filter(value: string): string[] {
