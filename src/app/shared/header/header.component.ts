@@ -700,19 +700,20 @@ export class ContactDialog {
       return;
     }
 
+    const values = this.form.value
     const formData = new FormData()
-    formData.append('first_name', this.form.value.first_name);
-    formData.append('last_name', this.form.value.last_name);
-    this.form.value.profile_pic && formData.append('profile_pic', this.form.value.profile_pic);
-    formData.append("mobile[code]", this.form.value.mobile_code);
-    formData.append("mobile[number]", this.form.value.mobile_number);
-    formData.append('work_number', this.form.value.work_number);
-    formData.append('email', this.form.value.email);
-    formData.append('owner_id', this.form.value.owner_id);
-    formData.append('organization', this.form.value.organization);
-    formData.append('address', this.form.value.address);
-    formData.append('skype_id', this.form.value.skype_id);
-    formData.append('description', this.form.value.description);
+    formData.append('first_name', values.first_name);
+    formData.append('last_name', values.last_name);
+    formData.append("mobile[code]", values.mobile_code);
+    formData.append("mobile[number]", values.mobile_number);
+    formData.append('email', values.email);
+    formData.append('owner_id', values.owner_id);
+    values.profile_pic && formData.append('profile_pic', values.profile_pic);
+    values.work_number && formData.append('work_number', values.work_number);
+    values.organization && formData.append('organization', values.organization);
+    values.address && formData.append('address', values.address);
+    values.skype_id && formData.append('skype_id', values.skype_id);
+    values.description && formData.append('description', values.description);
 
     this.contactService.createContact(formData).subscribe(
       (res: any) => {
