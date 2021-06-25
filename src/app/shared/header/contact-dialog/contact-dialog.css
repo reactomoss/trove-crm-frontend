@@ -152,9 +152,9 @@ span {
 .stage-item.stage-active span {
     margin-left: 0;
 }
-.stage-item.stage-active:after {
-  /* border-left-color: #002868; */
-}
+/*.stage-item.stage-active:after {
+   border-left-color: #002868; 
+}*/
 
 .threeDiv, .twoDiv {
     display: flex;
@@ -231,7 +231,7 @@ span {
 }
 
 .inputWithSelect {
-  margin-left: 92px;
+  padding-left: 92px;
 }
 input.mat-input-element , textarea.mat-input-element {
   font-weight: 500;

@@ -195,8 +195,9 @@ export class ContactApiService {
     const countries = this.getCountries()
     if (countries) {
       const dialCodes = countries
-        .filter((x) => x.dial_code)
-        .map((x) => x.dial_code)
+        .filter(item => item.dial_code)
+        .map(item => item.dial_code)
+        .filter((item, pos, self) => self.indexOf(item) == pos)
       return this.sortDialCodes(dialCodes)
     }
     return null
