@@ -659,13 +659,20 @@ export class ContactDialog {
   }
 
   hasValidationError(key) {
+    if (this.errors && this.errors.hasOwnProperty(key)) {
+      return true
+    }
     return this.form.controls[key].invalid && this.form.controls[key].errors;
   }
 
   getValidationMessage(key) {
+    if (this.errors && this.errors.hasOwnProperty(key)) {
+      return this.errors[key]
+    }
+
     const control = this.form.controls[key];
     if (control.hasError('required')) return 'This field is required';
-    if (control.hasError('email')) return 'Please enter a valid email address';
+    if (control.hasError('email')) return 'The email format is invalid';
     if (control.hasError('pattern')) {
       if (control.errors.pattern.requiredPattern == '^[0-9]*$')
         return 'Please input numbers only';
@@ -674,6 +681,10 @@ export class ContactDialog {
       return `The minimum length is ${control.errors.minlength.requiredLength}.`;
     if (control.hasError('maxlength'))
       return `The minimum length is ${control.errors.maxlength.requiredLength}.`;
+    
+    if (control.errors && control.errors.message) {
+      return control.errors.message;
+    }
     return '';
   }
 
@@ -698,7 +709,7 @@ export class ContactDialog {
     const formData = new FormData()
     formData.append('first_name', this.form.value.first_name);
     formData.append('last_name', this.form.value.last_name);
-    formData.append('profile_pic', this.form.value.profile_pic);
+    this.form.value.profile_pic && formData.append('profile_pic', this.form.value.profile_pic);
     formData.append("mobile[code]", this.form.value.mobile_code);
     formData.append("mobile[number]", this.form.value.mobile_number);
     formData.append('work_number', this.form.value.work_number);
@@ -723,13 +734,14 @@ export class ContactDialog {
         this.errors = {};
         const data = err.error.data;
         for (const key in data) {
-          if (Array.isArray(data[key])) this.errors[key] = data[key][0];
-          else this.errors[key] = data[key];
+          if (this.form.controls.hasOwnProperty(key)) {
+            let message = data[key];
+            if (Array.isArray(data[key])) message = data[key][0];
+            this.form.controls[key].setErrors({ message: message })
+          }
         }
-        console.log('this.errors', this.errors);
-        const messages = Object.values(this.errors).join('\r\n');
-        console.log(messages);
-        this.sb.openSnackBarTopCenterAsDuration(messages, 'Close', 4000);
+        console.log('this.errors', data);
+        this.sb.openSnackBarTopCenterAsDuration("Plase input valid values", 'Close', 4000);
       }
     );
   }

@@ -38,7 +38,6 @@
                     <mat-form-field appearance="outline" class="formControl noLabelForm formMaxWidth"
                         [style.width.px]="180">
                         <input matInput formControlName="first_name" required>
-                        <mat-hint class="mat-error" *ngIf="errors?.first_name">{{errors.first_name}}</mat-hint>
                         <mat-error *ngIf="hasValidationError('first_name')">{{getValidationMessage('first_name')}}</mat-error>
                     </mat-form-field>
                 </div>
@@ -47,7 +46,6 @@
                     <mat-form-field appearance="outline" class="formControl noLabelForm formMaxWidth"
                         [style.width.px]="180">
                         <input matInput formControlName="last_name" required>
-                        <mat-hint class="mat-error" *ngIf="errors?.last_name">{{errors.last_name}}</mat-hint>
                         <mat-error *ngIf="hasValidationError('last_name')">{{getValidationMessage('last_name')}}</mat-error>
                     </mat-form-field>
                 </div>
@@ -64,10 +62,7 @@
                         <mat-select class="selectWithInput" formControlName="mobile_code" required>
                             <mat-option *ngFor="let code of dialCodes" [value]="code">{{code}}</mat-option>
                         </mat-select>
-                        <mat-hint class="mat-error" *ngIf="errors && errors['mobile.number']">
-                            {{errors['mobile.number']}}</mat-hint>
-                        <mat-error *ngIf="hasValidationError('mobile_number')">{{getValidationMessage('mobile_number')}}
-                        </mat-error>
+                        <mat-error *ngIf="hasValidationError('mobile_number')">{{getValidationMessage('mobile_number')}}</mat-error>
                     </mat-form-field>
                 </div>
             </div>
@@ -90,11 +85,12 @@
                     </span>
                 </div>
                 <div *ngIf="checkShow('Company Name')">
-                    <span>Company Name</span><br>
+                    <span class="required">Company Name</span><br>
                     <mat-form-field appearance="outline" class="formControl noLabelForm grayBackground">
                         <mat-select multiple class="fw-500" formControlName="organization">
                             <mat-option data-class="chkbox" *ngFor="let company of companyList" [value]="company.id">{{company.name}}</mat-option>
                         </mat-select>
+                        <mat-error *ngIf="hasValidationError('organization')">{{getValidationMessage('organization')}}</mat-error>
                     </mat-form-field>
                 </div>
             </div>
@@ -106,7 +102,6 @@
                     <span class="required">Email Address</span><br>
                     <mat-form-field appearance="outline" class="formControl noLabelForm">
                         <input matInput email formControlName="email" required>
-                        <mat-hint class="mat-error" *ngIf="errors?.email">{{errors.email}}</mat-hint>
                         <mat-error *ngIf="hasValidationError('email')">{{getValidationMessage('email')}}</mat-error>
                     </mat-form-field>
                 </div>
@@ -119,7 +114,6 @@
                         <mat-select formControlName="owner_id" required>
                             <mat-option *ngFor="let owner of emailOwners" [value]="owner.id">{{owner.full_name}}</mat-option>
                         </mat-select>
-                        <mat-hint class="mat-error" *ngIf="errors?.owner_id">{{errors.owner_id}}</mat-hint>
                         <mat-error *ngIf="hasValidationError('owner_id')">{{getValidationMessage('owner_id')}}</mat-error>
                     </mat-form-field>
                 </div>
