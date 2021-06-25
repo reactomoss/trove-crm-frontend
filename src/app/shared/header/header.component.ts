@@ -584,7 +584,6 @@ export class ContactDialog {
   companyList = [];
   emailOwners = [];
   dialCodes = [];
-  errors = null
 
   constructor(
     private contactService: ContactApiService,
@@ -659,17 +658,10 @@ export class ContactDialog {
   }
 
   hasValidationError(key) {
-    if (this.errors && this.errors.hasOwnProperty(key)) {
-      return true
-    }
     return this.form.controls[key].invalid && this.form.controls[key].errors;
   }
 
   getValidationMessage(key) {
-    if (this.errors && this.errors.hasOwnProperty(key)) {
-      return this.errors[key]
-    }
-
     const control = this.form.controls[key];
     if (control.hasError('required')) return 'This field is required';
     if (control.hasError('email')) return 'The email format is invalid';
@@ -677,10 +669,12 @@ export class ContactDialog {
       if (control.errors.pattern.requiredPattern == '^[0-9]*$')
         return 'Please input numbers only';
     }
-    if (control.hasError('minlength'))
+    if (control.hasError('minlength')) {
       return `The minimum length is ${control.errors.minlength.requiredLength}.`;
-    if (control.hasError('maxlength'))
+    }
+    if (control.hasError('maxlength')) {
       return `The minimum length is ${control.errors.maxlength.requiredLength}.`;
+    }
     
     if (control.errors && control.errors.message) {
       return control.errors.message;
@@ -731,7 +725,6 @@ export class ContactDialog {
         }
       },
       (err) => {
-        this.errors = {};
         const data = err.error.data;
         for (const key in data) {
           if (this.form.controls.hasOwnProperty(key)) {
@@ -835,7 +828,6 @@ export class CompanyDialog {
   countries = [];
   emailOwners = [];
   dialCodes = []
-  errors = null
   closeResult = '';
 
   constructor(
@@ -899,15 +891,21 @@ export class CompanyDialog {
   getValidationMessage(key) {
     const control = this.form.controls[key];
     if (control.hasError('required')) return 'This field is required';
-    if (control.hasError('email')) return 'Please enter a valid email address';
+    if (control.hasError('email')) return 'The email format is invalid';
     if (control.hasError('pattern')) {
       if (control.errors.pattern.requiredPattern == '^[0-9]*$')
         return 'Please input numbers only';
     }
-    if (control.hasError('minlength'))
+    if (control.hasError('minlength')) {
       return `The minimum length is ${control.errors.minlength.requiredLength}.`;
-    if (control.hasError('maxlength'))
+    }
+    if (control.hasError('maxlength')) {
       return `The minimum length is ${control.errors.maxlength.requiredLength}.`;
+    }
+    
+    if (control.errors && control.errors.message) {
+      return control.errors.message;
+    }
     return '';
   }
 
@@ -957,15 +955,16 @@ export class CompanyDialog {
         }
       },
       (err) => {
-        this.errors = {};
         const data = err.error.data;
         for (const key in data) {
-          if (Array.isArray(data[key])) this.errors[key] = data[key][0];
-          else this.errors[key] = data[key];
+          if (this.form.controls.hasOwnProperty(key)) {
+            let message = data[key];
+            if (Array.isArray(data[key])) message = data[key][0];
+            this.form.controls[key].setErrors({ message: message })
+          }
         }
-        console.log('this.errors', this.errors);
-        const messages = Object.values(this.errors).join('\r\n');
-        this.sb.openSnackBarTopCenterAsDuration(messages, 'Close', 4000);
+        console.log('this.errors', data);
+        this.sb.openSnackBarTopCenterAsDuration("Plase input valid values", 'Close', 4000);
       }
     );
   }

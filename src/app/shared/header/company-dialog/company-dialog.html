@@ -21,7 +21,6 @@
                 <span class="required">Company Name</span><br>
                 <mat-form-field appearance="outline" class="formControl noLabelForm">
                     <input matInput formControlName="organization_name" required>
-                    <mat-hint class="mat-error" *ngIf="errors?.organization_name">{{errors.organization_name}}</mat-hint>
                     <mat-error *ngIf="hasValidationError('organization_name')">{{getValidationMessage('organization_name')}}</mat-error>
                 </mat-form-field>
             </div>
@@ -33,7 +32,6 @@
                         <mat-select class="selectWithInput" formControlName="mobile_code" required>
                             <mat-option *ngFor="let code of dialCodes" [value]="code">{{code}}</mat-option>
                         </mat-select>
-                        <mat-hint class="mat-error" *ngIf="errors && errors['mobile.number']">{{errors['mobile.number']}}</mat-hint>
                         <mat-error *ngIf="hasValidationError('mobile_number')">{{getValidationMessage('mobile_number')}}</mat-error>
                     </mat-form-field>
                 </div>
@@ -87,7 +85,6 @@
                     <span class="required">Email Address</span><br>
                     <mat-form-field appearance="outline" class="formControl noLabelForm" [style.width.px]="232">
                         <input matInput email formControlName="email" required>
-                        <mat-hint class="mat-error" *ngIf="errors?.email">{{errors.email}}</mat-hint>
                         <mat-error *ngIf="hasValidationError('email')">{{getValidationMessage('email')}}</mat-error>
                     </mat-form-field>
                 </div>
@@ -97,7 +94,6 @@
                         <mat-select formControlName="owner_id" required>
                             <mat-option *ngFor="let owner of emailOwners" [value]="owner.id">{{owner.full_name}}</mat-option>
                         </mat-select>
-                        <mat-hint class="mat-error" *ngIf="errors?.owner_id">{{errors.owner_id}}</mat-hint>
                         <mat-error *ngIf="hasValidationError('owner_id')">{{getValidationMessage('owner_id')}}</mat-error>
                     </mat-form-field>
                 </div>
