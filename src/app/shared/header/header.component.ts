@@ -740,7 +740,7 @@ export class ContactDialog {
           }
         }
         console.log('this.errors', data);
-        this.sb.openSnackBarTopCenterAsDuration("Plase input valid values", 'Close', 4000);
+        this.sb.openSnackBarTopCenterAsDuration("Internal Server Error", 'Close', 4000);
       }
     );
   }
@@ -861,7 +861,7 @@ export class CompanyDialog {
       organization_name: [this.company?.name || '', [Validators.required]],
       mobile_code: [this.company?.country_code || '', [Validators.required]],
       mobile_number: [this.company?.mobile || '', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
-      work_phone: [this.company?.work_phone || '', [Validators.pattern('^[0-9]{10}$')]],
+      work_phone: [this.company?.work_phone || '', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       email: [this.company?.email || '', [Validators.required, validateEmail]],
       address: [this.company?.address || ''],
       city: [this.company?.city || ''],
@@ -938,7 +938,7 @@ export class CompanyDialog {
           }
         }
         console.log('this.errors', data);
-        this.sb.openSnackBarTopCenterAsDuration("Plase input valid values", 'Close', 4000);
+        this.sb.openSnackBarTopCenterAsDuration("Internal Server Error", 'Close', 4000);
       }
     );
   }
