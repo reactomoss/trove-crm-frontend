@@ -1,9 +1,11 @@
 import { Component, OnInit, Input, AfterViewInit, ViewChild, EventEmitter, Output } from '@angular/core';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { DateService } from '../../../service/date.service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { SettingsApiService } from 'src/app/services/settings-api.service';
+import * as moment from 'moment';
 
 export interface item {
   name: string;
@@ -28,13 +30,16 @@ export class ContactTableComponent implements AfterViewInit {
   @Input() selectedItems
   @Output() pagination = new EventEmitter();
 
-  displayedColumns: string[] = ['contact', 'company', 'last', 'since', 'city', 'added', 'status', 'phone'];
+  displayedColumns: string[] = ['contact', 'mobile_number', 'email', 'company', 'city', 'state', 'last_activity', 'status', 'ownerName', 'created_at', 'updated_at'];
   dataSource
   selectedTh: string = ''
   items = []
   page = null
 
-  constructor(private dateService: DateService, private router: Router) {
+  constructor(
+    private settingsApiService: SettingsApiService,
+    private dateService: DateService, 
+    private router: Router) {
       
   }
 
@@ -46,8 +51,10 @@ export class ContactTableComponent implements AfterViewInit {
   }
 
   ngOnChanges() {
-    console.log('ngOnChanges', this.length, this.propItems)
-    this.items = [...this.propItems]
+    this.items = [...this.propItems].map(it => {
+      return {...it, ownerName: it.owner.full_name, last_activity: it.updated_at}
+    })
+    console.log('ngOnChanges', this.items)
     if (this.items.length > 0 && this.items.length < this.length) {
       const displayItems = this.items.length % this.pageSize;
       if (displayItems == this.pageSize - 1) {
@@ -80,7 +87,9 @@ export class ContactTableComponent implements AfterViewInit {
   }
 
   dateToString(date) {
-    return this.dateService.dateToString(date)
+    const dateFormat = this.settingsApiService.getDateFormat()
+    const format = this.dateService.getDateFormat(dateFormat)
+    return moment(date).format(format);
   }
 
   clickTh(th) {
