@@ -717,7 +717,9 @@ export class ContactDialog {
     values.skype_id && formData.append('skype_id', values.skype_id);
     values.description && formData.append('description', values.description);
     if (values.organization) {
-      formData.append('organization', JSON.stringify(values.organization));
+      values.organization.forEach(id => {
+        formData.append('organization[]', id);
+      })
     }
 
     this.contactService.createContact(formData).subscribe(
