@@ -3,6 +3,8 @@ import { DateService } from '../../../service/date.service'
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { filter, map, startWith, take, tap } from 'rxjs/operators';
+import { SettingsApiService } from 'src/app/services/settings-api.service';
+import * as moment from 'moment';
 
 export interface ContactFilters {
   count: number
@@ -11,8 +13,8 @@ export interface ContactFilters {
   activityStartDate: Date
   activityEndDate: Date
   addedon: number
-  addedonStartDate: Date
-  addedonEndDate: Date
+  addonStartDate: Date
+  addonEndDate: Date
   owners: number[]
 }
 export interface ContactOwner {
@@ -42,8 +44,8 @@ export class ContactFilterComponent implements OnInit {
     activityStartDate: null,
     activityEndDate: null,
     addedon: -1,
-    addedonStartDate: null,
-    addedonEndDate: null,
+    addonStartDate: null,
+    addonEndDate: null,
     owners: [],
   }
   dateFormat = 'DD/MM/YYYY'
@@ -68,16 +70,25 @@ export class ContactFilterComponent implements OnInit {
   addDateTypeString: string[] = ['Today', 'Yesterday', 'Last Week', 'This month', 'Last month', 'This Quarter', 'Custom']
 
 
-  constructor(private dateService: DateService) {
+  constructor(
+    private settingsApiService: SettingsApiService,
+    private dateService: DateService) {
     this.ownerFilterObserver = this.ownerFilterCtrl.valueChanges
       .pipe(
         startWith(''),
         map(state => state ? this._filterStatesComp(state) : this.companies.slice())
       );
+
+    console.log("this.filters", this.filters)
   }
 
   ngOnInit(): void {
+    const format = this.settingsApiService.getDateFormat()
+    this.dateFormat = this.dateService.getDateFormat(format)
+  }
 
+  dateToString(date): string {
+    return moment(date).format(this.dateFormat)
   }
 
   public getSelectedDate() {
@@ -86,12 +97,12 @@ export class ContactFilterComponent implements OnInit {
     }
     if (this.filters.activity == 6) {
       let firstDay = '', lastDay = ''
-      this.filters.activityStartDate && (firstDay = this.dateService.dateToString(this.filters.activityStartDate))
-      this.filters.activityEndDate && (lastDay = this.dateService.dateToString(this.filters.activityEndDate))
+      this.filters.activityStartDate && (firstDay = this.dateToString(this.filters.activityStartDate))
+      this.filters.activityEndDate && (lastDay = this.dateToString(this.filters.activityEndDate))
       return firstDay + ' ~ ' + lastDay   
     }
     const {startDate, lastDate} = this.dateService.getDateRange(this.filters.activity)
-    return startDate.format(this.dateFormat) + '~' + lastDate.format(this.dateFormat)
+    return this.dateToString(startDate) + ' ~ ' + this.dateToString(lastDate)
   }
 
   public getAddSelectedDate() {
@@ -100,12 +111,12 @@ export class ContactFilterComponent implements OnInit {
     }
     if (this.filters.activity == 6) {
       let firstDay = '', lastDay = ''
-      this.filters.addedonStartDate && (firstDay = this.dateService.dateToString(this.filters.addedonStartDate))
-      this.filters.addedonEndDate && (lastDay = this.dateService.dateToString(this.filters.addedonEndDate))
+      this.filters.addonStartDate && (firstDay = this.dateToString(this.filters.addonStartDate))
+      this.filters.addonEndDate && (lastDay = this.dateToString(this.filters.addonEndDate))
       return firstDay + ' ~ ' + lastDay   
     }
     const {startDate, lastDate} = this.dateService.getDateRange(this.filters.addedon)
-    return startDate.format(this.dateFormat) + '~' + lastDate.format(this.dateFormat)
+    return this.dateToString(startDate) + ' ~ ' + this.dateToString(lastDate)
   }
 
   calculateFilterCount(): number {
@@ -149,7 +160,7 @@ export class ContactFilterComponent implements OnInit {
       }),
       take(1)
     ).subscribe();
-    this.notify();
+    this.notify()
   }
 
   public clearDate() {

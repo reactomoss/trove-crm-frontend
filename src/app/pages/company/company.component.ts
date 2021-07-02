@@ -64,8 +64,6 @@ export class CompanyComponent implements OnInit {
     private router: Router,
     private dateService: DateService,
     private sb: SnackBarService) {
-      const m = moment('2021-07-29 15:20:40')
-      console.log('test', m.format('DD MMM YYYY HH:mm'))
   }
 
   triggerSnackBar(message:string, action:string) {
@@ -265,8 +263,8 @@ export class CompanyComponent implements OnInit {
       if (filters.addedon >= 0) {
         let startDate = null, lastDate = null
         if (filters.activity == 6) {
-          startDate = moment(this.filters.addedonStartDate)
-          lastDate = moment(this.filters.addedonEndDate)
+          startDate = moment(this.filters.addonStartDate)
+          lastDate = moment(this.filters.addonEndDate)
         }
         else {
           const dateRange = this.dateService.getDateRange(this.filters.addedon)

@@ -13,8 +13,8 @@ export interface CompanyFilters {
   activityStartDate: Date
   activityEndDate: Date
   addedon: number
-  addedonStartDate: Date
-  addedonEndDate: Date
+  addonStartDate: Date
+  addonEndDate: Date
   owners: number[]
 }
 export interface CompanyOwner {
@@ -44,8 +44,8 @@ export class CompanyFilterComponent implements OnInit {
     activityStartDate: null,
     activityEndDate: null,
     addedon: -1,
-    addedonStartDate: null,
-    addedonEndDate: null,
+    addonStartDate: null,
+    addonEndDate: null,
     owners: [],
   }
   dateFormat = 'DD/MM/YYYY'
@@ -109,8 +109,8 @@ export class CompanyFilterComponent implements OnInit {
     }
     if (this.filters.activity == 6) {
       let firstDay = '', lastDay = ''
-      this.filters.addedonStartDate && (firstDay = this.dateToString(this.filters.addedonStartDate))
-      this.filters.addedonEndDate && (lastDay = this.dateToString(this.filters.addedonEndDate))
+      this.filters.addonStartDate && (firstDay = this.dateToString(this.filters.addonStartDate))
+      this.filters.addonEndDate && (lastDay = this.dateToString(this.filters.addonEndDate))
       return firstDay + ' ~ ' + lastDay   
     }
     const {startDate, lastDate} = this.dateService.getDateRange(this.filters.addedon)

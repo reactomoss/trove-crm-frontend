@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { SnackBarService} from '../../shared/snack-bar.service'
@@ -8,6 +9,8 @@ import { ContactApiService } from '../../services/contact-api.service';
 import { ContactFilters, ContactOwner } from './filter/filter.component';
 import { DateService } from '../../service/date.service'
 import * as moment from 'moment';
+import { SettingsApiService } from 'src/app/services/settings-api.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 export interface item {
   id: number;
@@ -49,10 +52,13 @@ export class ContactComponent implements OnInit {
   listShow: boolean = false
   closeResult = '';
 
+  subscriptions: Subscription[] = [];
+
   constructor(
     private modalService: NgbModal,
+    private settingsApiService: SettingsApiService,
     public contactService: ContactApiService,
-    public dialog: MatDialog, 
+    public dialog: MatDialog,
     private router: Router, 
     private dateService: DateService,
     private sb: SnackBarService) {
@@ -83,11 +89,17 @@ export class ContactComponent implements OnInit {
   /*Modal dialog*/
 
   ngOnInit(): void {
-    this.contactService.contactObserver.subscribe(() => this.update());
+    this.subscriptions.push(this.contactService.contactObserver.subscribe(() => this.update()))
     this.showGrid()
   }
 
-  update() {
+  ngOnDestroy() {
+    this.subscriptions.forEach((sub) => {
+      sub.unsubscribe();
+    });
+  }
+
+  private update() {
     this.lastQuery = {}
     this.listShow ? this.showList() : this.showGrid() 
   }
@@ -142,6 +154,7 @@ export class ContactComponent implements OnInit {
           })
         }
         this.updateCompanies()
+        this.getPreference()
       },
       err => {
         this.triggerSnackBar(err.error.message, 'Close')
@@ -256,15 +269,14 @@ export class ContactComponent implements OnInit {
 
     const filters = this.filters
     if (filters) {
-      console.log('applyFilter', filters)
       if (filters.owners.length > 0) {
         query['created_organization'] = filters.owners
       }
       if (filters.addedon >= 0) {
         let startDate = null, lastDate = null
         if (filters.activity == 6) {
-          startDate = moment(this.filters.addedonStartDate)
-          lastDate = moment(this.filters.addedonEndDate)
+          startDate = moment(this.filters.addonStartDate)
+          lastDate = moment(this.filters.addonEndDate)
         }
         else {
           const dateRange = this.dateService.getDateRange(this.filters.addedon)
@@ -358,6 +370,25 @@ export class ContactComponent implements OnInit {
       index >= 0 && this.items.splice(index, 1)
     })
     this.selectedItems = []
+  }
+
+  private getPreference() {
+    const item = this.settingsApiService.getDateFormat()
+    if (!item || item === 'undefined') {
+      this.settingsApiService.preferenceMe().subscribe(
+        (res: any) => {
+          console.log('getPreference', res);
+          if (res.success) {
+            const dateformat = res.data.deteformats.find(it => it.id === res.data.preference.dateformat_id)
+            const timeformat = res.data.timeformats.find(it => it.id === res.data.preference.timeformat_id)
+            this.settingsApiService.setDateFormat(dateformat.dateformat)
+            this.settingsApiService.setTimeFormat(timeformat.timeformat)
+            console.log('dateformat', dateformat, timeformat);
+          }
+        },
+        (error: HttpErrorResponse) => {}
+      );
+    }
   }
 }
 
